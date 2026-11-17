@@ -5,4 +5,8 @@
 > Sửa xong file thì XÓA NGAY dòng khóa của mình, không đợi cuối phiên.
 > File đang bị người khác khóa: TUYỆT ĐỐI không sửa - gửi phiếu bàn giao thay thế.
 
-(trống - không file nào đang khóa)
+apps/app/** | agent-qulythuchi (P3) | 19:28 17/11/2026
+docs/security-reviews/** | agent-qulythuchi (P3) | 19:28 17/11/2026
+logs/STATE.md | agent-qulythuchi (P3) | 19:28 17/11/2026
+CHANGELOG.md | agent-qulythuchi (P3) | 19:28 17/11/2026
+docs/FEATURES.md | agent-qulythuchi (P3) | 19:28 17/11/2026

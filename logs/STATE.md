@@ -18,6 +18,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| P3 - Nghiệp vụ nâng cao | agent-qulythuchi | 19:28 17/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
