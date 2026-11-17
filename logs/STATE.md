@@ -10,7 +10,7 @@
 ## Hàng đợi task (làm từ trên xuống)
 
 - [ ] **P6 - Đồng bộ trong app** (phiếu `logs/handover/20261118-01_p5-xong-bat-dau-p6.md`, prompt ở mục 6b).
-  Đăng nhập thật cần 👤 client OIDC `qulythuchi` ở tsudev.com (phiếu tsudev `20261118-QT1`).
+  Client OIDC `qulythuchi` đã đăng ký 18/11/2026 (IdP trả 303) ⇒ đăng nhập thật dùng được.
 - [ ] P7 - Tự nhập + thông minh
 - [ ] P8 - Web + site
 - [ ] P9 - Ví chung gia đình
@@ -29,7 +29,7 @@
   SESSION_SECRET/IP_HASH_SALT đã đặt). RP OIDC + mã một lần PKCE cho app, refresh xoay vòng, phiên web cookie,
   đẩy/kéo bản mã theo rev, gói khóa/khóa ví, tệp R2, thiết bị, xuất, xóa tài khoản 30 ngày, giới hạn tần suất/hạn
   mức. 44 test (dữ liệu mẫu THẬT từ lõi), job CI `Máy chủ (services/sync-api)`. ADR-0010, phiếu rà soát P5.
-  Còn 👤: client OIDC (IdP trả `invalid_client`, phiếu tsudev QT1).
+  18/11: client OIDC chèn vào Neon (phiếu tsudev QT1 ĐÓNG); ruleset `main-bao-ve` thêm check Máy chủ.
 - 17/11/2026 - P4 Báo cáo + dữ liệu (agent-qulythuchi): báo cáo theo kỳ + so với kỳ trước, thu chi 6 tháng, cơ cấu
   danh mục, tài sản ròng, lịch chi tiêu (mọi biểu đồ có bảng thay thế, màu token), "An toàn để tiêu"; lọc nhiều điều
   kiện + lưu bộ lọc; xuất CSV/XLSX/PDF có cảnh báo, nhập CSV ghép cột, sao lưu/khôi phục `.qtbak` mã hóa (ADR-0009).
