@@ -5,7 +5,8 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P5 - Máy chủ `services/sync-api`** (phiếu `logs/handover/20261117-05_p4-xong-bat-dau-p5.md`; cần 👤 client OIDC + token Cloudflare)
+- [ ] **P5 - Máy chủ `services/sync-api`** (phiếu `logs/handover/20261117-05_p4-xong-bat-dau-p5.md`, chia P5a/P5b/P5c;
+  P5a không cần 👤; P5b cần client OIDC; P5c cần token Cloudflare). Prompt mở phiên: phiếu đó mục 6b.
 - [ ] P6 - Đồng bộ trong app
 - [ ] P7 - Tự nhập + thông minh
 - [ ] P8 - Web + site
