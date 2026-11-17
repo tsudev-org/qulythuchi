@@ -1,0 +1,11 @@
+# Cấu hình gitleaks: dùng toàn bộ luật mặc định, chỉ thêm MỘT ngoại lệ có lý do.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = """
+conformance/envelope-v1.json là vector đối chiếu SINH TỰ ĐỘNG từ packages/core/tool/gen_vectors.dart:
+khóa và đầu ra KDF trong đó dẫn xuất từ mật khẩu/salt/khóa kiểm thử CÔNG KHAI ghi ngay trong tệp, không phải bí mật.
+An toàn vì CI sinh lại tệp và so khớp từng byte - mọi nội dung chèn tay đều làm CI đỏ.
+"""
+paths = ['''^conformance/envelope-v1\.json$''']
