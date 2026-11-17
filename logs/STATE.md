@@ -5,8 +5,7 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P2 - App Flutter khung** (phiếu `logs/handover/20261117-02_p1-xong-bat-dau-p2.md`)
-- [ ] P3 - Nghiệp vụ nâng cao
+- [ ] **P3 - Nghiệp vụ nâng cao** (phiếu `logs/handover/20261117-03_p2-xong-bat-dau-p3.md`)
 - [ ] P4 - Báo cáo + dữ liệu
 - [ ] P5 - Máy chủ `services/sync-api` (cần 👤 client OIDC + token Cloudflare)
 - [ ] P6 - Đồng bộ trong app
@@ -19,10 +18,13 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| P2 - App Flutter khung | agent-qulythuchi | 17:19 17/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 17/11/2026 - P2 App Flutter khung (agent-qulythuchi): 6 đích, kho khóa (mật khẩu/24 từ/PIN/sinh trắc, tự khóa 60 s,
+  FLAG_SECURE), CSDL sqlite3mc (web: WASM + IndexedDB, chỉ bản niêm phong), ví/danh mục 2 tầng/giao dịch/chuyển ví,
+  máy tính số tiền, tìm không dấu, token Sáng/Tối, vi+en. 14 test; chạy thật bản web bằng Playwright đạt. Build Linux
+  chỉ kiểm trên CI (máy dev thiếu CMake/GTK dev). ADR-0008, phiếu rà soát `docs/security-reviews/20261117-p2-app.md`.
 - 17/11/2026 - P1 Lõi `packages/core` (agent-qulythuchi): tiền số nguyên (allocate không mất đồng, quy đổi làm tròn
   chẵn, định dạng/đọc vi+en), ngày lịch, ví/danh mục/giao dịch (chuyển ví = 2 bản ghi)/ngân sách (kỳ, chuyển dư,
   cảnh báo)/định kỳ RRULE/nợ/mục tiêu/sự kiện/6 hũ, HLC + hợp nhất theo trường, phong bì E2EE v1 + phân cấp khóa
@@ -43,6 +45,8 @@
 - 17/11/2026 - AGPL-3.0-only: `docs/adr/0005-*`
 - 17/11/2026 - 5 cách tự nhập, email là ngoại lệ E2EE có báo trước: `docs/adr/0006-*`
 - 17/11/2026 - X-Wing chia sẻ khóa ví, mật khẩu NFKC, Argon2id 64 MiB/3 (sàn 19 MiB/2), phong bì v1: `docs/adr/0007-*`
+
+- 17/11/2026 - sqlite3 3.x + sqlite3mc thay drift/sqlcipher_flutter_libs (EOL); PIN bọc bằng khóa thiết bị: `docs/adr/0008-*`
 
 ## Sự cố bảo mật
 
