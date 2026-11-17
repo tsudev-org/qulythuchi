@@ -344,5 +344,6 @@
   "notifBillTitle": "A bill is due soon",
   "notifBillBody": "Open Quly Thu Chi for details.",
   "settingsNotifications": "Bill reminders",
-  "settingsNotificationsSub": "Notifications never show names or amounts on the lock screen"
+  "settingsNotificationsSub": "Notifications never show names or amounts on the lock screen",
+  "pendingLabel": "Pending"
 }

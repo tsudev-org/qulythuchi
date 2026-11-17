@@ -604,5 +604,6 @@
   "notifBillTitle": "Hóa đơn sắp đến hạn",
   "notifBillBody": "Mở Quly Thu Chi để xem chi tiết.",
   "settingsNotifications": "Nhắc hóa đơn",
-  "settingsNotificationsSub": "Thông báo không chứa tên hay số tiền, để không lộ trên màn hình khóa"
+  "settingsNotificationsSub": "Thông báo không chứa tên hay số tiền, để không lộ trên màn hình khóa",
+  "pendingLabel": "Chờ xác nhận"
 }

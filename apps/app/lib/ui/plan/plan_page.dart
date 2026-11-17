@@ -263,13 +263,23 @@ class _JarsTabState extends ConsumerState<_JarsTab> {
             trailing: MoneyText(Money(income, base), style: const TextStyle(fontWeight: FontWeight.w700)),
           ),
         ),
-        if (income == 0 && sim == null)
-          Padding(
-            padding: const EdgeInsets.only(top: QtSpace.s2),
-            child: Text(l.jarsNoIncome(base.code), style: TextStyle(color: p.textSecondary)),
+        // Luôn giữ phần tử này (chỉ đổi nội dung): thêm/bớt phần tử phía trên ô nhập sẽ dựng lại ô nhập và
+        // làm mất focus khi đang gõ.
+        Padding(
+          padding: const EdgeInsets.only(top: QtSpace.s2),
+          child: Text(
+            income == 0 && sim == null ? l.jarsNoIncome(base.code) : '',
+            style: TextStyle(color: p.textSecondary),
           ),
+        ),
         const SizedBox(height: QtSpace.s4),
-        AmountField(controller: _sim, currency: base, label: l.jarsSimulate, allowZero: true),
+        AmountField(
+          key: const ValueKey('jar-sim'),
+          controller: _sim,
+          currency: base,
+          label: l.jarsSimulate,
+          allowZero: true,
+        ),
         const SizedBox(height: QtSpace.s4),
         Card(
           child: Column(

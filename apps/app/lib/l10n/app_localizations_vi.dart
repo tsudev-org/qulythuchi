@@ -1120,4 +1120,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get settingsNotificationsSub => 'Thông báo không chứa tên hay số tiền, để không lộ trên màn hình khóa';
+
+  @override
+  String get pendingLabel => 'Chờ xác nhận';
 }

@@ -101,7 +101,7 @@ class RatesPage extends ConsumerWidget {
       ),
       body: PageBody(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(QtSpace.s4, 0, QtSpace.s4, 96),
+          padding: const EdgeInsets.fromLTRB(QtSpace.s4, QtSpace.s4, QtSpace.s4, 96),
           children: [
             DropdownButtonFormField<Currency>(
               initialValue: base,

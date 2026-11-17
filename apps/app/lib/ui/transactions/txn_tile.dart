@@ -33,14 +33,17 @@ class TxnTile extends StatelessWidget {
         title = l.txnAdjustment;
         icon = Icons.tune;
       case TxnKind.expense || TxnKind.income:
-        title = cat == null ? l.uncategorized : (parent == null ? cat.name : '${parent.name} › ${cat.name}');
+        title = cat == null
+            // Giao dịch từ định kỳ/sổ nợ thường không có danh mục: tên khoản (ghi chú) dễ nhận hơn "Chưa phân loại".
+            ? ((txn.note?.isNotEmpty ?? false) ? txn.note! : l.uncategorized)
+            : (parent == null ? cat.name : '${parent.name} › ${cat.name}');
         icon = categoryIcon(cat?.icon ?? parent?.icon);
     }
     final subtitleParts = [
-      if (txn.pending) l.pendingConfirm,
+      if (txn.pending) l.pendingLabel,
       if (showDate) formatDate(txn.date),
       wallet?.name ?? '?',
-      if (txn.note != null && txn.note!.isNotEmpty) txn.note!,
+      if (txn.note != null && txn.note!.isNotEmpty && txn.note != title) txn.note!,
     ];
     final currency = wallet?.currency ?? Currency.vnd;
     return ListTile(
@@ -52,7 +55,17 @@ class TxnTile extends StatelessWidget {
       title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
       subtitle: Text(subtitleParts.join(' · '), maxLines: 1, overflow: TextOverflow.ellipsis),
       trailing: MoneyText(
-        Money(txn.balanceEffect, currency),
+        // Giao dịch chờ: balanceEffect = 0 (chưa tính số dư) nhưng vẫn phải hiện số tiền thật.
+        Money(
+          txn.pending
+              ? switch (txn.kind) {
+                  TxnKind.income || TxnKind.transferIn || TxnKind.adjustment => txn.amount,
+                  TxnKind.expense => -txn.amount,
+                  TxnKind.transferOut => -(txn.amount + txn.fee),
+                }
+              : txn.balanceEffect,
+          currency,
+        ),
         signed: true,
         colored: txn.kind == TxnKind.income || txn.kind == TxnKind.expense || txn.kind == TxnKind.adjustment,
         style: const TextStyle(fontWeight: FontWeight.w600),

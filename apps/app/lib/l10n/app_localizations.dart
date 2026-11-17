@@ -2161,6 +2161,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Thông báo không chứa tên hay số tiền, để không lộ trên màn hình khóa'**
   String get settingsNotificationsSub;
+
+  /// No description provided for @pendingLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ xác nhận'**
+  String get pendingLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

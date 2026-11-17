@@ -1121,4 +1121,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsNotificationsSub => 'Notifications never show names or amounts on the lock screen';
+
+  @override
+  String get pendingLabel => 'Pending';
 }
