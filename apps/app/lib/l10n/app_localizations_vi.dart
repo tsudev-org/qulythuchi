@@ -1123,4 +1123,326 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get pendingLabel => 'Chờ xác nhận';
+
+  @override
+  String get navReports => 'Báo cáo';
+
+  @override
+  String get reportThisMonth => 'Tháng này';
+
+  @override
+  String get reportLastMonth => 'Tháng trước';
+
+  @override
+  String get reportLast3Months => '3 tháng gần đây';
+
+  @override
+  String get reportThisYear => 'Năm nay';
+
+  @override
+  String get reportIncome => 'Thu';
+
+  @override
+  String get reportExpense => 'Chi';
+
+  @override
+  String get reportNet => 'Chênh lệch';
+
+  @override
+  String get reportSavingsRate => 'Tỉ lệ tiết kiệm';
+
+  @override
+  String get reportMonthly => 'Thu chi 6 tháng gần đây';
+
+  @override
+  String get reportByCategory => 'Chi theo danh mục';
+
+  @override
+  String get reportNetWorth => 'Tài sản ròng';
+
+  @override
+  String reportCalendar(String month) {
+    return 'Lịch chi tiêu $month';
+  }
+
+  @override
+  String get reportOther => 'Khác';
+
+  @override
+  String reportMonthReadout(String month, String income, String expense) {
+    return 'Tháng $month: thu $income · chi $expense';
+  }
+
+  @override
+  String reportPointReadout(String month, String amount) {
+    return 'Tháng $month: $amount';
+  }
+
+  @override
+  String reportDayReadout(String date, String amount) {
+    return '$date: chi $amount';
+  }
+
+  @override
+  String get reportTapDay => 'Chạm vào một ngày để xem số tiền';
+
+  @override
+  String get reportEmpty => 'Chưa có khoản chi nào trong kỳ này';
+
+  @override
+  String get reportShowTable => 'Xem dạng bảng';
+
+  @override
+  String get reportShowChart => 'Xem biểu đồ';
+
+  @override
+  String get reportColMonth => 'Tháng';
+
+  @override
+  String get reportColCategory => 'Danh mục';
+
+  @override
+  String get reportColAmount => 'Số tiền';
+
+  @override
+  String get reportColShare => 'Tỉ trọng';
+
+  @override
+  String get reportColDay => 'Ngày';
+
+  @override
+  String get reportLess => 'Ít';
+
+  @override
+  String get reportMore => 'Nhiều';
+
+  @override
+  String get weekdayShort1 => 'T2';
+
+  @override
+  String get weekdayShort2 => 'T3';
+
+  @override
+  String get weekdayShort3 => 'T4';
+
+  @override
+  String get weekdayShort4 => 'T5';
+
+  @override
+  String get weekdayShort5 => 'T6';
+
+  @override
+  String get weekdayShort6 => 'T7';
+
+  @override
+  String get weekdayShort7 => 'CN';
+
+  @override
+  String get safeTitle => 'An toàn để tiêu tháng này';
+
+  @override
+  String safePerDay(String amount) {
+    return 'Khoảng $amount mỗi ngày tới cuối tháng';
+  }
+
+  @override
+  String safeOver(String amount) {
+    return 'Đã vượt kế hoạch tháng $amount';
+  }
+
+  @override
+  String safeExplain(String income, String spent, String bills, String goals) {
+    return 'Thu $income − đã chi $spent − hóa đơn sắp tới $bills − góp mục tiêu $goals';
+  }
+
+  @override
+  String get filterTitle => 'Bộ lọc';
+
+  @override
+  String get filterKinds => 'Loại giao dịch';
+
+  @override
+  String get filterAllKinds => 'Mọi loại';
+
+  @override
+  String get filterWallets => 'Ví';
+
+  @override
+  String get filterAllWallets => 'Mọi ví';
+
+  @override
+  String get filterCategories => 'Danh mục';
+
+  @override
+  String get filterAllCategories => 'Mọi danh mục';
+
+  @override
+  String get filterUncategorized => 'Chỉ giao dịch chưa phân loại';
+
+  @override
+  String get filterMin => 'Số tiền từ';
+
+  @override
+  String get filterMax => 'Số tiền đến';
+
+  @override
+  String get filterApply => 'Áp dụng';
+
+  @override
+  String get filterClear => 'Xóa lọc';
+
+  @override
+  String get filterSave => 'Lưu bộ lọc';
+
+  @override
+  String get filterSaveName => 'Tên bộ lọc';
+
+  @override
+  String get filterSaved => 'Bộ lọc đã lưu';
+
+  @override
+  String filterActive(int n) {
+    return 'Đang lọc: $n điều kiện';
+  }
+
+  @override
+  String filterResultCount(int n) {
+    return '$n giao dịch';
+  }
+
+  @override
+  String get dataTitle => 'Dữ liệu: xuất, nhập, sao lưu';
+
+  @override
+  String get exportTitle => 'Xuất giao dịch';
+
+  @override
+  String get exportFormat => 'Định dạng';
+
+  @override
+  String get exportWarning => 'Tệp xuất KHÔNG mã hóa: ai có tệp sẽ đọc được toàn bộ giao dịch. Chỉ lưu ở nơi an toàn.';
+
+  @override
+  String exportDone(int n) {
+    return 'Đã xuất $n giao dịch';
+  }
+
+  @override
+  String get exportRange => 'Khoảng ngày';
+
+  @override
+  String get exportAllTime => 'Toàn bộ';
+
+  @override
+  String get exportCancelled => 'Đã hủy';
+
+  @override
+  String get importTitle => 'Nhập từ tệp CSV';
+
+  @override
+  String get importPick => 'Chọn tệp CSV';
+
+  @override
+  String get importMapping => 'Ghép cột';
+
+  @override
+  String get importColDate => 'Cột ngày';
+
+  @override
+  String get importColAmount => 'Cột số tiền';
+
+  @override
+  String get importColNote => 'Cột ghi chú';
+
+  @override
+  String get importColCategory => 'Cột danh mục';
+
+  @override
+  String get importColType => 'Cột loại (thu/chi)';
+
+  @override
+  String get importNone => '(không có)';
+
+  @override
+  String get importSignMode => 'Số âm là khoản chi';
+
+  @override
+  String get importWallet => 'Nhập vào ví';
+
+  @override
+  String importPreview(int n) {
+    return 'Xem trước $n dòng đầu';
+  }
+
+  @override
+  String importRun(int n) {
+    return 'Nhập $n giao dịch';
+  }
+
+  @override
+  String importDone(int ok, int skipped) {
+    return 'Đã nhập $ok giao dịch, bỏ qua $skipped dòng lỗi';
+  }
+
+  @override
+  String get importEmpty => 'Tệp trống hoặc không đọc được';
+
+  @override
+  String get importTooBig => 'Tệp quá lớn (tối đa 5 MB)';
+
+  @override
+  String get importDateFormat => 'Định dạng ngày';
+
+  @override
+  String get backupTitle => 'Sao lưu mã hóa';
+
+  @override
+  String get backupBody => 'Tệp sao lưu được mã hóa đầu-cuối; chỉ mở được bằng mật khẩu mã hóa hoặc 24 từ của bạn.';
+
+  @override
+  String get backupCreate => 'Tạo tệp sao lưu';
+
+  @override
+  String get backupDone => 'Đã lưu tệp sao lưu';
+
+  @override
+  String get restoreFromBackup => 'Khôi phục từ tệp sao lưu';
+
+  @override
+  String get restoreBackupBody => 'Chọn tệp .qtbak rồi nhập mật khẩu mã hóa của tài khoản đã sao lưu.';
+
+  @override
+  String get restoreBackupInvalid => 'Tệp không phải bản sao lưu Quly Thu Chi hoặc đã hỏng';
+
+  @override
+  String restoreBackupDone(int n) {
+    return 'Đã khôi phục $n bản ghi';
+  }
+
+  @override
+  String get restoreUseRecovery => 'Dùng 24 từ thay cho mật khẩu';
+
+  @override
+  String get exportColSubcategory => 'Danh mục con';
+
+  @override
+  String get exportColCurrency => 'Tiền tệ';
+
+  @override
+  String get importHasHeader => 'Dòng đầu là tiêu đề cột';
+
+  @override
+  String get importNeedWallet => 'Hãy tạo ví trước khi nhập';
+
+  @override
+  String get restoreWordsLabel => '24 từ khôi phục';
+
+  @override
+  String get backupPrivacyNote =>
+      'Tệp sao lưu chứa toàn bộ dữ liệu đã mã hóa và gói khóa; mất mật khẩu và 24 từ thì không ai mở được.';
+
+  @override
+  String reportVsPrevious(String pct) {
+    return '$pct so với kỳ trước';
+  }
 }

@@ -11,11 +11,13 @@ class MorePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final items = [
+      (Icons.insights_outlined, l.navReports, '/more/reports'),
       (Icons.event_repeat_outlined, l.moreRecurring, '/more/recurring'),
       (Icons.handshake_outlined, l.moreDebts, '/more/debts'),
       (Icons.luggage_outlined, l.moreEvents, '/more/events'),
       (Icons.category_outlined, l.navCategories, '/more/categories'),
       (Icons.currency_exchange, l.moreRates, '/more/rates'),
+      (Icons.import_export, l.dataTitle, '/more/data'),
       (Icons.settings_outlined, l.navSettings, '/more/settings'),
     ];
     return Scaffold(

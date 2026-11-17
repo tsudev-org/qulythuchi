@@ -13,3 +13,7 @@ Third-party components bundled in the app:
   (apps/app/assets/fonts/Inter-LICENSE.txt).
 - libsodium / libsodium.js (ISC), SQLite (public domain), SQLite3MultipleCiphers (MIT) - built or fetched at build
   time with pinned checksums.
+- Dart/Flutter packages used for data export/import (P4): pdf (Apache License 2.0, Copyright David PHAM-VAN),
+  archive (MIT, Copyright Brendan Duncan), file_saver (BSD-3-Clause, Copyright Hassan Ansari), file_selector
+  (BSD-3-Clause, Copyright The Flutter Authors). Full license texts ship in the app's "Licenses" page
+  (Flutter LicenseRegistry).

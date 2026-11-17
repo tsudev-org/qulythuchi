@@ -5,12 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 
+import '../../domain/reports.dart';
+import '../../domain/txn_filter.dart';
 import '../../domain/vn_search.dart';
 import '../../state/ledger_repository.dart';
 import '../../state/providers.dart';
+import '../../state/settings.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import '../widgets/common.dart';
+import 'filter_dialog.dart';
 import 'txn_tile.dart';
 
 /// Số ký tự tối thiểu để lọc và thời gian chờ gõ (SEARCH_AND_FILTER.md).
@@ -18,7 +22,10 @@ const minQueryLength = 2;
 const searchDebounce = Duration(milliseconds: 350);
 
 class TxnListPage extends ConsumerStatefulWidget {
-  const TxnListPage({super.key});
+  const TxnListPage({super.key, this.initialFilter = TxnFilter.empty});
+
+  /// Bộ lọc mở sẵn (ví dụ từ Báo cáo → chạm một danh mục).
+  final TxnFilter initialFilter;
 
   @override
   ConsumerState<TxnListPage> createState() => _TxnListPageState();
@@ -28,6 +35,21 @@ class _TxnListPageState extends ConsumerState<TxnListPage> {
   final _search = TextEditingController();
   Timer? _debounce;
   String _query = '';
+  late TxnFilter _filter = widget.initialFilter;
+
+  @override
+  void didUpdateWidget(TxnListPage old) {
+    super.didUpdateWidget(old);
+    if (old.initialFilter != widget.initialFilter) _filter = widget.initialFilter;
+  }
+
+  Future<void> _openFilter() async {
+    final f = await showDialog<TxnFilter>(
+      context: context,
+      builder: (_) => FilterDialog(initial: _filter),
+    );
+    if (f != null && mounted) setState(() => _filter = f);
+  }
 
   @override
   void dispose() {
@@ -65,7 +87,8 @@ class _TxnListPageState extends ConsumerState<TxnListPage> {
     final l = context.l10n;
     final p = context.palette;
     final data = ref.watch(ledgerProvider);
-    final txns = data.txns.where((t) => _matches(t, data)).toList();
+    final reports = Reports(data, Currency.of(ref.watch(settingsProvider.select((s) => s.baseCurrency))));
+    final txns = data.txns.where((t) => _filter.matches(t, data, reports) && _matches(t, data)).toList();
     final today = todayCivil();
 
     // Nhóm theo ngày (danh sách đã sắp mới nhất trước).
@@ -77,7 +100,20 @@ class _TxnListPageState extends ConsumerState<TxnListPage> {
     final hasWallets = data.wallets.any((w) => !w.archived);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l.navTransactions)),
+      appBar: AppBar(
+        title: Text(l.navTransactions),
+        actions: [
+          IconButton(
+            tooltip: l.filterTitle,
+            onPressed: _openFilter,
+            icon: Badge(
+              isLabelVisible: !_filter.isEmpty,
+              label: Text('${_filter.activeCount}'),
+              child: const Icon(Icons.filter_list),
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: hasWallets
           ? FloatingActionButton(
               tooltip: l.txnNew,
@@ -112,9 +148,43 @@ class _TxnListPageState extends ConsumerState<TxnListPage> {
                 ),
               ),
             ),
+            if (data.savedFilters.isNotEmpty || !_filter.isEmpty)
+              SizedBox(
+                height: 48,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: QtSpace.s4),
+                  children: [
+                    if (!_filter.isEmpty) ...[
+                      InputChip(
+                        label: Text(l.filterActive(_filter.activeCount)),
+                        onDeleted: () => setState(() => _filter = TxnFilter.empty),
+                        deleteButtonTooltipMessage: l.filterClear,
+                      ),
+                      const SizedBox(width: QtSpace.s2),
+                    ],
+                    for (final f in data.savedFilters) ...[
+                      ChoiceChip(
+                        label: Text(f.name),
+                        selected: _filter == f.filter,
+                        onSelected: (on) => setState(() => _filter = on ? f.filter : TxnFilter.empty),
+                      ),
+                      const SizedBox(width: QtSpace.s2),
+                    ],
+                  ],
+                ),
+              ),
+            if (!_filter.isEmpty || _query.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(QtSpace.s4, 0, QtSpace.s4, QtSpace.s1),
+                child: Semantics(
+                  liveRegion: true,
+                  child: Text(l.filterResultCount(txns.length), style: TextStyle(color: p.textSecondary)),
+                ),
+              ),
             Expanded(
               child: txns.isEmpty
-                  ? (_query.isNotEmpty
+                  ? ((_query.isNotEmpty || !_filter.isEmpty)
                         ? Semantics(liveRegion: true, child: Center(child: Text(l.noResults)))
                         : EmptyState(icon: Icons.receipt_long_outlined, title: l.emptyTxnsTitle, body: l.emptyTxnsBody))
                   : ListView.builder(

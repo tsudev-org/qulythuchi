@@ -605,5 +605,231 @@
   "notifBillBody": "Mở Quly Thu Chi để xem chi tiết.",
   "settingsNotifications": "Nhắc hóa đơn",
   "settingsNotificationsSub": "Thông báo không chứa tên hay số tiền, để không lộ trên màn hình khóa",
-  "pendingLabel": "Chờ xác nhận"
+  "pendingLabel": "Chờ xác nhận",
+  "navReports": "Báo cáo",
+  "reportThisMonth": "Tháng này",
+  "reportLastMonth": "Tháng trước",
+  "reportLast3Months": "3 tháng gần đây",
+  "reportThisYear": "Năm nay",
+  "reportIncome": "Thu",
+  "reportExpense": "Chi",
+  "reportNet": "Chênh lệch",
+  "reportSavingsRate": "Tỉ lệ tiết kiệm",
+  "reportMonthly": "Thu chi 6 tháng gần đây",
+  "reportByCategory": "Chi theo danh mục",
+  "reportNetWorth": "Tài sản ròng",
+  "reportCalendar": "Lịch chi tiêu {month}",
+  "@reportCalendar": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "reportOther": "Khác",
+  "reportMonthReadout": "Tháng {month}: thu {income} · chi {expense}",
+  "@reportMonthReadout": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      },
+      "income": {
+        "type": "String"
+      },
+      "expense": {
+        "type": "String"
+      }
+    }
+  },
+  "reportPointReadout": "Tháng {month}: {amount}",
+  "@reportPointReadout": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reportDayReadout": "{date}: chi {amount}",
+  "@reportDayReadout": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "reportTapDay": "Chạm vào một ngày để xem số tiền",
+  "reportEmpty": "Chưa có khoản chi nào trong kỳ này",
+  "reportShowTable": "Xem dạng bảng",
+  "reportShowChart": "Xem biểu đồ",
+  "reportColMonth": "Tháng",
+  "reportColCategory": "Danh mục",
+  "reportColAmount": "Số tiền",
+  "reportColShare": "Tỉ trọng",
+  "reportColDay": "Ngày",
+  "reportLess": "Ít",
+  "reportMore": "Nhiều",
+  "weekdayShort1": "T2",
+  "weekdayShort2": "T3",
+  "weekdayShort3": "T4",
+  "weekdayShort4": "T5",
+  "weekdayShort5": "T6",
+  "weekdayShort6": "T7",
+  "weekdayShort7": "CN",
+  "safeTitle": "An toàn để tiêu tháng này",
+  "safePerDay": "Khoảng {amount} mỗi ngày tới cuối tháng",
+  "@safePerDay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "safeOver": "Đã vượt kế hoạch tháng {amount}",
+  "@safeOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "safeExplain": "Thu {income} − đã chi {spent} − hóa đơn sắp tới {bills} − góp mục tiêu {goals}",
+  "@safeExplain": {
+    "placeholders": {
+      "income": {
+        "type": "String"
+      },
+      "spent": {
+        "type": "String"
+      },
+      "bills": {
+        "type": "String"
+      },
+      "goals": {
+        "type": "String"
+      }
+    }
+  },
+  "filterTitle": "Bộ lọc",
+  "filterKinds": "Loại giao dịch",
+  "filterAllKinds": "Mọi loại",
+  "filterWallets": "Ví",
+  "filterAllWallets": "Mọi ví",
+  "filterCategories": "Danh mục",
+  "filterAllCategories": "Mọi danh mục",
+  "filterUncategorized": "Chỉ giao dịch chưa phân loại",
+  "filterMin": "Số tiền từ",
+  "filterMax": "Số tiền đến",
+  "filterApply": "Áp dụng",
+  "filterClear": "Xóa lọc",
+  "filterSave": "Lưu bộ lọc",
+  "filterSaveName": "Tên bộ lọc",
+  "filterSaved": "Bộ lọc đã lưu",
+  "filterActive": "Đang lọc: {n} điều kiện",
+  "@filterActive": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "filterResultCount": "{n} giao dịch",
+  "@filterResultCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "dataTitle": "Dữ liệu: xuất, nhập, sao lưu",
+  "exportTitle": "Xuất giao dịch",
+  "exportFormat": "Định dạng",
+  "exportWarning": "Tệp xuất KHÔNG mã hóa: ai có tệp sẽ đọc được toàn bộ giao dịch. Chỉ lưu ở nơi an toàn.",
+  "exportDone": "Đã xuất {n} giao dịch",
+  "@exportDone": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "exportRange": "Khoảng ngày",
+  "exportAllTime": "Toàn bộ",
+  "exportCancelled": "Đã hủy",
+  "importTitle": "Nhập từ tệp CSV",
+  "importPick": "Chọn tệp CSV",
+  "importMapping": "Ghép cột",
+  "importColDate": "Cột ngày",
+  "importColAmount": "Cột số tiền",
+  "importColNote": "Cột ghi chú",
+  "importColCategory": "Cột danh mục",
+  "importColType": "Cột loại (thu/chi)",
+  "importNone": "(không có)",
+  "importSignMode": "Số âm là khoản chi",
+  "importWallet": "Nhập vào ví",
+  "importPreview": "Xem trước {n} dòng đầu",
+  "@importPreview": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "importRun": "Nhập {n} giao dịch",
+  "@importRun": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "importDone": "Đã nhập {ok} giao dịch, bỏ qua {skipped} dòng lỗi",
+  "@importDone": {
+    "placeholders": {
+      "ok": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      }
+    }
+  },
+  "importEmpty": "Tệp trống hoặc không đọc được",
+  "importTooBig": "Tệp quá lớn (tối đa 5 MB)",
+  "importDateFormat": "Định dạng ngày",
+  "backupTitle": "Sao lưu mã hóa",
+  "backupBody": "Tệp sao lưu được mã hóa đầu-cuối; chỉ mở được bằng mật khẩu mã hóa hoặc 24 từ của bạn.",
+  "backupCreate": "Tạo tệp sao lưu",
+  "backupDone": "Đã lưu tệp sao lưu",
+  "restoreFromBackup": "Khôi phục từ tệp sao lưu",
+  "restoreBackupBody": "Chọn tệp .qtbak rồi nhập mật khẩu mã hóa của tài khoản đã sao lưu.",
+  "restoreBackupInvalid": "Tệp không phải bản sao lưu Quly Thu Chi hoặc đã hỏng",
+  "restoreBackupDone": "Đã khôi phục {n} bản ghi",
+  "@restoreBackupDone": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "restoreUseRecovery": "Dùng 24 từ thay cho mật khẩu",
+  "exportColSubcategory": "Danh mục con",
+  "exportColCurrency": "Tiền tệ",
+  "importHasHeader": "Dòng đầu là tiêu đề cột",
+  "importNeedWallet": "Hãy tạo ví trước khi nhập",
+  "restoreWordsLabel": "24 từ khôi phục",
+  "backupPrivacyNote": "Tệp sao lưu chứa toàn bộ dữ liệu đã mã hóa và gói khóa; mất mật khẩu và 24 từ thì không ai mở được.",
+  "reportVsPrevious": "{pct} so với kỳ trước",
+  "@reportVsPrevious": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  }
 }

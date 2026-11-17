@@ -5,6 +5,11 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 ## [Chưa phát hành]
 
 ### Thêm
+- Báo cáo + dữ liệu (P4): báo cáo theo kỳ (thu, chi, chênh lệch, tỉ lệ tiết kiệm, so với kỳ trước), thu chi 6
+  tháng, cơ cấu chi theo danh mục, tài sản ròng, lịch chi tiêu; mọi biểu đồ có bảng dữ liệu thay thế và màu từ token;
+  thẻ "An toàn để tiêu" ở Tổng quan; lọc giao dịch nhiều điều kiện (loại, ví, danh mục, khoảng ngày, khoảng tiền) và
+  lưu bộ lọc; xuất CSV/XLSX/PDF (cảnh báo tệp không mã hóa, chống tiêm công thức), nhập CSV từ app khác (ghép cột,
+  xem trước), sao lưu/khôi phục tệp mã hóa `.qtbak` (ADR-0009).
 - Nghiệp vụ nâng cao (P3): ngân sách theo danh mục/ví/kỳ (tuần, tháng, năm, tùy chọn) có chuyển dư và cảnh báo,
   phương pháp 6 hũ (sửa tỉ lệ, chia thu nhập khớp từng đồng), mục tiêu tiết kiệm (tiến độ, mức góp mỗi tháng, góp qua
   chuyển ví), giao dịch định kỳ (tự ghi hoặc chờ xác nhận), hóa đơn (sắp đến hạn, đánh dấu đã trả, nhắc bằng thông báo
