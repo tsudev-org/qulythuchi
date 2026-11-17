@@ -4,6 +4,9 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 
 ## [Chưa phát hành]
 
+### Sửa
+- Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
+
 ### Thêm
 - Báo cáo + dữ liệu (P4): báo cáo theo kỳ (thu, chi, chênh lệch, tỉ lệ tiết kiệm, so với kỳ trước), thu chi 6
   tháng, cơ cấu chi theo danh mục, tài sản ròng, lịch chi tiêu; mọi biểu đồ có bảng dữ liệu thay thế và màu từ token;

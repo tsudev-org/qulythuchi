@@ -240,5 +240,16 @@ String weekdayName(AppLocalizations l, int d) => switch (d) {
   _ => l.weekday7,
 };
 
-/// Phần trăm (phần vạn) dạng chữ, ví dụ 8000 ⇒ "80".
-String percentText(int bp) => bp % 100 == 0 ? '${bp ~/ 100}' : (bp / 100).toStringAsFixed(1);
+/// Phần trăm (phần vạn) dạng chữ, làm tròn 1 chữ số thập phân bằng số nguyên (không `double`):
+/// 8000 ⇒ "80"; 9790 ⇒ "97.9" (mặc định, dạng máy đọc cho ô nhập) hoặc "97,9" khi [locale] là tiếng Việt.
+String percentText(int bp, {AppLocale locale = AppLocale.en}) {
+  final sign = bp < 0 ? '-' : '';
+  final tenths = (bp.abs() + 5) ~/ 10;
+  if (tenths % 10 == 0) return '$sign${tenths ~/ 10}';
+  return '$sign${tenths ~/ 10}${locale == AppLocale.vi ? ',' : '.'}${tenths % 10}';
+}
+
+extension PercentContext on BuildContext {
+  /// [percentText] theo ngôn ngữ đang hiển thị - chỉ dùng để HIỂN THỊ, không đưa vào ô nhập.
+  String percent(int bp) => percentText(bp, locale: appLocale);
+}
