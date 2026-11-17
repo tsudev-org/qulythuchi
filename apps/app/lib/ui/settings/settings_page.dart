@@ -11,7 +11,8 @@ import '../onboarding/onboarding.dart';
 import '../widgets/auth_widgets.dart';
 import '../widgets/common.dart';
 
-const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '1.0.0');
+/// Phiên bản sản phẩm theo khuôn `YY.M.DDNN` (phiếu 20261117-V1); khớp `version` trong pubspec.yaml.
+const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '26.11.1701');
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
