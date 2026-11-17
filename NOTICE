@@ -7,3 +7,9 @@ See the LICENSE file.
 
 The names "Quly Thu Chi" and "tsudev" and their logos are not licensed under the AGPL and may not be
 used to endorse or promote derived products without prior written permission.
+
+Third-party components bundled in the app:
+- Inter font (apps/app/assets/fonts), Copyright (c) 2016 The Inter Project Authors, SIL Open Font License 1.1
+  (apps/app/assets/fonts/Inter-LICENSE.txt).
+- libsodium / libsodium.js (ISC), SQLite (public domain), SQLite3MultipleCiphers (MIT) - built or fetched at build
+  time with pinned checksums.

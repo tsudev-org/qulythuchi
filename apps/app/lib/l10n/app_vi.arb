@@ -1,0 +1,266 @@
+{
+  "@@locale": "vi",
+  "appTitle": "Quly Thu Chi",
+  "navOverview": "Tổng quan",
+  "navTransactions": "Giao dịch",
+  "navWallets": "Ví",
+  "navCategories": "Danh mục",
+  "navSettings": "Cài đặt",
+  "actionSave": "Lưu",
+  "actionCancel": "Hủy",
+  "actionDelete": "Xóa",
+  "actionEdit": "Sửa",
+  "actionAdd": "Thêm",
+  "actionContinue": "Tiếp tục",
+  "actionBack": "Quay lại",
+  "actionDone": "Xong",
+  "actionCopy": "Sao chép",
+  "actionRetry": "Thử lại",
+  "loading": "Đang tải…",
+  "working": "Đang xử lý, vui lòng chờ…",
+  "welcomeTitle": "Chào mừng tới Quly Thu Chi",
+  "welcomeBody": "Dữ liệu thu chi của bạn được mã hóa ngay trên thiết bị. Không ai khác, kể cả chúng tôi, đọc được.",
+  "welcomeStart": "Bắt đầu",
+  "welcomeRestore": "Tôi đã có 24 từ khôi phục",
+  "setupPasswordTitle": "Tạo mật khẩu mã hóa",
+  "setupPasswordBody": "Mật khẩu này mở khóa dữ liệu của bạn. Chúng tôi không thể khôi phục nếu bạn quên - khi đó chỉ 24 từ khôi phục giúp được.",
+  "passwordLabel": "Mật khẩu mã hóa",
+  "passwordConfirmLabel": "Nhập lại mật khẩu",
+  "passwordTooShort": "Cần ít nhất {min} ký tự",
+  "@passwordTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "passwordMismatch": "Hai mật khẩu không khớp",
+  "passwordWrong": "Mật khẩu không đúng",
+  "showPassword": "Hiện mật khẩu",
+  "hidePassword": "Ẩn mật khẩu",
+  "recoveryTitle": "24 từ khôi phục",
+  "recoveryBody": "Chép tay 24 từ theo đúng thứ tự và cất nơi an toàn. Ai có 24 từ này sẽ đọc được toàn bộ dữ liệu. App sẽ không hiển thị lại.",
+  "recoveryConfirmCheck": "Tôi đã chép lại đủ 24 từ",
+  "recoveryVerifyTitle": "Xác nhận từ khôi phục",
+  "recoveryVerifyBody": "Chọn đúng từ ở các vị trí được hỏi.",
+  "recoveryWordN": "Từ thứ {n}",
+  "@recoveryWordN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recoveryVerifyWrong": "Chưa đúng. Kiểm tra lại bản chép tay.",
+  "restoreTitle": "Khôi phục bằng 24 từ",
+  "restoreBody": "Nhập 24 từ cách nhau bằng dấu cách.",
+  "restoreNeedsSync": "Khôi phục dữ liệu từ máy chủ có ở bản đồng bộ (sắp ra mắt). Hiện tại chỉ mở khóa được dữ liệu trên chính thiết bị này.",
+  "restoreInvalid": "24 từ không hợp lệ",
+  "pinSetupTitle": "Đặt PIN mở nhanh",
+  "pinSetupBody": "PIN 6-12 chữ số để mở app nhanh trên thiết bị này. Sai 10 lần, PIN bị vô hiệu và cần mật khẩu.",
+  "pinLabel": "PIN",
+  "pinConfirmLabel": "Nhập lại PIN",
+  "pinInvalid": "PIN gồm 6-12 chữ số",
+  "pinMismatch": "Hai PIN không khớp",
+  "pinSkip": "Để sau",
+  "lockTitle": "Đã khóa",
+  "lockBody": "Nhập PIN hoặc mật khẩu mã hóa để mở.",
+  "unlock": "Mở khóa",
+  "unlockWithPassword": "Dùng mật khẩu",
+  "unlockWithPin": "Dùng PIN",
+  "unlockWithBiometric": "Mở bằng sinh trắc",
+  "unlockWithRecovery": "Quên mật khẩu? Dùng 24 từ",
+  "biometricReason": "Xác thực để mở Quly Thu Chi",
+  "pinWrong": "PIN sai. Còn {n} lần thử.",
+  "@pinWrong": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "pinLockedOut": "Sai nhiều lần. Thử lại sau {time}.",
+  "@pinLockedOut": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "pinDisabledMsg": "PIN đã bị vô hiệu. Hãy mở bằng mật khẩu mã hóa.",
+  "overviewTotal": "Tổng số dư",
+  "overviewWallets": "Các ví",
+  "overviewRecent": "Giao dịch gần đây",
+  "overviewMonthIncome": "Thu tháng này",
+  "overviewMonthExpense": "Chi tháng này",
+  "seeAll": "Xem tất cả",
+  "emptyWalletsTitle": "Chưa có ví nào",
+  "emptyWalletsBody": "Tạo ví đầu tiên (tiền mặt, tài khoản ngân hàng…) để bắt đầu ghi chép.",
+  "emptyTxnsTitle": "Chưa có giao dịch",
+  "emptyTxnsBody": "Bấm nút + để ghi khoản thu hoặc chi đầu tiên.",
+  "noResults": "Không tìm thấy kết quả",
+  "hiddenAmount": "Đã ẩn số tiền",
+  "skippedRecords": "{n} bản ghi không mở được (có thể đã hỏng) và đã được bỏ qua.",
+  "@skippedRecords": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "walletNew": "Ví mới",
+  "walletEdit": "Sửa ví",
+  "walletName": "Tên ví",
+  "walletType": "Loại ví",
+  "walletCurrency": "Tiền tệ",
+  "walletOpening": "Số dư ban đầu",
+  "walletCreditLimit": "Hạn mức tín dụng",
+  "walletArchived": "Lưu trữ (ẩn khỏi danh sách)",
+  "walletExcludeTotal": "Không tính vào tổng số dư",
+  "walletBalance": "Số dư",
+  "walletDeleteConfirm": "Xóa ví \"{name}\"?",
+  "@walletDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "walletTypeCash": "Tiền mặt",
+  "walletTypeBank": "Tài khoản ngân hàng",
+  "walletTypeCredit": "Thẻ tín dụng",
+  "walletTypeEwallet": "Ví điện tử",
+  "walletTypeSaving": "Tiết kiệm",
+  "walletTypeInvestment": "Đầu tư",
+  "walletTypeOther": "Khác",
+  "showArchived": "Hiện ví đã lưu trữ",
+  "categoryNew": "Danh mục mới",
+  "categoryEdit": "Sửa danh mục",
+  "categoryName": "Tên danh mục",
+  "categoryParent": "Thuộc nhóm",
+  "categoryNoParent": "(Nhóm chính)",
+  "categoryExpense": "Chi",
+  "categoryIncome": "Thu",
+  "categoryDeleteConfirm": "Xóa danh mục \"{name}\"? Danh mục con cũng bị xóa; giao dịch cũ chuyển thành \"Chưa phân loại\".",
+  "@categoryDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "uncategorized": "Chưa phân loại",
+  "txnNew": "Giao dịch mới",
+  "txnEdit": "Sửa giao dịch",
+  "txnExpense": "Chi",
+  "txnIncome": "Thu",
+  "txnTransfer": "Chuyển ví",
+  "txnAdjustment": "Điều chỉnh số dư",
+  "txnAmount": "Số tiền",
+  "txnAmountHint": "Có thể nhập phép tính, ví dụ 50.000+25.000",
+  "txnAmountResult": "= {value}",
+  "@txnAmountResult": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "txnAmountInvalid": "Số tiền không hợp lệ",
+  "txnAmountPositive": "Số tiền phải lớn hơn 0",
+  "txnReceived": "Số tiền nhận ({currency})",
+  "@txnReceived": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "txnFee": "Phí chuyển",
+  "txnWallet": "Ví",
+  "txnFromWallet": "Từ ví",
+  "txnToWallet": "Tới ví",
+  "txnCategory": "Danh mục",
+  "txnDate": "Ngày",
+  "txnNote": "Ghi chú",
+  "txnPayee": "Người nhận / nơi chi",
+  "txnTransferTo": "Chuyển tới {wallet}",
+  "@txnTransferTo": {
+    "placeholders": {
+      "wallet": {
+        "type": "String"
+      }
+    }
+  },
+  "txnTransferFrom": "Nhận từ {wallet}",
+  "@txnTransferFrom": {
+    "placeholders": {
+      "wallet": {
+        "type": "String"
+      }
+    }
+  },
+  "txnDeleteConfirm": "Xóa giao dịch này?",
+  "txnDeleteTransferConfirm": "Xóa cả hai vế của lần chuyển ví này?",
+  "selectWallet": "Chọn ví",
+  "searchHint": "Tìm ghi chú, danh mục, ví…",
+  "searchLabel": "Tìm giao dịch",
+  "today": "Hôm nay",
+  "yesterday": "Hôm qua",
+  "settingsAppearance": "Giao diện",
+  "themeLight": "Sáng",
+  "themeDark": "Tối",
+  "themeSystem": "Hệ thống",
+  "settingsLanguage": "Ngôn ngữ",
+  "settingsPrivacy": "Riêng tư và bảo mật",
+  "settingsHideBalance": "Ẩn số dư",
+  "settingsHideBalanceSub": "Che mọi số tiền cho tới khi bạn bật lại",
+  "settingsPin": "PIN mở nhanh",
+  "settingsPinOn": "Đang bật",
+  "settingsPinOff": "Đang tắt",
+  "settingsPinChange": "Đổi PIN",
+  "settingsPinDisable": "Tắt PIN",
+  "settingsBiometric": "Mở khóa bằng sinh trắc",
+  "settingsBiometricSub": "Cần bật PIN trước",
+  "settingsBiometricUnavailable": "Thiết bị không hỗ trợ sinh trắc",
+  "settingsQuickUnlockWeb": "Bản web không có PIN/sinh trắc vì trình duyệt không có kho bí mật an toàn.",
+  "settingsAutoLock": "Tự khóa khi rời app hơn 60 giây",
+  "settingsLockNow": "Khóa ngay",
+  "settingsChangePassword": "Đổi mật khẩu mã hóa",
+  "settingsOldPassword": "Mật khẩu hiện tại",
+  "settingsNewPassword": "Mật khẩu mới",
+  "settingsPasswordChanged": "Đã đổi mật khẩu mã hóa",
+  "settingsAbout": "Giới thiệu",
+  "settingsVersion": "Phiên bản {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsLicense": "Mã nguồn mở AGPL-3.0",
+  "settingsReset": "Xóa toàn bộ dữ liệu trên thiết bị",
+  "settingsResetConfirm": "Xóa vĩnh viễn mọi ví, danh mục, giao dịch và khóa trên thiết bị này? Không hoàn tác được.",
+  "settingsResetTypeHint": "Gõ XOA để xác nhận",
+  "settingsResetWord": "XOA",
+  "saved": "Đã lưu",
+  "deleted": "Đã xóa",
+  "errNameRequired": "Vui lòng nhập tên",
+  "errCurrencyLocked": "Ví đã có giao dịch, không đổi được tiền tệ",
+  "errWalletHasTxns": "Ví còn giao dịch. Hãy lưu trữ ví thay vì xóa.",
+  "errParentMissing": "Nhóm cha không còn tồn tại",
+  "errTwoLevelsOnly": "Danh mục chỉ có 2 tầng",
+  "errKindMismatch": "Danh mục không cùng loại thu/chi",
+  "errWalletMissing": "Hãy chọn ví",
+  "errSameWallet": "Ví nguồn và ví đích phải khác nhau",
+  "errReceivedRequired": "Hai ví khác tiền tệ: nhập số tiền nhận",
+  "errGeneric": "Đã có lỗi xảy ra. Vui lòng thử lại.",
+  "errStorage": "Không mở được kho dữ liệu an toàn của thiết bị.",
+  "walletArchivedBadge": "Đã lưu trữ",
+  "settingsNewRecovery": "Cấp 24 từ khôi phục mới",
+  "settingsNewRecoveryConfirm": "Bộ 24 từ cũ sẽ hết hiệu lực. Tiếp tục?",
+  "settingsLanguageSystem": "Theo hệ thống",
+  "settingsSecurityNote": "Dữ liệu được mã hóa đầu-cuối bằng libsodium. Mật khẩu và 24 từ không bao giờ rời thiết bị.",
+  "iconLabel": "Biểu tượng"
+}

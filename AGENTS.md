@@ -47,11 +47,15 @@ xuất tại repo `tsudev-standards` theo `.standards/docs/SYNC.md` mục 1.
 
 ### B.2. Chạy trong 5 phút
 
-Chưa có mã chạy được (P0). Lệnh được bổ sung ở P1 (lõi Dart), P2 (app), P5 (máy chủ).
-
 ```bash
 ./scripts/check-standards.sh
+export PATH="$HOME/tools/flutter/bin:$PATH"          # Flutter 3.47.8 (ghim trong CI)
+(cd packages/core && dart test)                      # lõi
+cd apps/app && flutter test && flutter run -d linux  # app (Linux cần libsecret-1-dev, libgtk-3-dev)
+./tool/fetch_web_assets.sh && flutter run -d chrome  # web: tải sodium.js + sqlite3.wasm có checksum
 ```
+
+Sinh lại mã: `flutter gen-l10n` (chuỗi trong `lib/l10n/*.arb`), `dart run tool/gen_tokens.dart` (token thiết kế).
 
 ### B.3. Ranh giới sở hữu file
 

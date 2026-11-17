@@ -317,3 +317,7 @@ android/app/upload-keystore.jks
 # Ngoại lệ riêng repo: mẫu `core` (tệp core dump) ở trên chặn nhầm package Dart packages/core.
 !packages/core/
 !packages/core/**
+
+# Tài nguyên web tải lúc build, kiểm checksum ghim (apps/app/tool/fetch_web_assets.sh) - không commit nhị phân.
+apps/app/web/sodium.js
+apps/app/web/sqlite3.wasm
