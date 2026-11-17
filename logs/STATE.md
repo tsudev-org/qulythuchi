@@ -17,6 +17,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| P4 - Báo cáo + dữ liệu | agent-qulythuchi | 21:11 17/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
