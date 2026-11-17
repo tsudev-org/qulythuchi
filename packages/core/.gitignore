@@ -1,0 +1,4 @@
+# https://dart.dev/guides/libraries/private-files
+.dart_tool/
+coverage/
+# pubspec.lock ĐƯỢC commit: ghim phiên bản phụ thuộc (SECURITY_BASELINE mục 5).

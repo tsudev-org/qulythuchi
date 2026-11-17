@@ -1,5 +1,5 @@
 # Cổng kiểm cho mọi PR và main. Action ghim SHA; công cụ tải ngoài ghim phiên bản + checksum.
-# Job lõi Dart / app Flutter / máy chủ được thêm ở P1, P2, P5.
+# Job app Flutter / máy chủ được thêm ở P2, P5.
 name: CI
 on:
   push: { branches: [main] }
@@ -8,6 +8,9 @@ permissions: { contents: read }
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
+env:
+  FLUTTER_VERSION: '3.47.8'
+  FLUTTER_COMMIT: '737ba8f885dc774b53b442759999a312c9461e4e'
 
 jobs:
   standards:
@@ -38,3 +41,33 @@ jobs:
           echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/$tarball" | sha256sum -c -
           tar -xzf "$RUNNER_TEMP/$tarball" -C "$RUNNER_TEMP" gitleaks
           "$RUNNER_TEMP/gitleaks" git --redact --no-banner --exit-code 1 .
+
+  core:
+    name: Lõi Dart (packages/core)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - name: Flutter/Dart (ghim commit)
+        run: |
+          git clone --depth 1 -b "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$RUNNER_TEMP/flutter"
+          test "$(git -C "$RUNNER_TEMP/flutter" rev-parse HEAD)" = "$FLUTTER_COMMIT"
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      - name: Phân tích, định dạng, test + độ phủ
+        working-directory: packages/core
+        run: |
+          set -euo pipefail
+          dart pub get
+          dart format --output=none --set-exit-if-changed lib test tool
+          dart analyze --fatal-infos
+          dart test --coverage=coverage
+      - name: Vector đối chiếu khớp mã nguồn
+        working-directory: packages/core
+        run: |
+          dart run tool/gen_vectors.dart > "$RUNNER_TEMP/envelope-v1.json"
+          diff -u ../../conformance/envelope-v1.json "$RUNNER_TEMP/envelope-v1.json" || { echo "conformance/envelope-v1.json cũ hoặc lõi đổi định dạng - sinh lại + tăng phiên bản"; exit 1; }
+      - name: Kiểm vector bằng libsodium độc lập của hệ điều hành
+        run: |
+          sudo apt-get install -yq libsodium23 >/dev/null
+          python3 -I conformance/verify_libsodium.py conformance/envelope-v1.json packages/core/lib/src/crypto/bip39_english.dart
