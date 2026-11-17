@@ -9,6 +9,7 @@ import '../../domain/default_categories.dart';
 import '../../security/vault.dart';
 import '../../state/providers.dart';
 import '../../theme/app_theme.dart';
+import '../account/remote_restore.dart';
 import '../data/data_page.dart' show restoreFromBackupFlow;
 import '../widgets/auth_widgets.dart';
 import '../widgets/common.dart';
@@ -33,7 +34,12 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   Widget build(BuildContext context) {
     final quick = ref.read(servicesProvider).vault.quickUnlockSupported;
     return switch (_step) {
-      _Step.welcome => _Welcome(onStart: () => setState(() => _step = _Step.password)),
+      _Step.welcome => _Welcome(
+        onStart: () => setState(() => _step = _Step.password),
+        onSyncSignIn: () async {
+          if (await signInAndRestoreFlow(context, ref) && mounted) setState(() => _step = _Step.password);
+        },
+      ),
       _Step.password => _CreatePassword(
         onBack: () => setState(() => _step = _Step.welcome),
         onCreated: (words) => setState(() {
@@ -59,8 +65,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
 }
 
 class _Welcome extends ConsumerWidget {
-  const _Welcome({required this.onStart});
+  const _Welcome({required this.onStart, required this.onSyncSignIn});
   final VoidCallback onStart;
+  final VoidCallback onSyncSignIn;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -72,6 +79,12 @@ class _Welcome extends ConsumerWidget {
         ExcludeSemantics(child: Icon(Icons.lock_outline, size: 64, color: context.palette.primary)),
         const SizedBox(height: 24),
         FilledButton(onPressed: onStart, child: Text(l.welcomeStart)),
+        const SizedBox(height: 12),
+        OutlinedButton.icon(
+          onPressed: onSyncSignIn,
+          icon: const Icon(Icons.cloud_download_outlined),
+          label: Text(l.syncWelcomeSignIn),
+        ),
         const SizedBox(height: 12),
         TextButton.icon(
           onPressed: () => restoreFromBackupFlow(context, ref),

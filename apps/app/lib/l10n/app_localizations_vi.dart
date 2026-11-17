@@ -1445,4 +1445,171 @@ class AppLocalizationsVi extends AppLocalizations {
   String reportVsPrevious(String pct) {
     return '$pct so với kỳ trước';
   }
+
+  @override
+  String get syncTitle => 'Tài khoản & đồng bộ';
+
+  @override
+  String get syncWelcomeSignIn => 'Đăng nhập để lấy dữ liệu đã đồng bộ';
+
+  @override
+  String get syncSignIn => 'Đăng nhập bằng tài khoản tsudev';
+
+  @override
+  String get syncWaitingBrowser => 'Đang chờ đăng nhập trong trình duyệt…';
+
+  @override
+  String get syncSignedOutTitle => 'Chưa bật đồng bộ';
+
+  @override
+  String get syncSignedOutBody => 'Đăng nhập để sao lưu bản mã lên máy chủ và dùng chung dữ liệu giữa các thiết bị.';
+
+  @override
+  String get syncE2eeNote => 'Máy chủ chỉ nhận bản mã. Mật khẩu mã hóa và 24 từ không bao giờ rời thiết bị.';
+
+  @override
+  String get syncStatusSyncing => 'Đang đồng bộ…';
+
+  @override
+  String get syncStatusNever => 'Chưa đồng bộ lần nào';
+
+  @override
+  String syncStatusLast(String time) {
+    return 'Đồng bộ lần cuối $time';
+  }
+
+  @override
+  String syncPending(int n) {
+    return '$n thay đổi chờ gửi';
+  }
+
+  @override
+  String get syncQuotaFull => 'Đã hết dung lượng đồng bộ';
+
+  @override
+  String syncRejected(int n) {
+    return '$n bản ghi bị máy chủ từ chối';
+  }
+
+  @override
+  String get syncNow => 'Đồng bộ ngay';
+
+  @override
+  String get syncRetry => 'Thử lại';
+
+  @override
+  String get syncSignOut => 'Đăng xuất';
+
+  @override
+  String get syncSignOutBody => 'Dừng đồng bộ trên thiết bị này. Dữ liệu trên máy vẫn giữ nguyên.';
+
+  @override
+  String get syncSignOutConfirm =>
+      'Đăng xuất khỏi đồng bộ? Thiết bị này bị thu hồi trên máy chủ; dữ liệu trên máy vẫn giữ nguyên.';
+
+  @override
+  String get syncUsage => 'Dung lượng máy chủ';
+
+  @override
+  String syncUsageDetail(int count, String recMb, String recQuota, String fileMb, String fileQuota) {
+    return '$count bản ghi · $recMb/$recQuota MB · tệp $fileMb/$fileQuota MB';
+  }
+
+  @override
+  String get syncDevices => 'Thiết bị đang đăng nhập';
+
+  @override
+  String get syncThisDevice => 'Thiết bị này';
+
+  @override
+  String syncLastSeen(String time) {
+    return 'Hoạt động $time';
+  }
+
+  @override
+  String get syncRevoke => 'Thu hồi';
+
+  @override
+  String syncRevokeConfirm(String name) {
+    return 'Thu hồi \"$name\"? Thiết bị đó bị đăng xuất ngay và không đồng bộ được nữa.';
+  }
+
+  @override
+  String get syncExport => 'Xuất dữ liệu máy chủ';
+
+  @override
+  String get syncExportBody => 'Tệp JSON mọi thứ máy chủ đang giữ (vẫn là bản mã).';
+
+  @override
+  String get syncExportDone => 'Đã lưu tệp xuất';
+
+  @override
+  String get syncDeleteAccount => 'Xóa tài khoản đồng bộ';
+
+  @override
+  String get syncDeleteBody => 'Xóa toàn bộ dữ liệu trên máy chủ sau 30 ngày. Hủy được trong thời gian chờ.';
+
+  @override
+  String get syncDeleteConfirm =>
+      'Xóa tài khoản đồng bộ? Sau 30 ngày mọi bản mã, khóa và tệp trên máy chủ bị xóa hẳn. Trong thời gian chờ chỉ đọc được, hủy được. Dữ liệu trên máy này không bị xóa.';
+
+  @override
+  String syncDeletionPending(int days) {
+    return 'Tài khoản sẽ bị xóa sau $days ngày';
+  }
+
+  @override
+  String get syncDeletionCancel => 'Hủy xóa';
+
+  @override
+  String get syncNoRemoteAccount => 'Tài khoản chưa có dữ liệu đồng bộ. Hãy tạo mật khẩu mã hóa mới.';
+
+  @override
+  String get syncUnlockRemoteTitle => 'Mở dữ liệu đã đồng bộ';
+
+  @override
+  String get syncUnlockRemoteBody => 'Nhập mật khẩu mã hóa (hoặc 24 từ khôi phục) đã đặt trên thiết bị trước.';
+
+  @override
+  String get syncRemoteInvalid => 'Dữ liệu khóa trên máy chủ không hợp lệ.';
+
+  @override
+  String get syncErrNetwork => 'Không kết nối được máy chủ. Sẽ thử lại sau.';
+
+  @override
+  String get syncErrTls =>
+      'Kết nối không an toàn (chứng chỉ máy chủ không khớp). Đồng bộ đã dừng; dữ liệu trên máy vẫn dùng bình thường.';
+
+  @override
+  String get syncErrSignedOut => 'Phiên đăng nhập đã hết hoặc thiết bị đã bị thu hồi. Hãy đăng nhập lại.';
+
+  @override
+  String get syncErrDenied => 'Bạn đã từ chối đăng nhập.';
+
+  @override
+  String get syncErrNoBrowser => 'Không mở được trình duyệt.';
+
+  @override
+  String get syncErrRateLimited => 'Thao tác quá nhanh. Hãy thử lại sau ít phút.';
+
+  @override
+  String get syncErrGeneric => 'Đồng bộ gặp lỗi. Sẽ thử lại sau.';
+
+  @override
+  String get syncBlockDifferentAccount =>
+      'Tài khoản đồng bộ đã có dữ liệu mã hóa bằng mật khẩu KHÁC dữ liệu trên máy này. Không trộn hai bộ dữ liệu: hãy sao lưu, rồi đặt lại app và chọn \"Đăng nhập để lấy dữ liệu đã đồng bộ\", hoặc đăng xuất.';
+
+  @override
+  String get syncBlockIdentityChanged =>
+      'Khóa mã hóa trên máy chủ đã đổi bất thường. Đồng bộ đã dừng để bảo vệ dữ liệu. Nếu bạn không đặt lại tài khoản, hãy báo cho chúng tôi.';
+
+  @override
+  String get syncBlockRollback => 'Dữ liệu trên máy chủ bị quay lui bất thường. Đồng bộ đã dừng để bảo vệ dữ liệu.';
+
+  @override
+  String get syncBlockPendingDeletion => 'Tài khoản đang chờ xóa - máy chủ không nhận thay đổi mới.';
+
+  @override
+  String get syncBlockOtherUser =>
+      'Máy này đã đồng bộ với tài khoản tsudev khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app.';
 }

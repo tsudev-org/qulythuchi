@@ -2749,6 +2749,300 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'{pct} so với kỳ trước'**
   String reportVsPrevious(String pct);
+
+  /// No description provided for @syncTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản & đồng bộ'**
+  String get syncTitle;
+
+  /// No description provided for @syncWelcomeSignIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập để lấy dữ liệu đã đồng bộ'**
+  String get syncWelcomeSignIn;
+
+  /// No description provided for @syncSignIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập bằng tài khoản tsudev'**
+  String get syncSignIn;
+
+  /// No description provided for @syncWaitingBrowser.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chờ đăng nhập trong trình duyệt…'**
+  String get syncWaitingBrowser;
+
+  /// No description provided for @syncSignedOutTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa bật đồng bộ'**
+  String get syncSignedOutTitle;
+
+  /// No description provided for @syncSignedOutBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập để sao lưu bản mã lên máy chủ và dùng chung dữ liệu giữa các thiết bị.'**
+  String get syncSignedOutBody;
+
+  /// No description provided for @syncE2eeNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Máy chủ chỉ nhận bản mã. Mật khẩu mã hóa và 24 từ không bao giờ rời thiết bị.'**
+  String get syncE2eeNote;
+
+  /// No description provided for @syncStatusSyncing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang đồng bộ…'**
+  String get syncStatusSyncing;
+
+  /// No description provided for @syncStatusNever.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đồng bộ lần nào'**
+  String get syncStatusNever;
+
+  /// No description provided for @syncStatusLast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ lần cuối {time}'**
+  String syncStatusLast(String time);
+
+  /// No description provided for @syncPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} thay đổi chờ gửi'**
+  String syncPending(int n);
+
+  /// No description provided for @syncQuotaFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hết dung lượng đồng bộ'**
+  String get syncQuotaFull;
+
+  /// No description provided for @syncRejected.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} bản ghi bị máy chủ từ chối'**
+  String syncRejected(int n);
+
+  /// No description provided for @syncNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ ngay'**
+  String get syncNow;
+
+  /// No description provided for @syncRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get syncRetry;
+
+  /// No description provided for @syncSignOut.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng xuất'**
+  String get syncSignOut;
+
+  /// No description provided for @syncSignOutBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dừng đồng bộ trên thiết bị này. Dữ liệu trên máy vẫn giữ nguyên.'**
+  String get syncSignOutBody;
+
+  /// No description provided for @syncSignOutConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng xuất khỏi đồng bộ? Thiết bị này bị thu hồi trên máy chủ; dữ liệu trên máy vẫn giữ nguyên.'**
+  String get syncSignOutConfirm;
+
+  /// No description provided for @syncUsage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dung lượng máy chủ'**
+  String get syncUsage;
+
+  /// No description provided for @syncUsageDetail.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} bản ghi · {recMb}/{recQuota} MB · tệp {fileMb}/{fileQuota} MB'**
+  String syncUsageDetail(int count, String recMb, String recQuota, String fileMb, String fileQuota);
+
+  /// No description provided for @syncDevices.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiết bị đang đăng nhập'**
+  String get syncDevices;
+
+  /// No description provided for @syncThisDevice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiết bị này'**
+  String get syncThisDevice;
+
+  /// No description provided for @syncLastSeen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoạt động {time}'**
+  String syncLastSeen(String time);
+
+  /// No description provided for @syncRevoke.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu hồi'**
+  String get syncRevoke;
+
+  /// No description provided for @syncRevokeConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu hồi \"{name}\"? Thiết bị đó bị đăng xuất ngay và không đồng bộ được nữa.'**
+  String syncRevokeConfirm(String name);
+
+  /// No description provided for @syncExport.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xuất dữ liệu máy chủ'**
+  String get syncExport;
+
+  /// No description provided for @syncExportBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tệp JSON mọi thứ máy chủ đang giữ (vẫn là bản mã).'**
+  String get syncExportBody;
+
+  /// No description provided for @syncExportDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu tệp xuất'**
+  String get syncExportDone;
+
+  /// No description provided for @syncDeleteAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa tài khoản đồng bộ'**
+  String get syncDeleteAccount;
+
+  /// No description provided for @syncDeleteBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa toàn bộ dữ liệu trên máy chủ sau 30 ngày. Hủy được trong thời gian chờ.'**
+  String get syncDeleteBody;
+
+  /// No description provided for @syncDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa tài khoản đồng bộ? Sau 30 ngày mọi bản mã, khóa và tệp trên máy chủ bị xóa hẳn. Trong thời gian chờ chỉ đọc được, hủy được. Dữ liệu trên máy này không bị xóa.'**
+  String get syncDeleteConfirm;
+
+  /// No description provided for @syncDeletionPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản sẽ bị xóa sau {days} ngày'**
+  String syncDeletionPending(int days);
+
+  /// No description provided for @syncDeletionCancel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hủy xóa'**
+  String get syncDeletionCancel;
+
+  /// No description provided for @syncNoRemoteAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản chưa có dữ liệu đồng bộ. Hãy tạo mật khẩu mã hóa mới.'**
+  String get syncNoRemoteAccount;
+
+  /// No description provided for @syncUnlockRemoteTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở dữ liệu đã đồng bộ'**
+  String get syncUnlockRemoteTitle;
+
+  /// No description provided for @syncUnlockRemoteBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mật khẩu mã hóa (hoặc 24 từ khôi phục) đã đặt trên thiết bị trước.'**
+  String get syncUnlockRemoteBody;
+
+  /// No description provided for @syncRemoteInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dữ liệu khóa trên máy chủ không hợp lệ.'**
+  String get syncRemoteInvalid;
+
+  /// No description provided for @syncErrNetwork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không kết nối được máy chủ. Sẽ thử lại sau.'**
+  String get syncErrNetwork;
+
+  /// No description provided for @syncErrTls.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết nối không an toàn (chứng chỉ máy chủ không khớp). Đồng bộ đã dừng; dữ liệu trên máy vẫn dùng bình thường.'**
+  String get syncErrTls;
+
+  /// No description provided for @syncErrSignedOut.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên đăng nhập đã hết hoặc thiết bị đã bị thu hồi. Hãy đăng nhập lại.'**
+  String get syncErrSignedOut;
+
+  /// No description provided for @syncErrDenied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã từ chối đăng nhập.'**
+  String get syncErrDenied;
+
+  /// No description provided for @syncErrNoBrowser.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được trình duyệt.'**
+  String get syncErrNoBrowser;
+
+  /// No description provided for @syncErrRateLimited.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thao tác quá nhanh. Hãy thử lại sau ít phút.'**
+  String get syncErrRateLimited;
+
+  /// No description provided for @syncErrGeneric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ gặp lỗi. Sẽ thử lại sau.'**
+  String get syncErrGeneric;
+
+  /// No description provided for @syncBlockDifferentAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản đồng bộ đã có dữ liệu mã hóa bằng mật khẩu KHÁC dữ liệu trên máy này. Không trộn hai bộ dữ liệu: hãy sao lưu, rồi đặt lại app và chọn \"Đăng nhập để lấy dữ liệu đã đồng bộ\", hoặc đăng xuất.'**
+  String get syncBlockDifferentAccount;
+
+  /// No description provided for @syncBlockIdentityChanged.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khóa mã hóa trên máy chủ đã đổi bất thường. Đồng bộ đã dừng để bảo vệ dữ liệu. Nếu bạn không đặt lại tài khoản, hãy báo cho chúng tôi.'**
+  String get syncBlockIdentityChanged;
+
+  /// No description provided for @syncBlockRollback.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dữ liệu trên máy chủ bị quay lui bất thường. Đồng bộ đã dừng để bảo vệ dữ liệu.'**
+  String get syncBlockRollback;
+
+  /// No description provided for @syncBlockPendingDeletion.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản đang chờ xóa - máy chủ không nhận thay đổi mới.'**
+  String get syncBlockPendingDeletion;
+
+  /// No description provided for @syncBlockOtherUser.
+  ///
+  /// In vi, this message translates to:
+  /// **'Máy này đã đồng bộ với tài khoản tsudev khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app.'**
+  String get syncBlockOtherUser;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

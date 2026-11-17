@@ -12,6 +12,7 @@ import '../domain/txn_filter.dart';
 import '../security/vault.dart';
 import '../services/reminders.dart';
 import 'ledger_repository.dart';
+import 'sync_controller.dart';
 
 /// Dịch vụ dựng một lần lúc khởi động (`main.dart`), ghi đè vào [servicesProvider].
 final class AppServices {
@@ -57,6 +58,11 @@ final class SessionNotifier extends Notifier<SessionStatus> {
 
   void finishOnboarding() => state = SessionStatus.unlocked;
 
+  /// Kho khóa vừa được mở ở nơi khác (nhận tài khoản từ máy chủ - `SyncController.adoptRemote`).
+  void markUnlocked() {
+    if (_vault.isUnlocked) state = SessionStatus.unlocked;
+  }
+
   Future<void> unlockWithPassword(String password) async {
     await _vault.unlockWithPassword(password);
     state = SessionStatus.unlocked;
@@ -92,6 +98,8 @@ final class SessionNotifier extends Notifier<SessionStatus> {
   }
 
   Future<void> wipe() async {
+    // Đăng xuất đồng bộ trước (thu hồi thiết bị, xóa refresh token khỏi kho bí mật).
+    if (ref.read(syncProvider).signedIn) await ref.read(syncProvider.notifier).signOut();
     await _vault.wipe();
     state = SessionStatus.needsSetup;
   }
@@ -119,6 +127,13 @@ final class LedgerNotifier extends Notifier<LedgerData> {
     // Sinh giao dịch định kỳ đến hạn ngay khi mở khóa (chỉ lúc này mới có khóa để niêm phong).
     final created = repo.materializeRecurring(CivilDate.fromDateTime(DateTime.now()));
     return created == 0 ? loaded : repo.snapshot(skipped: loaded.skipped);
+  }
+
+  /// Nạp lại từ CSDL sau khi đồng bộ ghi bản ghi mới (gọi đồng bộ, không await).
+  void reload() {
+    if (ref.read(sessionProvider) != SessionStatus.unlocked) return;
+    final loaded = _repo.load();
+    state = loaded;
   }
 
   T _mutate<T>(T Function(LedgerRepository repo) action) {

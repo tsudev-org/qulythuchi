@@ -17,6 +17,10 @@ Third-party components bundled in the app:
   archive (MIT, Copyright Brendan Duncan), file_saver (BSD-3-Clause, Copyright Hassan Ansari), file_selector
   (BSD-3-Clause, Copyright The Flutter Authors). Full license texts ship in the app's "Licenses" page
   (Flutter LicenseRegistry).
+- Dart/Flutter packages used for sync sign-in (P6): http, crypto (BSD-3-Clause, Copyright the Dart project
+  authors), url_launcher (BSD-3-Clause, Copyright The Flutter Authors), app_links (Apache License 2.0, Copyright
+  llfbandit). Root CA certificates pinned for the sync server (apps/app/lib/sync/pinned_roots.g.dart) are public
+  certificates of ISRG, Google Trust Services, SSL.com and GlobalSign, taken from the Mozilla CA store.
 
 Third-party components bundled in the sync server (services/sync-api, P5):
 - hono (MIT, Copyright Yusuke Wada), jose (MIT, Copyright Filip Skokan), zod (MIT, Copyright Colin McDonnell).
