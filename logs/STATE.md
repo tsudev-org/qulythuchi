@@ -19,6 +19,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| P2 - App Flutter khung | agent-qulythuchi | 17:19 17/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
