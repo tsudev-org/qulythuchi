@@ -517,9 +517,9 @@ class _RestoreDialogState extends ConsumerState<_RestoreDialog> {
       _error = null;
     });
     try {
-      final n = await ref
-          .read(sessionProvider.notifier)
-          .restoreBackup(widget.bytes, password: _useWords ? null : input, words: _useWords ? _words(input) : null);
+      final String? password = _useWords ? null : input;
+      final List<String>? words = _useWords ? _words(input) : null;
+      final n = await ref.read(sessionProvider.notifier).restoreBackup(widget.bytes, password: password, words: words);
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
       Navigator.pop(context);
