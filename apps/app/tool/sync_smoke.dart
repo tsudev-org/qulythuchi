@@ -49,7 +49,9 @@ Future<void> main(List<String> args) async {
   final me = (await api.getJson('/api/v1/me'))! as Map;
   stdout.writeln('me: status=${me['status']} email_verified=${me['email_verified']}');
   final keys = (await api.getJson('/api/v1/keys'))! as Map;
-  stdout.writeln('keys: gói khóa ${keys['account'] == null ? 'CHƯA có' : 'đã có'}, ${(keys['wallets']! as List).length} khóa ví');
+  stdout.writeln(
+    'keys: gói khóa ${keys['account'] == null ? 'CHƯA có' : 'đã có'}, ${(keys['wallets']! as List).length} khóa ví',
+  );
   final devices = ((await api.getJson('/api/v1/me/devices'))! as Map)['devices']! as List;
   stdout.writeln('devices: ${devices.length} thiết bị còn hiệu lực');
   final usage = (await api.getJson('/api/v1/me/usage'))! as Map;

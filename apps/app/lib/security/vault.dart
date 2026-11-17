@@ -423,7 +423,10 @@ final class Vault {
 
   /// Vân tay danh tính (SHA-256 của khóa công khai X-Wing ‖ X25519) - ghim chống tráo gói khóa (THREAT_MODEL T4).
   static String identityFingerprint(SodiumSumo sodium, AccountKeyBundle b) {
-    final h = sodium.crypto.genericHash(message: Uint8List.fromList([...b.kemPublicKey, ...b.boxPublicKey]), outLen: 32);
+    final h = sodium.crypto.genericHash(
+      message: Uint8List.fromList([...b.kemPublicKey, ...b.boxPublicKey]),
+      outLen: 32,
+    );
     return base64.encode(h);
   }
 

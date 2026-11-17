@@ -97,7 +97,9 @@ class _AccountPageState extends ConsumerState<AccountPage> {
 
   Future<void> _signOut() async {
     final l = context.l10n;
-    if (!await confirmDialog(context, message: l.syncSignOutConfirm, confirmLabel: l.syncSignOut, destructive: false)) return;
+    if (!await confirmDialog(context, message: l.syncSignOutConfirm, confirmLabel: l.syncSignOut, destructive: false)) {
+      return;
+    }
     await _guard(() async {
       await ref.read(syncProvider.notifier).signOut();
       if (mounted) setState(() => _info = null);
@@ -106,7 +108,9 @@ class _AccountPageState extends ConsumerState<AccountPage> {
 
   Future<void> _revoke(Map<String, Object?> d) async {
     final l = context.l10n;
-    if (!await confirmDialog(context, message: l.syncRevokeConfirm(d['name']! as String), confirmLabel: l.syncRevoke)) return;
+    if (!await confirmDialog(context, message: l.syncRevokeConfirm(d['name']! as String), confirmLabel: l.syncRevoke)) {
+      return;
+    }
     await _guard(() async {
       await ref.read(syncProvider.notifier).revokeDevice(d['id']! as String);
       if (mounted) _reload();
@@ -154,9 +158,12 @@ class _AccountPageState extends ConsumerState<AccountPage> {
   List<Widget> _signedOut(BuildContext context, SyncState s) {
     final l = context.l10n;
     return [
-      ListTile(leading: const Icon(Icons.cloud_off_outlined), title: Text(l.syncSignedOutTitle), subtitle: Text(l.syncSignedOutBody)),
-      if (s.error != null)
-        ListTile(leading: const Icon(Icons.info_outline), title: Text(syncErrorText(l, s.error))),
+      ListTile(
+        leading: const Icon(Icons.cloud_off_outlined),
+        title: Text(l.syncSignedOutTitle),
+        subtitle: Text(l.syncSignedOutBody),
+      ),
+      if (s.error != null) ListTile(leading: const Icon(Icons.info_outline), title: Text(syncErrorText(l, s.error))),
       Padding(
         padding: const EdgeInsets.all(QtSpace.s4),
         child: FilledButton.icon(
@@ -208,7 +215,10 @@ class _AccountPageState extends ConsumerState<AccountPage> {
         future: _info,
         builder: (context, snap) {
           if (snap.connectionState != ConnectionState.done) {
-            return const Padding(padding: EdgeInsets.all(QtSpace.s4), child: Center(child: CircularProgressIndicator()));
+            return const Padding(
+              padding: EdgeInsets.all(QtSpace.s4),
+              child: Center(child: CircularProgressIndicator()),
+            );
           }
           if (snap.hasError || snap.data == null) {
             final e = snap.error;
@@ -250,7 +260,13 @@ class _AccountPageState extends ConsumerState<AccountPage> {
           leading: const Icon(Icons.storage_outlined),
           title: Text(l.syncUsage),
           subtitle: Text(
-            l.syncUsageDetail(rec['count']! as int, mb(rec['bytes']), mb(rec['quota_bytes']), mb(files['bytes']), mb(files['quota_bytes'])),
+            l.syncUsageDetail(
+              rec['count']! as int,
+              mb(rec['bytes']),
+              mb(rec['quota_bytes']),
+              mb(files['bytes']),
+              mb(files['quota_bytes']),
+            ),
           ),
         ),
         Padding(

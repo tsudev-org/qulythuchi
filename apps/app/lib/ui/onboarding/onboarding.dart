@@ -80,7 +80,11 @@ class _Welcome extends ConsumerWidget {
         const SizedBox(height: 24),
         FilledButton(onPressed: onStart, child: Text(l.welcomeStart)),
         const SizedBox(height: 12),
-        OutlinedButton.icon(onPressed: onSyncSignIn, icon: const Icon(Icons.cloud_download_outlined), label: Text(l.syncWelcomeSignIn)),
+        OutlinedButton.icon(
+          onPressed: onSyncSignIn,
+          icon: const Icon(Icons.cloud_download_outlined),
+          label: Text(l.syncWelcomeSignIn),
+        ),
         const SizedBox(height: 12),
         TextButton.icon(
           onPressed: () => restoreFromBackupFlow(context, ref),

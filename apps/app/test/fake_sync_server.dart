@@ -57,7 +57,13 @@ final class FakeSyncServer {
       'expires_in': 900,
       'refresh_token': ref,
       'device_id': device,
-      'user': {'id': user, 'email': '$user@example.com', 'email_verified': true, 'display_name': 'Người dùng $user', 'avatar_url': null},
+      'user': {
+        'id': user,
+        'email': '$user@example.com',
+        'email_verified': true,
+        'display_name': 'Người dùng $user',
+        'avatar_url': null,
+      },
     };
   }
 
@@ -69,7 +75,9 @@ final class FakeSyncServer {
       if (b['grant_type'] == 'authorization_code') {
         // Mã giả: "code:<user>:<challenge>" - kiểm PKCE như máy chủ thật.
         final parts = (b['code']! as String).split(':');
-        final challenge = base64Url.encode(sha256.convert(ascii.encode(b['code_verifier']! as String)).bytes).replaceAll('=', '');
+        final challenge = base64Url
+            .encode(sha256.convert(ascii.encode(b['code_verifier']! as String)).bytes)
+            .replaceAll('=', '');
         if (parts.length != 3 || parts[2] != challenge) throw const _Err(400, 'invalid_grant');
         final device = 'dev-${++_seq}';
         user(parts[1]).devices[device] = {'id': device, 'name': b['device_name'], 'platform': b['platform']};
@@ -138,7 +146,11 @@ final class FakeSyncServer {
         final rows = u.records.values.where((r) => (r['rev']! as int) > since).toList()
           ..sort((a, b) => (a['rev']! as int).compareTo(b['rev']! as int));
         final page = rows.take(limit).toList();
-        return _json({'records': page, 'cursor': page.isEmpty ? since : page.last['rev'], 'has_more': rows.length > limit});
+        return _json({
+          'records': page,
+          'cursor': page.isEmpty ? since : page.last['rev'],
+          'has_more': rows.length > limit,
+        });
       case ('GET', '/api/v1/me'):
         return _json({
           'id': uid,
@@ -159,7 +171,12 @@ final class FakeSyncServer {
           'devices': [
             for (final d in u.devices.values)
               if (!revoked.contains(d['id']))
-                {...d, 'created_at': '2026-11-18T00:00:00.000Z', 'last_seen_at': '2026-11-18T01:00:00.000Z', 'current': d['id'] == device},
+                {
+                  ...d,
+                  'created_at': '2026-11-18T00:00:00.000Z',
+                  'last_seen_at': '2026-11-18T01:00:00.000Z',
+                  'current': d['id'] == device,
+                },
           ],
         });
       case ('POST', '/api/v1/me/deletion'):

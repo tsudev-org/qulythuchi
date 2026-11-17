@@ -23,7 +23,8 @@ final class ApiException implements Exception {
 
   /// Phiên không còn dùng được ⇒ phải đăng nhập lại.
   bool get sessionEnded =>
-      status == 401 && (code == 'invalid_grant' || code == 'device_revoked' || code == signedOut || code == 'unauthenticated');
+      status == 401 &&
+      (code == 'invalid_grant' || code == 'device_revoked' || code == signedOut || code == 'unauthenticated');
 
   @override
   String toString() => 'ApiException($status, $code)';
@@ -48,7 +49,13 @@ final class MemoryTokenStore implements TokenStore {
 
 /// Kết quả cấp token (`POST /api/v1/auth/token`).
 final class TokenGrant {
-  const TokenGrant({required this.accessToken, required this.expiresIn, required this.refreshToken, required this.deviceId, required this.user});
+  const TokenGrant({
+    required this.accessToken,
+    required this.expiresIn,
+    required this.refreshToken,
+    required this.deviceId,
+    required this.user,
+  });
   final String accessToken;
   final int expiresIn;
   final String refreshToken;
@@ -109,14 +116,19 @@ final class ApiClient {
     required String deviceName,
   }) async {
     final grant = TokenGrant.fromJson(
-      await _send('POST', '/api/v1/auth/token', body: {
-        'grant_type': 'authorization_code',
-        'code': code,
-        'code_verifier': verifier,
-        'redirect_uri': redirectUri,
-        'platform': platform,
-        'device_name': deviceName,
-      }, auth: false) as Map<String, Object?>,
+      await _send(
+        'POST',
+        '/api/v1/auth/token',
+        body: {
+          'grant_type': 'authorization_code',
+          'code': code,
+          'code_verifier': verifier,
+          'redirect_uri': redirectUri,
+          'platform': platform,
+          'device_name': deviceName,
+        },
+        auth: false,
+      ) as Map<String, Object?>,
     );
     await _adopt(grant);
     return grant;
@@ -138,7 +150,12 @@ final class ApiClient {
     final refresh = await tokens.readRefresh();
     if (refresh == null) throw const ApiException(401, ApiException.signedOut);
     try {
-      final j = await _send('POST', '/api/v1/auth/token', body: {'grant_type': 'refresh_token', 'refresh_token': refresh}, auth: false);
+      final j = await _send(
+        'POST',
+        '/api/v1/auth/token',
+        body: {'grant_type': 'refresh_token', 'refresh_token': refresh},
+        auth: false,
+      );
       await _adopt(TokenGrant.fromJson(j as Map<String, Object?>));
     } on ApiException catch (e) {
       if (e.sessionEnded) await _endSession();
@@ -208,7 +225,13 @@ final class ApiClient {
   Future<Object?> _send(String method, String path, {Object? body, required bool auth}) async =>
       _decode(await _raw(method, path, body: body, auth: auth));
 
-  Future<http.Response> _raw(String method, String path, {Map<String, String>? query, Object? body, required bool auth}) async {
+  Future<http.Response> _raw(
+    String method,
+    String path, {
+    Map<String, String>? query,
+    Object? body,
+    required bool auth,
+  }) async {
     final req = http.Request(method, resolve(path, query));
     req.headers['Accept'] = 'application/json';
     if (auth && _access != null) req.headers['Authorization'] = 'Bearer $_access';
@@ -243,7 +266,11 @@ final class ApiClient {
     try {
       final j = jsonDecode(utf8.decode(res.bodyBytes));
       if (j is Map && j['code'] is String) {
-        return ApiException(res.statusCode, j['code'] as String, j['message'] is String ? j['message'] as String : null);
+        return ApiException(
+          res.statusCode,
+          j['code'] as String,
+          j['message'] is String ? j['message'] as String : null,
+        );
       }
     } on Object {
       // Trang lỗi HTML của CDN... - rơi xuống mã chung.

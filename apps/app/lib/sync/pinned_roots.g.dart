@@ -3,17 +3,61 @@
 
 /// (tên, SHA-256 SPKI base64, SHA-256 DER hex) của từng CA gốc được ghim.
 const pinnedRootInfo = <(String, String, String)>[
-  ('ISRG_Root_X1', 'C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=', '96bcec06264976f37460779acf28c5a7cfe8a3c0aae11a8ffcee05c0bddf08c6'),
-  ('ISRG_Root_X2', 'diGVwiVYbubAI3RW4hB9xU8e/CH2GnkuvVFZE8zmgzI=', '69729b8e15a86efc177a57afb7171dfc64add28c2fca8cf1507e34453ccb1470'),
-  ('GTS_Root_R1', 'hxqRlPTu1bMS/0DITB1SSu0vd4u/8l8TjPgfaAp63Gc=', 'd947432abde7b7fa90fc2e6b59101b1280e0e1c7e4e40fa3c6887fff57a7f4cf'),
-  ('GTS_Root_R3', 'QXnt2YHvdHR3tJYmQIr0Paosp6t/nggsEGD4QJZ3Q0g=', '34d8a73ee208d9bcdb0d956520934b4e40e69482596e8b6f73c8426b010a6f48'),
-  ('GTS_Root_R4', 'mEflZT5enoR1FuXLgYYGqnVEoZvmf9c2bVBpiOjYQ0c=', '349dfa4058c5e263123b398ae795573c4e1313c83fe68f93556cd5e8031b3c7d'),
-  ('SSL.com_TLS_RSA_Root_CA_2022', 'K89VOmb1cJAN3TK6bf4ezAbJGC1mLcG2Dh97dnwr3VQ=', '8faf7d2e2cb4709bb8e0b33666bf75a5dd45b5de480f8ea8d4bfe6bebc17f2ed'),
-  ('SSL.com_TLS_ECC_Root_CA_2022', 'G/ANXI8TwJTdF+AFBM8IiIUPEv0Gf6H5LA/b9guG4yE=', 'c32ffd9f46f936d16c3673990959434b9ad60aafbb9e7cf33654f144cc1ba143'),
-  ('SSL.com_Root_Certification_Authority_RSA', '0cRTd+vc1hjNFlHcLgLCHXUeWqn80bNDH/bs9qMTSPo=', '85666a562ee0be5ce925c1d8890a6f76a87ec16d4d7d5f29ea7419cf20123b69'),
-  ('SSL.com_Root_Certification_Authority_ECC', 'oyD01TTXvpfBro3QSZc1vIlcMjrdLTiL/M9mLCPX+Zo=', '3417bb06cc6007da1b961c920b8ab4ce3fad820e4aa30b9acbc4a74ebdcebc65'),
-  ('GlobalSign_Root_R46', 'rn+WLLnmp9v3uDP7GPqbcaiRdd+UnCMrap73yz3yu/w=', '4fa3126d8d3a11d1c4855a4f807cbad6cf919d3a5a88b03bea2c6372d93c40c9'),
-  ('GlobalSign_Root_E46', '4EoCLOMvTM8sf2BGKHuCijKpCfXnUUR/g/0scfb9gXM=', 'cbb9c44d84b8043e1050ea31a69f514955d7bfd2e2c6b49301019ad61d9f5058'),
+  (
+    'ISRG_Root_X1',
+    'C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=',
+    '96bcec06264976f37460779acf28c5a7cfe8a3c0aae11a8ffcee05c0bddf08c6',
+  ),
+  (
+    'ISRG_Root_X2',
+    'diGVwiVYbubAI3RW4hB9xU8e/CH2GnkuvVFZE8zmgzI=',
+    '69729b8e15a86efc177a57afb7171dfc64add28c2fca8cf1507e34453ccb1470',
+  ),
+  (
+    'GTS_Root_R1',
+    'hxqRlPTu1bMS/0DITB1SSu0vd4u/8l8TjPgfaAp63Gc=',
+    'd947432abde7b7fa90fc2e6b59101b1280e0e1c7e4e40fa3c6887fff57a7f4cf',
+  ),
+  (
+    'GTS_Root_R3',
+    'QXnt2YHvdHR3tJYmQIr0Paosp6t/nggsEGD4QJZ3Q0g=',
+    '34d8a73ee208d9bcdb0d956520934b4e40e69482596e8b6f73c8426b010a6f48',
+  ),
+  (
+    'GTS_Root_R4',
+    'mEflZT5enoR1FuXLgYYGqnVEoZvmf9c2bVBpiOjYQ0c=',
+    '349dfa4058c5e263123b398ae795573c4e1313c83fe68f93556cd5e8031b3c7d',
+  ),
+  (
+    'SSL.com_TLS_RSA_Root_CA_2022',
+    'K89VOmb1cJAN3TK6bf4ezAbJGC1mLcG2Dh97dnwr3VQ=',
+    '8faf7d2e2cb4709bb8e0b33666bf75a5dd45b5de480f8ea8d4bfe6bebc17f2ed',
+  ),
+  (
+    'SSL.com_TLS_ECC_Root_CA_2022',
+    'G/ANXI8TwJTdF+AFBM8IiIUPEv0Gf6H5LA/b9guG4yE=',
+    'c32ffd9f46f936d16c3673990959434b9ad60aafbb9e7cf33654f144cc1ba143',
+  ),
+  (
+    'SSL.com_Root_Certification_Authority_RSA',
+    '0cRTd+vc1hjNFlHcLgLCHXUeWqn80bNDH/bs9qMTSPo=',
+    '85666a562ee0be5ce925c1d8890a6f76a87ec16d4d7d5f29ea7419cf20123b69',
+  ),
+  (
+    'SSL.com_Root_Certification_Authority_ECC',
+    'oyD01TTXvpfBro3QSZc1vIlcMjrdLTiL/M9mLCPX+Zo=',
+    '3417bb06cc6007da1b961c920b8ab4ce3fad820e4aa30b9acbc4a74ebdcebc65',
+  ),
+  (
+    'GlobalSign_Root_R46',
+    'rn+WLLnmp9v3uDP7GPqbcaiRdd+UnCMrap73yz3yu/w=',
+    '4fa3126d8d3a11d1c4855a4f807cbad6cf919d3a5a88b03bea2c6372d93c40c9',
+  ),
+  (
+    'GlobalSign_Root_E46',
+    '4EoCLOMvTM8sf2BGKHuCijKpCfXnUUR/g/0scfb9gXM=',
+    'cbb9c44d84b8043e1050ea31a69f514955d7bfd2e2c6b49301019ad61d9f5058',
+  ),
 ];
 
 /// PEM nối liền, nạp vào SecurityContext(withTrustedRoots: false).

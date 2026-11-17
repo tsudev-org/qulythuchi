@@ -32,7 +32,13 @@ typedef LoginRunner = Future<LoginOutcome> Function(Uri server);
 
 /// Cấu hình tầng mạng - ghi đè trong test bằng `MockClient` + bộ đăng nhập giả.
 final class SyncConfig {
-  const SyncConfig({required this.httpClient, required this.login, this.server, this.cookieMode = false, this.autoSync = true});
+  const SyncConfig({
+    required this.httpClient,
+    required this.login,
+    this.server,
+    this.cookieMode = false,
+    this.autoSync = true,
+  });
   final http.Client httpClient;
   final LoginRunner login;
   final Uri? server;
@@ -205,7 +211,12 @@ final class SyncController extends Notifier<SyncState> {
 
   SyncEngine _engine() {
     final s = ref.read(servicesProvider);
-    return SyncEngine(api: _api, store: s.store, vault: s.vault, onApplied: () => ref.read(ledgerProvider.notifier).reload());
+    return SyncEngine(
+      api: _api,
+      store: s.store,
+      vault: s.vault,
+      onApplied: () => ref.read(ledgerProvider.notifier).reload(),
+    );
   }
 
   // ------------------------------------------------------------------ Đăng nhập / đăng xuất
@@ -368,7 +379,8 @@ final class SyncController extends Notifier<SyncState> {
   Future<Map<String, Object?>> me() async => ((await _api.getJson('/api/v1/me'))! as Map).cast();
   Future<Map<String, Object?>> usage() async => ((await _api.getJson('/api/v1/me/usage'))! as Map).cast();
   Future<List<Map<String, Object?>>> devices() async => [
-    for (final d in ((await _api.getJson('/api/v1/me/devices'))! as Map)['devices']! as List) (d as Map).cast<String, Object?>(),
+    for (final d in ((await _api.getJson('/api/v1/me/devices'))! as Map)['devices']! as List)
+      (d as Map).cast<String, Object?>(),
   ];
   Future<void> revokeDevice(String id) => _api.delete('/api/v1/me/devices/$id');
   Future<Uint8List> exportServerData() => _api.getBytes('/api/v1/me/export');

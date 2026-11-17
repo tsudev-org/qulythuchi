@@ -32,4 +32,5 @@ OUT=lib/sync/pinned_roots.g.dart
   for r in "${ROOTS[@]}"; do openssl x509 -in "$SRC/$r.pem" -outform pem; done
   echo "''';"
 } > "$OUT"
+dart format "$OUT" >/dev/null
 echo "Đã ghi $OUT (${#ROOTS[@]} CA)"

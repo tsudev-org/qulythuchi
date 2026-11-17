@@ -35,7 +35,9 @@ void main() {
         servicesProvider.overrideWithValue(services),
         sharedPreferencesProvider.overrideWithValue(sp),
         reminderSchedulerProvider.overrideWithValue(NoopReminderScheduler()),
-        syncConfigProvider.overrideWithValue(SyncConfig(httpClient: server.client, login: fakeLogin('u1'), autoSync: false)),
+        syncConfigProvider.overrideWithValue(
+          SyncConfig(httpClient: server.client, login: fakeLogin('u1'), autoSync: false),
+        ),
       ],
     );
     addTearDown(container.dispose);

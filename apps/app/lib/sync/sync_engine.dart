@@ -47,7 +47,13 @@ final class SyncReport {
 /// Máy chủ chỉ thấy bản mã. Mọi bước ghi xuống [RecordStore] của một trang kéo nằm trong MỘT giao tác đồng bộ (không
 /// có `await` ở giữa) rồi gọi [onApplied] để repository nạp lại - sửa đổi của người dùng không xen vào giữa được.
 final class SyncEngine {
-  SyncEngine({required this.api, required this.store, required this.vault, required this.onApplied, this.pageSize = 200});
+  SyncEngine({
+    required this.api,
+    required this.store,
+    required this.vault,
+    required this.onApplied,
+    this.pageSize = 200,
+  });
 
   final ApiClient api;
   final RecordStore store;
@@ -124,7 +130,9 @@ final class SyncEngine {
     if (account != null) {
       final bundle = (account['bundle']! as Map).cast<String, Object?>();
       if (!vault.remoteBundleMatches(bundle)) {
-        throw SyncBlockedException(store.getMeta(_mIdPin) == null ? SyncBlock.differentAccount : SyncBlock.identityChanged);
+        throw SyncBlockedException(
+          store.getMeta(_mIdPin) == null ? SyncBlock.differentAccount : SyncBlock.identityChanged,
+        );
       }
       if (vault.bundleDirty) {
         await api.putJson('/api/v1/keys/account', {'bundle': vault.bundleJson});
@@ -250,7 +258,13 @@ final class SyncEngine {
     }
     // Hai phía đều có trường mới hơn: lưu bản hợp nhất và đẩy lại (ADR-0010 mục 3).
     store.putSynced(
-      SealedRow(id: id, type: type, walletId: walletId, sealed: vault.cipher.seal(merged, vault.keyFor(walletId)), rev: rev),
+      SealedRow(
+        id: id,
+        type: type,
+        walletId: walletId,
+        sealed: vault.cipher.seal(merged, vault.keyFor(walletId)),
+        rev: rev,
+      ),
       dirty: true,
     );
     return _Applied.changed;

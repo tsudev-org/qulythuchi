@@ -36,7 +36,9 @@ Future<Device> device(FakeSyncServer server, String user, {bool withAccount = tr
   final c = ProviderContainer(
     overrides: [
       servicesProvider.overrideWithValue(services),
-      syncConfigProvider.overrideWithValue(SyncConfig(httpClient: server.client, login: fakeLogin(user), autoSync: false)),
+      syncConfigProvider.overrideWithValue(
+        SyncConfig(httpClient: server.client, login: fakeLogin(user), autoSync: false),
+      ),
     ],
   );
   addTearDown(c.dispose);
@@ -65,7 +67,10 @@ void main() {
   test('PKCE S256 khớp cài đặt độc lập (python hashlib)', () {
     // verifier/challenge tính bằng Python: base64url(sha256(v)) bỏ "=".
     const v = 'dBjftJeZ4CVP-mJ0kZvZ9-kXg3X2l1UwO-lyBAd-MmY';
-    expect(base64Url.encode(sha256.convert(ascii.encode(v)).bytes).replaceAll('=', ''), 'AWMW92YGelwFvvW5IuTNAUDTE2O4Jap4rW7_UryY9ZE');
+    expect(
+      base64Url.encode(sha256.convert(ascii.encode(v)).bytes).replaceAll('=', ''),
+      'AWMW92YGelwFvvW5IuTNAUDTE2O4Jap4rW7_UryY9ZE',
+    );
     final r = LoginRequest.create('http://127.0.0.1:5000/callback');
     expect(r.verifier.length, greaterThanOrEqualTo(43));
     expect(RegExp(r'^[A-Za-z0-9_-]{43}$').hasMatch(r.challenge), isTrue);
@@ -74,17 +79,25 @@ void main() {
     expect(url.queryParameters['code_challenge_method'], 'S256');
     expect(r.parseCallback(Uri.parse('http://127.0.0.1:5000/callback?state=khac&code=x')), isNull, reason: 'sai state');
     expect(r.parseCallback(Uri.parse('http://127.0.0.1:5000/callback?state=${r.state}&code=abc'))!.code, 'abc');
-    expect(r.parseCallback(Uri.parse('http://127.0.0.1:5000/callback?state=${r.state}&error=access_denied'))!.error, 'access_denied');
+    expect(
+      r.parseCallback(Uri.parse('http://127.0.0.1:5000/callback?state=${r.state}&error=access_denied'))!.error,
+      'access_denied',
+    );
   });
 
   test('tập CA ghim: mỗi khối PEM khớp vân tay DER đã ghi', () {
-    final blocks = RegExp(r'-----BEGIN CERTIFICATE-----([\s\S]*?)-----END CERTIFICATE-----').allMatches(pinnedRootsPem).toList();
+    final blocks = RegExp(r'-----BEGIN CERTIFICATE-----([\s\S]*?)-----END CERTIFICATE-----')
+        .allMatches(pinnedRootsPem)
+        .toList();
     expect(blocks, hasLength(pinnedRootInfo.length));
     for (var i = 0; i < blocks.length; i++) {
       final der = base64.decode(blocks[i].group(1)!.replaceAll(RegExp(r'\s'), ''));
       expect(sha256.convert(der).toString(), pinnedRootInfo[i].$3, reason: pinnedRootInfo[i].$1);
     }
-    expect(pinnedRootInfo.map((e) => e.$1), containsAll(['GTS_Root_R4', 'ISRG_Root_X1', 'SSL.com_TLS_RSA_Root_CA_2022']));
+    expect(
+      pinnedRootInfo.map((e) => e.$1),
+      containsAll(['GTS_Root_R4', 'ISRG_Root_X1', 'SSL.com_TLS_RSA_Root_CA_2022']),
+    );
   });
 
   test('hai thiết bị: máy mới nhận tài khoản bằng mật khẩu, thấy đủ dữ liệu; máy chủ chỉ có bản mã', () async {
@@ -225,27 +238,33 @@ void main() {
     expect(a.data.txn(t.id)!.amount, 7000);
   });
 
-  test('đổi mật khẩu ở máy A ⇒ máy B mở được bằng mật khẩu mới sau khi đồng bộ (gói khóa xác thực bằng khóa chủ)', () async {
-    final a = await device(server, 'u1');
-    await a.sync.signIn();
-    await a.sync.syncNow();
-    final b = await device(server, 'u1', withAccount: false);
-    await b.sync.signIn();
-    await b.sync.adoptRemote((await b.sync.fetchRemoteAccount())!, password: testPassword);
+  test(
+    'đổi mật khẩu ở máy A ⇒ máy B mở được bằng mật khẩu mới sau khi đồng bộ (gói khóa xác thực bằng khóa chủ)',
+    () async {
+      final a = await device(server, 'u1');
+      await a.sync.signIn();
+      await a.sync.syncNow();
+      final b = await device(server, 'u1', withAccount: false);
+      await b.sync.signIn();
+      await b.sync.adoptRemote((await b.sync.fetchRemoteAccount())!, password: testPassword);
 
-    a.services.vault.changePassword(testPassword, 'mat-khau-moi-123');
-    await a.sync.syncNow();
-    expect(a.services.vault.bundleDirty, isFalse);
-    await b.sync.syncNow();
-    b.c.read(sessionProvider.notifier).lock();
-    await b.c.read(sessionProvider.notifier).unlockWithPassword('mat-khau-moi-123');
-    expect(b.c.read(sessionProvider), SessionStatus.unlocked);
-    b.c.read(sessionProvider.notifier).lock();
-    await b.c.read(sessionProvider.notifier).unlockWithPassword('mat-khau-moi-123');
-    expect(b.services.vault.isUnlocked, isTrue, reason: 'gói mới đã thành gói cục bộ');
-    b.c.read(sessionProvider.notifier).lock();
-    await expectLater(b.c.read(sessionProvider.notifier).unlockWithPassword(testPassword), throwsA(isA<EnvelopeException>()));
-  });
+      a.services.vault.changePassword(testPassword, 'mat-khau-moi-123');
+      await a.sync.syncNow();
+      expect(a.services.vault.bundleDirty, isFalse);
+      await b.sync.syncNow();
+      b.c.read(sessionProvider.notifier).lock();
+      await b.c.read(sessionProvider.notifier).unlockWithPassword('mat-khau-moi-123');
+      expect(b.c.read(sessionProvider), SessionStatus.unlocked);
+      b.c.read(sessionProvider.notifier).lock();
+      await b.c.read(sessionProvider.notifier).unlockWithPassword('mat-khau-moi-123');
+      expect(b.services.vault.isUnlocked, isTrue, reason: 'gói mới đã thành gói cục bộ');
+      b.c.read(sessionProvider.notifier).lock();
+      await expectLater(
+        b.c.read(sessionProvider.notifier).unlockWithPassword(testPassword),
+        throwsA(isA<EnvelopeException>()),
+      );
+    },
+  );
 
   test('token: access hết hạn ⇒ refresh xoay vòng; refresh bị dùng lại ⇒ thu hồi, về trạng thái đăng xuất', () async {
     final a = await device(server, 'u1');
@@ -293,12 +312,17 @@ void main() {
     await c.sync.signIn();
     await c.sync.syncNow();
     expect(c.state.block, SyncBlock.differentAccount);
-    final d = Device(c.services, ProviderContainer(
-      overrides: [
-        servicesProvider.overrideWithValue(c.services),
-        syncConfigProvider.overrideWithValue(SyncConfig(httpClient: server.client, login: fakeLogin('u2'), autoSync: false)),
-      ],
-    ));
+    final d = Device(
+      c.services,
+      ProviderContainer(
+        overrides: [
+          servicesProvider.overrideWithValue(c.services),
+          syncConfigProvider.overrideWithValue(
+            SyncConfig(httpClient: server.client, login: fakeLogin('u2'), autoSync: false),
+          ),
+        ],
+      ),
+    );
     addTearDown(d.c.dispose);
     expect(await d.sync.signIn(), 'otherUser');
   });
@@ -345,7 +369,13 @@ void main() {
       walletKeys: remote.walletKeys,
       password: testPassword,
     );
-    final engine = SyncEngine(api: b.sync.api, store: b.services.store, vault: b.services.vault, onApplied: () {}, pageSize: 3);
+    final engine = SyncEngine(
+      api: b.sync.api,
+      store: b.services.store,
+      vault: b.services.vault,
+      onApplied: () {},
+      pageSize: 3,
+    );
     final (n, skipped) = await engine.pull();
     expect(skipped, 0);
     expect(n, server.user('u1').records.length);

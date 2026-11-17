@@ -36,7 +36,9 @@ final class LoginRequest {
     if (uri.queryParameters['state'] != state) return null;
     final error = uri.queryParameters['error'];
     final code = uri.queryParameters['code'];
-    if (error != null || code == null) return LoginCallback.failed(error == 'access_denied' ? 'access_denied' : 'login_failed');
+    if (error != null || code == null) {
+      return LoginCallback.failed(error == 'access_denied' ? 'access_denied' : 'login_failed');
+    }
     return LoginCallback.ok(code);
   }
 }
