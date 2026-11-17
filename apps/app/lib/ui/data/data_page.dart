@@ -510,7 +510,7 @@ class _RestoreDialogState extends ConsumerState<_RestoreDialog> {
   bool _busy = false;
   String? _error;
 
-  Future<void> _submit(String secret) async {
+  Future<void> _submit(String input) async {
     final l = context.l10n;
     setState(() {
       _busy = true;
@@ -519,11 +519,7 @@ class _RestoreDialogState extends ConsumerState<_RestoreDialog> {
     try {
       final n = await ref
           .read(sessionProvider.notifier)
-          .restoreBackup(
-            widget.bytes,
-            password: _useWords ? null : secret,
-            words: _useWords ? secret.trim().toLowerCase().split(RegExp(r'\s+')) : null,
-          );
+          .restoreBackup(widget.bytes, password: _useWords ? null : input, words: _useWords ? _words(input) : null);
       if (!mounted) return;
       final messenger = ScaffoldMessenger.of(context);
       Navigator.pop(context);
@@ -536,6 +532,8 @@ class _RestoreDialogState extends ConsumerState<_RestoreDialog> {
       if (mounted) setState(() => _busy = false);
     }
   }
+
+  static List<String> _words(String s) => s.trim().toLowerCase().split(RegExp(r'\s+'));
 
   @override
   Widget build(BuildContext context) {

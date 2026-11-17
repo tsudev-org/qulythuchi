@@ -17,6 +17,7 @@ import 'package:sqlite3/sqlite3.dart';
 import 'helpers.dart';
 
 const _pw = 'mat-khau-thu-nghiem';
+const _wrong = 'sai-mat-khau-roi';
 
 Uint8List _bytes(String s) => Uint8List.fromList(utf8.encode(s));
 
@@ -73,7 +74,7 @@ void main() {
     test('sai mật khẩu, tệp hỏng, bị sửa hoặc thiết bị đã có tài khoản ⇒ từ chối', () async {
       final store = RecordStore(sqlite3.openInMemory());
       final vault = newVault(store);
-      await expectLater(vault.restoreBackup(file, password: 'sai-mat-khau-roi'), throwsA(isA<EnvelopeException>()));
+      await expectLater(vault.restoreBackup(file, password: _wrong), throwsA(isA<EnvelopeException>()));
       expect(vault.hasAccount, isFalse);
       await expectLater(vault.restoreBackup(_bytes('{"x":1}'), password: _pw), throwsFormatException);
       final doc = jsonDecode(utf8.decode(file)) as Map<String, Object?>;
