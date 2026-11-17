@@ -1,5 +1,4 @@
 # Cổng kiểm cho mọi PR và main. Action ghim SHA; công cụ tải ngoài ghim phiên bản + checksum.
-# Job máy chủ được thêm ở P5.
 name: CI
 on:
   push: { branches: [main] }
@@ -112,3 +111,26 @@ jobs:
         run: |
           ./tool/fetch_web_assets.sh
           flutter build web --release
+
+  server:
+    name: Máy chủ (services/sync-api)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults: { run: { working-directory: services/sync-api } }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: { node-version: '22' }
+      - name: Cài phụ thuộc đúng lockfile (npm ghim phiên bản)
+        run: npx -y npm@11.21.2 ci --no-fund --no-audit
+      - name: Kiểm lỗ hổng phụ thuộc
+        run: npx -y npm@11.21.2 audit --audit-level=high
+      - name: Typecheck, lint, test (D1/R2 giả lập cục bộ, không cần token)
+        run: |
+          set -euo pipefail
+          npm run typecheck
+          npm run lint
+          npm test
+      - name: Build Worker (dry-run)
+        run: npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/worker"

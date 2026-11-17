@@ -5,9 +5,8 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P5 - Máy chủ `services/sync-api`** (phiếu `logs/handover/20261117-05_p4-xong-bat-dau-p5.md`, chia P5a/P5b/P5c;
-  P5a không cần 👤; P5b cần client OIDC; P5c cần token Cloudflare). Prompt mở phiên: phiếu đó mục 6b.
-- [ ] P6 - Đồng bộ trong app
+- [ ] **P6 - Đồng bộ trong app** (phiếu `logs/handover/20261118-01_p5-xong-bat-dau-p6.md`, prompt ở mục 6b).
+  Đăng nhập thật cần 👤 client OIDC `qulythuchi` ở tsudev.com (phiếu tsudev `20261118-QT1`).
 - [ ] P7 - Tự nhập + thông minh
 - [ ] P8 - Web + site
 - [ ] P9 - Ví chung gia đình
@@ -17,10 +16,16 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| P5 Máy chủ sync-api (P5a → P5b → P5c) | agent-qulythuchi | 18/11/2026 |
+| (trống) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 18/11/2026 - P5 Máy chủ `services/sync-api` (agent-qulythuchi): Workers + Hono + D1 + R2 LÊN PRODUCTION
+  `https://qulythuchi.tsudev.com` (Worker `qulythuchi`, D1 `qulythuchi` APAC, R2 `qulythuchi-files` APAC, secret
+  SESSION_SECRET/IP_HASH_SALT đã đặt). RP OIDC + mã một lần PKCE cho app, refresh xoay vòng, phiên web cookie,
+  đẩy/kéo bản mã theo rev, gói khóa/khóa ví, tệp R2, thiết bị, xuất, xóa tài khoản 30 ngày, giới hạn tần suất/hạn
+  mức. 44 test (dữ liệu mẫu THẬT từ lõi), job CI `Máy chủ (services/sync-api)`. ADR-0010, phiếu rà soát P5.
+  Còn 👤: client OIDC (IdP trả `invalid_client`, phiếu tsudev QT1).
 - 17/11/2026 - P4 Báo cáo + dữ liệu (agent-qulythuchi): báo cáo theo kỳ + so với kỳ trước, thu chi 6 tháng, cơ cấu
   danh mục, tài sản ròng, lịch chi tiêu (mọi biểu đồ có bảng thay thế, màu token), "An toàn để tiêu"; lọc nhiều điều
   kiện + lưu bộ lọc; xuất CSV/XLSX/PDF có cảnh báo, nhập CSV ghép cột, sao lưu/khôi phục `.qtbak` mã hóa (ADR-0009).
@@ -55,6 +60,7 @@
 
 - 17/11/2026 - sqlite3 3.x + sqlite3mc thay drift/sqlcipher_flutter_libs (EOL); PIN bọc bằng khóa thiết bị: `docs/adr/0008-*`
 - 17/11/2026 - Xuất bản rõ có cảnh báo; sao lưu `.qtbak` = gói khóa + phong bì `bak|<id>`, khôi phục chỉ trên máy chưa có tài khoản: `docs/adr/0009-*`
+- 18/11/2026 - Máy chủ: không gian bản ghi = tài khoản, rev trong giao tác, tệp xuyên Worker, xóa tài khoản 30 ngày: `docs/adr/0010-*`
 - 17/11/2026 - Phiên bản theo phiếu toàn hệ 20261117-V1: `YY.M.DDNN`, thẻ `vYY.M.DDNN`, versionCode `YYMDDNN`
 
 ## Sự cố bảo mật

@@ -1,0 +1,14 @@
+// Cấu hình CHỈ cho bộ test (vitest-pool-workers): D1/R2 giả lập cục bộ, không route/tên miền thật.
+{
+  "name": "qulythuchi-test",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-22",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [{ "binding": "DB", "database_name": "qulythuchi-test", "database_id": "test", "migrations_dir": "migrations" }],
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "qulythuchi-files-test" }],
+  "vars": {
+    "PUBLIC_ORIGIN": "https://qulythuchi.tsudev.com",
+    "OIDC_ISSUER": "https://idp.test/oidc",
+    "OIDC_CLIENT_ID": "qulythuchi"
+  }
+}

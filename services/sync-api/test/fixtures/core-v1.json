@@ -1,0 +1,36 @@
+{
+  "description": "SINH TỰ ĐỘNG bởi packages/core/tool/gen_server_fixture.dart - không sửa tay. Dữ liệu giả.",
+  "bundle": {
+    "v": 1,
+    "kdf": {
+      "alg": "argon2id13",
+      "salt": "erdF1MkGEObCZzlChpU8ZQ==",
+      "ops": 2,
+      "mem": 19922944
+    },
+    "mkPw": "UVQBATOD9nOUWT626/KzQYD4HAeeVOxemFkmMAPyDFmd8z74rVJMfmGbSwbOFhrzJDd1T1s+mmlITu6FtKdOIDnO0Qwv1QxCmsPlxPVnG9FbypbpVSaUJT6Mfbo=",
+    "mkRc": "UVQBASKB3NeGm7KJJc93bt/iFemen5/0gOytdJll9BhIlvmQXOT1aDfKOeJ/IAhlQOYh6n3cghFlLTu0BZ6JEVMzAczqEQsH9unSPqveEsfILbBAzF2vwQyynhI=",
+    "kemPk": "ljWOwtgcXRV2faLI7VZDOPA4OCxaT8Ki6PpHLDhkisoEDwcTyCeWjYUFNnnPjxNTDXtznTx6dvqVhsoEQ3yUSHTAcYJ6GjhG6IR43zyDDUaGc1mvB3V8IjxKNZAprtUnomqU+lQWFTx7XdO0kjoAONuAxgy/r9ZqPmBt0vqzsAEC4ufGKGdnwEaT9HqV01aE/Te9yGyD3VSjOUivuKpSryG6vZcv1VAJS9smXkN1BGcSPjsHVCcFg5gVXHkwZkW/uYtE5Berk9JUKwURyEcTYtzLVyliOyu33tcqGnxxKdth4jYuyTTEyXGEt9bKQbQckzWkuXE1aLRPcfs8tNLAeTY1ryiFNvpz1FBMsfFmQcmhFMorT0xy7TykztGfjnde1LRjytuS8zwkCFd7uqKSfXR54omzRKWGjxS7ZHTJ4hSEfKklM0afsee7vgaY9EKaqoyJ+3dYYfp9QNpl10I1YkLHXmhNR5yP2nc2VWJ3GEwp6+qUjlxD3bcY3Edysfe49VQ4RXMvSrV3OHlX17mjDdxwbxilDOImZIKGAHNKazJhv1QKqbFmy9jNJqV1+UVO+7xJANg4TpoZiKyoacQeDUsivZKe3EesjnkccNrPDYkEIEJlL4o6J/nFbikDixxlonWd3DcghZEHskISAN0yoaZl4bYcQAdZhtopwsyXdMLHYqmbATeBSarFlTpLTucbv+XO4ZRaQ5Sg3NYkeChd01YI5YE0iRmZBdh70sqwQWUUngAdAEQh15iVyEk9hyhu11gwfMouR8gWDQdiugaVGKkluuB6y8iCiTWJN8vGEqOpJwHFQ4VHhICmbFRpz4I5PaOXD5xCCCcs/ScA1LGHvrDHa8uoJdMwtDUb3oIbeFNqdxxeoxp4NMFx2YtZr7k/YXmSskYUEzA/rDTFdXFoB0xHe5pWQ9zGIRmasgID6JWgqXx3J+mj7wexFAmP7rwrbsQeExrN+WehLvEEWBsk7+NJdIBxf9taeiUY4IxxmPItXbQWqVZYaOjFVRSk8zQJszDP8YoVDWMQyLdp81hSrnWrREFGTCTGOvUqSWWnZ8yU6wwL3cqEYhEiGtNsHxGQEwE13Mp0Mnty82ZSMsA4m8IVwTFhM8GLL+rGE/Jg5rg39yVIOXl9dPzJ1rdAgDGHoZc4BUlXGdw/rWE8rffDgCHC7DiRWHRMIxwaZwBSdllfAZrFrJNGTNQbRBMBlPaQJCiO0PKWt/dulRrDDRSS+LOuzpce8xSeamMSIYkKMIxUmrBG+pwe1OJudIpgFuGX78BFCVuQy0co+LtyXUw4Xqh596GySCwOIMO6J1nPS9c0ltGg7Vh5bCgcffcPTuVArTpDQvVexcdutsIlc7JdKLJQ5xYDEpOeOtGnxBk7cZx8tupl5tluP7gw4jtLsnShLtiik9katRh9/Ses0TuNx/wJ7ujCcuoz7wjMoHvE2QsLmSqgY0FE7Cl4nXCg1EILkve8Zfc0G9WL3awnosa8eBiArikxcSMDBaWT7TY7o9WG7NRFENqODqYl0HFuXwCdGhct7qqCZl4hSR0UK/qQtI7jbgU+3QJF9Jc/Cv2adDvZA6AKfFPFqf0qF2Uh8gj28kABeNqad9UlmZ+zUtwFMA==",
+    "kemSk": "UVQBAZHNS3KlqQdfyNxY5u5/uG8Zhu3lPHlIyM+wn83hx0bVRZb3rNAhvfyu92aPu1azWvIlpyJ1wDHlob7i7fThEbf8UxNYu0BvGIBBrG/mXwIUZHkIBYwp1a0=",
+    "boxPk": "9QgseOwFXOw6/wb+X1Cx6u7h2qq27nSB3s6sxmGI+V0=",
+    "boxSk": "UVQBAchYC9lSFiZwBSiTj2f4RLvzF/3a3Ezzr1mRfz2atS7EvEnQ9JE5lL8Yc5iJmaLy8cQ2FdFz5qIBV/hUPP/fgmlJGvCJPEFsdTWGjALo9k1lmUoFC+h268M="
+  },
+  "wallet_key": {
+    "wallet_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "wrapped": "UVQBATIPf+eToRir9X7w+hqcMBFkangcW1zKsftSu10FJ5xhuOuMp7DKwEx5KpuSOCGM0kUVlomTJ2SlxQlk+oEr/T4nql35vPNxGiN8hNDfCqi0YQswlPx8Hes="
+  },
+  "records": [
+    {
+      "id": "0f8fad5b-d9cb-469f-a165-70867728950e",
+      "type": "txn",
+      "wallet_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+      "sealed": "UVQBAWk2ngKimiE9/jByI1eWZiJXrx8xIJmBMO7pXzWMs1m9IYcmvoTA7/2Ak5VTm472blVhUnHSVo8AMHYLgXPtqCNvV283TlRiQsTpr+WRc81973qNgn72DhPKm1rpme47Lnotry997RdOFT7a/+bl6OToUxx///UgBdqjStQFjS7VUxrHzdHXJQztZazh0qXrLmvZXrkDU7NQdKCM4xCUyQ2pxVv2THJyouOfLMCFvlYSh1QOzZA98GS7DnuYEgTr0aV6c7Z2wtO5JaA/eR9fTmMXjPZv08U2hB/ZPA/QmAQdXXY1bpDw/r/KBTLzj3rHD/b2D+BapZTca8b4jp+Kv5ZboMW+3rUrIgoz/2Htp5GITSeuT3xMYZEISKoftZ/xDdKluXFLDCXD"
+    },
+    {
+      "id": "1b4e28ba-2fa1-41d2-883f-0016d3cca427",
+      "type": "txn",
+      "wallet_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+      "sealed": "UVQBAWQa2Tp3K0JzVdXUDL2CkdSNht1SYCvIyy6QFJ8iVz0hkzvKpw1sFzY6rfbYDyjg6NBwammonNHAEt8nSicuzKFb7IycFQpOMjpXQ/I3qE8wAjXDF3BbTOPV3bJH8rKF6U3jM11oqbZE9Szzhc77vttH0D0fNfAwZuhT8tKHWX7e6K9QwhdARnadgwdIsWfhh5Qb52dyFOrwA+gi8l9QpMy6fsJjawdYskeLgxEPDcwYIgTuSYvxdZFunS9JrHh8VTyufykiNLsCnQImG+X6+tw8+VwKc6pxjkmbm/XA+Vp6rEaMxMC1bh5VecAZf3FEMX5kspWBNVhdET0+xxTXBzG6xhk7cvjsBee5Rj+zbyMTnbebyPES4re4vBcKrDaihMDSmfQzIM48"
+    }
+  ]
+}
