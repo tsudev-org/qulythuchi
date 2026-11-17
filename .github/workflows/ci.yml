@@ -125,7 +125,7 @@ jobs:
       - name: Cài phụ thuộc đúng lockfile (npm ghim phiên bản)
         run: npx -y npm@11.21.2 ci --no-fund --no-audit
       - name: Kiểm lỗ hổng phụ thuộc
-        run: npx -y npm@11.21.2 audit --audit-level=high
+        run: node scripts/audit.mjs
       - name: Typecheck, lint, test (D1/R2 giả lập cục bộ, không cần token)
         run: |
           set -euo pipefail

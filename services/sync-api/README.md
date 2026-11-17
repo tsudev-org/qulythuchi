@@ -8,6 +8,7 @@ bản rõ. Quyết định: ADR-0001/0002/0003/0004/0010. Rà soát: `docs/secur
 ```bash
 npx -y npm@11.21.2 ci        # npm 10 lỗi "edgesOut" với cây phụ thuộc này - dùng npm 11 ghim
 npm run check                # typecheck + lint + test (D1/R2 giả lập, IdP giả, không cần token)
+npm run audit                # production sạch; dev chỉ ngoại lệ có hạn trong audit-allowlist.json
 npm run dev                  # wrangler dev (cần .dev.vars với SESSION_SECRET/IP_HASH_SALT GIẢ - không commit)
 ```
 

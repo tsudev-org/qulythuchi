@@ -15,7 +15,8 @@
     "check": "npm run typecheck && npm run lint && npm test",
     "migrate:local": "wrangler d1 migrations apply qulythuchi --local",
     "migrate:remote": "wrangler d1 migrations apply qulythuchi --remote",
-    "deploy": "wrangler d1 migrations apply qulythuchi --remote && wrangler deploy"
+    "deploy": "wrangler d1 migrations apply qulythuchi --remote && wrangler deploy",
+    "audit": "node scripts/audit.mjs"
   },
   "dependencies": {
     "hono": "4.13.19",
