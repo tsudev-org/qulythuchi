@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 import 'package:sodium/sodium_sumo.dart';
@@ -6,6 +8,7 @@ import '../data/key_storage.dart';
 import '../data/record_store.dart';
 import '../domain/default_categories.dart';
 import '../domain/extra_models.dart';
+import '../domain/txn_filter.dart';
 import '../security/vault.dart';
 import '../services/reminders.dart';
 import 'ledger_repository.dart';
@@ -75,6 +78,13 @@ final class SessionNotifier extends Notifier<SessionStatus> {
     state = SessionStatus.unlocked;
   }
 
+  /// Khôi phục từ tệp sao lưu trên thiết bị mới (xem `Vault.restoreBackup`).
+  Future<int> restoreBackup(Uint8List file, {String? password, List<String>? words}) async {
+    final n = await _vault.restoreBackup(file, password: password, words: words);
+    state = SessionStatus.unlocked;
+    return n;
+  }
+
   void lock() {
     if (!_vault.hasAccount) return;
     _vault.lock();
@@ -125,6 +135,7 @@ final class LedgerNotifier extends Notifier<LedgerData> {
   void deleteCategory(String id) => _mutate((r) => r.deleteCategory(id));
   Txn saveTxn(Txn t) => _mutate((r) => r.saveTxn(t));
   void deleteTxn(String id) => _mutate((r) => r.deleteTxn(id));
+  int importTxns(List<Txn> txns) => _mutate((r) => r.importTxns(txns));
 
   void saveTransfer({
     String? transferId,
@@ -161,6 +172,8 @@ final class LedgerNotifier extends Notifier<LedgerData> {
   JarPlan saveJarPlan(JarPlan p) => _mutate((r) => r.saveJarPlan(p));
   FxRate saveRate(FxRate x) => _mutate((r) => r.saveRate(x));
   void deleteRate(String id) => _mutate((r) => r.deleteRate(id));
+  SavedFilter saveFilter(SavedFilter f) => _mutate((r) => r.saveFilter(f));
+  void deleteFilter(String id) => _mutate((r) => r.deleteFilter(id));
 
   /// Lưu rồi sinh ngay các lần đã đến hạn (không đợi lần mở khóa sau).
   Recurring saveRecurring(Recurring x) => _mutate((r) {

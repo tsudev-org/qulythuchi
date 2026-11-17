@@ -2167,6 +2167,588 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Chờ xác nhận'**
   String get pendingLabel;
+
+  /// No description provided for @navReports.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo'**
+  String get navReports;
+
+  /// No description provided for @reportThisMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng này'**
+  String get reportThisMonth;
+
+  /// No description provided for @reportLastMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng trước'**
+  String get reportLastMonth;
+
+  /// No description provided for @reportLast3Months.
+  ///
+  /// In vi, this message translates to:
+  /// **'3 tháng gần đây'**
+  String get reportLast3Months;
+
+  /// No description provided for @reportThisYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Năm nay'**
+  String get reportThisYear;
+
+  /// No description provided for @reportIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu'**
+  String get reportIncome;
+
+  /// No description provided for @reportExpense.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi'**
+  String get reportExpense;
+
+  /// No description provided for @reportNet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chênh lệch'**
+  String get reportNet;
+
+  /// No description provided for @reportSavingsRate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉ lệ tiết kiệm'**
+  String get reportSavingsRate;
+
+  /// No description provided for @reportMonthly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu chi 6 tháng gần đây'**
+  String get reportMonthly;
+
+  /// No description provided for @reportByCategory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi theo danh mục'**
+  String get reportByCategory;
+
+  /// No description provided for @reportNetWorth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài sản ròng'**
+  String get reportNetWorth;
+
+  /// No description provided for @reportCalendar.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lịch chi tiêu {month}'**
+  String reportCalendar(String month);
+
+  /// No description provided for @reportOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get reportOther;
+
+  /// No description provided for @reportMonthReadout.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng {month}: thu {income} · chi {expense}'**
+  String reportMonthReadout(String month, String income, String expense);
+
+  /// No description provided for @reportPointReadout.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng {month}: {amount}'**
+  String reportPointReadout(String month, String amount);
+
+  /// No description provided for @reportDayReadout.
+  ///
+  /// In vi, this message translates to:
+  /// **'{date}: chi {amount}'**
+  String reportDayReadout(String date, String amount);
+
+  /// No description provided for @reportTapDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm vào một ngày để xem số tiền'**
+  String get reportTapDay;
+
+  /// No description provided for @reportEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có khoản chi nào trong kỳ này'**
+  String get reportEmpty;
+
+  /// No description provided for @reportShowTable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem dạng bảng'**
+  String get reportShowTable;
+
+  /// No description provided for @reportShowChart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem biểu đồ'**
+  String get reportShowChart;
+
+  /// No description provided for @reportColMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng'**
+  String get reportColMonth;
+
+  /// No description provided for @reportColCategory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh mục'**
+  String get reportColCategory;
+
+  /// No description provided for @reportColAmount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền'**
+  String get reportColAmount;
+
+  /// No description provided for @reportColShare.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉ trọng'**
+  String get reportColShare;
+
+  /// No description provided for @reportColDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày'**
+  String get reportColDay;
+
+  /// No description provided for @reportLess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ít'**
+  String get reportLess;
+
+  /// No description provided for @reportMore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiều'**
+  String get reportMore;
+
+  /// No description provided for @weekdayShort1.
+  ///
+  /// In vi, this message translates to:
+  /// **'T2'**
+  String get weekdayShort1;
+
+  /// No description provided for @weekdayShort2.
+  ///
+  /// In vi, this message translates to:
+  /// **'T3'**
+  String get weekdayShort2;
+
+  /// No description provided for @weekdayShort3.
+  ///
+  /// In vi, this message translates to:
+  /// **'T4'**
+  String get weekdayShort3;
+
+  /// No description provided for @weekdayShort4.
+  ///
+  /// In vi, this message translates to:
+  /// **'T5'**
+  String get weekdayShort4;
+
+  /// No description provided for @weekdayShort5.
+  ///
+  /// In vi, this message translates to:
+  /// **'T6'**
+  String get weekdayShort5;
+
+  /// No description provided for @weekdayShort6.
+  ///
+  /// In vi, this message translates to:
+  /// **'T7'**
+  String get weekdayShort6;
+
+  /// No description provided for @weekdayShort7.
+  ///
+  /// In vi, this message translates to:
+  /// **'CN'**
+  String get weekdayShort7;
+
+  /// No description provided for @safeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'An toàn để tiêu tháng này'**
+  String get safeTitle;
+
+  /// No description provided for @safePerDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoảng {amount} mỗi ngày tới cuối tháng'**
+  String safePerDay(String amount);
+
+  /// No description provided for @safeOver.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã vượt kế hoạch tháng {amount}'**
+  String safeOver(String amount);
+
+  /// No description provided for @safeExplain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu {income} − đã chi {spent} − hóa đơn sắp tới {bills} − góp mục tiêu {goals}'**
+  String safeExplain(String income, String spent, String bills, String goals);
+
+  /// No description provided for @filterTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ lọc'**
+  String get filterTitle;
+
+  /// No description provided for @filterKinds.
+  ///
+  /// In vi, this message translates to:
+  /// **'Loại giao dịch'**
+  String get filterKinds;
+
+  /// No description provided for @filterAllKinds.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mọi loại'**
+  String get filterAllKinds;
+
+  /// No description provided for @filterWallets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví'**
+  String get filterWallets;
+
+  /// No description provided for @filterAllWallets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mọi ví'**
+  String get filterAllWallets;
+
+  /// No description provided for @filterCategories.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh mục'**
+  String get filterCategories;
+
+  /// No description provided for @filterAllCategories.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mọi danh mục'**
+  String get filterAllCategories;
+
+  /// No description provided for @filterUncategorized.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ giao dịch chưa phân loại'**
+  String get filterUncategorized;
+
+  /// No description provided for @filterMin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền từ'**
+  String get filterMin;
+
+  /// No description provided for @filterMax.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền đến'**
+  String get filterMax;
+
+  /// No description provided for @filterApply.
+  ///
+  /// In vi, this message translates to:
+  /// **'Áp dụng'**
+  String get filterApply;
+
+  /// No description provided for @filterClear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa lọc'**
+  String get filterClear;
+
+  /// No description provided for @filterSave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu bộ lọc'**
+  String get filterSave;
+
+  /// No description provided for @filterSaveName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên bộ lọc'**
+  String get filterSaveName;
+
+  /// No description provided for @filterSaved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ lọc đã lưu'**
+  String get filterSaved;
+
+  /// No description provided for @filterActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang lọc: {n} điều kiện'**
+  String filterActive(int n);
+
+  /// No description provided for @filterResultCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} giao dịch'**
+  String filterResultCount(int n);
+
+  /// No description provided for @dataTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dữ liệu: xuất, nhập, sao lưu'**
+  String get dataTitle;
+
+  /// No description provided for @exportTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xuất giao dịch'**
+  String get exportTitle;
+
+  /// No description provided for @exportFormat.
+  ///
+  /// In vi, this message translates to:
+  /// **'Định dạng'**
+  String get exportFormat;
+
+  /// No description provided for @exportWarning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tệp xuất KHÔNG mã hóa: ai có tệp sẽ đọc được toàn bộ giao dịch. Chỉ lưu ở nơi an toàn.'**
+  String get exportWarning;
+
+  /// No description provided for @exportDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xuất {n} giao dịch'**
+  String exportDone(int n);
+
+  /// No description provided for @exportRange.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoảng ngày'**
+  String get exportRange;
+
+  /// No description provided for @exportAllTime.
+  ///
+  /// In vi, this message translates to:
+  /// **'Toàn bộ'**
+  String get exportAllTime;
+
+  /// No description provided for @exportCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hủy'**
+  String get exportCancelled;
+
+  /// No description provided for @importTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập từ tệp CSV'**
+  String get importTitle;
+
+  /// No description provided for @importPick.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn tệp CSV'**
+  String get importPick;
+
+  /// No description provided for @importMapping.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghép cột'**
+  String get importMapping;
+
+  /// No description provided for @importColDate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cột ngày'**
+  String get importColDate;
+
+  /// No description provided for @importColAmount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cột số tiền'**
+  String get importColAmount;
+
+  /// No description provided for @importColNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cột ghi chú'**
+  String get importColNote;
+
+  /// No description provided for @importColCategory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cột danh mục'**
+  String get importColCategory;
+
+  /// No description provided for @importColType.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cột loại (thu/chi)'**
+  String get importColType;
+
+  /// No description provided for @importNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'(không có)'**
+  String get importNone;
+
+  /// No description provided for @importSignMode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số âm là khoản chi'**
+  String get importSignMode;
+
+  /// No description provided for @importWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập vào ví'**
+  String get importWallet;
+
+  /// No description provided for @importPreview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem trước {n} dòng đầu'**
+  String importPreview(int n);
+
+  /// No description provided for @importRun.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập {n} giao dịch'**
+  String importRun(int n);
+
+  /// No description provided for @importDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhập {ok} giao dịch, bỏ qua {skipped} dòng lỗi'**
+  String importDone(int ok, int skipped);
+
+  /// No description provided for @importEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tệp trống hoặc không đọc được'**
+  String get importEmpty;
+
+  /// No description provided for @importTooBig.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tệp quá lớn (tối đa 5 MB)'**
+  String get importTooBig;
+
+  /// No description provided for @importDateFormat.
+  ///
+  /// In vi, this message translates to:
+  /// **'Định dạng ngày'**
+  String get importDateFormat;
+
+  /// No description provided for @backupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao lưu mã hóa'**
+  String get backupTitle;
+
+  /// No description provided for @backupBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tệp sao lưu được mã hóa đầu-cuối; chỉ mở được bằng mật khẩu mã hóa hoặc 24 từ của bạn.'**
+  String get backupBody;
+
+  /// No description provided for @backupCreate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo tệp sao lưu'**
+  String get backupCreate;
+
+  /// No description provided for @backupDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu tệp sao lưu'**
+  String get backupDone;
+
+  /// No description provided for @restoreFromBackup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khôi phục từ tệp sao lưu'**
+  String get restoreFromBackup;
+
+  /// No description provided for @restoreBackupBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn tệp .qtbak rồi nhập mật khẩu mã hóa của tài khoản đã sao lưu.'**
+  String get restoreBackupBody;
+
+  /// No description provided for @restoreBackupInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tệp không phải bản sao lưu Quly Thu Chi hoặc đã hỏng'**
+  String get restoreBackupInvalid;
+
+  /// No description provided for @restoreBackupDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã khôi phục {n} bản ghi'**
+  String restoreBackupDone(int n);
+
+  /// No description provided for @restoreUseRecovery.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dùng 24 từ thay cho mật khẩu'**
+  String get restoreUseRecovery;
+
+  /// No description provided for @exportColSubcategory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh mục con'**
+  String get exportColSubcategory;
+
+  /// No description provided for @exportColCurrency.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền tệ'**
+  String get exportColCurrency;
+
+  /// No description provided for @importHasHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dòng đầu là tiêu đề cột'**
+  String get importHasHeader;
+
+  /// No description provided for @importNeedWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy tạo ví trước khi nhập'**
+  String get importNeedWallet;
+
+  /// No description provided for @restoreWordsLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'24 từ khôi phục'**
+  String get restoreWordsLabel;
+
+  /// No description provided for @backupPrivacyNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tệp sao lưu chứa toàn bộ dữ liệu đã mã hóa và gói khóa; mất mật khẩu và 24 từ thì không ai mở được.'**
+  String get backupPrivacyNote;
+
+  /// No description provided for @reportVsPrevious.
+  ///
+  /// In vi, this message translates to:
+  /// **'{pct} so với kỳ trước'**
+  String reportVsPrevious(String pct);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

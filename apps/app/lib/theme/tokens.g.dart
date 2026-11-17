@@ -101,6 +101,47 @@ final class QtPalette {
   );
 }
 
+/// Màu biểu đồ (token mở rộng: design/tokens.qulythuchi.json, đã kiểm bằng validate_palette).
+final class QtChartPalette {
+  const QtChartPalette({
+    required this.series1,
+    required this.series2,
+    required this.seq1,
+    required this.seq2,
+    required this.seq3,
+    required this.seq4,
+    required this.seq5,
+  });
+  final Color series1;
+  final Color series2;
+  final Color seq1;
+  final Color seq2;
+  final Color seq3;
+  final Color seq4;
+  final Color seq5;
+  static const light = QtChartPalette(
+    series1: Color(0xFF2A78D6),
+    series2: Color(0xFFEB6834),
+    seq1: Color(0xFFCDE2FB),
+    seq2: Color(0xFF9EC5F4),
+    seq3: Color(0xFF6DA7EC),
+    seq4: Color(0xFF3987E5),
+    seq5: Color(0xFF1C5CAB),
+  );
+  static const dark = QtChartPalette(
+    series1: Color(0xFF3987E5),
+    series2: Color(0xFFD95926),
+    seq1: Color(0xFF184F95),
+    seq2: Color(0xFF256ABF),
+    seq3: Color(0xFF3987E5),
+    seq4: Color(0xFF6DA7EC),
+    seq5: Color(0xFF9EC5F4),
+  );
+
+  /// Dải tuần tự 5 bậc (thấp → cao).
+  List<Color> get sequential => [seq1, seq2, seq3, seq4, seq5];
+}
+
 /// Bo góc (px).
 abstract final class QtRadius {
   static const double none = 0.0;

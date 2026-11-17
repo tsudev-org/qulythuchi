@@ -4,12 +4,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'domain/txn_filter.dart';
 import 'l10n/app_localizations.dart';
 import 'services/reminders.dart';
 import 'state/providers.dart';
 import 'state/settings.dart';
 import 'theme/app_theme.dart';
 import 'ui/categories/categories_page.dart';
+import 'ui/data/data_page.dart';
 import 'ui/debts/debt_form_page.dart';
 import 'ui/debts/debts_page.dart';
 import 'ui/events/event_form_page.dart';
@@ -24,6 +26,7 @@ import 'ui/plan/plan_page.dart';
 import 'ui/rates/rates_page.dart';
 import 'ui/recurring/recurring_form_page.dart';
 import 'ui/recurring/recurring_page.dart';
+import 'ui/reports/reports_page.dart';
 import 'ui/settings/settings_page.dart';
 import 'ui/shell.dart';
 import 'ui/transactions/txn_form_page.dart';
@@ -71,7 +74,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/transactions',
-                builder: (_, _) => const TxnListPage(),
+                builder: (_, s) => TxnListPage(initialFilter: TxnFilter.fromQuery(s.uri.queryParameters)),
                 routes: [
                   GoRoute(
                     path: 'new',
@@ -132,6 +135,8 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(path: 'categories', builder: (_, _) => const CategoriesPage()),
                   GoRoute(path: 'settings', builder: (_, _) => const SettingsPage()),
                   GoRoute(path: 'rates', builder: (_, _) => const RatesPage()),
+                  GoRoute(path: 'reports', builder: (_, _) => const ReportsPage()),
+                  GoRoute(path: 'data', builder: (_, _) => const DataPage()),
                   GoRoute(
                     path: 'recurring',
                     builder: (_, _) => const RecurringPage(),

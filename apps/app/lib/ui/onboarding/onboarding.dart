@@ -9,6 +9,7 @@ import '../../domain/default_categories.dart';
 import '../../security/vault.dart';
 import '../../state/providers.dart';
 import '../../theme/app_theme.dart';
+import '../data/data_page.dart' show restoreFromBackupFlow;
 import '../widgets/auth_widgets.dart';
 import '../widgets/common.dart';
 
@@ -57,12 +58,12 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   }
 }
 
-class _Welcome extends StatelessWidget {
+class _Welcome extends ConsumerWidget {
   const _Welcome({required this.onStart});
   final VoidCallback onStart;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
     return AuthScaffold(
       title: l.welcomeTitle,
@@ -71,6 +72,12 @@ class _Welcome extends StatelessWidget {
         ExcludeSemantics(child: Icon(Icons.lock_outline, size: 64, color: context.palette.primary)),
         const SizedBox(height: 24),
         FilledButton(onPressed: onStart, child: Text(l.welcomeStart)),
+        const SizedBox(height: 12),
+        TextButton.icon(
+          onPressed: () => restoreFromBackupFlow(context, ref),
+          icon: const Icon(Icons.restore),
+          label: Text(l.restoreFromBackup),
+        ),
       ],
     );
   }

@@ -23,11 +23,13 @@ enum ThemeChoice {
 }
 
 final class QtTheme extends ThemeExtension<QtTheme> {
-  const QtTheme(this.palette);
+  const QtTheme(this.palette, this.chart);
   final QtPalette palette;
+  final QtChartPalette chart;
 
   @override
-  QtTheme copyWith({QtPalette? palette}) => QtTheme(palette ?? this.palette);
+  QtTheme copyWith({QtPalette? palette, QtChartPalette? chart}) =>
+      QtTheme(palette ?? this.palette, chart ?? this.chart);
 
   @override
   QtTheme lerp(QtTheme? other, double t) => t < 0.5 ? this : (other ?? this);
@@ -35,6 +37,7 @@ final class QtTheme extends ThemeExtension<QtTheme> {
 
 extension QtThemeContext on BuildContext {
   QtPalette get palette => Theme.of(this).extension<QtTheme>()!.palette;
+  QtChartPalette get chartPalette => Theme.of(this).extension<QtTheme>()!.chart;
 }
 
 ThemeData buildTheme(Brightness brightness) {
@@ -119,7 +122,7 @@ ThemeData buildTheme(Brightness brightness) {
     dividerTheme: DividerThemeData(color: p.border, thickness: 1, space: 1),
     focusColor: p.focusRing.withValues(alpha: 0.16),
     hoverColor: p.bgHover,
-    extensions: [QtTheme(p)],
+    extensions: [QtTheme(p, brightness == Brightness.dark ? QtChartPalette.dark : QtChartPalette.light)],
     appBarTheme: AppBarTheme(
       backgroundColor: p.bgBase,
       foregroundColor: p.textPrimary,

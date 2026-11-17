@@ -1,0 +1,23 @@
+{
+  "note": "Token mở rộng riêng của Quly Thu Chi (DESIGN_SYSTEM.md cho phép extensions.* ở repo con). Màu biểu đồ lấy từ bảng tham chiếu dataviz, đã chạy validate_palette.js trên nền bg-surface của tsudev: 2 chuỗi đạt mọi kiểm ở cả hai chế độ (17/11/2026). Dải tuần tự: một sắc xanh, sáng = nhạt→đậm; tối = sát nền→sáng dần.",
+  "chart": {
+    "light": {
+      "series-1": "#2A78D6",
+      "series-2": "#EB6834",
+      "seq-1": "#CDE2FB",
+      "seq-2": "#9EC5F4",
+      "seq-3": "#6DA7EC",
+      "seq-4": "#3987E5",
+      "seq-5": "#1C5CAB"
+    },
+    "dark": {
+      "series-1": "#3987E5",
+      "series-2": "#D95926",
+      "seq-1": "#184F95",
+      "seq-2": "#256ABF",
+      "seq-3": "#3987E5",
+      "seq-4": "#6DA7EC",
+      "seq-5": "#9EC5F4"
+    }
+  }
+}

@@ -1124,4 +1124,327 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pendingLabel => 'Pending';
+
+  @override
+  String get navReports => 'Reports';
+
+  @override
+  String get reportThisMonth => 'This month';
+
+  @override
+  String get reportLastMonth => 'Last month';
+
+  @override
+  String get reportLast3Months => 'Last 3 months';
+
+  @override
+  String get reportThisYear => 'This year';
+
+  @override
+  String get reportIncome => 'Income';
+
+  @override
+  String get reportExpense => 'Spending';
+
+  @override
+  String get reportNet => 'Net';
+
+  @override
+  String get reportSavingsRate => 'Savings rate';
+
+  @override
+  String get reportMonthly => 'Income & spending, last 6 months';
+
+  @override
+  String get reportByCategory => 'Spending by category';
+
+  @override
+  String get reportNetWorth => 'Net worth';
+
+  @override
+  String reportCalendar(String month) {
+    return 'Spending calendar $month';
+  }
+
+  @override
+  String get reportOther => 'Other';
+
+  @override
+  String reportMonthReadout(String month, String income, String expense) {
+    return '$month: income $income · spending $expense';
+  }
+
+  @override
+  String reportPointReadout(String month, String amount) {
+    return '$month: $amount';
+  }
+
+  @override
+  String reportDayReadout(String date, String amount) {
+    return '$date: spent $amount';
+  }
+
+  @override
+  String get reportTapDay => 'Tap a day to see the amount';
+
+  @override
+  String get reportEmpty => 'No spending in this period';
+
+  @override
+  String get reportShowTable => 'Show as table';
+
+  @override
+  String get reportShowChart => 'Show chart';
+
+  @override
+  String get reportColMonth => 'Month';
+
+  @override
+  String get reportColCategory => 'Category';
+
+  @override
+  String get reportColAmount => 'Amount';
+
+  @override
+  String get reportColShare => 'Share';
+
+  @override
+  String get reportColDay => 'Day';
+
+  @override
+  String get reportLess => 'Less';
+
+  @override
+  String get reportMore => 'More';
+
+  @override
+  String get weekdayShort1 => 'Mo';
+
+  @override
+  String get weekdayShort2 => 'Tu';
+
+  @override
+  String get weekdayShort3 => 'We';
+
+  @override
+  String get weekdayShort4 => 'Th';
+
+  @override
+  String get weekdayShort5 => 'Fr';
+
+  @override
+  String get weekdayShort6 => 'Sa';
+
+  @override
+  String get weekdayShort7 => 'Su';
+
+  @override
+  String get safeTitle => 'Safe to spend this month';
+
+  @override
+  String safePerDay(String amount) {
+    return 'About $amount per day until month end';
+  }
+
+  @override
+  String safeOver(String amount) {
+    return 'Over this month\'s plan by $amount';
+  }
+
+  @override
+  String safeExplain(String income, String spent, String bills, String goals) {
+    return 'Income $income − spent $spent − upcoming bills $bills − goal savings $goals';
+  }
+
+  @override
+  String get filterTitle => 'Filters';
+
+  @override
+  String get filterKinds => 'Transaction types';
+
+  @override
+  String get filterAllKinds => 'All types';
+
+  @override
+  String get filterWallets => 'Wallets';
+
+  @override
+  String get filterAllWallets => 'All wallets';
+
+  @override
+  String get filterCategories => 'Categories';
+
+  @override
+  String get filterAllCategories => 'All categories';
+
+  @override
+  String get filterUncategorized => 'Uncategorized only';
+
+  @override
+  String get filterMin => 'Amount from';
+
+  @override
+  String get filterMax => 'Amount to';
+
+  @override
+  String get filterApply => 'Apply';
+
+  @override
+  String get filterClear => 'Clear filters';
+
+  @override
+  String get filterSave => 'Save filter';
+
+  @override
+  String get filterSaveName => 'Filter name';
+
+  @override
+  String get filterSaved => 'Saved filters';
+
+  @override
+  String filterActive(int n) {
+    return 'Filtering: $n conditions';
+  }
+
+  @override
+  String filterResultCount(int n) {
+    return '$n transactions';
+  }
+
+  @override
+  String get dataTitle => 'Data: export, import, backup';
+
+  @override
+  String get exportTitle => 'Export transactions';
+
+  @override
+  String get exportFormat => 'Format';
+
+  @override
+  String get exportWarning =>
+      'Exported files are NOT encrypted: anyone with the file can read every transaction. Store it safely.';
+
+  @override
+  String exportDone(int n) {
+    return 'Exported $n transactions';
+  }
+
+  @override
+  String get exportRange => 'Date range';
+
+  @override
+  String get exportAllTime => 'All time';
+
+  @override
+  String get exportCancelled => 'Cancelled';
+
+  @override
+  String get importTitle => 'Import from CSV';
+
+  @override
+  String get importPick => 'Choose a CSV file';
+
+  @override
+  String get importMapping => 'Map columns';
+
+  @override
+  String get importColDate => 'Date column';
+
+  @override
+  String get importColAmount => 'Amount column';
+
+  @override
+  String get importColNote => 'Note column';
+
+  @override
+  String get importColCategory => 'Category column';
+
+  @override
+  String get importColType => 'Type column (income/expense)';
+
+  @override
+  String get importNone => '(none)';
+
+  @override
+  String get importSignMode => 'Negative amounts are spending';
+
+  @override
+  String get importWallet => 'Import into wallet';
+
+  @override
+  String importPreview(int n) {
+    return 'Preview of first $n rows';
+  }
+
+  @override
+  String importRun(int n) {
+    return 'Import $n transactions';
+  }
+
+  @override
+  String importDone(int ok, int skipped) {
+    return 'Imported $ok transactions, skipped $skipped invalid rows';
+  }
+
+  @override
+  String get importEmpty => 'The file is empty or unreadable';
+
+  @override
+  String get importTooBig => 'File too large (max 5 MB)';
+
+  @override
+  String get importDateFormat => 'Date format';
+
+  @override
+  String get backupTitle => 'Encrypted backup';
+
+  @override
+  String get backupBody => 'The backup is end-to-end encrypted; only your encryption password or 24 words can open it.';
+
+  @override
+  String get backupCreate => 'Create backup file';
+
+  @override
+  String get backupDone => 'Backup saved';
+
+  @override
+  String get restoreFromBackup => 'Restore from a backup file';
+
+  @override
+  String get restoreBackupBody => 'Choose a .qtbak file, then enter the encryption password of the backed-up account.';
+
+  @override
+  String get restoreBackupInvalid => 'Not a Quly Thu Chi backup, or it is corrupted';
+
+  @override
+  String restoreBackupDone(int n) {
+    return 'Restored $n records';
+  }
+
+  @override
+  String get restoreUseRecovery => 'Use 24 words instead of the password';
+
+  @override
+  String get exportColSubcategory => 'Subcategory';
+
+  @override
+  String get exportColCurrency => 'Currency';
+
+  @override
+  String get importHasHeader => 'First row is a header';
+
+  @override
+  String get importNeedWallet => 'Create a wallet before importing';
+
+  @override
+  String get restoreWordsLabel => '24 recovery words';
+
+  @override
+  String get backupPrivacyNote =>
+      'The backup holds all your encrypted data and key bundle; without your password or 24 words nobody can open it.';
+
+  @override
+  String reportVsPrevious(String pct) {
+    return '$pct vs previous period';
+  }
 }

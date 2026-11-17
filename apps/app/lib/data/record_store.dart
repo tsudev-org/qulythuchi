@@ -95,8 +95,20 @@ final class RecordStore {
     });
   }
 
+  int _txDepth = 0;
+
+  /// Giao tác; gọi lồng nhau thì chỉ lớp ngoài cùng BEGIN/COMMIT (lỗi ở bất kỳ lớp nào ⇒ hủy toàn bộ).
   T transaction<T>(T Function() body) {
+    if (_txDepth > 0) {
+      _txDepth++;
+      try {
+        return body();
+      } finally {
+        _txDepth--;
+      }
+    }
     _db.execute('BEGIN IMMEDIATE');
+    _txDepth = 1;
     try {
       final result = body();
       _db.execute('COMMIT');
@@ -104,6 +116,8 @@ final class RecordStore {
     } on Object {
       _db.execute('ROLLBACK');
       rethrow;
+    } finally {
+      _txDepth = 0;
     }
   }
 

@@ -375,6 +375,96 @@ final class Vault {
     await _resetPinFails();
   }
 
+  // ------------------------------------------------------------------ Sao lưu tệp mã hóa
+
+  static const backupFormat = 'qulythuchi-backup';
+  static const backupVersion = 1;
+
+  /// Tạo tệp sao lưu: gói khóa (đã bọc bởi mật khẩu/24 từ) + nội dung niêm phong bằng khóa chủ, ngữ cảnh
+  /// `bak|<id>`. Nội dung gồm khóa tài khoản/khóa ví đã bọc và mọi bản ghi đã niêm phong - không có bản rõ nào.
+  Uint8List createBackup(String backupId) {
+    final payload = utf8.encode(
+      jsonEncode({
+        'acctKey': base64.encode(_store.getMeta(_mAcctKey)!),
+        'walletKeys': {for (final e in _store.walletKeys().entries) e.key: base64.encode(e.value)},
+        'records': [
+          for (final r in _store.allRecords()) {'id': r.id, 't': r.type, 'w': r.walletId, 's': base64.encode(r.sealed)},
+        ],
+      }),
+    );
+    final sealed = _kh.envelope.seal(Uint8List.fromList(payload), _requireMaster, EnvelopeContext.backup(backupId));
+    return Uint8List.fromList(
+      utf8.encode(
+        jsonEncode({
+          'format': backupFormat,
+          'v': backupVersion,
+          'id': backupId,
+          'bundle': jsonDecode(utf8.decode(_store.getMeta(_mBundle)!)),
+          'payload': base64.encode(sealed),
+        }),
+      ),
+    );
+  }
+
+  /// Khôi phục vào thiết bị CHƯA có tài khoản. Sai mật khẩu/24 từ ⇒ [EnvelopeException]/[RecoveryPhraseException];
+  /// tệp hỏng ⇒ [FormatException]. Thành công ⇒ kho khóa ở trạng thái đã mở. Trả về số bản ghi.
+  Future<int> restoreBackup(Uint8List file, {String? password, List<String>? words}) async {
+    if (hasAccount) throw StateError('Thiết bị đã có tài khoản');
+    final Map<String, Object?> doc;
+    final AccountKeyBundle bundle;
+    final String id;
+    final Uint8List sealed;
+    try {
+      doc = (jsonDecode(utf8.decode(file)) as Map).cast<String, Object?>();
+      if (doc['format'] != backupFormat || doc['v'] != backupVersion) throw const FormatException('backup');
+      id = doc['id']! as String;
+      bundle = AccountKeyBundle.fromJson((doc['bundle']! as Map).cast<String, Object?>());
+      sealed = base64.decode(doc['payload']! as String);
+    } on FormatException {
+      rethrow;
+    } on Object {
+      throw const FormatException('backup');
+    }
+    final master = password != null ? _kh.unlockWithPassword(bundle, password) : _kh.unlockWithRecovery(bundle, words!);
+    final List<SealedRow> rows;
+    final Uint8List acctKey;
+    final Map<String, Uint8List> walletKeys;
+    try {
+      final payload = (jsonDecode(utf8.decode(_kh.envelope.open(sealed, master, EnvelopeContext.backup(id)))) as Map)
+          .cast<String, Object?>();
+      acctKey = base64.decode(payload['acctKey']! as String);
+      walletKeys = {
+        for (final e in (payload['walletKeys']! as Map).entries) e.key as String: base64.decode(e.value as String),
+      };
+      rows = [
+        for (final r in (payload['records']! as List).cast<Map<Object?, Object?>>())
+          SealedRow(
+            id: r['id']! as String,
+            type: r['t']! as String,
+            walletId: r['w'] as String?,
+            sealed: base64.decode(r['s']! as String),
+          ),
+      ];
+    } on Object {
+      master.dispose();
+      throw const FormatException('backup');
+    }
+    // Một giao tác: lỗi giữa chừng không để lại thiết bị "có tài khoản" mà thiếu dữ liệu.
+    try {
+      _store.transaction(() {
+        _store.putMeta(_mBundle, utf8.encode(jsonEncode(bundle.toJson())));
+        _store.putMeta(_mAcctKey, acctKey);
+        walletKeys.forEach(_store.putWalletKey);
+        _store.putRecords(rows);
+      });
+    } on Object {
+      master.dispose();
+      rethrow;
+    }
+    _open(master);
+    return rows.length;
+  }
+
   /// Xóa sạch dữ liệu và khóa thiết bị (đặt lại app).
   Future<void> wipe() async {
     lock();

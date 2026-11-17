@@ -5,8 +5,7 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P4 - Báo cáo + dữ liệu** (phiếu `logs/handover/20261117-04_p3-xong-bat-dau-p4.md`)
-- [ ] P5 - Máy chủ `services/sync-api` (cần 👤 client OIDC + token Cloudflare)
+- [ ] **P5 - Máy chủ `services/sync-api`** (phiếu `logs/handover/20261117-05_p4-xong-bat-dau-p5.md`; cần 👤 client OIDC + token Cloudflare)
 - [ ] P6 - Đồng bộ trong app
 - [ ] P7 - Tự nhập + thông minh
 - [ ] P8 - Web + site
@@ -17,9 +16,14 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| (trống) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 17/11/2026 - P4 Báo cáo + dữ liệu (agent-qulythuchi): báo cáo theo kỳ + so với kỳ trước, thu chi 6 tháng, cơ cấu
+  danh mục, tài sản ròng, lịch chi tiêu (mọi biểu đồ có bảng thay thế, màu token), "An toàn để tiêu"; lọc nhiều điều
+  kiện + lưu bộ lọc; xuất CSV/XLSX/PDF có cảnh báo, nhập CSV ghép cột, sao lưu/khôi phục `.qtbak` mã hóa (ADR-0009).
+  43 test app; Playwright 13 bước P4 đạt 390x844 và 1280x800. Phiếu rà soát P4.
 - 17/11/2026 - P3 Nghiệp vụ nâng cao (agent-qulythuchi): ngân sách (kỳ, danh mục/ví, chuyển dư, cảnh báo), 6 hũ,
   mục tiêu, định kỳ (tự ghi/chờ xác nhận), hóa đơn + nhắc (thông báo không lộ nội dung), sổ nợ, sự kiện, tỉ giá nhập
   tay + tổng quy đổi; điều hướng Kế hoạch/Thêm. 28 test; Playwright 19 bước P3 đạt 2 khổ. Phiếu rà soát P3.
@@ -49,6 +53,7 @@
 - 17/11/2026 - X-Wing chia sẻ khóa ví, mật khẩu NFKC, Argon2id 64 MiB/3 (sàn 19 MiB/2), phong bì v1: `docs/adr/0007-*`
 
 - 17/11/2026 - sqlite3 3.x + sqlite3mc thay drift/sqlcipher_flutter_libs (EOL); PIN bọc bằng khóa thiết bị: `docs/adr/0008-*`
+- 17/11/2026 - Xuất bản rõ có cảnh báo; sao lưu `.qtbak` = gói khóa + phong bì `bak|<id>`, khôi phục chỉ trên máy chưa có tài khoản: `docs/adr/0009-*`
 - 17/11/2026 - Phiên bản theo phiếu toàn hệ 20261117-V1: `YY.M.DDNN`, thẻ `vYY.M.DDNN`, versionCode `YYMDDNN`
 
 ## Sự cố bảo mật

@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 import '../data/record_store.dart';
 import '../domain/default_categories.dart';
 import '../domain/extra_models.dart';
+import '../domain/txn_filter.dart';
 import '../domain/vn_search.dart';
 import '../security/vault.dart';
 
@@ -22,6 +23,7 @@ final class LedgerData {
     this.events = const [],
     this.rates = const [],
     this.jarPlan,
+    this.savedFilters = const [],
     this.skipped = 0,
   });
 
@@ -41,6 +43,7 @@ final class LedgerData {
 
   /// null = chưa thiết lập (giao diện dùng mặc định 6 hũ).
   final JarPlan? jarPlan;
+  final List<SavedFilter> savedFilters;
 
   /// Số bản ghi không mở được (hỏng hoặc bị tráo) - chỉ đếm, không ghi nội dung ra log.
   final int skipped;
@@ -181,6 +184,7 @@ final class LedgerRepository {
     final goals = <Goal>[];
     final events = <Event>[];
     final rates = <FxRate>[];
+    final savedFilters = <SavedFilter>[];
     SyncRecord? jarRecord;
     for (final r in _records.values) {
       if (r.isDeleted) continue;
@@ -205,6 +209,9 @@ final class LedgerRepository {
           case AppRecordTypes.fxRate:
             final rate = FxRate.fromRecord(r);
             if (rate != null) rates.add(rate);
+          case SavedFilter.recordType:
+            final f = SavedFilter.fromRecord(r);
+            if (f != null) savedFilters.add(f);
           case RecordTypes.jarPlan:
             // Nhiều thiết bị cùng tạo kế hoạch: bản ghi có HLC mới nhất thắng.
             if (jarRecord == null || (r.maxHlc != null && jarRecord.maxHlc != null && r.maxHlc! > jarRecord.maxHlc!)) {
@@ -247,6 +254,7 @@ final class LedgerRepository {
       events: events,
       rates: rates,
       jarPlan: jarRecord == null ? null : JarPlanCodec.fromRecord(jarRecord),
+      savedFilters: savedFilters..sort((a, b) => _byName(a.name, b.name)),
       skipped: skipped,
     );
   }
@@ -412,6 +420,16 @@ final class LedgerRepository {
     return t;
   }
 
+  /// Nhập hàng loạt (CSV): kiểm từng giao dịch rồi ghi tất cả trong MỘT lần ghi. Chỉ nhận thu/chi.
+  int importTxns(List<Txn> txns) {
+    for (final t in txns) {
+      if (t.kind != TxnKind.income && t.kind != TxnKind.expense) throw ArgumentError('Chỉ nhập thu/chi');
+      _checkTxn(t);
+    }
+    _persist([for (final t in txns) _apply(_base(t.id, RecordTypes.transaction, t.walletId), t.toValues())]);
+    return txns.length;
+  }
+
   /// Lưu chuyển ví: HAI bản ghi cùng `transferId`, ghi trong một giao tác.
   /// [received] khác [amount] khi hai ví khác tiền tệ (P2: người dùng tự nhập số tiền nhận).
   (Txn, Txn) saveTransfer({
@@ -562,6 +580,14 @@ final class LedgerRepository {
   }
 
   void deleteRate(String id) => _deleteRecord(id);
+
+  SavedFilter saveFilter(SavedFilter f) {
+    if (f.name.trim().isEmpty) throw const LedgerException('nameRequired');
+    _saveAccountRecord(f.id, SavedFilter.recordType, f.toValues());
+    return f;
+  }
+
+  void deleteFilter(String id) => _deleteRecord(id);
 
   // ------------------------------------------------------------------ Định kỳ / hóa đơn
 

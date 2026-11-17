@@ -5,6 +5,7 @@ import 'dart:io';
 
 const _out = 'lib/theme/tokens.g.dart';
 const _src = '../../.standards/tokens/design-tokens.json';
+const _ext = 'design/tokens.qulythuchi.json';
 
 String _camel(String k) {
   final parts = k.split('-');
@@ -68,6 +69,36 @@ String generate(Map<String, Object?> json) {
     });
     b.writeln('}');
   }
+
+  final ext = jsonDecode(File(_ext).readAsStringSync()) as Map<String, Object?>;
+  final chart = ext['chart']! as Map<String, Object?>;
+  final cLight = (chart['light']! as Map).cast<String, String>();
+  final cDark = (chart['dark']! as Map).cast<String, String>();
+  final cKeys = cLight.keys.toList();
+  b
+    ..writeln()
+    ..writeln('/// Màu biểu đồ (token mở rộng: design/tokens.qulythuchi.json, đã kiểm bằng validate_palette).')
+    ..writeln('final class QtChartPalette {')
+    ..writeln('  const QtChartPalette({');
+  for (final k in cKeys) {
+    b.writeln('    required this.${_camel(k)},');
+  }
+  b.writeln('  });');
+  for (final k in cKeys) {
+    b.writeln('  final Color ${_camel(k)};');
+  }
+  for (final (name, m) in [('light', cLight), ('dark', cDark)]) {
+    b.writeln('  static const $name = QtChartPalette(');
+    for (final k in cKeys) {
+      b.writeln('    ${_camel(k)}: ${_color(m[k]!)},');
+    }
+    b.writeln('  );');
+  }
+  b
+    ..writeln()
+    ..writeln('  /// Dải tuần tự 5 bậc (thấp → cao).')
+    ..writeln('  List<Color> get sequential => [seq1, seq2, seq3, seq4, seq5];')
+    ..writeln('}');
 
   final typo = json['typography']! as Map<String, Object?>;
   numbers('QtRadius', 'Bo góc (px).', (json['radius']! as Map).cast());

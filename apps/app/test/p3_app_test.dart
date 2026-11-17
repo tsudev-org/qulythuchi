@@ -61,6 +61,7 @@ void main() {
       await pumpApp(tester, services);
 
       expect(find.text('Chờ xác nhận (1)'), findsOneWidget);
+      await scrollTo(tester, find.text('Hóa đơn sắp đến hạn'));
       expect(find.text('Hóa đơn sắp đến hạn'), findsOneWidget);
       await scrollTo(tester, find.text('Ngân sách cần chú ý'));
       expect(find.text('Ngân sách cần chú ý'), findsOneWidget);

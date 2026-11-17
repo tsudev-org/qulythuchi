@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 
+import '../../domain/reports.dart';
 import '../../state/providers.dart';
 import '../../state/settings.dart';
 import '../../theme/app_theme.dart';
@@ -36,6 +37,7 @@ class OverviewPage extends ConsumerWidget {
     final base = Currency.of(ref.watch(settingsProvider.select((s) => s.baseCurrency)));
     final converted = data.totalIn(base);
     final pending = data.pendingTxns;
+    final safe = Reports(data, base).safeToSpend(today);
     final bills = upcomingBills(data, today);
     final watchBudgets = [
       for (final b in data.budgets)
@@ -120,6 +122,8 @@ class OverviewPage extends ConsumerWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: QtSpace.s4),
+                  _SafeToSpendCard(safe: safe),
                   if (pending.isNotEmpty) ...[
                     const SizedBox(height: QtSpace.s6),
                     _SectionHeader(
@@ -280,6 +284,55 @@ class _Banner extends StatelessWidget {
           const SizedBox(width: QtSpace.s2),
           Expanded(child: Text(text)),
         ],
+      ),
+    );
+  }
+}
+
+class _SafeToSpendCard extends ConsumerWidget {
+  const _SafeToSpendCard({required this.safe});
+  final SafeToSpend safe;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
+    final p = context.palette;
+    final hide = ref.watch(settingsProvider.select((s) => s.hideBalances));
+    String fmt(Money m) => hide ? '••••••' : formatMoney(m, locale: context.appLocale);
+    final over = safe.amount.isNegative;
+    return Card(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(QtRadius.lg),
+        onTap: () => context.go('/more/reports'),
+        child: Padding(
+          padding: const EdgeInsets.all(QtSpace.s4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(over ? Icons.error_outline : Icons.shield_outlined, color: over ? p.danger : p.primary),
+                  const SizedBox(width: QtSpace.s2),
+                  Expanded(
+                    child: Text(l.safeTitle, style: TextStyle(color: p.textSecondary)),
+                  ),
+                  const Icon(Icons.chevron_right),
+                ],
+              ),
+              const SizedBox(height: QtSpace.s1),
+              MoneyText(safe.amount, style: Theme.of(context).textTheme.titleLarge),
+              Text(
+                over ? l.safeOver(fmt(-safe.amount)) : l.safePerDay(fmt(safe.perDay)),
+                style: TextStyle(color: over ? p.danger : p.textPrimary),
+              ),
+              const SizedBox(height: QtSpace.s1),
+              Text(
+                l.safeExplain(fmt(safe.income), fmt(safe.spent), fmt(safe.upcomingBills), fmt(safe.goals)),
+                style: TextStyle(color: p.textSecondary, fontSize: QtFontSize.sm),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
