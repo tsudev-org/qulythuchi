@@ -66,7 +66,12 @@ class _AccountPageState extends ConsumerState<AccountPage> {
     );
   }
 
-  void _reload() => setState(() => _info = _loadInfo());
+  void _reload() {
+    final next = _loadInfo();
+    setState(() {
+      _info = next;
+    });
+  }
 
   Future<void> _guard(Future<void> Function() action) async {
     if (_busy) return;

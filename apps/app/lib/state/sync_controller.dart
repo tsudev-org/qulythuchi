@@ -139,7 +139,7 @@ final class SyncController extends Notifier<SyncState> {
   Timer? _debounce;
   Timer? _periodic;
   Future<void>? _running;
-  bool _again = false;
+  Future<void>? _queued;
 
   static const _mProfile = 'sync.profile';
   static const debounceDelay = Duration(seconds: 4);
@@ -319,19 +319,17 @@ final class SyncController extends Notifier<SyncState> {
 
   // ------------------------------------------------------------------ Đồng bộ
 
-  /// Chạy một lượt (gộp lời gọi trùng). Lỗi được ghi vào [state], không ném ra.
+  /// Chạy một lượt. Gọi khi đang chạy ⇒ xếp ĐÚNG MỘT lượt nữa sau lượt hiện tại và chờ lượt đó (thay đổi mới nhất
+  /// chắc chắn được gửi). Lỗi được ghi vào [state], không ném ra.
   Future<void> syncNow() {
-    if (_running != null) {
-      _again = true;
-      return _running!;
+    final running = _running;
+    if (running != null) {
+      return _queued ??= running.then((_) {
+        _queued = null;
+        return syncNow();
+      });
     }
-    return _running = _run().whenComplete(() {
-      _running = null;
-      if (_again) {
-        _again = false;
-        unawaited(syncNow());
-      }
-    });
+    return _running = _run().whenComplete(() => _running = null);
   }
 
   Future<void> _run() async {
