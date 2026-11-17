@@ -5,8 +5,7 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P3 - Nghiệp vụ nâng cao** (phiếu `logs/handover/20261117-03_p2-xong-bat-dau-p3.md`)
-- [ ] P4 - Báo cáo + dữ liệu
+- [ ] **P4 - Báo cáo + dữ liệu** (phiếu `logs/handover/20261117-04_p3-xong-bat-dau-p4.md`)
 - [ ] P5 - Máy chủ `services/sync-api` (cần 👤 client OIDC + token Cloudflare)
 - [ ] P6 - Đồng bộ trong app
 - [ ] P7 - Tự nhập + thông minh
@@ -21,6 +20,9 @@
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 17/11/2026 - P3 Nghiệp vụ nâng cao (agent-qulythuchi): ngân sách (kỳ, danh mục/ví, chuyển dư, cảnh báo), 6 hũ,
+  mục tiêu, định kỳ (tự ghi/chờ xác nhận), hóa đơn + nhắc (thông báo không lộ nội dung), sổ nợ, sự kiện, tỉ giá nhập
+  tay + tổng quy đổi; điều hướng Kế hoạch/Thêm. 28 test; Playwright 19 bước P3 đạt 2 khổ. Phiếu rà soát P3.
 - 17/11/2026 - P2 App Flutter khung (agent-qulythuchi): 6 đích, kho khóa (mật khẩu/24 từ/PIN/sinh trắc, tự khóa 60 s,
   FLAG_SECURE), CSDL sqlite3mc (web: WASM + IndexedDB, chỉ bản niêm phong), ví/danh mục 2 tầng/giao dịch/chuyển ví,
   máy tính số tiền, tìm không dấu, token Sáng/Tối, vi+en. 14 test; chạy thật bản web bằng Playwright đạt. Build Linux

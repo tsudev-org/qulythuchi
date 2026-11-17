@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../widgets/common.dart';
+
+/// Mục "Thêm": các công cụ ít dùng hằng ngày.
+class MorePage extends StatelessWidget {
+  const MorePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final items = [
+      (Icons.event_repeat_outlined, l.moreRecurring, '/more/recurring'),
+      (Icons.handshake_outlined, l.moreDebts, '/more/debts'),
+      (Icons.luggage_outlined, l.moreEvents, '/more/events'),
+      (Icons.category_outlined, l.navCategories, '/more/categories'),
+      (Icons.currency_exchange, l.moreRates, '/more/rates'),
+      (Icons.settings_outlined, l.navSettings, '/more/settings'),
+    ];
+    return Scaffold(
+      appBar: AppBar(title: Text(l.navMore)),
+      body: PageBody(
+        child: ListView(
+          children: [
+            for (final (icon, label, path) in items)
+              ListTile(
+                leading: Icon(icon),
+                title: Text(label),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.go(path),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}

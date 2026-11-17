@@ -5,7 +5,9 @@ import 'package:sodium/sodium_sumo.dart';
 import '../data/key_storage.dart';
 import '../data/record_store.dart';
 import '../domain/default_categories.dart';
+import '../domain/extra_models.dart';
 import '../security/vault.dart';
+import '../services/reminders.dart';
 import 'ledger_repository.dart';
 
 /// Dịch vụ dựng một lần lúc khởi động (`main.dart`), ghi đè vào [servicesProvider].
@@ -102,7 +104,11 @@ final class LedgerNotifier extends Notifier<LedgerData> {
   LedgerData build() {
     final status = ref.watch(sessionProvider);
     if (status != SessionStatus.unlocked && status != SessionStatus.onboarding) return const LedgerData();
-    return ref.watch(repositoryProvider).load();
+    final repo = ref.watch(repositoryProvider);
+    final loaded = repo.load();
+    // Sinh giao dịch định kỳ đến hạn ngay khi mở khóa (chỉ lúc này mới có khóa để niêm phong).
+    final created = repo.materializeRecurring(CivilDate.fromDateTime(DateTime.now()));
+    return created == 0 ? loaded : repo.snapshot(skipped: loaded.skipped);
   }
 
   T _mutate<T>(T Function(LedgerRepository repo) action) {
@@ -129,6 +135,8 @@ final class LedgerNotifier extends Notifier<LedgerData> {
     int fee = 0,
     required CivilDate date,
     String? note,
+    String? goalId,
+    String? eventId,
   }) => _mutate(
     (r) => r.saveTransfer(
       transferId: transferId,
@@ -139,6 +147,39 @@ final class LedgerNotifier extends Notifier<LedgerData> {
       fee: fee,
       date: date,
       note: note,
+      goalId: goalId,
+      eventId: eventId,
     ),
   );
+
+  Budget saveBudget(Budget b) => _mutate((r) => r.saveBudget(b));
+  void deleteBudget(String id) => _mutate((r) => r.deleteBudget(id));
+  Goal saveGoal(Goal g) => _mutate((r) => r.saveGoal(g));
+  void deleteGoal(String id) => _mutate((r) => r.deleteGoal(id));
+  Event saveEvent(Event e) => _mutate((r) => r.saveEvent(e));
+  void deleteEvent(String id) => _mutate((r) => r.deleteEvent(id));
+  JarPlan saveJarPlan(JarPlan p) => _mutate((r) => r.saveJarPlan(p));
+  FxRate saveRate(FxRate x) => _mutate((r) => r.saveRate(x));
+  void deleteRate(String id) => _mutate((r) => r.deleteRate(id));
+
+  /// Lưu rồi sinh ngay các lần đã đến hạn (không đợi lần mở khóa sau).
+  Recurring saveRecurring(Recurring x) => _mutate((r) {
+    final saved = r.saveRecurring(x);
+    r.materializeRecurring(CivilDate.fromDateTime(DateTime.now()));
+    return saved;
+  });
+  void deleteRecurring(String id) => _mutate((r) => r.deleteRecurring(id));
+  void confirmPending(String id) => _mutate((r) => r.confirmPending(id));
+  Txn payBill(String recurringId, CivilDate due, {CivilDate? paidOn, int? amount}) =>
+      _mutate((r) => r.payBill(recurringId, due, paidOn: paidOn, amount: amount));
+  Debt saveDebt(Debt d, {bool recordDisbursement = false}) =>
+      _mutate((r) => r.saveDebt(d, recordDisbursement: recordDisbursement));
+  Txn recordDebtPayment(String debtId, int amount, CivilDate date, {String? note}) =>
+      _mutate((r) => r.recordDebtPayment(debtId, amount, date, note: note));
+  void deleteDebt(String id) => _mutate((r) => r.deleteDebt(id));
 }
+
+/// Bộ lên lịch thông báo (ghi đè trong test bằng [NoopReminderScheduler]).
+final reminderSchedulerProvider = Provider<ReminderScheduler>(
+  (ref) => LocalNotificationScheduler.platformSupported ? LocalNotificationScheduler() : NoopReminderScheduler(),
+);

@@ -10,6 +10,7 @@ import '../../theme/tokens.g.dart';
 import '../onboarding/onboarding.dart';
 import '../widgets/auth_widgets.dart';
 import '../widgets/common.dart';
+import '../widgets/form_fields.dart';
 
 /// Phiên bản sản phẩm theo khuôn `YY.M.DDNN` (phiếu 20261117-V1); khớp `version` trong pubspec.yaml.
 const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '26.11.1701');
@@ -134,37 +135,43 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   Future<void> _wipe() async {
     final l = context.l10n;
-    final c = TextEditingController();
     final ok = await showDialog<bool>(
       context: context,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setLocal) => AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(l.settingsResetConfirm),
-              const SizedBox(height: QtSpace.s4),
-              TextField(
-                controller: c,
-                autofocus: true,
-                decoration: InputDecoration(labelText: l.settingsResetTypeHint),
-                onChanged: (_) => setLocal(() {}),
+      builder: (ctx) => ControllerScope(
+        count: 1,
+        builder: (ctx, cs) => StatefulBuilder(
+          builder: (ctx, setLocal) => AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(l.settingsResetConfirm),
+                const SizedBox(height: QtSpace.s4),
+                TextField(
+                  controller: cs[0],
+                  autofocus: true,
+                  decoration: InputDecoration(labelText: l.settingsResetTypeHint),
+                  onChanged: (_) => setLocal(() {}),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l.actionCancel)),
+              FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: ctx.palette.danger,
+                  foregroundColor: ctx.palette.onStatus,
+                ),
+                onPressed: cs[0].text.trim().toUpperCase() == l.settingsResetWord
+                    ? () => Navigator.pop(ctx, true)
+                    : null,
+                child: Text(l.actionDelete),
               ),
             ],
           ),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l.actionCancel)),
-            FilledButton(
-              style: FilledButton.styleFrom(backgroundColor: ctx.palette.danger, foregroundColor: ctx.palette.onStatus),
-              onPressed: c.text.trim().toUpperCase() == l.settingsResetWord ? () => Navigator.pop(ctx, true) : null,
-              child: Text(l.actionDelete),
-            ),
-          ],
         ),
       ),
     );
-    c.dispose();
     if (ok == true) await ref.read(sessionProvider.notifier).wipe();
   }
 
@@ -259,6 +266,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
             ] else
               ListTile(leading: const Icon(Icons.info_outline), title: Text(l.settingsQuickUnlockWeb)),
+            if (ref.read(reminderSchedulerProvider).supported)
+              SwitchListTile(
+                value: settings.billReminders,
+                onChanged: (v) async {
+                  if (v && !await ref.read(reminderSchedulerProvider).requestPermission()) return;
+                  await notifier.setBillReminders(v);
+                },
+                title: Text(l.settingsNotifications),
+                subtitle: Text(l.settingsNotificationsSub),
+                secondary: const Icon(Icons.notifications_outlined),
+              ),
             ListTile(leading: const Icon(Icons.timer_outlined), title: Text(l.settingsAutoLock)),
             ListTile(
               leading: const Icon(Icons.password),

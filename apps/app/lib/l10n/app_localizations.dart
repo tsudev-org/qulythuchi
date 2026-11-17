@@ -1165,6 +1165,1008 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Biểu tượng'**
   String get iconLabel;
+
+  /// No description provided for @navPlan.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kế hoạch'**
+  String get navPlan;
+
+  /// No description provided for @navMore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm'**
+  String get navMore;
+
+  /// No description provided for @planBudgets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngân sách'**
+  String get planBudgets;
+
+  /// No description provided for @planJars.
+  ///
+  /// In vi, this message translates to:
+  /// **'6 hũ'**
+  String get planJars;
+
+  /// No description provided for @planGoals.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mục tiêu'**
+  String get planGoals;
+
+  /// No description provided for @budgetNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngân sách mới'**
+  String get budgetNew;
+
+  /// No description provided for @budgetEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa ngân sách'**
+  String get budgetEdit;
+
+  /// No description provided for @budgetName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên ngân sách'**
+  String get budgetName;
+
+  /// No description provided for @budgetAmount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn mức mỗi kỳ'**
+  String get budgetAmount;
+
+  /// No description provided for @budgetPeriod.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chu kỳ'**
+  String get budgetPeriod;
+
+  /// No description provided for @periodWeekly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng tuần'**
+  String get periodWeekly;
+
+  /// No description provided for @periodMonthly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng tháng'**
+  String get periodMonthly;
+
+  /// No description provided for @periodYearly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng năm'**
+  String get periodYearly;
+
+  /// No description provided for @periodCustom.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tùy chọn'**
+  String get periodCustom;
+
+  /// No description provided for @budgetStartDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày bắt đầu kỳ (1-31)'**
+  String get budgetStartDay;
+
+  /// No description provided for @budgetStartWeekday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỳ bắt đầu vào'**
+  String get budgetStartWeekday;
+
+  /// No description provided for @budgetFrom.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ ngày'**
+  String get budgetFrom;
+
+  /// No description provided for @budgetTo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đến ngày'**
+  String get budgetTo;
+
+  /// No description provided for @budgetCategories.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh mục áp dụng'**
+  String get budgetCategories;
+
+  /// No description provided for @budgetAllCategories.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mọi khoản chi'**
+  String get budgetAllCategories;
+
+  /// No description provided for @budgetWallets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví áp dụng'**
+  String get budgetWallets;
+
+  /// No description provided for @budgetAllWallets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mọi ví cùng tiền tệ'**
+  String get budgetAllWallets;
+
+  /// No description provided for @budgetRollover.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuyển phần dư/vượt sang kỳ sau'**
+  String get budgetRollover;
+
+  /// No description provided for @budgetAlertAt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cảnh báo khi dùng tới (%)'**
+  String get budgetAlertAt;
+
+  /// No description provided for @budgetSpentOf.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã chi {spent} / {limit}'**
+  String budgetSpentOf(String spent, String limit);
+
+  /// No description provided for @budgetRemaining.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {amount}'**
+  String budgetRemaining(String amount);
+
+  /// No description provided for @budgetOver.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vượt {amount}'**
+  String budgetOver(String amount);
+
+  /// No description provided for @budgetDaily.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi ngày còn được tiêu {amount}'**
+  String budgetDaily(String amount);
+
+  /// No description provided for @budgetStateOk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trong hạn mức'**
+  String get budgetStateOk;
+
+  /// No description provided for @budgetStateWarning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sắp hết hạn mức'**
+  String get budgetStateWarning;
+
+  /// No description provided for @budgetStateOver.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã vượt hạn mức'**
+  String get budgetStateOver;
+
+  /// No description provided for @budgetDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa ngân sách \"{name}\"?'**
+  String budgetDeleteConfirm(String name);
+
+  /// No description provided for @emptyBudgetsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có ngân sách'**
+  String get emptyBudgetsTitle;
+
+  /// No description provided for @emptyBudgetsBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt hạn mức chi theo tháng/tuần cho cả ví hoặc từng danh mục (phương pháp phong bì).'**
+  String get emptyBudgetsBody;
+
+  /// No description provided for @jarsIncomeThisMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập tháng này ({currency})'**
+  String jarsIncomeThisMonth(String currency);
+
+  /// No description provided for @jarsSimulate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử chia một khoản thu'**
+  String get jarsSimulate;
+
+  /// No description provided for @jarsEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa tỉ lệ các hũ'**
+  String get jarsEdit;
+
+  /// No description provided for @jarsReset.
+  ///
+  /// In vi, this message translates to:
+  /// **'Về mặc định 6 hũ'**
+  String get jarsReset;
+
+  /// No description provided for @jarsTotalMustBe100.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng tỉ lệ phải đúng 100% (hiện {total}%)'**
+  String jarsTotalMustBe100(String total);
+
+  /// No description provided for @jarsNoIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có khoản thu nào tháng này bằng {currency}.'**
+  String jarsNoIncome(String currency);
+
+  /// No description provided for @jarNec.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiết yếu'**
+  String get jarNec;
+
+  /// No description provided for @jarLts.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiết kiệm dài hạn'**
+  String get jarLts;
+
+  /// No description provided for @jarEdu.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giáo dục'**
+  String get jarEdu;
+
+  /// No description provided for @jarPly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hưởng thụ'**
+  String get jarPly;
+
+  /// No description provided for @jarFfa.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự do tài chính'**
+  String get jarFfa;
+
+  /// No description provided for @jarGiv.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cho đi'**
+  String get jarGiv;
+
+  /// No description provided for @jarsNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phương pháp 6 hũ: chia mọi khoản thu theo tỉ lệ cố định để chi tiêu có kỷ luật.'**
+  String get jarsNote;
+
+  /// No description provided for @goalNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mục tiêu mới'**
+  String get goalNew;
+
+  /// No description provided for @goalEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa mục tiêu'**
+  String get goalEdit;
+
+  /// No description provided for @goalName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên mục tiêu'**
+  String get goalName;
+
+  /// No description provided for @goalTarget.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền cần'**
+  String get goalTarget;
+
+  /// No description provided for @goalStarting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có sẵn'**
+  String get goalStarting;
+
+  /// No description provided for @goalDeadline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn hoàn thành'**
+  String get goalDeadline;
+
+  /// No description provided for @goalNoDeadline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có hạn'**
+  String get goalNoDeadline;
+
+  /// No description provided for @goalAchieved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hoàn thành'**
+  String get goalAchieved;
+
+  /// No description provided for @goalProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'{saved} / {target} ({percent}%)'**
+  String goalProgress(String saved, String target, String percent);
+
+  /// No description provided for @goalMonthly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần góp {amount} mỗi tháng để kịp hạn'**
+  String goalMonthly(String amount);
+
+  /// No description provided for @goalContribute.
+  ///
+  /// In vi, this message translates to:
+  /// **'Góp tiền'**
+  String get goalContribute;
+
+  /// No description provided for @goalDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa mục tiêu \"{name}\"? Giao dịch đã góp vẫn giữ nguyên.'**
+  String goalDeleteConfirm(String name);
+
+  /// No description provided for @emptyGoalsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có mục tiêu'**
+  String get emptyGoalsTitle;
+
+  /// No description provided for @emptyGoalsBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt mục tiêu tiết kiệm (mua xe, du lịch…) và theo dõi tiến độ.'**
+  String get emptyGoalsBody;
+
+  /// No description provided for @clearValue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ chọn'**
+  String get clearValue;
+
+  /// No description provided for @selectAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả'**
+  String get selectAll;
+
+  /// No description provided for @none.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không'**
+  String get none;
+
+  /// No description provided for @moreRecurring.
+  ///
+  /// In vi, this message translates to:
+  /// **'Định kỳ và hóa đơn'**
+  String get moreRecurring;
+
+  /// No description provided for @moreDebts.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sổ nợ / cho vay'**
+  String get moreDebts;
+
+  /// No description provided for @moreEvents.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện, chuyến đi'**
+  String get moreEvents;
+
+  /// No description provided for @moreRates.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉ giá'**
+  String get moreRates;
+
+  /// No description provided for @recurringNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoản định kỳ mới'**
+  String get recurringNew;
+
+  /// No description provided for @recurringEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa khoản định kỳ'**
+  String get recurringEdit;
+
+  /// No description provided for @recurringName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên khoản'**
+  String get recurringName;
+
+  /// No description provided for @recurringFrequency.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lặp lại'**
+  String get recurringFrequency;
+
+  /// No description provided for @freqDaily.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng ngày'**
+  String get freqDaily;
+
+  /// No description provided for @freqWeekly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng tuần'**
+  String get freqWeekly;
+
+  /// No description provided for @freqMonthly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng tháng'**
+  String get freqMonthly;
+
+  /// No description provided for @freqYearly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng năm'**
+  String get freqYearly;
+
+  /// No description provided for @recurringInterval.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi bao nhiêu kỳ'**
+  String get recurringInterval;
+
+  /// No description provided for @recurringStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu từ'**
+  String get recurringStart;
+
+  /// No description provided for @recurringUntil.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết thúc (không bắt buộc)'**
+  String get recurringUntil;
+
+  /// No description provided for @recurringIsBill.
+  ///
+  /// In vi, this message translates to:
+  /// **'Là hóa đơn (hiện trong lịch hóa đơn, có nhắc)'**
+  String get recurringIsBill;
+
+  /// No description provided for @recurringAuto.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự ghi giao dịch khi đến hạn'**
+  String get recurringAuto;
+
+  /// No description provided for @recurringAutoOff.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tắt: giao dịch được tạo ở trạng thái chờ bạn xác nhận'**
+  String get recurringAutoOff;
+
+  /// No description provided for @recurringRemind.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc trước (ngày)'**
+  String get recurringRemind;
+
+  /// No description provided for @recurringPaused.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạm dừng'**
+  String get recurringPaused;
+
+  /// No description provided for @recurringNext.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần tới: {date}'**
+  String recurringNext(String date);
+
+  /// No description provided for @recurringEnded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã kết thúc'**
+  String get recurringEnded;
+
+  /// No description provided for @recurringDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa khoản \"{name}\"? Giao dịch đã tạo vẫn giữ nguyên.'**
+  String recurringDeleteConfirm(String name);
+
+  /// No description provided for @emptyRecurringTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có khoản định kỳ'**
+  String get emptyRecurringTitle;
+
+  /// No description provided for @emptyRecurringBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm tiền nhà, điện nước, lương… để app tự ghi và nhắc trước hạn.'**
+  String get emptyRecurringBody;
+
+  /// No description provided for @billsUpcoming.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hóa đơn sắp đến hạn'**
+  String get billsUpcoming;
+
+  /// No description provided for @billDueIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đến hạn {date} (còn {days} ngày)'**
+  String billDueIn(String date, int days);
+
+  /// No description provided for @billDueToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đến hạn hôm nay'**
+  String get billDueToday;
+
+  /// No description provided for @billPay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã trả'**
+  String get billPay;
+
+  /// No description provided for @billPaid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã ghi nhận thanh toán'**
+  String get billPaid;
+
+  /// No description provided for @pendingTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ xác nhận ({n})'**
+  String pendingTitle(int n);
+
+  /// No description provided for @pendingConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận'**
+  String get pendingConfirm;
+
+  /// No description provided for @pendingSkip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ qua'**
+  String get pendingSkip;
+
+  /// No description provided for @pendingBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao dịch tự tạo, chưa tính vào số dư.'**
+  String get pendingBanner;
+
+  /// No description provided for @budgetAlertsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngân sách cần chú ý'**
+  String get budgetAlertsTitle;
+
+  /// No description provided for @debtNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoản nợ mới'**
+  String get debtNew;
+
+  /// No description provided for @debtEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoản nợ'**
+  String get debtEdit;
+
+  /// No description provided for @debtKind.
+  ///
+  /// In vi, this message translates to:
+  /// **'Loại'**
+  String get debtKind;
+
+  /// No description provided for @debtLend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cho vay'**
+  String get debtLend;
+
+  /// No description provided for @debtBorrow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đi vay'**
+  String get debtBorrow;
+
+  /// No description provided for @debtCounterparty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người vay / cho vay'**
+  String get debtCounterparty;
+
+  /// No description provided for @debtPrincipal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền gốc'**
+  String get debtPrincipal;
+
+  /// No description provided for @debtStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày vay'**
+  String get debtStart;
+
+  /// No description provided for @debtDue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn trả'**
+  String get debtDue;
+
+  /// No description provided for @debtInterest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lãi suất năm (%)'**
+  String get debtInterest;
+
+  /// No description provided for @debtRecordDisbursement.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi giao dịch tiền ra/vào ví ngay'**
+  String get debtRecordDisbursement;
+
+  /// No description provided for @debtPaid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã trả {amount}'**
+  String debtPaid(String amount);
+
+  /// No description provided for @debtRemaining.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn lại {amount}'**
+  String debtRemaining(String amount);
+
+  /// No description provided for @debtSettled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tất toán'**
+  String get debtSettled;
+
+  /// No description provided for @debtRecordPayment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi nhận trả nợ'**
+  String get debtRecordPayment;
+
+  /// No description provided for @debtCollect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi nhận thu nợ'**
+  String get debtCollect;
+
+  /// No description provided for @debtClose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng khoản nợ'**
+  String get debtClose;
+
+  /// No description provided for @debtClosed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đóng'**
+  String get debtClosed;
+
+  /// No description provided for @debtOverdue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quá hạn'**
+  String get debtOverdue;
+
+  /// No description provided for @debtPayments.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lịch sử thanh toán'**
+  String get debtPayments;
+
+  /// No description provided for @debtDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa khoản nợ với \"{name}\"? Giao dịch đã ghi vẫn giữ nguyên.'**
+  String debtDeleteConfirm(String name);
+
+  /// No description provided for @emptyDebtsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có khoản nợ nào'**
+  String get emptyDebtsTitle;
+
+  /// No description provided for @emptyDebtsBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi lại tiền cho vay, đi vay và theo dõi trả dần.'**
+  String get emptyDebtsBody;
+
+  /// No description provided for @debtsLendTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang cho vay'**
+  String get debtsLendTotal;
+
+  /// No description provided for @debtsBorrowTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang nợ'**
+  String get debtsBorrowTotal;
+
+  /// No description provided for @eventNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện mới'**
+  String get eventNew;
+
+  /// No description provided for @eventEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện'**
+  String get eventEdit;
+
+  /// No description provided for @eventName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên sự kiện / chuyến đi'**
+  String get eventName;
+
+  /// No description provided for @eventStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu'**
+  String get eventStart;
+
+  /// No description provided for @eventEnd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết thúc'**
+  String get eventEnd;
+
+  /// No description provided for @eventBudget.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngân sách (không bắt buộc)'**
+  String get eventBudget;
+
+  /// No description provided for @eventBudgetCurrency.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền tệ ngân sách'**
+  String get eventBudgetCurrency;
+
+  /// No description provided for @eventSpent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã chi {amount}'**
+  String eventSpent(String amount);
+
+  /// No description provided for @eventTxns.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao dịch của sự kiện'**
+  String get eventTxns;
+
+  /// No description provided for @eventDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa sự kiện \"{name}\"? Giao dịch vẫn giữ nguyên.'**
+  String eventDeleteConfirm(String name);
+
+  /// No description provided for @emptyEventsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có sự kiện'**
+  String get emptyEventsTitle;
+
+  /// No description provided for @emptyEventsBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gắn giao dịch vào chuyến đi, đám cưới… để tổng kết riêng.'**
+  String get emptyEventsBody;
+
+  /// No description provided for @txnEvent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện'**
+  String get txnEvent;
+
+  /// No description provided for @txnGoal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Góp cho mục tiêu'**
+  String get txnGoal;
+
+  /// No description provided for @ratesBase.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền tệ quy đổi tổng'**
+  String get ratesBase;
+
+  /// No description provided for @ratesNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm tỉ giá'**
+  String get ratesNew;
+
+  /// No description provided for @ratesFrom.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ tiền tệ'**
+  String get ratesFrom;
+
+  /// No description provided for @ratesValue.
+  ///
+  /// In vi, this message translates to:
+  /// **'1 {from} = ? {to}'**
+  String ratesValue(String from, String to);
+
+  /// No description provided for @ratesInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉ giá không hợp lệ'**
+  String get ratesInvalid;
+
+  /// No description provided for @ratesNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉ giá nhập tay. Tự cập nhật qua máy chủ Quly Thu Chi sẽ có khi bật đồng bộ.'**
+  String get ratesNote;
+
+  /// No description provided for @ratesMissing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có tỉ giá cho: {codes}'**
+  String ratesMissing(String codes);
+
+  /// No description provided for @emptyRatesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có tỉ giá'**
+  String get emptyRatesTitle;
+
+  /// No description provided for @emptyRatesBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ cần khi bạn có ví bằng nhiều loại tiền.'**
+  String get emptyRatesBody;
+
+  /// No description provided for @overviewTotalIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng quy đổi ({currency})'**
+  String overviewTotalIn(String currency);
+
+  /// No description provided for @errAlertRange.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngưỡng cảnh báo từ 10% đến 100%'**
+  String get errAlertRange;
+
+  /// No description provided for @errDateRange.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày kết thúc phải sau ngày bắt đầu'**
+  String get errDateRange;
+
+  /// No description provided for @errSameCurrency.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hai tiền tệ phải khác nhau'**
+  String get errSameCurrency;
+
+  /// No description provided for @errRateInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá trị không hợp lệ'**
+  String get errRateInvalid;
+
+  /// No description provided for @errRemindRange.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số ngày nhắc từ 0 đến 30'**
+  String get errRemindRange;
+
+  /// No description provided for @errNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không còn tồn tại'**
+  String get errNotFound;
+
+  /// No description provided for @errWalletLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đổi được ví của khoản này'**
+  String get errWalletLocked;
+
+  /// No description provided for @weekday1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thứ Hai'**
+  String get weekday1;
+
+  /// No description provided for @weekday2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thứ Ba'**
+  String get weekday2;
+
+  /// No description provided for @weekday3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thứ Tư'**
+  String get weekday3;
+
+  /// No description provided for @weekday4.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thứ Năm'**
+  String get weekday4;
+
+  /// No description provided for @weekday5.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thứ Sáu'**
+  String get weekday5;
+
+  /// No description provided for @weekday6.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thứ Bảy'**
+  String get weekday6;
+
+  /// No description provided for @weekday7.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ Nhật'**
+  String get weekday7;
+
+  /// No description provided for @notifBillTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hóa đơn sắp đến hạn'**
+  String get notifBillTitle;
+
+  /// No description provided for @notifBillBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở Quly Thu Chi để xem chi tiết.'**
+  String get notifBillBody;
+
+  /// No description provided for @settingsNotifications.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc hóa đơn'**
+  String get settingsNotifications;
+
+  /// No description provided for @settingsNotificationsSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông báo không chứa tên hay số tiền, để không lộ trên màn hình khóa'**
+  String get settingsNotificationsSub;
+
+  /// No description provided for @pendingLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ xác nhận'**
+  String get pendingLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

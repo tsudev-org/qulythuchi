@@ -89,7 +89,7 @@ class _TxnListPageState extends ConsumerState<TxnListPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(QtSpace.s4, 0, QtSpace.s4, QtSpace.s2),
+              padding: const EdgeInsets.fromLTRB(QtSpace.s4, QtSpace.s2, QtSpace.s4, QtSpace.s2),
               child: TextField(
                 controller: _search,
                 onChanged: _onChanged,
