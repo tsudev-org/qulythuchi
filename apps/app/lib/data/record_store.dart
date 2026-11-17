@@ -65,6 +65,65 @@ final class RecordStore {
     [walletId, wrapped],
   );
 
+  /// Khóa ví đã bọc chưa đẩy lên máy chủ.
+  Map<String, Uint8List> dirtyWalletKeys() => {
+    for (final r in _db.select('SELECT wallet_id, wrapped FROM wallet_keys WHERE dirty = 1'))
+      r['wallet_id'] as String: r['wrapped'] as Uint8List,
+  };
+
+  /// Đã đẩy xong ⇒ bỏ cờ (chỉ khi bản bọc chưa đổi trong lúc gửi).
+  void markWalletKeySynced(String walletId, Uint8List wrapped) =>
+      _db.execute('UPDATE wallet_keys SET dirty = 0 WHERE wallet_id = ? AND wrapped = ?', [walletId, wrapped]);
+
+  /// Khóa ví nhận từ máy chủ (không đánh dirty). Không ghi đè khóa đã có.
+  void putRemoteWalletKey(String walletId, Uint8List wrapped) => _db.execute(
+    'INSERT INTO wallet_keys(wallet_id, wrapped, dirty) VALUES(?, ?, 0) ON CONFLICT(wallet_id) DO NOTHING',
+    [walletId, wrapped],
+  );
+
+  SealedRow? record(String id) {
+    final rs = _db.select('SELECT id, type, wallet_id, sealed, rev, dirty FROM records WHERE id = ?', [id]);
+    return rs.isEmpty ? null : _row(rs.first);
+  }
+
+  bool isDirty(String id) => _db.select('SELECT 1 FROM records WHERE id = ? AND dirty = 1', [id]).isNotEmpty;
+
+  int get dirtyCount => _db.select('SELECT count(*) AS n FROM records WHERE dirty = 1').first['n'] as int;
+
+  /// Bản ghi chưa đẩy (cũ nhất trước theo rowid để lô ổn định).
+  List<SealedRow> dirtyRecords(int limit) => [
+    for (final r in _db.select(
+      'SELECT id, type, wallet_id, sealed, rev, dirty FROM records WHERE dirty = 1 ORDER BY rowid LIMIT ?',
+      [limit],
+    ))
+      _row(r),
+  ];
+
+  /// Máy chủ đã nhận ⇒ ghi rev; chỉ bỏ cờ dirty nếu bản niêm phong chưa đổi trong lúc gửi (người dùng sửa tiếp).
+  void markSynced(String id, Uint8List sentSealed, int rev) {
+    _db.execute('UPDATE records SET rev = ?, dirty = 0 WHERE id = ? AND sealed = ?', [rev, id, sentSealed]);
+    if (_db.updatedRows == 0) _db.execute('UPDATE records SET rev = max(rev, ?) WHERE id = ?', [rev, id]);
+  }
+
+  /// Ghi bản ghi nhận/hợp nhất từ máy chủ với rev và cờ dirty tường minh. Danh tính (loại, ví) không đổi được.
+  void putSynced(SealedRow row, {required bool dirty}) {
+    _db.execute(
+      'INSERT INTO records(id, type, wallet_id, sealed, rev, dirty) VALUES(?, ?, ?, ?, ?, ?) '
+      'ON CONFLICT(id) DO UPDATE SET sealed = excluded.sealed, rev = excluded.rev, dirty = excluded.dirty '
+      'WHERE records.type = excluded.type AND records.wallet_id IS excluded.wallet_id',
+      [row.id, row.type, row.walletId, row.sealed, row.rev, dirty ? 1 : 0],
+    );
+    if (_db.updatedRows != 1) throw StateError('Bản ghi đổi loại hoặc đổi ví - từ chối');
+  }
+
+  static SealedRow _row(Row r) => SealedRow(
+    id: r['id'] as String,
+    type: r['type'] as String,
+    walletId: r['wallet_id'] as String?,
+    sealed: r['sealed'] as Uint8List,
+    rev: r['rev'] as int,
+  );
+
   List<SealedRow> allRecords() => [
     for (final r in _db.select('SELECT id, type, wallet_id, sealed, rev FROM records'))
       SealedRow(

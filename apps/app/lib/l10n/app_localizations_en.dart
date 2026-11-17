@@ -1447,4 +1447,173 @@ class AppLocalizationsEn extends AppLocalizations {
   String reportVsPrevious(String pct) {
     return '$pct vs previous period';
   }
+
+  @override
+  String get syncTitle => 'Account & sync';
+
+  @override
+  String get syncWelcomeSignIn => 'Sign in to get your synced data';
+
+  @override
+  String get syncSignIn => 'Sign in with tsudev account';
+
+  @override
+  String get syncWaitingBrowser => 'Waiting for sign-in in the browser…';
+
+  @override
+  String get syncSignedOutTitle => 'Sync is off';
+
+  @override
+  String get syncSignedOutBody => 'Sign in to back up encrypted data to the server and share it across devices.';
+
+  @override
+  String get syncE2eeNote =>
+      'The server only receives ciphertext. Your encryption password and 24 words never leave the device.';
+
+  @override
+  String get syncStatusSyncing => 'Syncing…';
+
+  @override
+  String get syncStatusNever => 'Not synced yet';
+
+  @override
+  String syncStatusLast(String time) {
+    return 'Last synced $time';
+  }
+
+  @override
+  String syncPending(int n) {
+    return '$n changes waiting';
+  }
+
+  @override
+  String get syncQuotaFull => 'Sync storage is full';
+
+  @override
+  String syncRejected(int n) {
+    return '$n records rejected by the server';
+  }
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get syncRetry => 'Retry';
+
+  @override
+  String get syncSignOut => 'Sign out';
+
+  @override
+  String get syncSignOutBody => 'Stop syncing on this device. Data on this device is kept.';
+
+  @override
+  String get syncSignOutConfirm =>
+      'Sign out of sync? This device is revoked on the server; data on this device is kept.';
+
+  @override
+  String get syncUsage => 'Server storage';
+
+  @override
+  String syncUsageDetail(int count, String recMb, String recQuota, String fileMb, String fileQuota) {
+    return '$count records · $recMb/$recQuota MB · files $fileMb/$fileQuota MB';
+  }
+
+  @override
+  String get syncDevices => 'Signed-in devices';
+
+  @override
+  String get syncThisDevice => 'This device';
+
+  @override
+  String syncLastSeen(String time) {
+    return 'Active $time';
+  }
+
+  @override
+  String get syncRevoke => 'Revoke';
+
+  @override
+  String syncRevokeConfirm(String name) {
+    return 'Revoke \"$name\"? That device is signed out immediately and can no longer sync.';
+  }
+
+  @override
+  String get syncExport => 'Export server data';
+
+  @override
+  String get syncExportBody => 'A JSON file of everything the server holds (still encrypted).';
+
+  @override
+  String get syncExportDone => 'Export saved';
+
+  @override
+  String get syncDeleteAccount => 'Delete sync account';
+
+  @override
+  String get syncDeleteBody => 'Deletes all server data after 30 days. Can be cancelled meanwhile.';
+
+  @override
+  String get syncDeleteConfirm =>
+      'Delete the sync account? After 30 days all ciphertext, keys and files on the server are permanently deleted. Meanwhile it is read-only and can be cancelled. Data on this device is not deleted.';
+
+  @override
+  String syncDeletionPending(int days) {
+    return 'Account will be deleted in $days days';
+  }
+
+  @override
+  String get syncDeletionCancel => 'Cancel deletion';
+
+  @override
+  String get syncNoRemoteAccount => 'This account has no synced data yet. Create a new encryption password.';
+
+  @override
+  String get syncUnlockRemoteTitle => 'Open synced data';
+
+  @override
+  String get syncUnlockRemoteBody =>
+      'Enter the encryption password (or 24 recovery words) you set on your other device.';
+
+  @override
+  String get syncRemoteInvalid => 'The key data on the server is invalid.';
+
+  @override
+  String get syncErrNetwork => 'Can\'t reach the server. Will retry later.';
+
+  @override
+  String get syncErrTls =>
+      'Insecure connection (server certificate mismatch). Sync stopped; data on this device still works.';
+
+  @override
+  String get syncErrSignedOut => 'Session ended or this device was revoked. Please sign in again.';
+
+  @override
+  String get syncErrDenied => 'Sign-in was declined.';
+
+  @override
+  String get syncErrNoBrowser => 'Couldn\'t open a browser.';
+
+  @override
+  String get syncErrRateLimited => 'Too many requests. Try again in a few minutes.';
+
+  @override
+  String get syncErrGeneric => 'Sync failed. Will retry later.';
+
+  @override
+  String get syncBlockDifferentAccount =>
+      'The sync account already holds data encrypted with a DIFFERENT key than this device. The two will not be mixed: back up, then reset the app and choose \"Sign in to get your synced data\", or sign out.';
+
+  @override
+  String get syncBlockIdentityChanged =>
+      'The encryption key on the server changed unexpectedly. Sync stopped to protect your data. If you didn\'t reset your account, please contact us.';
+
+  @override
+  String get syncBlockRollback => 'Server data was rolled back unexpectedly. Sync stopped to protect your data.';
+
+  @override
+  String get syncBlockPendingDeletion => 'Account is pending deletion - the server accepts no new changes.';
+
+  @override
+  String get syncBlockOtherUser =>
+      'This device already syncs with another tsudev account. Sign in with that account or reset the app.';
 }

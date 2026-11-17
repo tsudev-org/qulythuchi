@@ -100,6 +100,8 @@ final class Vault {
   static const _mPinWrap = 'pinWrap';
   static const _mPinKdf = 'pinKdf';
   static const _mBioWrap = 'bioWrap';
+  static const _mBundleDirty = 'bundleDirty';
+  static const _mBundleRemote = 'bundleRemote';
   static const _kDeviceKey = 'qt.deviceKey';
   static const _kPinFails = 'qt.pinFails';
   static const _kPinUntil = 'qt.pinUntil';
@@ -152,14 +154,43 @@ final class Vault {
 
   /// Sai mật khẩu ⇒ [EnvelopeException].
   Future<void> unlockWithPassword(String password) async {
-    _open(_kh.unlockWithPassword(_bundle, password));
+    _open(_withRemoteFallback((b) => _kh.unlockWithPassword(b, password)));
     await _resetPinFails();
   }
 
   /// Sai từ ⇒ [RecoveryPhraseException] hoặc [EnvelopeException].
   Future<void> unlockWithRecovery(List<String> words) async {
-    _open(_kh.unlockWithRecovery(_bundle, words));
+    _open(_withRemoteFallback((b) => _kh.unlockWithRecovery(b, words)));
     await _resetPinFails();
+  }
+
+  /// Mở bằng gói khóa cục bộ; sai ⇒ thử gói khóa máy chủ đang chờ nhận (mật khẩu/24 từ đã đổi ở thiết bị khác).
+  /// Gói máy chủ chỉ được nhận khi nó mở ra ĐÚNG khóa chủ cũ (cùng danh tính) - máy chủ không thể cài gói lạ.
+  SecureKey _withRemoteFallback(SecureKey Function(AccountKeyBundle b) unlock) {
+    try {
+      return unlock(_bundle);
+    } on Object {
+      final raw = _store.getMeta(_mBundleRemote);
+      if (raw == null) rethrow;
+      final remote = AccountKeyBundle.fromJson((jsonDecode(utf8.decode(raw)) as Map).cast<String, Object?>());
+      final SecureKey master;
+      try {
+        master = unlock(remote);
+      } on Object {
+        // Báo lỗi của lượt thử gói cục bộ (không lộ việc có gói chờ).
+        rethrow;
+      }
+      if (!_sameIdentity(remote, _bundle) || !_opensIdentity(remote, master)) {
+        master.dispose();
+        _store.deleteMeta(_mBundleRemote);
+        throw const EnvelopeException();
+      }
+      _store.transaction(() {
+        _store.putMeta(_mBundle, raw);
+        _store.deleteMeta(_mBundleRemote);
+      });
+      return master;
+    }
   }
 
   void _open(SecureKey master) {
@@ -192,13 +223,13 @@ final class Vault {
     final check = _kh.unlockWithPassword(_bundle, oldPassword);
     check.dispose();
     final updated = _kh.changePassword(_bundle, _requireMaster, newPassword);
-    _store.putMeta(_mBundle, utf8.encode(jsonEncode(updated.toJson())));
+    _putLocalBundle(updated);
   }
 
   /// Cấp 24 từ mới (bộ cũ hết hiệu lực). Trả về từ mới để hiển thị một lần.
   List<String> rotateRecovery() {
     final (updated, words) = _kh.rotateRecovery(_bundle, _requireMaster);
-    _store.putMeta(_mBundle, utf8.encode(jsonEncode(updated.toJson())));
+    _putLocalBundle(updated);
     return words;
   }
 
@@ -373,6 +404,123 @@ final class Vault {
       device.dispose();
     }
     await _resetPinFails();
+  }
+
+  // ------------------------------------------------------------------ Đồng bộ (P6, ADR-0011)
+
+  /// Gói khóa cục bộ dạng JSON (để đẩy lên máy chủ - mọi phần bí mật đã bọc).
+  Map<String, Object?> get bundleJson => _bundle.toJson();
+
+  /// Gói khóa đổi cục bộ (mật khẩu/24 từ) và chưa đẩy lên.
+  bool get bundleDirty => _store.getMeta(_mBundleDirty) != null;
+  void clearBundleDirty() => _store.deleteMeta(_mBundleDirty);
+
+  void _putLocalBundle(AccountKeyBundle b) => _store.transaction(() {
+    _store.putMeta(_mBundle, utf8.encode(jsonEncode(b.toJson())));
+    _store.putMeta(_mBundleDirty, Uint8List.fromList([1]));
+    _store.deleteMeta(_mBundleRemote);
+  });
+
+  /// Vân tay danh tính (SHA-256 của khóa công khai X-Wing ‖ X25519) - ghim chống tráo gói khóa (THREAT_MODEL T4).
+  static String identityFingerprint(SodiumSumo sodium, AccountKeyBundle b) {
+    final h = sodium.crypto.genericHash(message: Uint8List.fromList([...b.kemPublicKey, ...b.boxPublicKey]), outLen: 32);
+    return base64.encode(h);
+  }
+
+  String get localFingerprint => identityFingerprint(_sodium, _bundle);
+
+  static bool _sameIdentity(AccountKeyBundle a, AccountKeyBundle b) =>
+      _eq(a.kemPublicKey, b.kemPublicKey) && _eq(a.boxPublicKey, b.boxPublicKey);
+
+  static bool _eq(Uint8List a, Uint8List b) {
+    if (a.length != b.length) return false;
+    var d = 0;
+    for (var i = 0; i < a.length; i++) {
+      d |= a[i] ^ b[i];
+    }
+    return d == 0;
+  }
+
+  bool _opensIdentity(AccountKeyBundle b, SecureKey master) {
+    try {
+      _kh.openIdentity(b, master).dispose();
+      return true;
+    } on Object {
+      return false;
+    }
+  }
+
+  /// So gói khóa máy chủ với tài khoản cục bộ đang mở: cùng danh tính VÀ phần bí mật mở được bằng khóa chủ này.
+  /// false ⇒ hai khóa chủ khác nhau (tài khoản cục bộ khác) hoặc máy chủ tráo gói - KHÔNG được trộn dữ liệu.
+  bool remoteBundleMatches(Map<String, Object?> json) {
+    final AccountKeyBundle remote;
+    try {
+      remote = AccountKeyBundle.fromJson(json);
+    } on FormatException {
+      return false;
+    }
+    return _sameIdentity(remote, _bundle) && _opensIdentity(remote, _requireMaster);
+  }
+
+  /// Gói máy chủ cùng danh tính nhưng khác bản bọc (đổi mật khẩu ở máy khác): giữ để thử khi mở khóa lần sau.
+  void offerRemoteBundle(Map<String, Object?> json) {
+    final raw = utf8.encode(jsonEncode(json));
+    if (utf8.decode(raw) == utf8.decode(_store.getMeta(_mBundle)!)) {
+      _store.deleteMeta(_mBundleRemote);
+    } else {
+      _store.putMeta(_mBundleRemote, raw);
+    }
+  }
+
+  /// Id khóa dữ liệu cấp tài khoản khi lưu trên máy chủ (bảng khóa ví đòi UUID). Phong bì vẫn dùng ngữ cảnh
+  /// `wk|account` nên không thể nhầm với khóa ví thật.
+  static const accountKeyServerId = '00000000-0000-4000-8000-000000000000';
+
+  Uint8List get wrappedAccountKey => _store.getMeta(_mAcctKey)!;
+
+  /// Nhận khóa ví từ máy chủ: chỉ nhận khóa mở được bằng khóa chủ (AEAD) và chưa có cục bộ. Trả số khóa mới.
+  int importWalletKeys(Map<String, Uint8List> wrapped) {
+    final master = _requireMaster;
+    var added = 0;
+    wrapped.forEach((id, w) {
+      if (id == accountKeyServerId || _walletKeys.containsKey(id)) return;
+      try {
+        final key = _kh.openWalletKey(master, id, w);
+        _store.putRemoteWalletKey(id, w);
+        _walletKeys[id] = key;
+        added++;
+      } on Object {
+        // Bản bọc hỏng/bị tráo: bỏ qua, bản ghi của ví đó sẽ không mở được (đếm vào "skipped").
+      }
+    });
+    return added;
+  }
+
+  /// Thiết bị CHƯA có tài khoản: nhận tài khoản mã hóa đã có trên máy chủ, mở bằng mật khẩu hoặc 24 từ.
+  /// Sai ⇒ [EnvelopeException]/[RecoveryPhraseException]; gói hỏng ⇒ [FormatException]. Thành công ⇒ đã mở khóa.
+  void adoptRemoteAccount({
+    required Map<String, Object?> bundleJson,
+    required Uint8List wrappedAccountKey,
+    required Map<String, Uint8List> walletKeys,
+    String? password,
+    List<String>? words,
+  }) {
+    if (hasAccount) throw StateError('Thiết bị đã có tài khoản');
+    final bundle = AccountKeyBundle.fromJson(bundleJson);
+    final master = password != null ? _kh.unlockWithPassword(bundle, password) : _kh.unlockWithRecovery(bundle, words!);
+    try {
+      if (!_opensIdentity(bundle, master)) throw const EnvelopeException();
+      _kh.openWalletKey(master, _acctKeyId, wrappedAccountKey).dispose();
+      _store.transaction(() {
+        _store.putMeta(_mBundle, utf8.encode(jsonEncode(bundle.toJson())));
+        _store.putMeta(_mAcctKey, wrappedAccountKey);
+      });
+    } on Object {
+      master.dispose();
+      rethrow;
+    }
+    _open(master);
+    importWalletKeys(walletKeys);
   }
 
   // ------------------------------------------------------------------ Sao lưu tệp mã hóa

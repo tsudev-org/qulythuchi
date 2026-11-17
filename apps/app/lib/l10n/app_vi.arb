@@ -831,5 +831,115 @@
         "type": "String"
       }
     }
-  }
+  },
+  "syncTitle": "Tài khoản & đồng bộ",
+  "syncWelcomeSignIn": "Đăng nhập để lấy dữ liệu đã đồng bộ",
+  "syncSignIn": "Đăng nhập bằng tài khoản tsudev",
+  "syncWaitingBrowser": "Đang chờ đăng nhập trong trình duyệt…",
+  "syncSignedOutTitle": "Chưa bật đồng bộ",
+  "syncSignedOutBody": "Đăng nhập để sao lưu bản mã lên máy chủ và dùng chung dữ liệu giữa các thiết bị.",
+  "syncE2eeNote": "Máy chủ chỉ nhận bản mã. Mật khẩu mã hóa và 24 từ không bao giờ rời thiết bị.",
+  "syncStatusSyncing": "Đang đồng bộ…",
+  "syncStatusNever": "Chưa đồng bộ lần nào",
+  "syncStatusLast": "Đồng bộ lần cuối {time}",
+  "@syncStatusLast": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "syncPending": "{n} thay đổi chờ gửi",
+  "@syncPending": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "syncQuotaFull": "Đã hết dung lượng đồng bộ",
+  "syncRejected": "{n} bản ghi bị máy chủ từ chối",
+  "@syncRejected": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "syncNow": "Đồng bộ ngay",
+  "syncRetry": "Thử lại",
+  "syncSignOut": "Đăng xuất",
+  "syncSignOutBody": "Dừng đồng bộ trên thiết bị này. Dữ liệu trên máy vẫn giữ nguyên.",
+  "syncSignOutConfirm": "Đăng xuất khỏi đồng bộ? Thiết bị này bị thu hồi trên máy chủ; dữ liệu trên máy vẫn giữ nguyên.",
+  "syncUsage": "Dung lượng máy chủ",
+  "syncUsageDetail": "{count} bản ghi · {recMb}/{recQuota} MB · tệp {fileMb}/{fileQuota} MB",
+  "@syncUsageDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "recMb": {
+        "type": "String"
+      },
+      "recQuota": {
+        "type": "String"
+      },
+      "fileMb": {
+        "type": "String"
+      },
+      "fileQuota": {
+        "type": "String"
+      }
+    }
+  },
+  "syncDevices": "Thiết bị đang đăng nhập",
+  "syncThisDevice": "Thiết bị này",
+  "syncLastSeen": "Hoạt động {time}",
+  "@syncLastSeen": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "syncRevoke": "Thu hồi",
+  "syncRevokeConfirm": "Thu hồi \"{name}\"? Thiết bị đó bị đăng xuất ngay và không đồng bộ được nữa.",
+  "@syncRevokeConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "syncExport": "Xuất dữ liệu máy chủ",
+  "syncExportBody": "Tệp JSON mọi thứ máy chủ đang giữ (vẫn là bản mã).",
+  "syncExportDone": "Đã lưu tệp xuất",
+  "syncDeleteAccount": "Xóa tài khoản đồng bộ",
+  "syncDeleteBody": "Xóa toàn bộ dữ liệu trên máy chủ sau 30 ngày. Hủy được trong thời gian chờ.",
+  "syncDeleteConfirm": "Xóa tài khoản đồng bộ? Sau 30 ngày mọi bản mã, khóa và tệp trên máy chủ bị xóa hẳn. Trong thời gian chờ chỉ đọc được, hủy được. Dữ liệu trên máy này không bị xóa.",
+  "syncDeletionPending": "Tài khoản sẽ bị xóa sau {days} ngày",
+  "@syncDeletionPending": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "syncDeletionCancel": "Hủy xóa",
+  "syncNoRemoteAccount": "Tài khoản chưa có dữ liệu đồng bộ. Hãy tạo mật khẩu mã hóa mới.",
+  "syncUnlockRemoteTitle": "Mở dữ liệu đã đồng bộ",
+  "syncUnlockRemoteBody": "Nhập mật khẩu mã hóa (hoặc 24 từ khôi phục) đã đặt trên thiết bị trước.",
+  "syncRemoteInvalid": "Dữ liệu khóa trên máy chủ không hợp lệ.",
+  "syncErrNetwork": "Không kết nối được máy chủ. Sẽ thử lại sau.",
+  "syncErrTls": "Kết nối không an toàn (chứng chỉ máy chủ không khớp). Đồng bộ đã dừng; dữ liệu trên máy vẫn dùng bình thường.",
+  "syncErrSignedOut": "Phiên đăng nhập đã hết hoặc thiết bị đã bị thu hồi. Hãy đăng nhập lại.",
+  "syncErrDenied": "Bạn đã từ chối đăng nhập.",
+  "syncErrNoBrowser": "Không mở được trình duyệt.",
+  "syncErrRateLimited": "Thao tác quá nhanh. Hãy thử lại sau ít phút.",
+  "syncErrGeneric": "Đồng bộ gặp lỗi. Sẽ thử lại sau.",
+  "syncBlockDifferentAccount": "Tài khoản đồng bộ đã có dữ liệu mã hóa bằng mật khẩu KHÁC dữ liệu trên máy này. Không trộn hai bộ dữ liệu: hãy sao lưu, rồi đặt lại app và chọn \"Đăng nhập để lấy dữ liệu đã đồng bộ\", hoặc đăng xuất.",
+  "syncBlockIdentityChanged": "Khóa mã hóa trên máy chủ đã đổi bất thường. Đồng bộ đã dừng để bảo vệ dữ liệu. Nếu bạn không đặt lại tài khoản, hãy báo cho chúng tôi.",
+  "syncBlockRollback": "Dữ liệu trên máy chủ bị quay lui bất thường. Đồng bộ đã dừng để bảo vệ dữ liệu.",
+  "syncBlockPendingDeletion": "Tài khoản đang chờ xóa - máy chủ không nhận thay đổi mới.",
+  "syncBlockOtherUser": "Máy này đã đồng bộ với tài khoản tsudev khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app."
 }

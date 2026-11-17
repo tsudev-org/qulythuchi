@@ -9,7 +9,9 @@ import 'l10n/app_localizations.dart';
 import 'services/reminders.dart';
 import 'state/providers.dart';
 import 'state/settings.dart';
+import 'state/sync_controller.dart';
 import 'theme/app_theme.dart';
+import 'ui/account/account_page.dart';
 import 'ui/categories/categories_page.dart';
 import 'ui/data/data_page.dart';
 import 'ui/debts/debt_form_page.dart';
@@ -134,6 +136,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(path: 'categories', builder: (_, _) => const CategoriesPage()),
                   GoRoute(path: 'settings', builder: (_, _) => const SettingsPage()),
+                  GoRoute(path: 'account', builder: (_, _) => const AccountPage()),
                   GoRoute(path: 'rates', builder: (_, _) => const RatesPage()),
                   GoRoute(path: 'reports', builder: (_, _) => const ReportsPage()),
                   GoRoute(path: 'data', builder: (_, _) => const DataPage()),
@@ -201,6 +204,7 @@ class _QulyAppState extends ConsumerState<QulyApp> {
       onShow: _onShow,
       onResume: () {
         _onShow();
+        ref.read(syncProvider.notifier).onResume();
         setState(() => _obscured = false);
       },
     );
@@ -247,6 +251,8 @@ class _QulyAppState extends ConsumerState<QulyApp> {
     final settings = ref.watch(settingsProvider);
     final router = ref.watch(routerProvider);
     ref.listen(ledgerProvider, (_, _) => _syncReminders());
+    // Giữ bộ điều khiển đồng bộ sống suốt vòng đời app (nó tự nghe mở khóa/sửa dữ liệu).
+    ref.listen(syncProvider, (_, _) {});
     ref.listen(settingsProvider.select((s) => s.billReminders), (_, _) => _syncReminders());
     return MaterialApp.router(
       onGenerateTitle: (c) => AppLocalizations.of(c).appTitle,
