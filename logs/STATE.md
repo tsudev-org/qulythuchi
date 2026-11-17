@@ -9,9 +9,8 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P6 - Đồng bộ trong app** (phiếu `logs/handover/20261118-01_p5-xong-bat-dau-p6.md`, prompt ở mục 6b).
-  Client OIDC `qulythuchi` đã đăng ký 18/11/2026 (IdP trả 303) ⇒ đăng nhập thật dùng được.
-- [ ] P7 - Tự nhập + thông minh
+- [ ] **P7 - Tự nhập + thông minh** (phiếu `logs/handover/20261118-02_p6-xong-bat-dau-p7.md`, prompt ở mục 6b).
+  👤 trước: chạy `cd apps/app && dart run tool/sync_smoke.dart login` để nghiệm thu đăng nhập thật (phiếu mục 2b).
 - [ ] P8 - Web + site
 - [ ] P9 - Ví chung gia đình
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android)
@@ -20,10 +19,17 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| P6 - Đồng bộ trong app (nhánh `feat/p6-dong-bo-app`) | agent-qulythuchi | 01:43 18/11/2026 |
+| (trống) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 18/11/2026 - P6 Đồng bộ trong app (agent-qulythuchi): `apps/app/lib/sync/` (ApiClient bearer + refresh xoay vòng,
+  chỉ tin CA gốc ghim, PKCE, vòng lặp 127.0.0.1 / scheme di động / cookie web), `SyncEngine` (khóa ⇒ kéo hợp nhất theo
+  trường ⇒ đẩy; chặn trộn khóa chủ, ghim vân tay danh tính, phát hiện quay lui, bỏ bản ghi bị tráo, ràng buộc tài
+  khoản tsudev), `SyncController` (tự đồng bộ khi mở khóa/sửa/10 phút/quay lại app), màn "Tài khoản & đồng bộ" (thiết
+  bị, thu hồi, dung lượng, xuất, xóa tài khoản, đăng xuất), màn chào "Đăng nhập để lấy dữ liệu đã đồng bộ". 21 test mới
+  (máy chủ giả theo hợp đồng P5); 67 test app đạt; build web đạt; TLS ghim với production đạt. Đăng nhập thật CHƯA
+  nghiệm thu (hết giờ chờ chủ dự án). ADR-0011, phiếu rà soát P6. Máy chủ không đổi.
 - 18/11/2026 - P5 Máy chủ `services/sync-api` (agent-qulythuchi): Workers + Hono + D1 + R2 LÊN PRODUCTION
   `https://qulythuchi.tsudev.com` (Worker `qulythuchi`, D1 `qulythuchi` APAC, R2 `qulythuchi-files` APAC, secret
   SESSION_SECRET/IP_HASH_SALT đã đặt). RP OIDC + mã một lần PKCE cho app, refresh xoay vòng, phiên web cookie,
@@ -65,6 +71,7 @@
 - 17/11/2026 - sqlite3 3.x + sqlite3mc thay drift/sqlcipher_flutter_libs (EOL); PIN bọc bằng khóa thiết bị: `docs/adr/0008-*`
 - 17/11/2026 - Xuất bản rõ có cảnh báo; sao lưu `.qtbak` = gói khóa + phong bì `bak|<id>`, khôi phục chỉ trên máy chưa có tài khoản: `docs/adr/0009-*`
 - 18/11/2026 - Máy chủ: không gian bản ghi = tài khoản, rev trong giao tác, tệp xuyên Worker, xóa tài khoản 30 ngày: `docs/adr/0010-*`
+- 18/11/2026 - Đồng bộ app: không trộn khóa chủ, gói máy chủ chỉ nhận khi mở được bằng khóa chủ, ghim CA gốc: `docs/adr/0011-*`
 - 17/11/2026 - Phiên bản theo phiếu toàn hệ 20261117-V1: `YY.M.DDNN`, thẻ `vYY.M.DDNN`, versionCode `YYMDDNN`
 
 ## Sự cố bảo mật
