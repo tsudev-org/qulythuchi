@@ -20,7 +20,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| (trống) | | |
+| P6 - Đồng bộ trong app (nhánh `feat/p6-dong-bo-app`) | agent-qulythuchi | 01:43 18/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
