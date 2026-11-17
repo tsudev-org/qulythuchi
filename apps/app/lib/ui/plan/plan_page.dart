@@ -289,7 +289,7 @@ class _JarsTabState extends ConsumerState<_JarsTab> {
                   leading: CircleAvatar(
                     backgroundColor: p.bgSubtle,
                     foregroundColor: p.textPrimary,
-                    child: Text('${percentText(j.basisPoints)}%', style: const TextStyle(fontSize: QtFontSize.xs)),
+                    child: Text('${context.percent(j.basisPoints)}%', style: const TextStyle(fontSize: QtFontSize.xs)),
                   ),
                   title: Text(jarName(l, j)),
                   trailing: MoneyText(parts[j.key]!, style: const TextStyle(fontWeight: FontWeight.w600)),
@@ -360,7 +360,7 @@ class _JarEditDialogState extends State<_JarEditDialog> {
               Semantics(
                 liveRegion: true,
                 child: Text(
-                  l.jarsTotalMustBe100(percentText(_total)),
+                  l.jarsTotalMustBe100(context.percent(_total)),
                   style: TextStyle(color: ok ? context.palette.success : context.palette.danger),
                 ),
               ),
@@ -444,7 +444,11 @@ class _GoalsTab extends ConsumerWidget {
                           ),
                           const SizedBox(height: QtSpace.s2),
                           Text(
-                            l.goalProgress(fmt(st.saved), fmt(Money(g.target, g.currency)), percentText(st.progressBp)),
+                            l.goalProgress(
+                              fmt(st.saved),
+                              fmt(Money(g.target, g.currency)),
+                              context.percent(st.progressBp),
+                            ),
                           ),
                           if (g.deadline != null)
                             Text(

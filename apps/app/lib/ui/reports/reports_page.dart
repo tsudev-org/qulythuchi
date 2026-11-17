@@ -58,7 +58,7 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
             ? '+'
             : bp < 0
             ? '−'
-            : ''}${percentText(bp.abs())}%',
+            : ''}${context.percent(bp.abs())}%',
       );
     }
 
@@ -150,7 +150,7 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
                   _StatTile(label: l.reportNet, value: fmt(sum.net, sign: true)),
                   _StatTile(
                     label: l.reportSavingsRate,
-                    value: sum.savingsRateBp == null ? '-' : '${percentText(sum.savingsRateBp!)}%',
+                    value: sum.savingsRateBp == null ? '-' : '${context.percent(sum.savingsRateBp!)}%',
                   ),
                 ];
                 final perRow = cons.maxWidth >= 640 ? 4 : 2;
@@ -196,7 +196,7 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
                             catName(s.categoryId),
                             fmt(s.amount),
                             maxShare.isZero ? 0 : s.amount.basisPointsOf(maxShare),
-                            '${percentText(s.shareBp)}%',
+                            '${context.percent(s.shareBp)}%',
                             s.categoryId == CategoryShare.otherId ? null : () => openCategory(s.categoryId),
                           ),
                       ],
@@ -204,7 +204,7 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
               table: DataTableView(
                 headers: [l.reportColCategory, l.reportColAmount, l.reportColShare],
                 rows: [
-                  for (final s in shares) [catName(s.categoryId), fmt(s.amount), '${percentText(s.shareBp)}%'],
+                  for (final s in shares) [catName(s.categoryId), fmt(s.amount), '${context.percent(s.shareBp)}%'],
                 ],
               ),
             ),

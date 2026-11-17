@@ -4,6 +4,9 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 
 ## [Chưa phát hành]
 
+### Sửa
+- Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
+
 ### Thêm
 - Máy chủ đồng bộ zero-knowledge `services/sync-api` (P5) trên Cloudflare Workers + D1 + R2, chạy tại
   `https://qulythuchi.tsudev.com`: đăng nhập qua tsudev.com (OIDC + PKCE, mã một lần cho app, token truy cập 15 phút
