@@ -16,9 +16,9 @@ class AppShell extends StatelessWidget {
     final items = [
       (Icons.dashboard_outlined, Icons.dashboard, l.navOverview),
       (Icons.receipt_long_outlined, Icons.receipt_long, l.navTransactions),
+      (Icons.savings_outlined, Icons.savings, l.navPlan),
       (Icons.account_balance_wallet_outlined, Icons.account_balance_wallet, l.navWallets),
-      (Icons.category_outlined, Icons.category, l.navCategories),
-      (Icons.settings_outlined, Icons.settings, l.navSettings),
+      (Icons.more_horiz, Icons.more_horiz, l.navMore),
     ];
     final wide = MediaQuery.sizeOf(context).width >= wideBreakpoint;
     if (wide) {

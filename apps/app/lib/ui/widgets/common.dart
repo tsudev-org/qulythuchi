@@ -159,6 +159,13 @@ String errorMessage(BuildContext context, Object error) {
       'sameWallet' => l.errSameWallet,
       'receivedRequired' => l.errReceivedRequired,
       'amountPositive' => l.txnAmountPositive,
+      'alertRange' => l.errAlertRange,
+      'dateRange' => l.errDateRange,
+      'sameCurrency' => l.errSameCurrency,
+      'rateInvalid' => l.errRateInvalid,
+      'remindRange' => l.errRemindRange,
+      'notFound' => l.errNotFound,
+      'walletLocked' => l.errWalletLocked,
       _ => l.errGeneric,
     };
   }
@@ -222,3 +229,16 @@ const _categoryIcons = <String, IconData>{
 List<String> get categoryIconNames => _categoryIcons.keys.toList();
 
 IconData categoryIcon(String? name) => _categoryIcons[name] ?? Icons.label_outline;
+
+String weekdayName(AppLocalizations l, int d) => switch (d) {
+  1 => l.weekday1,
+  2 => l.weekday2,
+  3 => l.weekday3,
+  4 => l.weekday4,
+  5 => l.weekday5,
+  6 => l.weekday6,
+  _ => l.weekday7,
+};
+
+/// Phần trăm (phần vạn) dạng chữ, ví dụ 8000 ⇒ "80".
+String percentText(int bp) => bp % 100 == 0 ? '${bp ~/ 100}' : (bp / 100).toStringAsFixed(1);

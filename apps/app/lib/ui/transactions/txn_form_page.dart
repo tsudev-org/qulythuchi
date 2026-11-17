@@ -5,6 +5,7 @@ import 'package:qulythuchi_core/qulythuchi_core.dart';
 
 import '../../state/ledger_repository.dart';
 import '../../state/providers.dart';
+import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import '../widgets/amount_field.dart';
 import '../widgets/common.dart';
@@ -13,9 +14,12 @@ enum _Mode { expense, income, transfer, adjustment }
 
 /// Thêm/sửa giao dịch. [txnId] null = thêm mới.
 class TxnFormPage extends ConsumerStatefulWidget {
-  const TxnFormPage({super.key, this.txnId, this.initialKind});
+  const TxnFormPage({super.key, this.txnId, this.initialKind, this.initialGoalId});
   final String? txnId;
   final String? initialKind;
+
+  /// Mở từ "Góp tiền" của mục tiêu.
+  final String? initialGoalId;
 
   @override
   ConsumerState<TxnFormPage> createState() => _TxnFormPageState();
@@ -37,6 +41,8 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
   Txn? _editing;
   String? _transferId;
   bool _missing = false;
+  String? _eventId;
+  String? _goalId;
 
   @override
   void initState() {
@@ -53,6 +59,7 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
       'transfer' => _Mode.transfer,
       _ => _Mode.expense,
     };
+    if (data.goal(widget.initialGoalId) != null) _goalId = widget.initialGoalId;
     if (widget.txnId != null) {
       final t = data.txn(widget.txnId!);
       if (t == null) {
@@ -72,6 +79,8 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
       _editing = t;
       _date = t.date;
       _note.text = t.note ?? '';
+      _eventId = t.eventId;
+      _goalId = t.goalId ?? data.counterpart(t)?.goalId;
       switch (t.kind) {
         case TxnKind.transferOut || TxnKind.transferIn:
           _mode = _Mode.transfer;
@@ -136,6 +145,8 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
           fee: fee?.minor ?? 0,
           date: _date,
           note: _trimOrNull(_note.text),
+          goalId: _goalId,
+          eventId: _eventId,
         );
       } else {
         final base = _editing;
@@ -154,11 +165,12 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
             note: _trimOrNull(_note.text),
             payee: _mode == _Mode.adjustment ? null : _trimOrNull(_payee.text),
             tags: base?.tags ?? const [],
-            eventId: base?.eventId,
+            eventId: _mode == _Mode.adjustment ? base?.eventId : _eventId,
             debtId: base?.debtId,
-            goalId: base?.goalId,
+            goalId: _mode == _Mode.adjustment ? base?.goalId : _goalId,
             recurringId: base?.recurringId,
             source: base?.source ?? TxnSource.manual,
+            pending: base?.pending ?? false,
             excludeFromReports: base?.excludeFromReports ?? false,
             attachmentIds: base?.attachmentIds ?? const [],
           ),
@@ -272,6 +284,22 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
           child: ListView(
             padding: const EdgeInsets.all(QtSpace.s4),
             children: [
+              if (_editing != null && (data.txn(_editing!.id)?.pending ?? false)) ...[
+                Card(
+                  child: ListTile(
+                    leading: Icon(Icons.hourglass_top, color: context.palette.warning),
+                    title: Text(l.pendingBanner),
+                    trailing: FilledButton(
+                      onPressed: () {
+                        ref.read(ledgerProvider.notifier).confirmPending(_editing!.id);
+                        context.toast(l.saved);
+                      },
+                      child: Text(l.pendingConfirm),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: QtSpace.s4),
+              ],
               if (_mode != _Mode.adjustment)
                 SegmentedButton<_Mode>(
                   segments: [
@@ -345,6 +373,40 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
                   decoration: InputDecoration(labelText: l.txnCategory),
                   items: catItems,
                   onChanged: (v) => setState(() => _categoryId = v),
+                ),
+                const SizedBox(height: QtSpace.s4),
+              ],
+              if (_mode != _Mode.adjustment && data.events.any((e) => !e.archived || e.id == _eventId)) ...[
+                DropdownButtonFormField<String?>(
+                  initialValue: data.event(_eventId) == null ? null : _eventId,
+                  isExpanded: true,
+                  decoration: InputDecoration(labelText: l.txnEvent),
+                  items: [
+                    DropdownMenuItem(value: null, child: Text(l.none)),
+                    for (final e in data.events.where((e) => !e.archived || e.id == _eventId))
+                      DropdownMenuItem(
+                        value: e.id,
+                        child: Text(e.name, overflow: TextOverflow.ellipsis),
+                      ),
+                  ],
+                  onChanged: (v) => setState(() => _eventId = v),
+                ),
+                const SizedBox(height: QtSpace.s4),
+              ],
+              if (_mode != _Mode.adjustment && data.goals.isNotEmpty) ...[
+                DropdownButtonFormField<String?>(
+                  initialValue: data.goal(_goalId) == null ? null : _goalId,
+                  isExpanded: true,
+                  decoration: InputDecoration(labelText: l.txnGoal),
+                  items: [
+                    DropdownMenuItem(value: null, child: Text(l.none)),
+                    for (final g in data.goals)
+                      DropdownMenuItem(
+                        value: g.id,
+                        child: Text(g.name, overflow: TextOverflow.ellipsis),
+                      ),
+                  ],
+                  onChanged: (v) => setState(() => _goalId = v),
                 ),
                 const SizedBox(height: QtSpace.s4),
               ],

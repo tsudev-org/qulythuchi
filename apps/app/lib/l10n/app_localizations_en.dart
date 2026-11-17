@@ -576,4 +576,549 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get iconLabel => 'Icon';
+
+  @override
+  String get navPlan => 'Plan';
+
+  @override
+  String get navMore => 'More';
+
+  @override
+  String get planBudgets => 'Budgets';
+
+  @override
+  String get planJars => '6 jars';
+
+  @override
+  String get planGoals => 'Goals';
+
+  @override
+  String get budgetNew => 'New budget';
+
+  @override
+  String get budgetEdit => 'Edit budget';
+
+  @override
+  String get budgetName => 'Budget name';
+
+  @override
+  String get budgetAmount => 'Limit per period';
+
+  @override
+  String get budgetPeriod => 'Period';
+
+  @override
+  String get periodWeekly => 'Weekly';
+
+  @override
+  String get periodMonthly => 'Monthly';
+
+  @override
+  String get periodYearly => 'Yearly';
+
+  @override
+  String get periodCustom => 'Custom';
+
+  @override
+  String get budgetStartDay => 'Period start day (1-31)';
+
+  @override
+  String get budgetStartWeekday => 'Week starts on';
+
+  @override
+  String get budgetFrom => 'From';
+
+  @override
+  String get budgetTo => 'To';
+
+  @override
+  String get budgetCategories => 'Categories';
+
+  @override
+  String get budgetAllCategories => 'All spending';
+
+  @override
+  String get budgetWallets => 'Wallets';
+
+  @override
+  String get budgetAllWallets => 'All wallets in this currency';
+
+  @override
+  String get budgetRollover => 'Carry leftover/overspend to next period';
+
+  @override
+  String get budgetAlertAt => 'Warn at (%)';
+
+  @override
+  String budgetSpentOf(String spent, String limit) {
+    return 'Spent $spent of $limit';
+  }
+
+  @override
+  String budgetRemaining(String amount) {
+    return '$amount left';
+  }
+
+  @override
+  String budgetOver(String amount) {
+    return 'Over by $amount';
+  }
+
+  @override
+  String budgetDaily(String amount) {
+    return 'You can spend $amount per day';
+  }
+
+  @override
+  String get budgetStateOk => 'On track';
+
+  @override
+  String get budgetStateWarning => 'Near the limit';
+
+  @override
+  String get budgetStateOver => 'Over budget';
+
+  @override
+  String budgetDeleteConfirm(String name) {
+    return 'Delete budget \"$name\"?';
+  }
+
+  @override
+  String get emptyBudgetsTitle => 'No budgets yet';
+
+  @override
+  String get emptyBudgetsBody =>
+      'Set weekly or monthly spending limits for all wallets or per category (envelope method).';
+
+  @override
+  String jarsIncomeThisMonth(String currency) {
+    return 'Income this month ($currency)';
+  }
+
+  @override
+  String get jarsSimulate => 'Try splitting an amount';
+
+  @override
+  String get jarsEdit => 'Edit jar ratios';
+
+  @override
+  String get jarsReset => 'Reset to 6 jars';
+
+  @override
+  String jarsTotalMustBe100(String total) {
+    return 'Ratios must total 100% (now $total%)';
+  }
+
+  @override
+  String jarsNoIncome(String currency) {
+    return 'No $currency income this month yet.';
+  }
+
+  @override
+  String get jarNec => 'Necessities';
+
+  @override
+  String get jarLts => 'Long-term savings';
+
+  @override
+  String get jarEdu => 'Education';
+
+  @override
+  String get jarPly => 'Play';
+
+  @override
+  String get jarFfa => 'Financial freedom';
+
+  @override
+  String get jarGiv => 'Give';
+
+  @override
+  String get jarsNote => '6-jar method: split every income by fixed ratios for disciplined spending.';
+
+  @override
+  String get goalNew => 'New goal';
+
+  @override
+  String get goalEdit => 'Edit goal';
+
+  @override
+  String get goalName => 'Goal name';
+
+  @override
+  String get goalTarget => 'Target amount';
+
+  @override
+  String get goalStarting => 'Already saved';
+
+  @override
+  String get goalDeadline => 'Deadline';
+
+  @override
+  String get goalNoDeadline => 'No deadline';
+
+  @override
+  String get goalAchieved => 'Achieved';
+
+  @override
+  String goalProgress(String saved, String target, String percent) {
+    return '$saved of $target ($percent%)';
+  }
+
+  @override
+  String goalMonthly(String amount) {
+    return 'Save $amount per month to meet the deadline';
+  }
+
+  @override
+  String get goalContribute => 'Contribute';
+
+  @override
+  String goalDeleteConfirm(String name) {
+    return 'Delete goal \"$name\"? Contribution transactions are kept.';
+  }
+
+  @override
+  String get emptyGoalsTitle => 'No goals yet';
+
+  @override
+  String get emptyGoalsBody => 'Set savings goals (a bike, a trip…) and track progress.';
+
+  @override
+  String get clearValue => 'Clear';
+
+  @override
+  String get selectAll => 'All';
+
+  @override
+  String get none => 'None';
+
+  @override
+  String get moreRecurring => 'Recurring & bills';
+
+  @override
+  String get moreDebts => 'Debts & loans';
+
+  @override
+  String get moreEvents => 'Events & trips';
+
+  @override
+  String get moreRates => 'Exchange rates';
+
+  @override
+  String get recurringNew => 'New recurring item';
+
+  @override
+  String get recurringEdit => 'Edit recurring item';
+
+  @override
+  String get recurringName => 'Name';
+
+  @override
+  String get recurringFrequency => 'Repeats';
+
+  @override
+  String get freqDaily => 'Daily';
+
+  @override
+  String get freqWeekly => 'Weekly';
+
+  @override
+  String get freqMonthly => 'Monthly';
+
+  @override
+  String get freqYearly => 'Yearly';
+
+  @override
+  String get recurringInterval => 'Every N periods';
+
+  @override
+  String get recurringStart => 'Starts on';
+
+  @override
+  String get recurringUntil => 'Ends on (optional)';
+
+  @override
+  String get recurringIsBill => 'Bill (shown in bill calendar, with reminders)';
+
+  @override
+  String get recurringAuto => 'Record automatically when due';
+
+  @override
+  String get recurringAutoOff => 'Off: transactions wait for your confirmation';
+
+  @override
+  String get recurringRemind => 'Remind days before';
+
+  @override
+  String get recurringPaused => 'Paused';
+
+  @override
+  String recurringNext(String date) {
+    return 'Next: $date';
+  }
+
+  @override
+  String get recurringEnded => 'Ended';
+
+  @override
+  String recurringDeleteConfirm(String name) {
+    return 'Delete \"$name\"? Created transactions are kept.';
+  }
+
+  @override
+  String get emptyRecurringTitle => 'No recurring items';
+
+  @override
+  String get emptyRecurringBody => 'Add rent, utilities, salary… so the app records them and reminds you.';
+
+  @override
+  String get billsUpcoming => 'Upcoming bills';
+
+  @override
+  String billDueIn(String date, int days) {
+    return 'Due $date (in $days days)';
+  }
+
+  @override
+  String get billDueToday => 'Due today';
+
+  @override
+  String get billPay => 'Mark paid';
+
+  @override
+  String get billPaid => 'Payment recorded';
+
+  @override
+  String pendingTitle(int n) {
+    return 'Awaiting confirmation ($n)';
+  }
+
+  @override
+  String get pendingConfirm => 'Confirm';
+
+  @override
+  String get pendingSkip => 'Skip';
+
+  @override
+  String get pendingBanner => 'Auto-created, not counted in balances yet.';
+
+  @override
+  String get budgetAlertsTitle => 'Budgets to watch';
+
+  @override
+  String get debtNew => 'New debt';
+
+  @override
+  String get debtEdit => 'Debt';
+
+  @override
+  String get debtKind => 'Type';
+
+  @override
+  String get debtLend => 'I lent';
+
+  @override
+  String get debtBorrow => 'I borrowed';
+
+  @override
+  String get debtCounterparty => 'Person';
+
+  @override
+  String get debtPrincipal => 'Principal';
+
+  @override
+  String get debtStart => 'Start date';
+
+  @override
+  String get debtDue => 'Due date';
+
+  @override
+  String get debtInterest => 'Annual interest (%)';
+
+  @override
+  String get debtRecordDisbursement => 'Record the money movement in the wallet now';
+
+  @override
+  String debtPaid(String amount) {
+    return 'Paid $amount';
+  }
+
+  @override
+  String debtRemaining(String amount) {
+    return 'Remaining $amount';
+  }
+
+  @override
+  String get debtSettled => 'Settled';
+
+  @override
+  String get debtRecordPayment => 'Record payment';
+
+  @override
+  String get debtCollect => 'Record repayment';
+
+  @override
+  String get debtClose => 'Close debt';
+
+  @override
+  String get debtClosed => 'Closed';
+
+  @override
+  String get debtOverdue => 'Overdue';
+
+  @override
+  String get debtPayments => 'Payment history';
+
+  @override
+  String debtDeleteConfirm(String name) {
+    return 'Delete the debt with \"$name\"? Recorded transactions are kept.';
+  }
+
+  @override
+  String get emptyDebtsTitle => 'No debts';
+
+  @override
+  String get emptyDebtsBody => 'Track money you lent or borrowed and repayments.';
+
+  @override
+  String get debtsLendTotal => 'Owed to you';
+
+  @override
+  String get debtsBorrowTotal => 'You owe';
+
+  @override
+  String get eventNew => 'New event';
+
+  @override
+  String get eventEdit => 'Event';
+
+  @override
+  String get eventName => 'Event or trip name';
+
+  @override
+  String get eventStart => 'Starts';
+
+  @override
+  String get eventEnd => 'Ends';
+
+  @override
+  String get eventBudget => 'Budget (optional)';
+
+  @override
+  String get eventBudgetCurrency => 'Budget currency';
+
+  @override
+  String eventSpent(String amount) {
+    return 'Spent $amount';
+  }
+
+  @override
+  String get eventTxns => 'Event transactions';
+
+  @override
+  String eventDeleteConfirm(String name) {
+    return 'Delete event \"$name\"? Transactions are kept.';
+  }
+
+  @override
+  String get emptyEventsTitle => 'No events';
+
+  @override
+  String get emptyEventsBody => 'Tag transactions to trips or occasions for a separate summary.';
+
+  @override
+  String get txnEvent => 'Event';
+
+  @override
+  String get txnGoal => 'Towards goal';
+
+  @override
+  String get ratesBase => 'Base currency for totals';
+
+  @override
+  String get ratesNew => 'Add rate';
+
+  @override
+  String get ratesFrom => 'From';
+
+  @override
+  String ratesValue(String from, String to) {
+    return '1 $from = ? $to';
+  }
+
+  @override
+  String get ratesInvalid => 'Invalid rate';
+
+  @override
+  String get ratesNote => 'Rates are entered manually. Automatic updates via the Quly Thu Chi server arrive with sync.';
+
+  @override
+  String ratesMissing(String codes) {
+    return 'No rate yet for: $codes';
+  }
+
+  @override
+  String get emptyRatesTitle => 'No rates';
+
+  @override
+  String get emptyRatesBody => 'Only needed if you hold several currencies.';
+
+  @override
+  String overviewTotalIn(String currency) {
+    return 'Total in $currency';
+  }
+
+  @override
+  String get errAlertRange => 'Warning threshold must be 10%-100%';
+
+  @override
+  String get errDateRange => 'End date must be after start date';
+
+  @override
+  String get errSameCurrency => 'Currencies must differ';
+
+  @override
+  String get errRateInvalid => 'Invalid value';
+
+  @override
+  String get errRemindRange => 'Reminder must be 0-30 days';
+
+  @override
+  String get errNotFound => 'No longer exists';
+
+  @override
+  String get errWalletLocked => 'The wallet of this item cannot change';
+
+  @override
+  String get weekday1 => 'Monday';
+
+  @override
+  String get weekday2 => 'Tuesday';
+
+  @override
+  String get weekday3 => 'Wednesday';
+
+  @override
+  String get weekday4 => 'Thursday';
+
+  @override
+  String get weekday5 => 'Friday';
+
+  @override
+  String get weekday6 => 'Saturday';
+
+  @override
+  String get weekday7 => 'Sunday';
+
+  @override
+  String get notifBillTitle => 'A bill is due soon';
+
+  @override
+  String get notifBillBody => 'Open Quly Thu Chi for details.';
+
+  @override
+  String get settingsNotifications => 'Bill reminders';
+
+  @override
+  String get settingsNotificationsSub => 'Notifications never show names or amounts on the lock screen';
 }

@@ -1,16 +1,29 @@
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'l10n/app_localizations.dart';
+import 'services/reminders.dart';
 import 'state/providers.dart';
 import 'state/settings.dart';
 import 'theme/app_theme.dart';
 import 'ui/categories/categories_page.dart';
+import 'ui/debts/debt_form_page.dart';
+import 'ui/debts/debts_page.dart';
+import 'ui/events/event_form_page.dart';
+import 'ui/events/events_page.dart';
 import 'ui/lock/lock_page.dart';
+import 'ui/more/more_page.dart';
 import 'ui/onboarding/onboarding.dart';
 import 'ui/overview/overview_page.dart';
+import 'ui/plan/budget_form_page.dart';
+import 'ui/plan/goal_form_page.dart';
+import 'ui/plan/plan_page.dart';
+import 'ui/rates/rates_page.dart';
+import 'ui/recurring/recurring_form_page.dart';
+import 'ui/recurring/recurring_page.dart';
 import 'ui/settings/settings_page.dart';
 import 'ui/shell.dart';
 import 'ui/transactions/txn_form_page.dart';
@@ -62,11 +75,34 @@ final routerProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: 'new',
-                    builder: (_, s) => TxnFormPage(initialKind: s.uri.queryParameters['kind']),
+                    builder: (_, s) => TxnFormPage(
+                      initialKind: s.uri.queryParameters['kind'],
+                      initialGoalId: s.uri.queryParameters['goal'],
+                    ),
                   ),
                   GoRoute(
                     path: ':id',
                     builder: (_, s) => TxnFormPage(txnId: s.pathParameters['id']),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/plan',
+                builder: (_, _) => const PlanPage(),
+                routes: [
+                  GoRoute(path: 'budgets/new', builder: (_, _) => const BudgetFormPage()),
+                  GoRoute(
+                    path: 'budgets/:id',
+                    builder: (_, s) => BudgetFormPage(budgetId: s.pathParameters['id']),
+                  ),
+                  GoRoute(path: 'goals/new', builder: (_, _) => const GoalFormPage()),
+                  GoRoute(
+                    path: 'goals/:id',
+                    builder: (_, s) => GoalFormPage(goalId: s.pathParameters['id']),
                   ),
                 ],
               ),
@@ -88,10 +124,50 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           StatefulShellBranch(
-            routes: [GoRoute(path: '/categories', builder: (_, _) => const CategoriesPage())],
-          ),
-          StatefulShellBranch(
-            routes: [GoRoute(path: '/settings', builder: (_, _) => const SettingsPage())],
+            routes: [
+              GoRoute(
+                path: '/more',
+                builder: (_, _) => const MorePage(),
+                routes: [
+                  GoRoute(path: 'categories', builder: (_, _) => const CategoriesPage()),
+                  GoRoute(path: 'settings', builder: (_, _) => const SettingsPage()),
+                  GoRoute(path: 'rates', builder: (_, _) => const RatesPage()),
+                  GoRoute(
+                    path: 'recurring',
+                    builder: (_, _) => const RecurringPage(),
+                    routes: [
+                      GoRoute(path: 'new', builder: (_, _) => const RecurringFormPage()),
+                      GoRoute(
+                        path: ':id',
+                        builder: (_, s) => RecurringFormPage(recurringId: s.pathParameters['id']),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'debts',
+                    builder: (_, _) => const DebtsPage(),
+                    routes: [
+                      GoRoute(path: 'new', builder: (_, _) => const DebtFormPage()),
+                      GoRoute(
+                        path: ':id',
+                        builder: (_, s) => DebtFormPage(debtId: s.pathParameters['id']),
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: 'events',
+                    builder: (_, _) => const EventsPage(),
+                    routes: [
+                      GoRoute(path: 'new', builder: (_, _) => const EventFormPage()),
+                      GoRoute(
+                        path: ':id',
+                        builder: (_, s) => EventFormPage(eventId: s.pathParameters['id']),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
@@ -133,6 +209,28 @@ class _QulyAppState extends ConsumerState<QulyApp> {
     }
   }
 
+  List<DateTime> _lastReminders = const [];
+
+  /// Lên lịch lại nhắc hóa đơn khi dữ liệu đổi (chỉ khi đã mở khóa - lúc khóa dữ liệu rỗng, không được xóa lịch).
+  Future<void> _syncReminders() async {
+    final settings = ref.read(settingsProvider);
+    final scheduler = ref.read(reminderSchedulerProvider);
+    if (!scheduler.supported) return;
+    if (!settings.billReminders) {
+      if (_lastReminders.isNotEmpty) {
+        _lastReminders = const [];
+        await scheduler.cancelAll();
+      }
+      return;
+    }
+    if (ref.read(sessionProvider) != SessionStatus.unlocked) return;
+    final times = reminderTimes(ref.read(ledgerProvider), DateTime.now());
+    if (listEquals(times, _lastReminders)) return;
+    _lastReminders = times;
+    final l = lookupAppLocalizations(settings.locale ?? const Locale('vi'));
+    await scheduler.replaceAll(times, title: l.notifBillTitle, body: l.notifBillBody);
+  }
+
   @override
   void dispose() {
     _lifecycle.dispose();
@@ -143,6 +241,8 @@ class _QulyAppState extends ConsumerState<QulyApp> {
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
     final router = ref.watch(routerProvider);
+    ref.listen(ledgerProvider, (_, _) => _syncReminders());
+    ref.listen(settingsProvider.select((s) => s.billReminders), (_, _) => _syncReminders());
     return MaterialApp.router(
       onGenerateTitle: (c) => AppLocalizations.of(c).appTitle,
       debugShowCheckedModeBanner: false,

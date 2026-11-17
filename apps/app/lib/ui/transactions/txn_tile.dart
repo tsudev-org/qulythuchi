@@ -37,13 +37,18 @@ class TxnTile extends StatelessWidget {
         icon = categoryIcon(cat?.icon ?? parent?.icon);
     }
     final subtitleParts = [
+      if (txn.pending) l.pendingConfirm,
       if (showDate) formatDate(txn.date),
       wallet?.name ?? '?',
       if (txn.note != null && txn.note!.isNotEmpty) txn.note!,
     ];
     final currency = wallet?.currency ?? Currency.vnd;
     return ListTile(
-      leading: CircleAvatar(backgroundColor: p.bgSubtle, foregroundColor: p.textSecondary, child: Icon(icon, size: 20)),
+      leading: CircleAvatar(
+        backgroundColor: p.bgSubtle,
+        foregroundColor: txn.pending ? p.warning : p.textSecondary,
+        child: Icon(txn.pending ? Icons.hourglass_top : icon, size: 20),
+      ),
       title: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
       subtitle: Text(subtitleParts.join(' · '), maxLines: 1, overflow: TextOverflow.ellipsis),
       trailing: MoneyText(

@@ -9,7 +9,7 @@
 | Ví | Nhiều ví: tiền mặt, ngân hàng, thẻ tín dụng (hạn mức, ngày sao kê/đến hạn), ví điện tử, tiết kiệm; ẩn/lưu trữ ví; số dư đầu kỳ | Money Lover, MISA, Money Manager | P2 |
 | Giao dịch | Thu, chi, chuyển ví (kèm phí), điều chỉnh số dư; ghi chú, thẻ, ảnh hóa đơn, địa điểm (tùy chọn), người liên quan | Money Lover, Spendee | P2 |
 | Danh mục | Phân cấp 2 tầng, biểu tượng/màu, bộ mặc định tiếng Việt, gộp/di chuyển | MISA, Money Manager | P2 |
-| Tiền tệ | Đa tiền tệ, tỉ giá tự cập nhật (nguồn miễn phí) + nhập tay; VND mặc định; tiền lưu số nguyên đơn vị nhỏ nhất | Money Lover, Spendee | P3 |
+| Tiền tệ | Đa tiền tệ, tỉ giá nhập tay (P3) + tự cập nhật qua máy chủ Quly Thu Chi lấy từ nguồn miễn phí (P6 - app không gọi thẳng bên thứ ba); VND mặc định; tiền lưu số nguyên đơn vị nhỏ nhất | Money Lover, Spendee | P3, P6 |
 | Ngân sách | Theo danh mục/ví/chu kỳ (tuần, tháng, tùy chọn), chuyển dư sang kỳ sau, cảnh báo 80%/100% | Money Lover, Home Budget | P3 |
 | Phong bì | Ngân sách phong bì (envelope) + phương pháp **6 hũ** với tỉ lệ tự phân bổ thu nhập | Fast Budget, MoneyOi | P3 |
 | An toàn để tiêu | Số tiền còn tiêu được hôm nay = thu nhập - hóa đơn sắp tới - mục tiêu - đã chi | PocketGuard | P4 |

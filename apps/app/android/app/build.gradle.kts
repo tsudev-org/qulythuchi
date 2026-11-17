@@ -10,6 +10,8 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // flutter_local_notifications cần desugaring (java.time trên Android cũ).
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -51,4 +53,5 @@ flutter {
 dependencies {
     // Theme.AppCompat cho hộp thoại sinh trắc của local_auth (tránh lỗi trên Android 8 trở xuống).
     implementation("androidx.appcompat:appcompat:1.7.1")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

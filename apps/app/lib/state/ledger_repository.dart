@@ -4,19 +4,43 @@ import 'package:uuid/uuid.dart';
 
 import '../data/record_store.dart';
 import '../domain/default_categories.dart';
+import '../domain/extra_models.dart';
 import '../domain/vn_search.dart';
 import '../security/vault.dart';
 
 /// Ảnh chụp bất biến của dữ liệu đã giải mã, đưa cho giao diện.
 @immutable
 final class LedgerData {
-  const LedgerData({this.wallets = const [], this.categories = const [], this.txns = const [], this.skipped = 0});
+  const LedgerData({
+    this.wallets = const [],
+    this.categories = const [],
+    this.txns = const [],
+    this.budgets = const [],
+    this.recurrings = const [],
+    this.debts = const [],
+    this.goals = const [],
+    this.events = const [],
+    this.rates = const [],
+    this.jarPlan,
+    this.skipped = 0,
+  });
 
   final List<Wallet> wallets;
   final List<Category> categories;
 
   /// Mới nhất trước.
   final List<Txn> txns;
+  final List<Budget> budgets;
+  final List<Recurring> recurrings;
+  final List<Debt> debts;
+  final List<Goal> goals;
+  final List<Event> events;
+
+  /// Mới nhất trước (theo ngày).
+  final List<FxRate> rates;
+
+  /// null = chưa thiết lập (giao diện dùng mặc định 6 hũ).
+  final JarPlan? jarPlan;
 
   /// Số bản ghi không mở được (hỏng hoặc bị tráo) - chỉ đếm, không ghi nội dung ra log.
   final int skipped;
@@ -24,6 +48,11 @@ final class LedgerData {
   Wallet? wallet(String? id) => wallets.where((w) => w.id == id).firstOrNull;
   Category? category(String? id) => categories.where((c) => c.id == id).firstOrNull;
   Txn? txn(String id) => txns.where((t) => t.id == id).firstOrNull;
+  Budget? budget(String? id) => budgets.where((b) => b.id == id).firstOrNull;
+  Recurring? recurring(String? id) => recurrings.where((r) => r.id == id).firstOrNull;
+  Debt? debt(String? id) => debts.where((d) => d.id == id).firstOrNull;
+  Goal? goal(String? id) => goals.where((g) => g.id == id).firstOrNull;
+  Event? event(String? id) => events.where((e) => e.id == id).firstOrNull;
 
   /// Giao dịch đối ứng của một vế chuyển ví.
   Txn? counterpart(Txn t) =>
@@ -31,12 +60,59 @@ final class LedgerData {
 
   Money balance(Wallet w) => Ledger.walletBalance(w, txns);
 
+  /// Giao dịch tự sinh đang chờ người dùng xác nhận.
+  List<Txn> get pendingTxns => [
+    for (final t in txns)
+      if (t.pending) t,
+  ];
+
   /// Tổng số dư theo từng tiền tệ (ví lưu trữ hoặc "không tính vào tổng" bị bỏ qua).
   Map<Currency, Money> totals() {
     final out = <Currency, Money>{};
     for (final w in wallets) {
       if (w.archived || w.excludeFromTotal) continue;
       out[w.currency] = (out[w.currency] ?? Money.zero(w.currency)) + balance(w);
+    }
+    return out;
+  }
+
+  /// Tỉ giá mới nhất để đổi [from] sang [to] (thuận hoặc nghịch đảo không hỗ trợ - nhập theo chiều cần dùng).
+  String? rate(Currency from, Currency to) {
+    if (from == to) return '1';
+    for (final r in rates) {
+      if (r.from == from && r.to == to) return r.rate;
+    }
+    return null;
+  }
+
+  /// Tổng quy đổi về [base]. Tiền tệ chưa có tỉ giá nằm trong `missing` (không bị cộng lẫn).
+  ({Money total, List<Currency> missing}) totalIn(Currency base) {
+    var total = Money.zero(base);
+    final missing = <Currency>[];
+    totals().forEach((cur, m) {
+      final r = rate(cur, base);
+      if (r == null) {
+        missing.add(cur);
+      } else {
+        total += m.convert(base, r);
+      }
+    });
+    return (total: total, missing: missing);
+  }
+
+  /// Tổng chi của các giao dịch gắn sự kiện, theo tiền tệ.
+  Map<Currency, Money> eventSpending(String eventId) {
+    final out = <Currency, Money>{};
+    for (final t in txns) {
+      if (t.eventId != eventId || t.pending) continue;
+      final cur = wallet(t.walletId)?.currency;
+      if (cur == null) continue;
+      final delta = switch (t.kind) {
+        TxnKind.expense => t.amount,
+        TxnKind.income => -t.amount,
+        _ => 0,
+      };
+      out[cur] = (out[cur] ?? Money.zero(cur)) + Money(delta, cur);
     }
     return out;
   }
@@ -99,15 +175,45 @@ final class LedgerRepository {
     final wallets = <Wallet>[];
     final categories = <Category>[];
     final txns = <Txn>[];
+    final budgets = <Budget>[];
+    final recurrings = <Recurring>[];
+    final debts = <Debt>[];
+    final goals = <Goal>[];
+    final events = <Event>[];
+    final rates = <FxRate>[];
+    SyncRecord? jarRecord;
     for (final r in _records.values) {
       if (r.isDeleted) continue;
-      switch (r.type) {
-        case RecordTypes.wallet:
-          wallets.add(Wallet.fromRecord(r));
-        case RecordTypes.category:
-          categories.add(Category.fromRecord(r));
-        case RecordTypes.transaction:
-          txns.add(Txn.fromRecord(r));
+      try {
+        switch (r.type) {
+          case RecordTypes.wallet:
+            wallets.add(Wallet.fromRecord(r));
+          case RecordTypes.category:
+            categories.add(Category.fromRecord(r));
+          case RecordTypes.transaction:
+            txns.add(Txn.fromRecord(r));
+          case RecordTypes.budget:
+            budgets.add(Budget.fromRecord(r));
+          case RecordTypes.recurring:
+            recurrings.add(Recurring.fromRecord(r));
+          case RecordTypes.debt:
+            debts.add(Debt.fromRecord(r));
+          case RecordTypes.goal:
+            goals.add(Goal.fromRecord(r));
+          case RecordTypes.event:
+            events.add(Event.fromRecord(r));
+          case AppRecordTypes.fxRate:
+            final rate = FxRate.fromRecord(r);
+            if (rate != null) rates.add(rate);
+          case RecordTypes.jarPlan:
+            // Nhiều thiết bị cùng tạo kế hoạch: bản ghi có HLC mới nhất thắng.
+            if (jarRecord == null || (r.maxHlc != null && jarRecord.maxHlc != null && r.maxHlc! > jarRecord.maxHlc!)) {
+              jarRecord = r;
+            }
+        }
+      } on Object {
+        // Bản ghi giải mã được nhưng sai cấu trúc (phiên bản khác/hỏng): bỏ qua, không lộ nội dung.
+        skipped++;
       }
     }
     wallets.sort((a, b) {
@@ -115,6 +221,12 @@ final class LedgerRepository {
       return c != 0 ? c : _byName(a.name, b.name);
     });
     categories.sort((a, b) => _byName(a.name, b.name));
+    budgets.sort((a, b) => _byName(a.name, b.name));
+    recurrings.sort((a, b) => _byName(a.name, b.name));
+    goals.sort((a, b) => _byName(a.name, b.name));
+    debts.sort((a, b) => _byName(a.counterparty, b.counterparty));
+    events.sort((a, b) => b.start.compareTo(a.start));
+    rates.sort((a, b) => b.date.compareTo(a.date));
     txns.sort((a, b) {
       final c = b.date.compareTo(a.date);
       if (c != 0) return c;
@@ -124,7 +236,19 @@ final class LedgerRepository {
       if (ha == null || hb == null) return 0;
       return hb.compareTo(ha);
     });
-    return LedgerData(wallets: wallets, categories: categories, txns: txns, skipped: skipped);
+    return LedgerData(
+      wallets: wallets,
+      categories: categories,
+      txns: txns,
+      budgets: budgets,
+      recurrings: recurrings,
+      debts: debts,
+      goals: goals,
+      events: events,
+      rates: rates,
+      jarPlan: jarRecord == null ? null : JarPlanCodec.fromRecord(jarRecord),
+      skipped: skipped,
+    );
   }
 
   /// Sắp xếp tên kiểu tiếng Việt: "Ăn uống", "Đi lại" đứng đúng chỗ thay vì cuối danh sách.
@@ -299,6 +423,8 @@ final class LedgerRepository {
     int fee = 0,
     required CivilDate date,
     String? note,
+    String? goalId,
+    String? eventId,
   }) {
     if (fromWalletId == toWalletId) throw const LedgerException('sameWallet');
     final from = _records[fromWalletId];
@@ -336,6 +462,7 @@ final class LedgerRepository {
       note: note,
       transferId: tid,
       counterWalletId: toWalletId,
+      eventId: eventId,
     );
     final tIn = Txn(
       id: inId,
@@ -346,6 +473,8 @@ final class LedgerRepository {
       note: note,
       transferId: tid,
       counterWalletId: fromWalletId,
+      eventId: eventId,
+      goalId: goalId,
     );
     out
       ..add(_apply(_base(outId, RecordTypes.transaction, fromWalletId), tOut.toValues()))
@@ -368,6 +497,228 @@ final class LedgerRepository {
     ];
     _persist(targets);
   }
+
+  // ------------------------------------------------------------------ Bản ghi cấp tài khoản dùng chung
+
+  void _saveAccountRecord(String id, String type, Map<String, Object?> values) =>
+      _persist([_apply(_base(id, type, null), values)]);
+
+  void _deleteRecord(String id) {
+    final r = _records[id];
+    if (r == null || r.isDeleted) return;
+    _persist([r.markDeleted(_clock)]);
+  }
+
+  // ------------------------------------------------------------------ Ngân sách, mục tiêu, sự kiện, 6 hũ, tỉ giá
+
+  Budget saveBudget(Budget b) {
+    if (b.name.trim().isEmpty) throw const LedgerException('nameRequired');
+    if (b.amount <= 0) throw const LedgerException('amountPositive');
+    if (b.alertAtBp < 1000 || b.alertAtBp > 10000) throw const LedgerException('alertRange');
+    if (b.period == BudgetPeriod.custom &&
+        (b.customStart == null || b.customEnd == null || b.customEnd! < b.customStart!)) {
+      throw const LedgerException('dateRange');
+    }
+    _saveAccountRecord(b.id, RecordTypes.budget, b.toValues());
+    return b;
+  }
+
+  void deleteBudget(String id) => _deleteRecord(id);
+
+  Goal saveGoal(Goal g) {
+    if (g.name.trim().isEmpty) throw const LedgerException('nameRequired');
+    if (g.target <= 0 || g.startingAmount < 0) throw const LedgerException('amountPositive');
+    _saveAccountRecord(g.id, RecordTypes.goal, g.toValues());
+    return g;
+  }
+
+  void deleteGoal(String id) => _deleteRecord(id);
+
+  Event saveEvent(Event e) {
+    if (e.name.trim().isEmpty) throw const LedgerException('nameRequired');
+    if (e.end != null && e.end! < e.start) throw const LedgerException('dateRange');
+    if (e.budget != null && e.budget! <= 0) throw const LedgerException('amountPositive');
+    _saveAccountRecord(e.id, RecordTypes.event, e.toValues());
+    return e;
+  }
+
+  void deleteEvent(String id) => _deleteRecord(id);
+
+  /// Lưu kế hoạch chia hũ (một bản ghi duy nhất cho tài khoản).
+  JarPlan saveJarPlan(JarPlan plan) {
+    final existing = _records.values
+        .where((r) => !r.isDeleted && r.type == RecordTypes.jarPlan)
+        .map((r) => r.id)
+        .firstOrNull;
+    _saveAccountRecord(existing ?? newId(), RecordTypes.jarPlan, JarPlanCodec.toValues(plan));
+    return plan;
+  }
+
+  FxRate saveRate(FxRate r) {
+    if (r.from == r.to) throw const LedgerException('sameCurrency');
+    if (!FxRate.ratePattern.hasMatch(r.rate)) throw const LedgerException('rateInvalid');
+    _saveAccountRecord(r.id, AppRecordTypes.fxRate, r.toValues());
+    return r;
+  }
+
+  void deleteRate(String id) => _deleteRecord(id);
+
+  // ------------------------------------------------------------------ Định kỳ / hóa đơn
+
+  Recurring saveRecurring(Recurring r) {
+    if (r.name.trim().isEmpty) throw const LedgerException('nameRequired');
+    if (r.amount <= 0) throw const LedgerException('amountPositive');
+    if (r.kind != TxnKind.expense && r.kind != TxnKind.income) throw const LedgerException('kindMismatch');
+    if (r.remindDaysBefore < 0 || r.remindDaysBefore > 30) throw const LedgerException('remindRange');
+    final w = _records[r.walletId];
+    if (w == null || w.isDeleted) throw const LedgerException('walletMissing');
+    final old = _records[r.id];
+    if (old != null && old.walletId != r.walletId) {
+      // Mẫu định kỳ mã hóa bằng khóa của ví ⇒ đổi ví = xóa bản cũ, tạo bản mới.
+      final moved = Recurring(
+        id: newId(),
+        walletId: r.walletId,
+        name: r.name,
+        kind: r.kind,
+        amount: r.amount,
+        rule: r.rule,
+        categoryId: r.categoryId,
+        note: r.note,
+        isBill: r.isBill,
+        autoCreate: r.autoCreate,
+        remindDaysBefore: r.remindDaysBefore,
+        generatedThrough: r.generatedThrough,
+        paused: r.paused,
+      );
+      _persist([
+        old.markDeleted(_clock),
+        _apply(SyncRecord(id: moved.id, type: RecordTypes.recurring, walletId: moved.walletId), moved.toValues()),
+      ]);
+      return moved;
+    }
+    _persist([_apply(_base(r.id, RecordTypes.recurring, r.walletId), r.toValues())]);
+    return r;
+  }
+
+  void deleteRecurring(String id) => _deleteRecord(id);
+
+  /// Giới hạn số giao dịch sinh mỗi mẫu trong một lần (chống mẫu "hằng ngày từ năm 2000" sinh hàng nghìn bản ghi).
+  static const maxMaterializePerRun = 400;
+
+  /// Sinh giao dịch đến hạn cho mọi mẫu định kỳ tới hết [today]; cập nhật `generatedThrough` CÙNG giao tác.
+  /// Trả về số giao dịch đã sinh.
+  int materializeRecurring(CivilDate today) {
+    final out = <SyncRecord>[];
+    var created = 0;
+    for (final rec in _records.values.toList()) {
+      if (rec.isDeleted || rec.type != RecordTypes.recurring) continue;
+      final Recurring r;
+      try {
+        r = Recurring.fromRecord(rec);
+      } on Object {
+        continue;
+      }
+      final w = _records[r.walletId];
+      if (w == null || w.isDeleted) continue;
+      var txns = r.materialize(today, newId);
+      if (txns.isEmpty) continue;
+      if (txns.length > maxMaterializePerRun) txns = txns.sublist(txns.length - maxMaterializePerRun);
+      for (final t in txns) {
+        out.add(_apply(SyncRecord(id: t.id, type: RecordTypes.transaction, walletId: t.walletId), t.toValues()));
+      }
+      out.add(_apply(rec, {'generatedThrough': today.toString()}));
+      created += txns.length;
+    }
+    if (out.isNotEmpty) _persist(out);
+    return created;
+  }
+
+  /// Xác nhận giao dịch chờ (tự sinh) ⇒ bắt đầu tính vào số dư.
+  void confirmPending(String txnId) {
+    final r = _records[txnId];
+    if (r == null || r.isDeleted || r['pending'] != true) return;
+    _persist([
+      _apply(r, {'pending': false}),
+    ]);
+  }
+
+  /// Đánh dấu hóa đơn đã trả cho lần đến hạn [due]: tạo giao dịch thật và đẩy `generatedThrough` qua [due].
+  Txn payBill(String recurringId, CivilDate due, {CivilDate? paidOn, int? amount}) {
+    final rec = _records[recurringId];
+    if (rec == null || rec.isDeleted) throw const LedgerException('notFound');
+    final r = Recurring.fromRecord(rec);
+    final t = Txn(
+      id: newId(),
+      walletId: r.walletId,
+      kind: r.kind,
+      amount: amount ?? r.amount,
+      date: paidOn ?? due,
+      categoryId: r.categoryId,
+      note: r.note ?? r.name,
+      recurringId: r.id,
+      source: TxnSource.recurring,
+    );
+    _checkTxn(t);
+    final through = r.generatedThrough;
+    _persist([
+      _apply(SyncRecord(id: t.id, type: RecordTypes.transaction, walletId: t.walletId), t.toValues()),
+      if (through == null || through < due) _apply(rec, {'generatedThrough': due.toString()}),
+    ]);
+    return t;
+  }
+
+  // ------------------------------------------------------------------ Nợ / vay
+
+  /// Lưu khoản nợ. Khi tạo mới và [recordDisbursement] = true: ghi luôn giao dịch giải ngân vào ví
+  /// (cho vay = chi, đi vay = thu), không tính vào báo cáo thu chi.
+  Debt saveDebt(Debt d, {bool recordDisbursement = false}) {
+    if (d.counterparty.trim().isEmpty) throw const LedgerException('nameRequired');
+    if (d.principal <= 0) throw const LedgerException('amountPositive');
+    if (d.annualInterestBp < 0 || d.annualInterestBp > 100000) throw const LedgerException('rateInvalid');
+    if (d.dueDate != null && d.dueDate! < d.startDate) throw const LedgerException('dateRange');
+    final w = _records[d.walletId];
+    if (w == null || w.isDeleted) throw const LedgerException('walletMissing');
+    final old = _records[d.id];
+    if (old != null && old.walletId != d.walletId) throw const LedgerException('walletLocked');
+    final records = [_apply(_base(d.id, RecordTypes.debt, d.walletId), d.toValues())];
+    if (old == null && recordDisbursement) {
+      final t = Txn(
+        id: newId(),
+        walletId: d.walletId,
+        kind: d.kind == DebtKind.lend ? TxnKind.expense : TxnKind.income,
+        amount: d.principal,
+        date: d.startDate,
+        note: d.counterparty,
+        debtId: d.id,
+        excludeFromReports: true,
+      );
+      records.add(_apply(SyncRecord(id: t.id, type: RecordTypes.transaction, walletId: t.walletId), t.toValues()));
+    }
+    _persist(records);
+    return d;
+  }
+
+  /// Ghi một lần trả/thu nợ (cho vay: thu về; đi vay: trả đi) vào ví của khoản nợ.
+  Txn recordDebtPayment(String debtId, int amount, CivilDate date, {String? note}) {
+    final rec = _records[debtId];
+    if (rec == null || rec.isDeleted) throw const LedgerException('notFound');
+    if (amount <= 0) throw const LedgerException('amountPositive');
+    final d = Debt.fromRecord(rec);
+    final t = Txn(
+      id: newId(),
+      walletId: d.walletId,
+      kind: d.kind == DebtKind.lend ? TxnKind.income : TxnKind.expense,
+      amount: amount,
+      date: date,
+      note: note ?? d.counterparty,
+      debtId: d.id,
+      excludeFromReports: true,
+    );
+    return saveTxn(t);
+  }
+
+  /// Xóa khoản nợ; giao dịch đã ghi giữ nguyên (số dư ví không đổi).
+  void deleteDebt(String id) => _deleteRecord(id);
 }
 
 extension on Txn {

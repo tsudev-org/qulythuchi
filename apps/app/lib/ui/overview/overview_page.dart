@@ -4,8 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 
 import '../../state/providers.dart';
+import '../../state/settings.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
+import '../plan/plan_page.dart';
+import '../recurring/recurring_page.dart';
 import '../transactions/txn_tile.dart';
 import '../widgets/common.dart';
 
@@ -30,6 +33,22 @@ class OverviewPage extends ConsumerWidget {
       if (t.kind == TxnKind.expense) expense[cur] = (expense[cur] ?? 0) + t.amount;
     }
     final wallets = data.wallets.where((w) => !w.archived).toList();
+    final base = Currency.of(ref.watch(settingsProvider.select((s) => s.baseCurrency)));
+    final converted = data.totalIn(base);
+    final pending = data.pendingTxns;
+    final bills = upcomingBills(data, today);
+    final watchBudgets = [
+      for (final b in data.budgets)
+        if (Ledger.budgetStatus(
+              b,
+              txns: data.txns,
+              categories: data.categories,
+              wallets: data.wallets,
+              today: today,
+            ).state !=
+            BudgetState.ok)
+          b,
+    ];
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -70,6 +89,16 @@ class OverviewPage extends ConsumerWidget {
                           const SizedBox(height: QtSpace.s1),
                           if (totals.isEmpty) MoneyText(Money.zero(Currency.vnd), style: textTheme.headlineMedium),
                           for (final m in totals.values) MoneyText(m, style: textTheme.headlineMedium),
+                          if (totals.length > 1 || (totals.length == 1 && totals.keys.first != base)) ...[
+                            const SizedBox(height: QtSpace.s2),
+                            Text(l.overviewTotalIn(base.code), style: TextStyle(color: p.textSecondary)),
+                            MoneyText(converted.total, style: textTheme.titleLarge),
+                            if (converted.missing.isNotEmpty)
+                              Text(
+                                l.ratesMissing(converted.missing.map((c) => c.code).join(', ')),
+                                style: TextStyle(color: p.warning, fontSize: QtFontSize.sm),
+                              ),
+                          ],
                           const SizedBox(height: QtSpace.s4),
                           Wrap(
                             spacing: QtSpace.s6,
@@ -91,6 +120,61 @@ class OverviewPage extends ConsumerWidget {
                       ),
                     ),
                   ),
+                  if (pending.isNotEmpty) ...[
+                    const SizedBox(height: QtSpace.s6),
+                    _SectionHeader(
+                      title: l.pendingTitle(pending.length),
+                      onMore: () => context.go('/transactions'),
+                      more: l.seeAll,
+                    ),
+                    Card(
+                      child: Column(
+                        children: [
+                          for (final t in pending.take(5))
+                            Column(
+                              children: [
+                                TxnTile(txn: t, data: data, showDate: true),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: QtSpace.s2, bottom: QtSpace.s1),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () => ref.read(ledgerProvider.notifier).deleteTxn(t.id),
+                                        child: Text(l.pendingSkip),
+                                      ),
+                                      const SizedBox(width: QtSpace.s2),
+                                      FilledButton(
+                                        onPressed: () => ref.read(ledgerProvider.notifier).confirmPending(t.id),
+                                        child: Text(l.pendingConfirm),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  if (bills.isNotEmpty) ...[
+                    const SizedBox(height: QtSpace.s6),
+                    _SectionHeader(title: l.billsUpcoming, onMore: () => context.go('/more/recurring'), more: l.seeAll),
+                    Card(
+                      child: Column(
+                        children: [for (final (r, due) in bills) BillTile(recurring: r, due: due, data: data)],
+                      ),
+                    ),
+                  ],
+                  if (watchBudgets.isNotEmpty) ...[
+                    const SizedBox(height: QtSpace.s6),
+                    _SectionHeader(title: l.budgetAlertsTitle, onMore: () => context.go('/plan'), more: l.seeAll),
+                    for (final b in watchBudgets)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: QtSpace.s3),
+                        child: BudgetCard(budget: b, data: data),
+                      ),
+                  ],
                   const SizedBox(height: QtSpace.s6),
                   _SectionHeader(title: l.overviewWallets, onMore: () => context.go('/wallets'), more: l.seeAll),
                   Card(

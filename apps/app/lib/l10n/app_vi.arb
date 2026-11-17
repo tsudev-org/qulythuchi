@@ -262,5 +262,347 @@
   "settingsNewRecoveryConfirm": "Bộ 24 từ cũ sẽ hết hiệu lực. Tiếp tục?",
   "settingsLanguageSystem": "Theo hệ thống",
   "settingsSecurityNote": "Dữ liệu được mã hóa đầu-cuối bằng libsodium. Mật khẩu và 24 từ không bao giờ rời thiết bị.",
-  "iconLabel": "Biểu tượng"
+  "iconLabel": "Biểu tượng",
+  "navPlan": "Kế hoạch",
+  "navMore": "Thêm",
+  "planBudgets": "Ngân sách",
+  "planJars": "6 hũ",
+  "planGoals": "Mục tiêu",
+  "budgetNew": "Ngân sách mới",
+  "budgetEdit": "Sửa ngân sách",
+  "budgetName": "Tên ngân sách",
+  "budgetAmount": "Hạn mức mỗi kỳ",
+  "budgetPeriod": "Chu kỳ",
+  "periodWeekly": "Hằng tuần",
+  "periodMonthly": "Hằng tháng",
+  "periodYearly": "Hằng năm",
+  "periodCustom": "Tùy chọn",
+  "budgetStartDay": "Ngày bắt đầu kỳ (1-31)",
+  "budgetStartWeekday": "Kỳ bắt đầu vào",
+  "budgetFrom": "Từ ngày",
+  "budgetTo": "Đến ngày",
+  "budgetCategories": "Danh mục áp dụng",
+  "budgetAllCategories": "Mọi khoản chi",
+  "budgetWallets": "Ví áp dụng",
+  "budgetAllWallets": "Mọi ví cùng tiền tệ",
+  "budgetRollover": "Chuyển phần dư/vượt sang kỳ sau",
+  "budgetAlertAt": "Cảnh báo khi dùng tới (%)",
+  "budgetSpentOf": "Đã chi {spent} / {limit}",
+  "@budgetSpentOf": {
+    "placeholders": {
+      "spent": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetRemaining": "Còn {amount}",
+  "@budgetRemaining": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetOver": "Vượt {amount}",
+  "@budgetOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetDaily": "Mỗi ngày còn được tiêu {amount}",
+  "@budgetDaily": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetStateOk": "Trong hạn mức",
+  "budgetStateWarning": "Sắp hết hạn mức",
+  "budgetStateOver": "Đã vượt hạn mức",
+  "budgetDeleteConfirm": "Xóa ngân sách \"{name}\"?",
+  "@budgetDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyBudgetsTitle": "Chưa có ngân sách",
+  "emptyBudgetsBody": "Đặt hạn mức chi theo tháng/tuần cho cả ví hoặc từng danh mục (phương pháp phong bì).",
+  "jarsIncomeThisMonth": "Thu nhập tháng này ({currency})",
+  "@jarsIncomeThisMonth": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "jarsSimulate": "Thử chia một khoản thu",
+  "jarsEdit": "Sửa tỉ lệ các hũ",
+  "jarsReset": "Về mặc định 6 hũ",
+  "jarsTotalMustBe100": "Tổng tỉ lệ phải đúng 100% (hiện {total}%)",
+  "@jarsTotalMustBe100": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "jarsNoIncome": "Chưa có khoản thu nào tháng này bằng {currency}.",
+  "@jarsNoIncome": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "jarNec": "Thiết yếu",
+  "jarLts": "Tiết kiệm dài hạn",
+  "jarEdu": "Giáo dục",
+  "jarPly": "Hưởng thụ",
+  "jarFfa": "Tự do tài chính",
+  "jarGiv": "Cho đi",
+  "jarsNote": "Phương pháp 6 hũ: chia mọi khoản thu theo tỉ lệ cố định để chi tiêu có kỷ luật.",
+  "goalNew": "Mục tiêu mới",
+  "goalEdit": "Sửa mục tiêu",
+  "goalName": "Tên mục tiêu",
+  "goalTarget": "Số tiền cần",
+  "goalStarting": "Đã có sẵn",
+  "goalDeadline": "Hạn hoàn thành",
+  "goalNoDeadline": "Không có hạn",
+  "goalAchieved": "Đã hoàn thành",
+  "goalProgress": "{saved} / {target} ({percent}%)",
+  "@goalProgress": {
+    "placeholders": {
+      "saved": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "goalMonthly": "Cần góp {amount} mỗi tháng để kịp hạn",
+  "@goalMonthly": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalContribute": "Góp tiền",
+  "goalDeleteConfirm": "Xóa mục tiêu \"{name}\"? Giao dịch đã góp vẫn giữ nguyên.",
+  "@goalDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyGoalsTitle": "Chưa có mục tiêu",
+  "emptyGoalsBody": "Đặt mục tiêu tiết kiệm (mua xe, du lịch…) và theo dõi tiến độ.",
+  "clearValue": "Bỏ chọn",
+  "selectAll": "Tất cả",
+  "none": "Không",
+  "moreRecurring": "Định kỳ và hóa đơn",
+  "moreDebts": "Sổ nợ / cho vay",
+  "moreEvents": "Sự kiện, chuyến đi",
+  "moreRates": "Tỉ giá",
+  "recurringNew": "Khoản định kỳ mới",
+  "recurringEdit": "Sửa khoản định kỳ",
+  "recurringName": "Tên khoản",
+  "recurringFrequency": "Lặp lại",
+  "freqDaily": "Hằng ngày",
+  "freqWeekly": "Hằng tuần",
+  "freqMonthly": "Hằng tháng",
+  "freqYearly": "Hằng năm",
+  "recurringInterval": "Mỗi bao nhiêu kỳ",
+  "recurringStart": "Bắt đầu từ",
+  "recurringUntil": "Kết thúc (không bắt buộc)",
+  "recurringIsBill": "Là hóa đơn (hiện trong lịch hóa đơn, có nhắc)",
+  "recurringAuto": "Tự ghi giao dịch khi đến hạn",
+  "recurringAutoOff": "Tắt: giao dịch được tạo ở trạng thái chờ bạn xác nhận",
+  "recurringRemind": "Nhắc trước (ngày)",
+  "recurringPaused": "Tạm dừng",
+  "recurringNext": "Lần tới: {date}",
+  "@recurringNext": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "recurringEnded": "Đã kết thúc",
+  "recurringDeleteConfirm": "Xóa khoản \"{name}\"? Giao dịch đã tạo vẫn giữ nguyên.",
+  "@recurringDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyRecurringTitle": "Chưa có khoản định kỳ",
+  "emptyRecurringBody": "Thêm tiền nhà, điện nước, lương… để app tự ghi và nhắc trước hạn.",
+  "billsUpcoming": "Hóa đơn sắp đến hạn",
+  "billDueIn": "Đến hạn {date} (còn {days} ngày)",
+  "@billDueIn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "billDueToday": "Đến hạn hôm nay",
+  "billPay": "Đã trả",
+  "billPaid": "Đã ghi nhận thanh toán",
+  "pendingTitle": "Chờ xác nhận ({n})",
+  "@pendingTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingConfirm": "Xác nhận",
+  "pendingSkip": "Bỏ qua",
+  "pendingBanner": "Giao dịch tự tạo, chưa tính vào số dư.",
+  "budgetAlertsTitle": "Ngân sách cần chú ý",
+  "debtNew": "Khoản nợ mới",
+  "debtEdit": "Khoản nợ",
+  "debtKind": "Loại",
+  "debtLend": "Cho vay",
+  "debtBorrow": "Đi vay",
+  "debtCounterparty": "Người vay / cho vay",
+  "debtPrincipal": "Số tiền gốc",
+  "debtStart": "Ngày vay",
+  "debtDue": "Hạn trả",
+  "debtInterest": "Lãi suất năm (%)",
+  "debtRecordDisbursement": "Ghi giao dịch tiền ra/vào ví ngay",
+  "debtPaid": "Đã trả {amount}",
+  "@debtPaid": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "debtRemaining": "Còn lại {amount}",
+  "@debtRemaining": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "debtSettled": "Đã tất toán",
+  "debtRecordPayment": "Ghi nhận trả nợ",
+  "debtCollect": "Ghi nhận thu nợ",
+  "debtClose": "Đóng khoản nợ",
+  "debtClosed": "Đã đóng",
+  "debtOverdue": "Quá hạn",
+  "debtPayments": "Lịch sử thanh toán",
+  "debtDeleteConfirm": "Xóa khoản nợ với \"{name}\"? Giao dịch đã ghi vẫn giữ nguyên.",
+  "@debtDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyDebtsTitle": "Chưa có khoản nợ nào",
+  "emptyDebtsBody": "Ghi lại tiền cho vay, đi vay và theo dõi trả dần.",
+  "debtsLendTotal": "Đang cho vay",
+  "debtsBorrowTotal": "Đang nợ",
+  "eventNew": "Sự kiện mới",
+  "eventEdit": "Sự kiện",
+  "eventName": "Tên sự kiện / chuyến đi",
+  "eventStart": "Bắt đầu",
+  "eventEnd": "Kết thúc",
+  "eventBudget": "Ngân sách (không bắt buộc)",
+  "eventBudgetCurrency": "Tiền tệ ngân sách",
+  "eventSpent": "Đã chi {amount}",
+  "@eventSpent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTxns": "Giao dịch của sự kiện",
+  "eventDeleteConfirm": "Xóa sự kiện \"{name}\"? Giao dịch vẫn giữ nguyên.",
+  "@eventDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyEventsTitle": "Chưa có sự kiện",
+  "emptyEventsBody": "Gắn giao dịch vào chuyến đi, đám cưới… để tổng kết riêng.",
+  "txnEvent": "Sự kiện",
+  "txnGoal": "Góp cho mục tiêu",
+  "ratesBase": "Tiền tệ quy đổi tổng",
+  "ratesNew": "Thêm tỉ giá",
+  "ratesFrom": "Từ tiền tệ",
+  "ratesValue": "1 {from} = ? {to}",
+  "@ratesValue": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "ratesInvalid": "Tỉ giá không hợp lệ",
+  "ratesNote": "Tỉ giá nhập tay. Tự cập nhật qua máy chủ Quly Thu Chi sẽ có khi bật đồng bộ.",
+  "ratesMissing": "Chưa có tỉ giá cho: {codes}",
+  "@ratesMissing": {
+    "placeholders": {
+      "codes": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyRatesTitle": "Chưa có tỉ giá",
+  "emptyRatesBody": "Chỉ cần khi bạn có ví bằng nhiều loại tiền.",
+  "overviewTotalIn": "Tổng quy đổi ({currency})",
+  "@overviewTotalIn": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "errAlertRange": "Ngưỡng cảnh báo từ 10% đến 100%",
+  "errDateRange": "Ngày kết thúc phải sau ngày bắt đầu",
+  "errSameCurrency": "Hai tiền tệ phải khác nhau",
+  "errRateInvalid": "Giá trị không hợp lệ",
+  "errRemindRange": "Số ngày nhắc từ 0 đến 30",
+  "errNotFound": "Không còn tồn tại",
+  "errWalletLocked": "Không đổi được ví của khoản này",
+  "weekday1": "Thứ Hai",
+  "weekday2": "Thứ Ba",
+  "weekday3": "Thứ Tư",
+  "weekday4": "Thứ Năm",
+  "weekday5": "Thứ Sáu",
+  "weekday6": "Thứ Bảy",
+  "weekday7": "Chủ Nhật",
+  "notifBillTitle": "Hóa đơn sắp đến hạn",
+  "notifBillBody": "Mở Quly Thu Chi để xem chi tiết.",
+  "settingsNotifications": "Nhắc hóa đơn",
+  "settingsNotificationsSub": "Thông báo không chứa tên hay số tiền, để không lộ trên màn hình khóa"
 }
