@@ -1,0 +1,30 @@
+// qulythuchi.tsudev.com: Worker máy chủ đồng bộ zero-knowledge (ADR-0001/0003/0004/0010).
+// P8 sẽ thêm Workers Static Assets (site Astro + web app Flutter ở /app); khi đó /api/* và /auth/* chạy Worker trước.
+// KHÔNG chứa bí mật. Secret (`wrangler secret put`): SESSION_SECRET (>= 32 ký tự ngẫu nhiên), IP_HASH_SALT.
+// id D1 là định danh tài nguyên, không phải bí mật (chỉ dùng được kèm token tài khoản).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "qulythuchi",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "qulythuchi",
+      "database_id": "89111953-0bab-43c1-8140-6430ab15c5a8",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "qulythuchi-files" }],
+  "vars": {
+    "PUBLIC_ORIGIN": "https://qulythuchi.tsudev.com",
+    "OIDC_ISSUER": "https://tsudev.com/oidc",
+    "OIDC_CLIENT_ID": "qulythuchi"
+  },
+  // Không cron: tài khoản đã hết 5 cron gói Free. Dọn dữ liệu chạy kèm ~1% yêu cầu /api (src/maintenance.ts).
+  "observability": { "enabled": true },
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "qulythuchi.tsudev.com", "custom_domain": true }]
+}

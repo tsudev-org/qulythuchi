@@ -8,6 +8,12 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- Máy chủ đồng bộ zero-knowledge `services/sync-api` (P5) trên Cloudflare Workers + D1 + R2, chạy tại
+  `https://qulythuchi.tsudev.com`: đăng nhập qua tsudev.com (OIDC + PKCE, mã một lần cho app, token truy cập 15 phút
+  + làm mới xoay vòng phát hiện dùng lại, phiên web cookie `__Host-`), đẩy/kéo bản ghi đã mã hóa theo con trỏ `rev`
+  (lũy đẳng, cô lập tài khoản), gói khóa tài khoản và khóa ví đã bọc, tệp đính kèm mã hóa trên R2, quản lý/thu hồi
+  thiết bị, xuất dữ liệu máy chủ, xóa tài khoản có ân hạn 30 ngày, giới hạn tần suất và hạn mức, header bảo mật,
+  CORS đúng gốc (ADR-0010).
 - Báo cáo + dữ liệu (P4): báo cáo theo kỳ (thu, chi, chênh lệch, tỉ lệ tiết kiệm, so với kỳ trước), thu chi 6
   tháng, cơ cấu chi theo danh mục, tài sản ròng, lịch chi tiêu; mọi biểu đồ có bảng dữ liệu thay thế và màu từ token;
   thẻ "An toàn để tiêu" ở Tổng quan; lọc giao dịch nhiều điều kiện (loại, ví, danh mục, khoảng ngày, khoảng tiền) và
