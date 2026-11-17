@@ -1,5 +1,5 @@
 # Cổng kiểm cho mọi PR và main. Action ghim SHA; công cụ tải ngoài ghim phiên bản + checksum.
-# Job app Flutter / máy chủ được thêm ở P2, P5.
+# Job máy chủ được thêm ở P5.
 name: CI
 on:
   push: { branches: [main] }
@@ -71,3 +71,44 @@ jobs:
         run: |
           sudo apt-get install -yq libsodium23 >/dev/null
           python3 -I conformance/verify_libsodium.py conformance/envelope-v1.json packages/core/lib/src/crypto/bip39_english.dart
+
+  app:
+    name: App Flutter (apps/app)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - name: Flutter/Dart (ghim commit)
+        run: |
+          git clone --depth 1 -b "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$RUNNER_TEMP/flutter"
+          test "$(git -C "$RUNNER_TEMP/flutter" rev-parse HEAD)" = "$FLUTTER_COMMIT"
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      - name: Gói hệ thống cho build Linux (GTK, libsecret)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -yq clang cmake ninja-build pkg-config libgtk-3-dev libsecret-1-dev liblzma-dev >/dev/null
+      - name: Sinh mã khớp nguồn (l10n, token thiết kế)
+        working-directory: apps/app
+        run: |
+          set -euo pipefail
+          flutter pub get
+          flutter gen-l10n
+          dart run tool/gen_tokens.dart
+          dart format lib/theme/tokens.g.dart lib/l10n >/dev/null
+          git diff --exit-code -- lib/l10n lib/theme || { echo "Tệp sinh ra đã cũ - chạy flutter gen-l10n / dart run tool/gen_tokens.dart"; exit 1; }
+      - name: Định dạng, phân tích, test
+        working-directory: apps/app
+        run: |
+          set -euo pipefail
+          dart format --output=none --set-exit-if-changed lib test tool
+          flutter analyze --fatal-infos
+          flutter test
+      - name: Build Linux
+        working-directory: apps/app
+        run: flutter build linux --release
+      - name: Build web (tài nguyên tự phục vụ, checksum ghim)
+        working-directory: apps/app
+        run: |
+          ./tool/fetch_web_assets.sh
+          flutter build web --release

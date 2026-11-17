@@ -10,4 +10,9 @@ updates:
     schedule: { interval: monthly, timezone: Asia/Ho_Chi_Minh }
     open-pull-requests-limit: 2
     groups: { pub: { patterns: ['*'] } }
-# Thêm pub (apps/app) ở P2 và npm (services/sync-api, apps/site) ở P5/P8.
+  - package-ecosystem: pub
+    directory: /apps/app
+    schedule: { interval: monthly, timezone: Asia/Ho_Chi_Minh }
+    open-pull-requests-limit: 2
+    groups: { pub-app: { patterns: ['*'] } }
+# Thêm npm (services/sync-api, apps/site) ở P5/P8.
