@@ -17,3 +17,7 @@ Third-party components bundled in the app:
   archive (MIT, Copyright Brendan Duncan), file_saver (BSD-3-Clause, Copyright Hassan Ansari), file_selector
   (BSD-3-Clause, Copyright The Flutter Authors). Full license texts ship in the app's "Licenses" page
   (Flutter LicenseRegistry).
+
+Third-party components bundled in the sync server (services/sync-api, P5):
+- hono (MIT, Copyright Yusuke Wada), jose (MIT, Copyright Filip Skokan), zod (MIT, Copyright Colin McDonnell).
+  License texts ship in each package under services/sync-api/node_modules after install.
