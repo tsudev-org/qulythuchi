@@ -17,7 +17,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| (trống) | | |
+| P5 Máy chủ sync-api (P5a → P5b → P5c) | agent-qulythuchi | 18/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
