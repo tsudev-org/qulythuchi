@@ -11,7 +11,6 @@ import { keysRoutes } from './keys/routes';
 import { ApiError, errorResponse } from './lib/errors';
 import { cleanup } from './maintenance';
 import { meRoutes } from './me/routes';
-import { homeCsp, homePage } from './home';
 import { syncRoutes } from './sync/routes';
 
 const app = new Hono<AppEnv>();
@@ -55,10 +54,7 @@ app.route('/', filesRoutes);
 app.route('/', meRoutes);
 app.route('/', inboxRoutes);
 
-// Trang chủ tạm cho tới P8 (site Astro + web app tại /app).
-app.get('/', async (c) =>
-  c.html(homePage(), 200, { 'Content-Security-Policy': await homeCsp(), 'Cache-Control': 'public, max-age=300' }),
-);
+// Site Astro + web app /app/ là tệp tĩnh (Workers Static Assets, wrangler.jsonc): Worker chỉ chạy cho /api/* và /auth/*.
 
 app.notFound((c) => c.json({ code: 'not_found', message: 'Không tìm thấy.' }, 404));
 

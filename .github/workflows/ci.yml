@@ -110,7 +110,7 @@ jobs:
         working-directory: apps/app
         run: |
           ./tool/fetch_web_assets.sh
-          flutter build web --release
+          flutter build web --release --base-href /app/ --csp --no-web-resources-cdn
 
   server:
     name: Máy chủ (services/sync-api)
@@ -133,4 +133,31 @@ jobs:
           npm run lint
           npm test
       - name: Build Worker (dry-run)
-        run: npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/worker"
+        run: |
+          # Thư mục tĩnh thật do job Website dựng; dry-run chỉ cần thư mục tồn tại.
+          mkdir -p ../../apps/site/dist
+          npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/worker"
+
+  site:
+    name: Website (apps/site)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults: { run: { working-directory: apps/site } }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: { node-version: '22' }
+      - name: Cài phụ thuộc đúng lockfile (npm ghim phiên bản)
+        run: npx -y npm@11.21.2 ci --no-fund --no-audit
+      - name: Tài sản nhận diện bắt buộc (BRAND_ASSETS.md mục 12.2)
+        run: |
+          set -e
+          for f in favicon.ico favicon-96x96.png apple-touch-icon.png og-image.png; do
+            test -f "public/$f" || { echo "Thiếu tài sản bắt buộc: $f"; exit 1; }
+          done
+      - name: Build (tài sản khớp nguồn, trang tĩnh, kiểm dist) + typecheck
+        run: |
+          set -euo pipefail
+          npm run build
+          npm run typecheck

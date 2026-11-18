@@ -1,0 +1,42 @@
+---
+import Trang from '../layouts/Trang.astro';
+import { REPO_URL } from '../lib/site';
+
+const nenTang: { ten: string; trangThai: 'san' | 'sap'; moTa: string; nut?: [string, string] }[] = [
+  { ten: 'Web', trangThai: 'san', moTa: 'Chạy ngay trên Chrome, Edge, Firefox, Safari. Cài lên màn hình chính như một app (PWA). iPhone, iPad dùng bản này.', nut: ['/app/', 'Mở bản web'] },
+  { ten: 'Android', trangThai: 'sap', moTa: 'Tệp APK ký số phát hành trên GitHub Releases, kèm SHA-256 và chứng thực nguồn gốc bản build. Sau đó lên các kho ứng dụng.' },
+  { ten: 'Windows', trangThai: 'sap', moTa: 'Bộ cài và gói winget, Scoop.' },
+  { ten: 'macOS', trangThai: 'sap', moTa: 'Gói Homebrew. Chưa ký bằng tài khoản Apple Developer nên lần đầu mở cần xác nhận trong Cài đặt hệ thống.' },
+  { ten: 'Linux', trangThai: 'sap', moTa: 'Gói .deb và .rpm qua kho APT/RPM của tsudev.' },
+  { ten: 'iOS', trangThai: 'sap', moTa: 'Chưa phát hành trên App Store. Trong lúc chờ, hãy dùng bản web và chọn "Thêm vào màn hình chính".' },
+];
+---
+<Trang tieuDe="Tải về" moTa="Tải Quly Thu Chi: bản web dùng được ngay trên mọi trình duyệt, bản Android, Windows, macOS, Linux sắp phát hành có ký số và mã băm SHA-256." duongDan="/tai-ve/">
+  <div class="khung van-ban">
+    <h1>Tải về</h1>
+    <p>Bản web đã sẵn sàng. Các bản cài đặt đang trong giai đoạn kiểm định trước khi phát hành; trang này sẽ cập nhật
+      liên kết tải khi có. Theo dõi <a href={`${REPO_URL}/releases`} target="_blank" rel="noopener noreferrer">trang
+      phát hành trên GitHub</a>.</p>
+  </div>
+  <section class="khung">
+    <div class="luoi">
+      {nenTang.map((n) => (
+        <div class="the">
+          <span class={n.trangThai === 'san' ? 'the__nhan the__nhan--san' : 'the__nhan'}>{n.trangThai === 'san' ? 'Dùng được ngay' : 'Sắp phát hành'}</span>
+          <h3>{n.ten}</h3>
+          <p>{n.moTa}</p>
+          {n.nut && <a class="nut nut--chinh nut--nho" href={n.nut[0]}>{n.nut[1]}</a>}
+        </div>
+      ))}
+    </div>
+  </section>
+  <div class="khung van-ban">
+    <h2>Chỉ tải từ nguồn chính thức</h2>
+    <ul class="danh-sach-kiem">
+      <li>Tệp cài của Quly Thu Chi chỉ đến từ <code>qulythuchi.tsudev.com</code>, <code>github.com/tsudev-org/qulythuchi</code>
+        và các kho gói của tsudev. Không dùng bản do người khác đăng lại.</li>
+      <li>Mỗi bản phát hành kèm mã băm SHA-256 để bạn đối chiếu tệp đã tải.</li>
+      <li>Ứng dụng tài chính chỉ nên cài từ nguồn bạn tin: một bản bị sửa có thể đọc mọi dữ liệu bạn nhập.</li>
+    </ul>
+  </div>
+</Trang>

@@ -1,0 +1,13 @@
+{
+  "_ghi_chu": "Cấu hình dây chuyền thương hiệu (apps/site/scripts/brand-assets.mjs). Quly Thu Chi CHƯA có logo riêng được duyệt (BRAND_ASSETS.md mục 12.3 và 15, AGENTS.md B.4) nên dùng logo tsudev chính thức (tsudev/packages/brand/source/logo-tsudev.png, SHA-256 2ad933bd...77ba). Có logo riêng được duyệt: thay ảnh ở source/, sửa id/source, chạy lại `npm --prefix apps/site run brand`. CI chạy với --check.",
+  "id": "qulythuchi",
+  "name": "Quly Thu Chi",
+  "source": "source/logo-tsudev.png",
+  "mode": "tile",
+  "tileRadius": 0.22,
+  "solidBg": "#000001",
+  "ogGlow": "#2e1065",
+  "ogAccent": "#C4A1FF",
+  "domain": "qulythuchi.tsudev.com",
+  "ogLines": ["Quản lý thu chi cá nhân, mã hóa đầu-cuối", "Android, Windows, macOS, Linux và web"]
+}

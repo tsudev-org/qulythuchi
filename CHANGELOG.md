@@ -5,10 +5,16 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 ## [Chưa phát hành]
 
 ### Sửa
+- Máy chủ: giải mã thực thể HTML của email một lượt (không giải mã kép, CodeQL).
 - Test app: cầu thông báo Android và bộ nghe lối tắt ghi nhanh ghi đè được (flutter test giả lập Android, không có plugin).
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- Web + site (P8, ADR-0013): `qulythuchi.tsudev.com` có trang giới thiệu, Tính năng, Bảo mật và quyền riêng tư (máy
+  chủ thấy gì, ngoại lệ email, quyền thông báo/máy ảnh/micro, ML Kit), Tải về; bản web của app ở `/app/` (PWA, cài
+  lên màn hình chính, cũng là cách dùng trên iPhone). Một Worker phục vụ cả tệp tĩnh lẫn API; web app tự phục vụ mọi
+  tài nguyên (không CDN), không service worker, CSP riêng. Favicon, icon PWA, ảnh chia sẻ sinh từ logo tsudev bằng
+  dây chuyền thương hiệu (`apps/site/scripts/brand-assets.mjs`).
 - Tự nhập + thông minh (P7, ADR-0012): màn "Tự nhập" và nút "Ghi nhanh" ở Tổng quan - gõ hoặc nói một câu ("ăn trưa
   50 nghìn", "hôm qua đổ xăng 80k", "nhận lương 15 triệu", "hai trăm rưỡi"), app tách số tiền/ngày/thu-chi và gợi ý
   danh mục; quét hóa đơn bằng OCR trên máy (Android/iOS, ảnh không rời máy); giọng nói nhận dạng trên máy, chỉ dùng

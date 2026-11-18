@@ -1,0 +1,27 @@
+# Header của tệp tĩnh (Workers Static Assets). /api/* và /auth/* do Worker trả, có header riêng (services/sync-api).
+# CSP của site: chỉ tài nguyên cùng nguồn, không nội tuyến. Web app Flutter ở /app/ cần WebAssembly (CanvasKit,
+# sqlite3, libsodium) và style do engine chèn: GỠ CSP chung ở /app/* rồi đặt CSP riêng bằng <meta> trong
+# /app/index.html (apps/app/web/index.html) - hai header CSP trùng khóa sẽ bị trình duyệt áp CẢ HAI.
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+/app/*
+  ! Content-Security-Policy
+  Referrer-Policy: no-referrer
+  Cache-Control: no-cache
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=2592000
+
+/.well-known/security.txt
+  Content-Type: text/plain; charset=utf-8

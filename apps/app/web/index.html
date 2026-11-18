@@ -3,6 +3,10 @@
 <head>
   <base href="$FLUTTER_BASE_HREF">
   <meta charset="UTF-8">
+  <!-- CSP của web app (/app/). Site gỡ CSP chung ở /app/* (apps/site/public/_headers) để không áp chồng hai chính sách.
+       wasm-unsafe-eval: CanvasKit, sqlite3, libsodium là WebAssembly. style-src unsafe-inline: engine Flutter chèn <style>.
+       frame-ancestors không đặt được bằng <meta>: X-Frame-Options DENY do header chung đặt. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self' blob:; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Quly Thu Chi - quản lý thu chi cá nhân, mã hóa đầu-cuối.">
   <meta name="referrer" content="no-referrer">
