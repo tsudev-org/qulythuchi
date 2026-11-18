@@ -58,3 +58,10 @@ ADR-0006 chốt 5 cách tự nhập. P7 hiện thực chúng; cần chốt các 
   Dời sang phase sau (cần bảng tệp cục bộ + đồng bộ tệp trong `SyncEngine`).
 - Email Routing cho `in.qulythuchi.tsudev.com` (MX + catch-all ⇒ Worker `qulythuchi`) là việc của chủ dự án trên
   bảng điều khiển Cloudflare; chưa cấu hình thì thư bị trả lại, phần còn lại vẫn chạy.
+
+## Ghi chú vận hành (18/11/2026)
+Email Routing chỉ có catch-all ở mức ZONE (quy tắc thường chỉ khớp địa chỉ cố định; địa chỉ người dùng là ngẫu nhiên),
+nên catch-all của tsudev.com trỏ Worker `qulythuchi`; miền con `in.qulythuchi.tsudev.com` bật riêng (MX/SPF). Worker
+từ chối mọi thư không thuộc `INBOX_DOMAIN` trước khi đọc nội dung. Sản phẩm khác của hệ cần catch-all ⇒ tách bằng
+Worker điều phối theo tên miền đích. Wrangler 4.163 không đặt được hành động `worker` cho catch-all: dùng API
+`PUT /zones/{zone}/email/routing/rules/catch_all`.
