@@ -20,7 +20,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| (trống) | | |
+| P8 - Web + site (`feat/p8-web-site`) | agent-qulythuchi | 18/11/2026 19:55 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
