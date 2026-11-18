@@ -75,7 +75,9 @@ describe('email chuyển tiếp niêm phong', () => {
     const on = await call('/api/v1/inbox/address', json({}, a.auth));
     expect(on.status).toBe(201);
     const { address } = await on.json<{ address: string }>();
-    expect(address).toMatch(new RegExp(`^[0-9a-f]{32}@${DOMAIN.replace(/\./g, '\\.')}$`));
+    const [local, host] = address.split('@');
+    expect(local).toMatch(/^[0-9a-f]{32}$/);
+    expect(host).toBe(DOMAIN);
     expect(await deliver(address.toUpperCase())).toBeNull();
 
     const rows = await env.DB.prepare('SELECT sealed FROM inbound_mail').all<{ sealed: number[] }>();
@@ -169,5 +171,9 @@ describe('email chuyển tiếp niêm phong', () => {
     expect(htmlToText('<style>x{}</style><p>Số tiền: <b>50.000</b>&nbsp;đ</p><div>ND: cafe</div>')).toBe(
       'Số tiền: 50.000 đ\nND: cafe',
     );
+  });
+
+  it('giải mã thực thể một lượt, không giải mã kép', () => {
+    expect(htmlToText('<p>A &amp;lt;b&amp;gt; &lt;i&gt; &#273;&#7891;ng &#0;</p>')).toBe('A &lt;b&gt; <i> đồng');
   });
 });

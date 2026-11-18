@@ -12,18 +12,20 @@ export const MAX_PENDING = 200;
 
 const LOCAL = /^[0-9a-f]{32}$/;
 
+const ENTITIES: Record<string, string> = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"' };
+const fromCodePoint = (e: string): string => {
+  const n = Number(e.slice(1));
+  return n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : ' ';
+};
+
 /** Rút chữ từ HTML thư (bỏ style/script, xuống dòng ở khối). Chỉ để bộ đọc phía app có văn bản. */
 export function htmlToText(html: string): string {
   return html
     .replace(/<(style|script|head)[^>]*>[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<br\s*\/?>|<\/(p|div|tr|li|h[1-6]|table)>/gi, '\n')
     .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#(\d+);/g, (_, d: string) => String.fromCharCode(Number(d)))
+    // Giải mã thực thể MỘT lượt (không giải mã kép: "&amp;lt;" ⇒ "&lt;", không thành "<").
+    .replace(/&(nbsp|amp|lt|gt|quot|#\d{1,7});/g, (_, e: string) => ENTITIES[e] ?? fromCodePoint(e))
     .replace(/[ \t]+/g, ' ')
     .replace(/ *\n */g, '\n')
     .replace(/\n\s*\n+/g, '\n')
