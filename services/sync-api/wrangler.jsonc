@@ -1,5 +1,7 @@
 // qulythuchi.tsudev.com: Worker máy chủ đồng bộ zero-knowledge (ADR-0001/0003/0004/0010).
-// P8 sẽ thêm Workers Static Assets (site Astro + web app Flutter ở /app); khi đó /api/* và /auth/* chạy Worker trước.
+// MỘT Worker phục vụ cả site tĩnh (apps/site/dist: trang Astro + web app Flutter ở /app/) lẫn API (ADR-0013).
+// /api/* và /auth/* chạy mã Worker trước; mọi đường khác là tệp tĩnh (không tính lượt gọi Worker). Header của tệp
+// tĩnh: apps/site/public/_headers. Dựng thư mục tĩnh: ./scripts/build-web.sh (ở gốc repo) TRƯỚC `npm run deploy`.
 // KHÔNG chứa bí mật. Secret (`wrangler secret put`): SESSION_SECRET (>= 32 ký tự ngẫu nhiên), IP_HASH_SALT.
 // id D1 là định danh tài nguyên, không phải bí mật (chỉ dùng được kèm token tài khoản).
 {
@@ -8,6 +10,12 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "../../apps/site/dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/api/*", "/auth/*"]
+  },
   "d1_databases": [
     {
       "binding": "DB",

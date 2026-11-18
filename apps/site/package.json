@@ -1,0 +1,20 @@
+{
+  "name": "@qulythuchi/site",
+  "private": true,
+  "type": "module",
+  "description": "Website qulythuchi.tsudev.com (Astro, trang tĩnh). Web app Flutter gom vào dist/app/ bởi scripts/gom-app.mjs.",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "dev": "astro dev",
+    "brand": "node scripts/brand-assets.mjs",
+    "build": "node scripts/brand-assets.mjs --check && astro build && node scripts/gom-app.mjs && node scripts/check-dist.mjs",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "astro": "7.4.12"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "typescript": "5.9.3"
+  }
+}

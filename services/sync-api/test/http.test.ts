@@ -25,15 +25,11 @@ describe('HTTP', () => {
     expect((await pre('https://evil.example')).headers.get('Access-Control-Allow-Origin')).toBeNull();
   });
 
-  it('trang chủ tạm: CSP không unsafe-inline, không script', async () => {
+  it('Worker không tự sinh trang HTML: / là tệp tĩnh (Static Assets, ADR-0013) ⇒ tới Worker chỉ còn JSON 404', async () => {
     const res = await call('/');
-    expect(res.status).toBe(200);
-    const csp = res.headers.get('Content-Security-Policy')!;
-    expect(csp).toMatch(/style-src 'sha256-/);
-    expect(csp).not.toMatch(/unsafe-inline/);
-    const html = await res.text();
-    expect(html).toContain('lang="vi"');
-    expect(html).not.toMatch(/<script/i);
+    expect(res.status).toBe(404);
+    expect(res.headers.get('Content-Type')).toMatch(/application\/json/);
+    expect(res.headers.get('Content-Security-Policy')).toBe("default-src 'none'; frame-ancestors 'none'");
   });
 
   it('404 trả mã máy đọc + thông điệp tiếng Việt, body quá lớn ⇒ 413', async () => {

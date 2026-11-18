@@ -1,0 +1,68 @@
+---
+import Trang from '../layouts/Trang.astro';
+import { REPO_URL } from '../lib/site';
+---
+<Trang tieuDe="Bảo mật và quyền riêng tư" moTa="Quly Thu Chi mã hóa đầu-cuối dữ liệu tài chính: máy chủ chỉ giữ bản mã. Trang này nói rõ máy chủ thấy gì, các ngoại lệ và quyền app xin." duongDan="/bao-mat/">
+  <div class="khung van-ban">
+    <h1>Bảo mật và quyền riêng tư</h1>
+    <p>Trang này bổ sung <a href="https://tsudev.com/privacy" target="_blank" rel="noopener noreferrer">Chính sách riêng
+      tư chung của tsudev</a> và <a href="https://tsudev.com/terms" target="_blank" rel="noopener noreferrer">Điều khoản
+      sử dụng</a>. Chính sách chung áp dụng cho tài khoản tsudev; các mục dưới đây là phần <strong>riêng của Quly Thu
+      Chi</strong> vì app xử lý dữ liệu tài chính.</p>
+
+    <h2>Mã hóa đầu-cuối</h2>
+    <ul class="danh-sach-kiem">
+      <li>Mọi giao dịch, ví, danh mục, ngân sách, ghi chú được mã hóa trên thiết bị bằng libsodium (XChaCha20-Poly1305)
+        trước khi rời máy. Khóa chủ sinh ngẫu nhiên trên máy, được bọc bằng mật khẩu mã hóa của bạn (Argon2id).</li>
+      <li>Mật khẩu mã hóa và 24 từ khôi phục không bao giờ gửi lên máy chủ. Quên cả hai thì <strong>không ai</strong>,
+        kể cả chúng tôi, khôi phục được dữ liệu.</li>
+      <li>Dữ liệu trên máy nằm trong cơ sở dữ liệu mã hóa (SQLCipher). Bản web lưu bản ghi còn mã hóa trong trình
+        duyệt và chỉ giải mã trong bộ nhớ khi app đang mở khóa.</li>
+      <li>App gốc chỉ tin một tập chứng chỉ gốc ghim sẵn khi nói chuyện với máy chủ đồng bộ.</li>
+    </ul>
+
+    <h2>Máy chủ đồng bộ thấy gì</h2>
+    <p>Đồng bộ là tùy chọn. Khi bạn đăng nhập, máy chủ <code>qulythuchi.tsudev.com</code> (Cloudflare Workers, D1, R2)
+      lưu:</p>
+    <ul class="danh-sach-kiem">
+      <li>Mã tài khoản tsudev của bạn, danh sách thiết bị (tên, nền tảng, lần cuối hoạt động).</li>
+      <li>Các bản ghi đã mã hóa cùng siêu dữ liệu tối thiểu để đồng bộ: mã ngẫu nhiên, ví chứa nó, số thứ tự, kích
+        thước, thời điểm. Máy chủ không biết số tiền, danh mục, ghi chú hay tên ví.</li>
+      <li>Gói khóa đã bọc (máy chủ không mở được) và băm của địa chỉ IP để chống lạm dụng, không lưu IP gốc.</li>
+    </ul>
+    <p>Bạn xuất được toàn bộ dữ liệu máy chủ đang giữ và xóa tài khoản đồng bộ ngay trong app. Xóa tài khoản có 30 ngày
+      để đổi ý, sau đó dữ liệu bị xóa hẳn.</p>
+
+    <h2>Ngoại lệ: email chuyển tiếp</h2>
+    <p>Đây là chỗ <strong>duy nhất</strong> dữ liệu đi qua máy chủ ở dạng đọc được. Tính năng tắt mặc định. Khi bạn bật,
+      app tạo một địa chỉ riêng ngẫu nhiên dạng <code>…@in.qulythuchi.tsudev.com</code>. Thư gửi tới địa chỉ đó (ví dụ
+      thư báo giao dịch bạn tự chuyển tiếp từ ngân hàng) phải đi qua máy chủ thư của Cloudflare ở dạng thường, như mọi
+      email. Máy chủ của chúng tôi niêm phong thư bằng khóa công khai của bạn <strong>ngay khi nhận</strong>, không ghi
+      bản rõ ra đĩa hay nhật ký; chỉ app của bạn mở được. Bạn đổi hoặc tắt địa chỉ bất cứ lúc nào.</p>
+
+    <h2>Quyền app xin và dịch vụ bên thứ ba</h2>
+    <ul class="danh-sach-kiem">
+      <li><strong>Truy cập thông báo (Android, tùy chọn):</strong> chỉ để đọc thông báo biến động số dư của các app ngân
+        hàng bạn tự chọn. Thông báo của app khác bị bỏ ngay. Nội dung được mã hóa bằng khóa phần cứng của máy trong
+        lúc chờ và không rời thiết bị.</li>
+      <li><strong>Máy ảnh và ảnh (tùy chọn):</strong> để quét hóa đơn. Chữ được nhận dạng trên máy bằng Google ML Kit;
+        ảnh bị xóa ngay sau khi đọc. SDK ML Kit có thể gửi cho Google số liệu sử dụng ẩn danh (không gồm ảnh hay chữ
+        trên hóa đơn).</li>
+      <li><strong>Micro (tùy chọn):</strong> để ghi nhanh bằng giọng nói, nhận dạng trên máy. Nếu máy không có gói nhận
+        dạng ngoại tuyến, app hỏi bạn trước khi dùng dịch vụ của Google hoặc Apple, mỗi lần.</li>
+      <li><strong>Thông báo nhắc hóa đơn:</strong> nội dung nhắc không chứa số tiền.</li>
+      <li>Không quảng cáo, không công cụ phân tích hành vi, không báo cáo lỗi tự động gửi dữ liệu tài chính.</li>
+    </ul>
+
+    <h2>Tệp bạn xuất</h2>
+    <p>Tệp CSV, XLSX, PDF bạn xuất là bản rõ, app cảnh báo trước khi lưu. Tệp sao lưu <code>.qtbak</code> được mã hóa
+      bằng khóa của bạn.</p>
+
+    <h2>Báo lỗ hổng bảo mật</h2>
+    <p>Vui lòng báo riêng qua <a href={`${REPO_URL}/security/advisories/new`} target="_blank" rel="noopener noreferrer">GitHub
+      Security Advisories</a>, không mở issue công khai. Chi tiết trong
+      <a href={`${REPO_URL}/blob/main/SECURITY.md`} target="_blank" rel="noopener noreferrer">SECURITY.md</a> và
+      <a href="/.well-known/security.txt">security.txt</a>. Mô hình mối đe dọa đầy đủ:
+      <a href={`${REPO_URL}/blob/main/docs/THREAT_MODEL.md`} target="_blank" rel="noopener noreferrer">THREAT_MODEL.md</a>.</p>
+  </div>
+</Trang>
