@@ -5,9 +5,19 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 ## [Chưa phát hành]
 
 ### Sửa
+- Test app: cầu thông báo Android và bộ nghe lối tắt ghi nhanh ghi đè được (flutter test giả lập Android, không có plugin).
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- Tự nhập + thông minh (P7, ADR-0012): màn "Tự nhập" và nút "Ghi nhanh" ở Tổng quan - gõ hoặc nói một câu ("ăn trưa
+  50 nghìn", "hôm qua đổ xăng 80k", "nhận lương 15 triệu", "hai trăm rưỡi"), app tách số tiền/ngày/thu-chi và gợi ý
+  danh mục; quét hóa đơn bằng OCR trên máy (Android/iOS, ảnh không rời máy); giọng nói nhận dạng trên máy, chỉ dùng
+  dịch vụ hệ điều hành khi người dùng đồng ý. Đọc thông báo biến động số dư của app ngân hàng người dùng chọn
+  (Android; hàng đợi mã hóa Keystore) thành giao dịch chờ xác nhận. Nhập sao kê CSV/XLSX: tự tìm bảng giao dịch, cột
+  ghi nợ/ghi có, bỏ dòng đã có, gợi ý danh mục, tùy chọn vào hàng chờ. Email chuyển tiếp niêm phong (tắt mặc định,
+  ngoại lệ E2EE có công bố): địa chỉ riêng 128 bit, máy chủ niêm phong ngay bằng khóa của người dùng, app mở trên máy.
+  Gợi ý danh mục học từ lịch sử trên máy, cảnh báo ghi trùng. Widget "Ghi nhanh" trên màn hình chính Android (không
+  hiển thị dữ liệu). Máy chủ: migration `0002_email_inbox`, API `/api/v1/inbox`, Email Worker.
 - Đồng bộ trong app (P6): màn "Tài khoản & đồng bộ" - đăng nhập tsudev.com bằng trình duyệt hệ thống (PKCE; di động
   qua `com.tsudev.qulythuchi:/auth/callback`, máy tính qua vòng lặp 127.0.0.1), refresh token trong kho bí mật của
   thiết bị, đồng bộ nền (khi mở khóa, sau khi sửa, mỗi 10 phút, khi quay lại app) kéo trước - hợp nhất theo trường -

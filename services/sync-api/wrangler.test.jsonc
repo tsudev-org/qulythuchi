@@ -9,6 +9,7 @@
   "vars": {
     "PUBLIC_ORIGIN": "https://qulythuchi.tsudev.com",
     "OIDC_ISSUER": "https://idp.test/oidc",
-    "OIDC_CLIENT_ID": "qulythuchi"
+    "OIDC_CLIENT_ID": "qulythuchi",
+    "INBOX_DOMAIN": "in.qulythuchi.tsudev.com"
   }
 }

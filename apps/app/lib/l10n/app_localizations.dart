@@ -3043,6 +3043,330 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Máy này đã đồng bộ với tài khoản tsudev khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app.'**
   String get syncBlockOtherUser;
+
+  /// No description provided for @autoImportTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự nhập'**
+  String get autoImportTitle;
+
+  /// No description provided for @autoConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự xác nhận'**
+  String get autoConfirm;
+
+  /// No description provided for @autoConfirmHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi thẳng vào số dư, không qua hàng chờ. Nên để tắt cho tới khi bạn tin bộ đọc.'**
+  String get autoConfirmHint;
+
+  /// No description provided for @bankNotifTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông báo ngân hàng'**
+  String get bankNotifTitle;
+
+  /// No description provided for @bankNotifAndroidOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ có trên Android: hệ điều hành khác không cho app đọc thông báo của app khác.'**
+  String get bankNotifAndroidOnly;
+
+  /// No description provided for @bankNotifExplain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đọc thông báo biến động số dư của app ngân hàng bạn chọn để tạo giao dịch chờ xác nhận. Nội dung chỉ xử lý trên máy, được mã hóa khi chờ, không gửi đi đâu.'**
+  String get bankNotifExplain;
+
+  /// No description provided for @bankNotifEnable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đọc thông báo ngân hàng'**
+  String get bankNotifEnable;
+
+  /// No description provided for @bankNotifDisclosure.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quly Thu Chi sẽ xin quyền \"Truy cập thông báo\". App chỉ giữ thông báo của các app ngân hàng bạn chọn, bỏ qua mọi app khác và tin OTP, và không gửi nội dung ra khỏi máy. Bạn có thể thu hồi quyền bất cứ lúc nào trong Cài đặt của hệ thống.'**
+  String get bankNotifDisclosure;
+
+  /// No description provided for @bankNotifDisclosureOk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng ý, tiếp tục'**
+  String get bankNotifDisclosureOk;
+
+  /// No description provided for @bankNotifNoPermission.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa cấp quyền truy cập thông báo'**
+  String get bankNotifNoPermission;
+
+  /// No description provided for @bankNotifGrant.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cấp quyền'**
+  String get bankNotifGrant;
+
+  /// No description provided for @bankNotifAddApp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm app ngân hàng'**
+  String get bankNotifAddApp;
+
+  /// No description provided for @bankNotifPickApp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn app'**
+  String get bankNotifPickApp;
+
+  /// No description provided for @bankNotifKnownApps.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngân hàng và ví điện tử phổ biến được xếp trước'**
+  String get bankNotifKnownApps;
+
+  /// No description provided for @bankNotifLastRun.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần gần nhất: thêm {added} giao dịch chờ xác nhận, bỏ qua {ignored} thông báo'**
+  String bankNotifLastRun(int added, int ignored);
+
+  /// No description provided for @captureMobileOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giọng nói và quét hóa đơn chạy trên điện thoại (Android/iOS), nhận dạng ngay trên máy.'**
+  String get captureMobileOnly;
+
+  /// No description provided for @importAsPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đưa vào hàng chờ xác nhận'**
+  String get importAsPending;
+
+  /// No description provided for @importAsPendingHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa tính vào số dư cho tới khi bạn xác nhận'**
+  String get importAsPendingHint;
+
+  /// No description provided for @importColDebit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cột ghi nợ (tiền ra)'**
+  String get importColDebit;
+
+  /// No description provided for @importColCredit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cột ghi có (tiền vào)'**
+  String get importColCredit;
+
+  /// No description provided for @importDoneDup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhập {ok} giao dịch, bỏ qua {skipped} dòng lỗi và {dup} dòng đã có'**
+  String importDoneDup(int ok, int skipped, int dup);
+
+  /// No description provided for @quickTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi nhanh'**
+  String get quickTitle;
+
+  /// No description provided for @quickExplain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gõ hoặc nói một câu như \"ăn trưa 50 nghìn\", \"hôm qua đổ xăng 80k\", \"nhận lương 15 triệu\". App tự tách số tiền, ngày, thu/chi và gợi ý danh mục.'**
+  String get quickExplain;
+
+  /// No description provided for @quickLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Câu ghi nhanh'**
+  String get quickLabel;
+
+  /// No description provided for @quickHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'ăn trưa 50 nghìn'**
+  String get quickHint;
+
+  /// No description provided for @quickNeedVndWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần một ví VND để ghi nhanh.'**
+  String get quickNeedVndWallet;
+
+  /// No description provided for @quickNoAmount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa thấy số tiền trong câu'**
+  String get quickNoAmount;
+
+  /// No description provided for @quickMaybeDuplicate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có giao dịch giống khoản này trong 1 ngày qua - kiểm tra để tránh ghi trùng.'**
+  String get quickMaybeDuplicate;
+
+  /// No description provided for @quickSaved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã ghi'**
+  String get quickSaved;
+
+  /// No description provided for @scanReceipt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét hóa đơn'**
+  String get scanReceipt;
+
+  /// No description provided for @scanDefaultNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hóa đơn'**
+  String get scanDefaultNote;
+
+  /// No description provided for @scanFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đọc được ảnh'**
+  String get scanFailed;
+
+  /// No description provided for @scanNoTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy tổng tiền trên hóa đơn - hãy gõ số tiền'**
+  String get scanNoTotal;
+
+  /// No description provided for @statementTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao kê ngân hàng'**
+  String get statementTitle;
+
+  /// No description provided for @statementExplain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập tệp CSV hoặc XLSX tải từ ngân hàng. App tự tìm bảng giao dịch, cột ghi nợ/ghi có, bỏ dòng đã có và gợi ý danh mục. Sao kê PDF: hãy tải bản Excel/CSV từ ngân hàng.'**
+  String get statementExplain;
+
+  /// No description provided for @statementOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập sao kê'**
+  String get statementOpen;
+
+  /// No description provided for @voiceStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nói'**
+  String get voiceStart;
+
+  /// No description provided for @voiceConsent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Máy này không có bộ nhận dạng giọng nói ngoại tuyến. Có thể dùng dịch vụ nhận dạng của hệ điều hành - âm thanh có thể được gửi tới nhà cung cấp hệ điều hành (Google/Apple). Quly Thu Chi không nhận hay lưu âm thanh. Tiếp tục?'**
+  String get voiceConsent;
+
+  /// No description provided for @voiceConsentOk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dùng dịch vụ hệ điều hành'**
+  String get voiceConsentOk;
+
+  /// No description provided for @voiceDenied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa cấp quyền micro'**
+  String get voiceDenied;
+
+  /// No description provided for @voiceUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không nhận dạng được giọng nói'**
+  String get voiceUnavailable;
+
+  /// No description provided for @moreAutoImport.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự nhập'**
+  String get moreAutoImport;
+
+  /// No description provided for @emailTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Email chuyển tiếp'**
+  String get emailTitle;
+
+  /// No description provided for @emailExplain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuyển tiếp email báo giao dịch của ngân hàng tới một địa chỉ riêng; app tạo giao dịch chờ xác nhận. Tắt mặc định.'**
+  String get emailExplain;
+
+  /// No description provided for @emailNeedSignIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập đồng bộ để dùng'**
+  String get emailNeedSignIn;
+
+  /// No description provided for @emailEnable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bật email chuyển tiếp'**
+  String get emailEnable;
+
+  /// No description provided for @emailDisclosure.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đây là NGOẠI LỆ DUY NHẤT của mã hóa đầu-cuối: email đi qua Internet ở dạng thường, và máy chủ Quly Thu Chi thấy nội dung trong vài mili giây khi nhận để niêm phong bằng khóa của bạn. Máy chủ không lưu bản rõ; thư niêm phong bị xóa khi app tải về hoặc sau 30 ngày. Chỉ chuyển tiếp email báo giao dịch, đừng chuyển thư có mật khẩu/OTP.'**
+  String get emailDisclosure;
+
+  /// No description provided for @emailCopy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép'**
+  String get emailCopy;
+
+  /// No description provided for @emailCopied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép địa chỉ'**
+  String get emailCopied;
+
+  /// No description provided for @emailRotate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi địa chỉ'**
+  String get emailRotate;
+
+  /// No description provided for @emailRotateConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Địa chỉ hiện tại sẽ ngừng nhận thư ngay. Bạn cần cập nhật quy tắc chuyển tiếp ở hộp thư của mình.'**
+  String get emailRotateConfirm;
+
+  /// No description provided for @emailDisable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tắt'**
+  String get emailDisable;
+
+  /// No description provided for @emailDisableConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tắt email chuyển tiếp? Địa chỉ bị xóa cùng mọi thư chưa tải về.'**
+  String get emailDisableConfirm;
+
+  /// No description provided for @emailWarning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngoại lệ E2EE: máy chủ thấy nội dung email trong lúc niêm phong. Địa chỉ là bí mật - ai biết địa chỉ đều gửi thư vào được.'**
+  String get emailWarning;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

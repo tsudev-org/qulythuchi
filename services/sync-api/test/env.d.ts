@@ -6,6 +6,7 @@ declare namespace Cloudflare {
     PUBLIC_ORIGIN: string;
     OIDC_ISSUER: string;
     OIDC_CLIENT_ID: string;
+    INBOX_DOMAIN: string;
     SESSION_SECRET: string;
     IP_HASH_SALT: string;
   }

@@ -941,5 +941,82 @@
   "syncBlockIdentityChanged": "Khóa mã hóa trên máy chủ đã đổi bất thường. Đồng bộ đã dừng để bảo vệ dữ liệu. Nếu bạn không đặt lại tài khoản, hãy báo cho chúng tôi.",
   "syncBlockRollback": "Dữ liệu trên máy chủ bị quay lui bất thường. Đồng bộ đã dừng để bảo vệ dữ liệu.",
   "syncBlockPendingDeletion": "Tài khoản đang chờ xóa - máy chủ không nhận thay đổi mới.",
-  "syncBlockOtherUser": "Máy này đã đồng bộ với tài khoản tsudev khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app."
+  "syncBlockOtherUser": "Máy này đã đồng bộ với tài khoản tsudev khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app.",
+  "autoImportTitle": "Tự nhập",
+  "autoConfirm": "Tự xác nhận",
+  "autoConfirmHint": "Ghi thẳng vào số dư, không qua hàng chờ. Nên để tắt cho tới khi bạn tin bộ đọc.",
+  "bankNotifTitle": "Thông báo ngân hàng",
+  "bankNotifAndroidOnly": "Chỉ có trên Android: hệ điều hành khác không cho app đọc thông báo của app khác.",
+  "bankNotifExplain": "Đọc thông báo biến động số dư của app ngân hàng bạn chọn để tạo giao dịch chờ xác nhận. Nội dung chỉ xử lý trên máy, được mã hóa khi chờ, không gửi đi đâu.",
+  "bankNotifEnable": "Đọc thông báo ngân hàng",
+  "bankNotifDisclosure": "Quly Thu Chi sẽ xin quyền \"Truy cập thông báo\". App chỉ giữ thông báo của các app ngân hàng bạn chọn, bỏ qua mọi app khác và tin OTP, và không gửi nội dung ra khỏi máy. Bạn có thể thu hồi quyền bất cứ lúc nào trong Cài đặt của hệ thống.",
+  "bankNotifDisclosureOk": "Đồng ý, tiếp tục",
+  "bankNotifNoPermission": "Chưa cấp quyền truy cập thông báo",
+  "bankNotifGrant": "Cấp quyền",
+  "bankNotifAddApp": "Thêm app ngân hàng",
+  "bankNotifPickApp": "Chọn app",
+  "bankNotifKnownApps": "Ngân hàng và ví điện tử phổ biến được xếp trước",
+  "bankNotifLastRun": "Lần gần nhất: thêm {added} giao dịch chờ xác nhận, bỏ qua {ignored} thông báo",
+  "@bankNotifLastRun": {
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "ignored": {
+        "type": "int"
+      }
+    }
+  },
+  "captureMobileOnly": "Giọng nói và quét hóa đơn chạy trên điện thoại (Android/iOS), nhận dạng ngay trên máy.",
+  "importAsPending": "Đưa vào hàng chờ xác nhận",
+  "importAsPendingHint": "Chưa tính vào số dư cho tới khi bạn xác nhận",
+  "importColDebit": "Cột ghi nợ (tiền ra)",
+  "importColCredit": "Cột ghi có (tiền vào)",
+  "importDoneDup": "Đã nhập {ok} giao dịch, bỏ qua {skipped} dòng lỗi và {dup} dòng đã có",
+  "@importDoneDup": {
+    "placeholders": {
+      "ok": {
+        "type": "int"
+      },
+      "skipped": {
+        "type": "int"
+      },
+      "dup": {
+        "type": "int"
+      }
+    }
+  },
+  "quickTitle": "Ghi nhanh",
+  "quickExplain": "Gõ hoặc nói một câu như \"ăn trưa 50 nghìn\", \"hôm qua đổ xăng 80k\", \"nhận lương 15 triệu\". App tự tách số tiền, ngày, thu/chi và gợi ý danh mục.",
+  "quickLabel": "Câu ghi nhanh",
+  "quickHint": "ăn trưa 50 nghìn",
+  "quickNeedVndWallet": "Cần một ví VND để ghi nhanh.",
+  "quickNoAmount": "Chưa thấy số tiền trong câu",
+  "quickMaybeDuplicate": "Có giao dịch giống khoản này trong 1 ngày qua - kiểm tra để tránh ghi trùng.",
+  "quickSaved": "Đã ghi",
+  "scanReceipt": "Quét hóa đơn",
+  "scanDefaultNote": "Hóa đơn",
+  "scanFailed": "Không đọc được ảnh",
+  "scanNoTotal": "Không tìm thấy tổng tiền trên hóa đơn - hãy gõ số tiền",
+  "statementTitle": "Sao kê ngân hàng",
+  "statementExplain": "Nhập tệp CSV hoặc XLSX tải từ ngân hàng. App tự tìm bảng giao dịch, cột ghi nợ/ghi có, bỏ dòng đã có và gợi ý danh mục. Sao kê PDF: hãy tải bản Excel/CSV từ ngân hàng.",
+  "statementOpen": "Nhập sao kê",
+  "voiceStart": "Nói",
+  "voiceConsent": "Máy này không có bộ nhận dạng giọng nói ngoại tuyến. Có thể dùng dịch vụ nhận dạng của hệ điều hành - âm thanh có thể được gửi tới nhà cung cấp hệ điều hành (Google/Apple). Quly Thu Chi không nhận hay lưu âm thanh. Tiếp tục?",
+  "voiceConsentOk": "Dùng dịch vụ hệ điều hành",
+  "voiceDenied": "Chưa cấp quyền micro",
+  "voiceUnavailable": "Không nhận dạng được giọng nói",
+  "moreAutoImport": "Tự nhập",
+  "emailTitle": "Email chuyển tiếp",
+  "emailExplain": "Chuyển tiếp email báo giao dịch của ngân hàng tới một địa chỉ riêng; app tạo giao dịch chờ xác nhận. Tắt mặc định.",
+  "emailNeedSignIn": "Đăng nhập đồng bộ để dùng",
+  "emailEnable": "Bật email chuyển tiếp",
+  "emailDisclosure": "Đây là NGOẠI LỆ DUY NHẤT của mã hóa đầu-cuối: email đi qua Internet ở dạng thường, và máy chủ Quly Thu Chi thấy nội dung trong vài mili giây khi nhận để niêm phong bằng khóa của bạn. Máy chủ không lưu bản rõ; thư niêm phong bị xóa khi app tải về hoặc sau 30 ngày. Chỉ chuyển tiếp email báo giao dịch, đừng chuyển thư có mật khẩu/OTP.",
+  "emailCopy": "Sao chép",
+  "emailCopied": "Đã sao chép địa chỉ",
+  "emailRotate": "Đổi địa chỉ",
+  "emailRotateConfirm": "Địa chỉ hiện tại sẽ ngừng nhận thư ngay. Bạn cần cập nhật quy tắc chuyển tiếp ở hộp thư của mình.",
+  "emailDisable": "Tắt",
+  "emailDisableConfirm": "Tắt email chuyển tiếp? Địa chỉ bị xóa cùng mọi thư chưa tải về.",
+  "emailWarning": "Ngoại lệ E2EE: máy chủ thấy nội dung email trong lúc niêm phong. Địa chỉ là bí mật - ai biết địa chỉ đều gửi thư vào được."
 }

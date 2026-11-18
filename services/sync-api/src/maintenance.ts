@@ -24,6 +24,8 @@ export async function cleanup(env: Env, at = Date.now()) {
       .bind(at - 90 * DAY),
     db.prepare('DELETE FROM devices WHERE revoked_at IS NOT NULL AND revoked_at < ?').bind(at - 90 * DAY),
     db.prepare('DELETE FROM audit_log WHERE at < ?').bind(at - 365 * DAY),
+    // Email niêm phong app chưa tải về sau 30 ngày (ADR-0006).
+    db.prepare('DELETE FROM inbound_mail WHERE received_at < ?').bind(at - 30 * DAY),
   ]);
   await purgeDeletedAccounts(env, at);
 }
@@ -52,6 +54,8 @@ export async function purgeDeletedAccounts(env: Env, at = Date.now(), maxUsers =
       db.prepare('DELETE FROM wallet_keys WHERE user_id = ?').bind(id),
       db.prepare('DELETE FROM account_bundles WHERE user_id = ?').bind(id),
       db.prepare('DELETE FROM files WHERE user_id = ?').bind(id),
+      db.prepare('DELETE FROM inbound_mail WHERE user_id = ?').bind(id),
+      db.prepare('DELETE FROM inbound_addresses WHERE user_id = ?').bind(id),
       db.prepare('DELETE FROM devices WHERE user_id = ?').bind(id),
       db.prepare('DELETE FROM app_codes WHERE user_id = ?').bind(id),
       db

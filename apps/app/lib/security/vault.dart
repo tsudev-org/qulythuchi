@@ -453,6 +453,17 @@ final class Vault {
     }
   }
 
+  /// Mở một email chuyển tiếp đã được Email Worker niêm phong bằng `boxPk` của tài khoản (ADR-0006, ADR-0012).
+  /// Khóa bí mật danh tính chỉ mở trong lượt gọi này rồi xóa khỏi bộ nhớ.
+  Uint8List openSealedEmail(Uint8List sealed) {
+    final identity = _kh.openIdentity(_bundle, _requireMaster);
+    try {
+      return _kh.openSealedEmail(sealed, identity);
+    } finally {
+      identity.dispose();
+    }
+  }
+
   /// So gói khóa máy chủ với tài khoản cục bộ đang mở: cùng danh tính VÀ phần bí mật mở được bằng khóa chủ này.
   /// false ⇒ hai khóa chủ khác nhau (tài khoản cục bộ khác) hoặc máy chủ tráo gói - KHÔNG được trộn dữ liệu.
   bool remoteBundleMatches(Map<String, Object?> json) {

@@ -9,9 +9,10 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P7 - Tự nhập + thông minh** (phiếu `logs/handover/20261118-02_p6-xong-bat-dau-p7.md`, prompt ở mục 6b).
-  👤 trước: chạy `cd apps/app && dart run tool/sync_smoke.dart login` để nghiệm thu đăng nhập thật (phiếu mục 2b).
-- [ ] P8 - Web + site
+- [ ] **P8 - Web + site** (phiếu `logs/handover/20261118-03_p7-xong-bat-dau-p8.md`, prompt ở mục 6b).
+  👤: bật Email Routing `in.qulythuchi.tsudev.com` ⇒ Worker `qulythuchi`; nghiệm thu đăng nhập thật (`sync_smoke.dart login`).
+- [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
+  desktop (Tesseract), widget/lối tắt iOS.
 - [ ] P9 - Ví chung gia đình
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android)
 
@@ -19,10 +20,16 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| P7 Tự nhập + thông minh (`feat/p7-tu-nhap`) | agent-qulythuchi | 18/11/2026 |
+| (trống) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 18/11/2026 - P7 Tự nhập + thông minh (agent-qulythuchi): lõi `autoimport/` (số tiền tiếng Việt nói/viết, câu ghi
+  nhanh, bộ đọc thông báo ngân hàng chung, hóa đơn OCR, gợi ý danh mục học trên máy, trùng/bất thường); app: màn Tự
+  nhập + Ghi nhanh (gõ/giọng nói `onDevice`/OCR ML Kit), sao kê CSV/XLSX (dòng tiêu đề, ghi nợ/có, chống trùng, hàng
+  chờ), thông báo Android (listener + hàng đợi AES-GCM Keystore), widget Ghi nhanh; máy chủ: email niêm phong
+  (migration 0002, `/api/v1/inbox`, Email Worker, tweetnacl + BLAKE2b kiểm với libsodium). ADR-0012, phiếu rà soát P7.
+  Tệp đính kèm, PDF, OCR desktop dời lại.
 - 18/11/2026 - P6 Đồng bộ trong app (agent-qulythuchi): `apps/app/lib/sync/` (ApiClient bearer + refresh xoay vòng,
   chỉ tin CA gốc ghim, PKCE, vòng lặp 127.0.0.1 / scheme di động / cookie web), `SyncEngine` (khóa ⇒ kéo hợp nhất theo
   trường ⇒ đẩy; chặn trộn khóa chủ, ghim vân tay danh tính, phát hiện quay lui, bỏ bản ghi bị tráo, ràng buộc tài
@@ -72,6 +79,7 @@
 - 17/11/2026 - Xuất bản rõ có cảnh báo; sao lưu `.qtbak` = gói khóa + phong bì `bak|<id>`, khôi phục chỉ trên máy chưa có tài khoản: `docs/adr/0009-*`
 - 18/11/2026 - Máy chủ: không gian bản ghi = tài khoản, rev trong giao tác, tệp xuyên Worker, xóa tài khoản 30 ngày: `docs/adr/0010-*`
 - 18/11/2026 - Đồng bộ app: không trộn khóa chủ, gói máy chủ chỉ nhận khi mở được bằng khóa chủ, ghim CA gốc: `docs/adr/0011-*`
+- 18/11/2026 - Tự nhập: bộ đọc chung, mọi nguồn vào hàng chờ, hàng đợi thông báo Keystore, email niêm phong tweetnacl: `docs/adr/0012-*`
 - 17/11/2026 - Phiên bản theo phiếu toàn hệ 20261117-V1: `YY.M.DDNN`, thẻ `vYY.M.DDNN`, versionCode `YYMDDNN`
 
 ## Sự cố bảo mật

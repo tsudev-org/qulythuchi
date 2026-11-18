@@ -21,7 +21,12 @@ Third-party components bundled in the app:
   authors), url_launcher (BSD-3-Clause, Copyright The Flutter Authors), app_links (Apache License 2.0, Copyright
   llfbandit). Root CA certificates pinned for the sync server (apps/app/lib/sync/pinned_roots.g.dart) are public
   certificates of ISRG, Google Trust Services, SSL.com and GlobalSign, taken from the Mozilla CA store.
+- Packages used for on-device auto import (P7): google_mlkit_text_recognition (MIT, Copyright flutter-ml.dev; bundles
+  Google ML Kit Text Recognition, subject to the ML Kit Terms of Service), image_picker (BSD-3-Clause, Copyright The
+  Flutter Authors), speech_to_text (BSD-3-Clause, Copyright Corner Software Development Corp).
 
 Third-party components bundled in the sync server (services/sync-api, P5):
 - hono (MIT, Copyright Yusuke Wada), jose (MIT, Copyright Filip Skokan), zod (MIT, Copyright Colin McDonnell).
+- Sealed email inbox (P7): tweetnacl (Unlicense / public domain, TweetNaCl.js contributors), @noble/hashes (MIT,
+  Copyright Paul Miller), postal-mime (MIT-0, Copyright Postal Systems OU).
   License texts ship in each package under services/sync-api/node_modules after install.

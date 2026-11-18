@@ -5,6 +5,8 @@ import { HTTPException } from 'hono/http-exception';
 import { authRoutes } from './auth/routes';
 import type { AppEnv, Env } from './env';
 import { filesRoutes } from './files/routes';
+import { handleEmail } from './inbox/email';
+import { inboxRoutes } from './inbox/routes';
 import { keysRoutes } from './keys/routes';
 import { ApiError, errorResponse } from './lib/errors';
 import { cleanup } from './maintenance';
@@ -51,6 +53,7 @@ app.route('/', syncRoutes);
 app.route('/', keysRoutes);
 app.route('/', filesRoutes);
 app.route('/', meRoutes);
+app.route('/', inboxRoutes);
 
 // Trang chủ tạm cho tới P8 (site Astro + web app tại /app).
 app.get('/', async (c) =>
@@ -74,4 +77,13 @@ app.onError((err, c) => {
 
 export default {
   fetch: app.fetch,
+  // Email chuyển tiếp niêm phong (ADR-0012). Lỗi ⇒ từ chối thư (người gửi nhận thư báo lỗi), không ghi nội dung.
+  async email(message, env) {
+    try {
+      await handleEmail(message, env);
+    } catch (e) {
+      console.error('email', e instanceof Error ? e.name : 'error');
+      message.setReject('Temporary failure');
+    }
+  },
 } satisfies ExportedHandler<Env>;

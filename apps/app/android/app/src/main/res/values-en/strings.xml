@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qt_widget_name">Quick add</string>
+    <string name="qt_widget_desc">Record spending by sentence, voice or receipt photo</string>
+    <string name="qt_widget_type">Type</string>
+    <string name="qt_widget_voice">Speak</string>
+    <string name="qt_widget_scan">Scan</string>
+    <string name="qt_notif_listener">Read bank notifications</string>
+</resources>

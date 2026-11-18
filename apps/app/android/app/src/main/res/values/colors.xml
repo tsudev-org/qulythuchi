@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Màu widget màn hình chính, chép từ token tsudev (lib/theme/tokens.g.dart, chủ đề Sáng): bgSurface, textPrimary.
+     Đổi token thì đổi cả ở đây (RemoteViews không đọc được ThemeData của Flutter). -->
+<resources>
+    <color name="qt_widget_bg">#FFFFFFFF</color>
+    <color name="qt_widget_fg">#FF1C2B3A</color>
+</resources>

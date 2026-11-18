@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chủ đề Tối: bgSurface, textPrimary của token tsudev. -->
+<resources>
+    <color name="qt_widget_bg">#FF16263C</color>
+    <color name="qt_widget_fg">#FFE6EDF5</color>
+</resources>

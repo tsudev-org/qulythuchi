@@ -1,0 +1,7 @@
+{
+  "description": "crypto_box_seal từ libsodium hệ thống - chỉ dùng cho test",
+  "pk": "I6RAeJeRviSWd3UQUOGcuFMX6IWE6V5f1tt9AIzgXwA=",
+  "sk": "FnSWQDMD4p5B5gDlIUfdpdF3ARUgUbXqoyTX5DRk+nI=",
+  "message": "{\"v\": 1, \"from\": \"a@b.example\", \"subject\": \"Biến động\", \"text\": \"GD: -50,000VND\"}",
+  "sealed": "cfleFmOCJkiO1Okq9DfkdE4mm2TQvtA6rpDCuVhY7RW/NJK3i4sJx6EfUqLImtQEXEo1J1n8oe6bFLNkgavsexzIJR0X5K/u1oV8DZdx794xSbNhjljlPS3O7o4C/Y5/hG2Bw5ySSx+mM7nYdBPd2sPsG6TvIQGChES/4IpmH52pLPewF4M="
+}

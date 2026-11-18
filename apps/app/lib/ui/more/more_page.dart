@@ -18,6 +18,7 @@ class MorePage extends StatelessWidget {
       (Icons.category_outlined, l.navCategories, '/more/categories'),
       (Icons.currency_exchange, l.moreRates, '/more/rates'),
       (Icons.cloud_sync_outlined, l.syncTitle, '/more/account'),
+      (Icons.auto_awesome_outlined, l.moreAutoImport, '/more/auto-import'),
       (Icons.import_export, l.dataTitle, '/more/data'),
       (Icons.settings_outlined, l.navSettings, '/more/settings'),
     ];

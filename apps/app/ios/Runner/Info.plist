@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Chụp hóa đơn để đọc số tiền ngay trên máy. Ảnh không được gửi đi.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Chọn ảnh hóa đơn để đọc số tiền ngay trên máy. Ảnh không được gửi đi.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Ghi thu chi bằng giọng nói.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Chuyển câu nói thành giao dịch, ưu tiên nhận dạng ngay trên máy.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Dùng Face ID để mở khóa nhanh Quly Thu Chi.</string>
 	<key>CFBundleURLTypes</key>

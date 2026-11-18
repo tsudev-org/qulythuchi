@@ -9,8 +9,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../../services/auto_import.dart';
 import '../../services/export.dart';
 import '../../services/import_csv.dart';
+import '../../services/xlsx_reader.dart';
 import '../../state/ledger_repository.dart';
 import '../../state/providers.dart';
 import '../../theme/app_theme.dart';
@@ -246,6 +248,10 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
   int? _note;
   int? _category;
   int? _type;
+  int? _debit;
+  int? _credit;
+  int _headerRow = 0;
+  bool _pending = false;
   DateOrder _order = DateOrder.dmy;
   bool _negativeIsExpense = true;
   bool _hasHeader = true;
@@ -256,27 +262,39 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
     final file = await openFile(
       acceptedTypeGroups: const [
         XTypeGroup(
-          label: 'CSV',
-          extensions: ['csv', 'txt'],
-          mimeTypes: ['text/csv', 'text/plain'],
-          uniformTypeIdentifiers: ['public.comma-separated-values-text', 'public.plain-text'],
+          label: 'CSV, XLSX',
+          extensions: ['csv', 'txt', 'xlsx'],
+          mimeTypes: ['text/csv', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+          uniformTypeIdentifiers: [
+            'public.comma-separated-values-text',
+            'public.plain-text',
+            'org.openxmlformats.spreadsheetml.sheet',
+          ],
         ),
       ],
     );
     if (file == null || !mounted) return;
     try {
       if (await file.length() > maxImportBytes) throw const FormatException('too_big');
-      final rows = parseCsv(await file.readAsBytes());
+      final bytes = await file.readAsBytes();
+      // XLSX là tệp zip (bắt đầu "PK").
+      final rows = bytes.length > 2 && bytes[0] == 0x50 && bytes[1] == 0x4B ? parseXlsx(bytes) : parseCsv(bytes);
       if (rows.isEmpty) throw const FormatException('empty');
-      final g = guessColumns(rows.first);
+      final headerRow = findHeaderRow(rows);
+      final g = guessColumns(rows[headerRow]);
       setState(() {
         _rows = rows;
+        _headerRow = headerRow;
         _date = g.date ?? 0;
-        _amount = g.amount ?? (rows.first.length > 1 ? 1 : 0);
+        _debit = g.debit;
+        _credit = g.credit;
+        _amount = g.amount ?? (g.debit != null || g.credit != null ? null : (rows[headerRow].length > 1 ? 1 : 0));
         _note = g.note;
         _category = g.category;
         _type = g.type;
-        _hasHeader = g.date != null || g.amount != null;
+        _hasHeader = g.date != null || g.amount != null || g.debit != null;
+        // Sao kê ngân hàng (có dòng thông tin trước bảng hoặc cột ghi nợ/có): mặc định vào hàng chờ xác nhận.
+        _pending = headerRow > 0 || g.debit != null || g.credit != null;
       });
     } on FormatException catch (e) {
       if (mounted) context.toast(e.message == 'too_big' ? l.importTooBig : l.importEmpty);
@@ -288,22 +306,32 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
   ImportResult? _result(LedgerData data) {
     final rows = _rows;
     final wallet = data.wallet(_walletId);
-    if (rows == null || wallet == null || _date == null || _amount == null) return null;
+    if (rows == null || wallet == null || _date == null || (_amount == null && _debit == null && _credit == null)) {
+      return null;
+    }
+    final statement = _headerRow > 0 || _debit != null || _credit != null;
     return buildImportTxns(
       rows,
       ImportMapping(
         date: _date!,
-        amount: _amount!,
+        amount: _amount,
+        debit: _debit,
+        credit: _credit,
         note: _note,
         category: _category,
         type: _type,
         order: _order,
         negativeIsExpense: _negativeIsExpense,
         hasHeader: _hasHeader,
+        headerRow: _headerRow,
+        pending: _pending,
       ),
       wallet,
       data.categories,
       ref.read(ledgerProvider.notifier).newId,
+      existing: data.txns,
+      suggester: LedgerCategorySuggester(data),
+      source: statement ? TxnSource.statement : TxnSource.import,
     );
   }
 
@@ -312,7 +340,7 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
     try {
       final n = ref.read(ledgerProvider.notifier).importTxns(r.txns);
       setState(() => _rows = null);
-      context.toast(l.importDone(n, r.skipped));
+      context.toast(r.duplicates == 0 ? l.importDone(n, r.skipped) : l.importDoneDup(n, r.skipped, r.duplicates));
     } on Object {
       context.toast(l.errGeneric);
     }
@@ -325,7 +353,7 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
     final wallets = data.wallets.where((w) => !w.archived).toList();
     if (_walletId == null || data.wallet(_walletId) == null) _walletId = wallets.firstOrNull?.id;
     final rows = _rows;
-    final header = rows?.first ?? const <String>[];
+    final header = rows == null || rows.isEmpty ? const <String>[] : rows[_headerRow.clamp(0, rows.length - 1)];
     final width = rows == null ? 0 : rows.map((r) => r.length).reduce((a, b) => a > b ? a : b);
     String colName(int i) => _hasHeader && i < header.length && header[i].isNotEmpty ? header[i] : '#${i + 1}';
 
@@ -385,7 +413,9 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
               ],
               onChanged: (v) => setState(() => _order = v ?? DateOrder.dmy),
             ),
-            col(l.importColAmount, _amount, (v) => _amount = v, optional: false),
+            col(l.importColAmount, _amount, (v) => _amount = v),
+            col(l.importColDebit, _debit, (v) => _debit = v),
+            col(l.importColCredit, _credit, (v) => _credit = v),
             col(l.importColType, _type, (v) => _type = v),
             col(l.importColCategory, _category, (v) => _category = v),
             col(l.importColNote, _note, (v) => _note = v),
@@ -394,6 +424,13 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
               title: Text(l.importSignMode),
               value: _negativeIsExpense,
               onChanged: (v) => setState(() => _negativeIsExpense = v),
+            ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(l.importAsPending),
+              subtitle: Text(l.importAsPendingHint),
+              value: _pending,
+              onChanged: (v) => setState(() => _pending = v),
             ),
             if (result != null) ...[
               Text(l.importPreview(result.txns.length < 5 ? result.txns.length : 5)),

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qt_widget_name">Ghi nhanh</string>
+    <string name="qt_widget_desc">Ghi thu chi bằng câu, giọng nói hoặc ảnh hóa đơn</string>
+    <string name="qt_widget_type">Gõ</string>
+    <string name="qt_widget_voice">Nói</string>
+    <string name="qt_widget_scan">Quét</string>
+    <string name="qt_notif_listener">Đọc thông báo ngân hàng</string>
+</resources>

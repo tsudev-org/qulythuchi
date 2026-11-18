@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <!-- Ghi nhanh bằng giọng nói (nhận dạng trên máy khi có, ADR-0006). Chỉ xin khi người dùng bấm "Nói". -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <!-- Nhắc hóa đơn: lên lịch lại sau khi khởi động máy. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
@@ -49,6 +51,23 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
+        <!-- Đọc thông báo ngân hàng (ADR-0006/0012): người dùng tự cấp quyền trong Cài đặt; chỉ giữ app đã chọn. -->
+        <service
+            android:name=".BankNotificationListener"
+            android:label="@string/qt_notif_listener"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"/>
+            </intent-filter>
+        </service>
+        <!-- Widget "Ghi nhanh": chỉ nút mở app, không hiện dữ liệu. -->
+        <receiver android:name=".QuickAddWidget" android:label="@string/qt_widget_name" android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/quick_add_widget_info"/>
+        </receiver>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
@@ -65,6 +84,15 @@
         <intent>
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="https"/>
+        </intent>
+        <!-- speech_to_text: tìm dịch vụ nhận dạng giọng nói của hệ thống. -->
+        <intent>
+            <action android:name="android.speech.RecognitionService"/>
+        </intent>
+        <!-- Màn Tự nhập: liệt kê app có biểu tượng để người dùng chọn app ngân hàng được nghe thông báo. -->
+        <intent>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
         </intent>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>

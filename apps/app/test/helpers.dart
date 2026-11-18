@@ -5,7 +5,10 @@ import 'package:qulythuchi/app.dart';
 import 'package:qulythuchi/data/key_storage.dart';
 import 'package:qulythuchi/data/record_store.dart';
 import 'package:qulythuchi/security/vault.dart';
+import 'package:qulythuchi/services/notification_bridge.dart';
 import 'package:qulythuchi/services/reminders.dart';
+import 'package:qulythuchi/state/auto_import_controller.dart';
+import 'package:qulythuchi/state/capture_providers.dart';
 import 'package:qulythuchi/state/providers.dart';
 import 'package:qulythuchi/state/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,6 +51,9 @@ Future<void> pumpApp(
         servicesProvider.overrideWithValue(services),
         sharedPreferencesProvider.overrideWithValue(sp),
         reminderSchedulerProvider.overrideWithValue(NoopReminderScheduler()),
+        // flutter test giả lập Android nhưng không có plugin/kênh gốc: dùng bản không-làm-gì.
+        notificationBridgeProvider.overrideWithValue(const NoopNotificationBridge()),
+        quickLinksListenerProvider.overrideWithValue((_) => null),
       ],
       child: const QulyApp(),
     ),

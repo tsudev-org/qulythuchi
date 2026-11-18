@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget ghi nhanh: chỉ có nút, không hiển thị dữ liệu tài chính. Màu lấy từ token (values/colors.xml). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/qt_widget_bg"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/qt_widget_type"
+        style="@style/QtWidgetButton"
+        android:drawableTop="@android:drawable/ic_menu_edit"
+        android:text="@string/qt_widget_type" />
+
+    <TextView
+        android:id="@+id/qt_widget_voice"
+        style="@style/QtWidgetButton"
+        android:drawableTop="@android:drawable/ic_btn_speak_now"
+        android:text="@string/qt_widget_voice" />
+
+    <TextView
+        android:id="@+id/qt_widget_scan"
+        style="@style/QtWidgetButton"
+        android:drawableTop="@android:drawable/ic_menu_camera"
+        android:text="@string/qt_widget_scan" />
+</LinearLayout>
