@@ -19,7 +19,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| (trống) | | |
+| P7 Tự nhập + thông minh (`feat/p7-tu-nhap`) | agent-qulythuchi | 18/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
