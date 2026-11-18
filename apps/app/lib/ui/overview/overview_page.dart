@@ -4,11 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 
 import '../../domain/reports.dart';
+import '../../state/capture_providers.dart';
 import '../../state/providers.dart';
 import '../../state/settings.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import '../plan/plan_page.dart';
+import '../quick_entry/quick_entry_sheet.dart';
 import '../recurring/recurring_page.dart';
 import '../transactions/txn_tile.dart';
 import '../widgets/common.dart';
@@ -53,8 +55,28 @@ class OverviewPage extends ConsumerWidget {
     ];
     final textTheme = Theme.of(context).textTheme;
 
+    // Ghi nhanh yêu cầu từ widget màn hình chính.
+    if (ref.watch(pendingQuickEntryProvider) != null && wallets.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final m = ref.read(pendingQuickEntryProvider.notifier).take();
+        if (m == null || !context.mounted) return;
+        showQuickEntry(context, mode: QuickEntryMode.values.firstWhere((x) => x.name == m));
+      });
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text(l.navOverview)),
+      appBar: AppBar(
+        title: Text(l.navOverview),
+        actions: [
+          if (wallets.isNotEmpty)
+            IconButton(
+              key: const Key('overview.quick'),
+              tooltip: l.quickTitle,
+              onPressed: () => showQuickEntry(context),
+              icon: const Icon(Icons.bolt_outlined),
+            ),
+        ],
+      ),
       floatingActionButton: wallets.isEmpty
           ? null
           : FloatingActionButton(

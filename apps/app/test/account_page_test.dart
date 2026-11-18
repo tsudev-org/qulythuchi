@@ -4,7 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qulythuchi/app.dart';
 import 'package:qulythuchi/domain/default_categories.dart';
+import 'package:qulythuchi/services/notification_bridge.dart';
 import 'package:qulythuchi/services/reminders.dart';
+import 'package:qulythuchi/state/auto_import_controller.dart';
+import 'package:qulythuchi/state/capture_providers.dart';
 import 'package:qulythuchi/state/providers.dart';
 import 'package:qulythuchi/state/settings.dart';
 import 'package:qulythuchi/state/sync_controller.dart';
@@ -35,6 +38,8 @@ void main() {
         servicesProvider.overrideWithValue(services),
         sharedPreferencesProvider.overrideWithValue(sp),
         reminderSchedulerProvider.overrideWithValue(NoopReminderScheduler()),
+        notificationBridgeProvider.overrideWithValue(const NoopNotificationBridge()),
+        quickLinksListenerProvider.overrideWithValue((_) => null),
         syncConfigProvider.overrideWithValue(
           SyncConfig(httpClient: server.client, login: fakeLogin('u1'), autoSync: false),
         ),

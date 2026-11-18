@@ -2,7 +2,7 @@
 
 > Phiếu rà soát gốc theo `.standards/docs/templates/SECURITY_REVIEW.md`, áp cho toàn hệ thống (dữ liệu **D3**).
 > Mọi PR đụng `packages/core/lib/src/crypto`, `sync`, xác thực hoặc máy chủ `MUST` cập nhật mục liên quan.
-> Phiên bản: P1 (17/11/2026) - lõi mã hóa; P5 máy chủ; P6 (18/11/2026) đồng bộ app (ADR-0011). Bổ sung ở P7 (tự nhập), P9 (ví chung).
+> Phiên bản: P1 (17/11/2026) - lõi mã hóa; P5 máy chủ; P6 (18/11/2026) đồng bộ app (ADR-0011); P7 (18/11/2026) tự nhập (ADR-0012). Bổ sung ở P9 (ví chung).
 
 ## 1. Tài sản và ranh giới tin cậy
 
@@ -30,7 +30,7 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T8 | App độc trên máy đọc CSDL/ảnh chụp màn hình | I | SQLCipher, FLAG_SECURE/ẩn khi đa nhiệm, không ghi D3 ra log | ⏳ P2 |
 | T9 | Thành viên ví chung bị thu hồi vẫn giữ khóa cũ | I | Xoay khóa ví + mã hóa lại; chia sẻ bằng X-Wing (lai hậu lượng tử) | ✅ P1 (chia sẻ); ⏳ P9 (xoay) |
 | T10 | Kẻ thu thập bản mã hôm nay, giải bằng máy tính lượng tử sau này | I | Dữ liệu dùng khóa đối xứng 256 bit (an toàn trước Grover); trao khóa bằng X-Wing ML-KEM-768 + X25519 | ✅ P1; email dùng X25519 (ngoại lệ, ADR-0006) |
-| T11 | Email chuyển tiếp lộ trên máy chủ | I | Tắt mặc định, niêm phong ngay, không lưu bản rõ, xóa sau 30 ngày | ⏳ P7 |
+| T11 | Email chuyển tiếp lộ trên máy chủ | I | Tắt mặc định + màn công bố ngoại lệ E2EE; niêm phong `crypto_box_seal` trước khi ghi D1, không log nội dung, xóa khi app tải về hoặc sau 30 ngày; địa chỉ 128 bit đổi/tắt được | ✅ P7 (ADR-0012) - rủi ro còn lại: thấy bản rõ trong lượt xử lý |
 | T12 | Chuỗi cung ứng: gói phụ thuộc độc | T | Ghim phiên bản, Dependabot, gitleaks, CodeQL, chỉ phụ thuộc đã khai (mục 5) | ✅ P0-P1 |
 | T13 | Sai lệch giữa các nền tảng làm hỏng giải mã/tiền | D | Vector đối chiếu kiểm bằng libsodium độc lập (`conformance/verify_libsodium.py`); tiền số nguyên ≤ 2^53-1; mật khẩu NFKC | ✅ P1 |
 | T14 | Đồng hồ thiết bị sai/giả để thắng mọi xung đột | T | Chặn HLC lệch > 5 phút so với giờ nhận; bộ đếm tràn chuyển sang mili giây kế tiếp | ✅ P1 |
@@ -38,6 +38,8 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T16 | Người dùng khác đọc/ghi đè dữ liệu qua API (IDOR), chiếm phiên bằng token cắp | S, I, E | Mọi truy vấn lọc `user_id` từ phiên; khóa `(user_id, id)`; refresh xoay vòng phát hiện dùng lại; thu hồi thiết bị tức thì; cookie `__Host-` Strict + CSRF; test `services/sync-api/test/*` | ✅ P5 |
 | T17 | Lấp đầy D1/R2 hoặc dồn yêu cầu (từ chối dịch vụ gói 0 đồng) | D | Giới hạn tần suất theo IP/tài khoản, giới hạn thân, hạn mức 50/200 MiB, cỡ tối đa bản ghi/tệp | ✅ P5 |
 | T18 | Máy chủ độc/thiết bị lẫn tài khoản làm trộn hai khóa chủ hoặc đẩy dữ liệu sang tài khoản tsudev khác | T, I | So danh tính gói khóa, ràng buộc CSDL với id người dùng, không tự trộn (ADR-0011 mục 3, 6) | ✅ P6 |
+| T19 | App độc/thư rác/máy chủ độc chèn giao dịch giả qua thông báo, email, sao kê | S, T | Chỉ nghe gói app người dùng chọn; mọi giao dịch tự nhập vào hàng chờ "Cần xác nhận" (tự xác nhận tắt mặc định); OTP bị bỏ; hộp thư ≤ 200 thư | ✅ P7 |
+| T20 | Rò nội dung thông báo/ảnh hóa đơn/giọng nói khỏi thiết bị | I | Hàng đợi thông báo mã hóa Keystore, không sao lưu; OCR ML Kit trên máy, xóa ảnh tạm; giọng nói `onDevice`, dịch vụ HĐH chỉ khi đồng ý; widget không hiện dữ liệu | ✅ P7 |
 
 ## 3. Phụ thuộc mật mã (SECURITY_BASELINE mục 5)
 

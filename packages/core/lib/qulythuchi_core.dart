@@ -1,6 +1,12 @@
 /// Lõi Quly Thu Chi: tiền tệ, nghiệp vụ, mã hóa đầu-cuối, đồng bộ. Dart thuần, chạy trên mọi đích Flutter.
 library;
 
+export 'src/autoimport/bank_notification.dart';
+export 'src/autoimport/quick_entry.dart';
+export 'src/autoimport/receipt.dart';
+export 'src/autoimport/smart.dart';
+export 'src/autoimport/spoken_amount.dart';
+export 'src/autoimport/vn_text.dart';
 export 'src/crypto/envelope.dart' show Envelope, EnvelopeContext, EnvelopeException;
 export 'src/crypto/key_hierarchy.dart';
 export 'src/crypto/record_cipher.dart';

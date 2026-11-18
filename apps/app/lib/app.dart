@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -7,11 +9,14 @@ import 'package:go_router/go_router.dart';
 import 'domain/txn_filter.dart';
 import 'l10n/app_localizations.dart';
 import 'services/reminders.dart';
+import 'state/auto_import_controller.dart';
+import 'state/capture_providers.dart';
 import 'state/providers.dart';
 import 'state/settings.dart';
 import 'state/sync_controller.dart';
 import 'theme/app_theme.dart';
 import 'ui/account/account_page.dart';
+import 'ui/auto_import/auto_import_page.dart';
 import 'ui/categories/categories_page.dart';
 import 'ui/data/data_page.dart';
 import 'ui/debts/debt_form_page.dart';
@@ -140,6 +145,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(path: 'rates', builder: (_, _) => const RatesPage()),
                   GoRoute(path: 'reports', builder: (_, _) => const ReportsPage()),
                   GoRoute(path: 'data', builder: (_, _) => const DataPage()),
+                  GoRoute(path: 'auto-import', builder: (_, _) => const AutoImportPage()),
                   GoRoute(
                     path: 'recurring',
                     builder: (_, _) => const RecurringPage(),
@@ -192,12 +198,17 @@ class QulyApp extends ConsumerStatefulWidget {
 
 class _QulyAppState extends ConsumerState<QulyApp> {
   late final AppLifecycleListener _lifecycle;
+  StreamSubscription<void>? _quickLinks;
   DateTime? _hiddenAt;
   bool _obscured = false;
 
   @override
   void initState() {
     super.initState();
+    _quickLinks = ref.read(quickLinksListenerProvider)((mode) {
+      ref.read(pendingQuickEntryProvider.notifier).request(mode);
+      ref.read(routerProvider).go('/overview');
+    });
     _lifecycle = AppLifecycleListener(
       onInactive: () => setState(() => _obscured = true),
       onHide: () => _hiddenAt ??= DateTime.now(),
@@ -205,6 +216,7 @@ class _QulyAppState extends ConsumerState<QulyApp> {
       onResume: () {
         _onShow();
         ref.read(syncProvider.notifier).onResume();
+        unawaited(ref.read(autoImportProvider.notifier).pull());
         setState(() => _obscured = false);
       },
     );
@@ -243,6 +255,7 @@ class _QulyAppState extends ConsumerState<QulyApp> {
   @override
   void dispose() {
     _lifecycle.dispose();
+    unawaited(_quickLinks?.cancel());
     super.dispose();
   }
 
@@ -253,6 +266,8 @@ class _QulyAppState extends ConsumerState<QulyApp> {
     ref.listen(ledgerProvider, (_, _) => _syncReminders());
     // Giữ bộ điều khiển đồng bộ sống suốt vòng đời app (nó tự nghe mở khóa/sửa dữ liệu).
     ref.listen(syncProvider, (_, _) {});
+    // Bộ tự nhập (thông báo ngân hàng) tự lấy hàng chờ khi mở khóa.
+    ref.listen(autoImportProvider, (_, _) {});
     ref.listen(settingsProvider.select((s) => s.billReminders), (_, _) => _syncReminders());
     return MaterialApp.router(
       onGenerateTitle: (c) => AppLocalizations.of(c).appTitle,

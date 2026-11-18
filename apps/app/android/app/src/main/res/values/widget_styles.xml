@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="QtWidgetButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">@color/qt_widget_fg</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:drawablePadding">2dp</item>
+    </style>
+</resources>

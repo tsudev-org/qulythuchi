@@ -1616,4 +1616,180 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get syncBlockOtherUser =>
       'This device already syncs with another tsudev account. Sign in with that account or reset the app.';
+
+  @override
+  String get autoImportTitle => 'Auto import';
+
+  @override
+  String get autoConfirm => 'Confirm automatically';
+
+  @override
+  String get autoConfirmHint =>
+      'Add straight to balances, skipping the review queue. Keep off until you trust the reader.';
+
+  @override
+  String get bankNotifTitle => 'Bank notifications';
+
+  @override
+  String get bankNotifAndroidOnly => 'Android only: other systems don\'t let apps read other apps\' notifications.';
+
+  @override
+  String get bankNotifExplain =>
+      'Reads balance-change notifications from the banking apps you choose and turns them into transactions to review. Processed on this device only, encrypted while waiting, never sent anywhere.';
+
+  @override
+  String get bankNotifEnable => 'Read bank notifications';
+
+  @override
+  String get bankNotifDisclosure =>
+      'Quly Thu Chi will ask for \"Notification access\". It keeps only notifications from the banking apps you choose, ignores every other app and OTP messages, and never sends their content off this device. You can revoke access any time in system Settings.';
+
+  @override
+  String get bankNotifDisclosureOk => 'Agree and continue';
+
+  @override
+  String get bankNotifNoPermission => 'Notification access not granted';
+
+  @override
+  String get bankNotifGrant => 'Grant';
+
+  @override
+  String get bankNotifAddApp => 'Add banking app';
+
+  @override
+  String get bankNotifPickApp => 'Choose app';
+
+  @override
+  String get bankNotifKnownApps => 'Common banks and e-wallets are listed first';
+
+  @override
+  String bankNotifLastRun(int added, int ignored) {
+    return 'Last run: added $added transactions to review, skipped $ignored notifications';
+  }
+
+  @override
+  String get captureMobileOnly => 'Voice and receipt scanning run on phones (Android/iOS), recognised on the device.';
+
+  @override
+  String get importAsPending => 'Add to the review queue';
+
+  @override
+  String get importAsPendingHint => 'Not counted in balances until you confirm';
+
+  @override
+  String get importColDebit => 'Debit column (money out)';
+
+  @override
+  String get importColCredit => 'Credit column (money in)';
+
+  @override
+  String importDoneDup(int ok, int skipped, int dup) {
+    return 'Imported $ok transactions, skipped $skipped invalid and $dup already-recorded rows';
+  }
+
+  @override
+  String get quickTitle => 'Quick add';
+
+  @override
+  String get quickExplain =>
+      'Type or say a sentence like \"lunch 50k\", \"yesterday fuel 80k\", \"salary 15 triệu\". The app picks out the amount, date, income/spending and suggests a category.';
+
+  @override
+  String get quickLabel => 'Quick entry';
+
+  @override
+  String get quickHint => 'lunch 50k';
+
+  @override
+  String get quickNeedVndWallet => 'Quick add needs a VND wallet.';
+
+  @override
+  String get quickNoAmount => 'No amount found yet';
+
+  @override
+  String get quickMaybeDuplicate => 'A similar transaction exists within a day - check before adding a duplicate.';
+
+  @override
+  String get quickSaved => 'Saved';
+
+  @override
+  String get scanReceipt => 'Scan receipt';
+
+  @override
+  String get scanDefaultNote => 'Receipt';
+
+  @override
+  String get scanFailed => 'Couldn\'t read the image';
+
+  @override
+  String get scanNoTotal => 'No total found on the receipt - type the amount';
+
+  @override
+  String get statementTitle => 'Bank statements';
+
+  @override
+  String get statementExplain =>
+      'Import a CSV or XLSX file downloaded from your bank. The app finds the transaction table and debit/credit columns, skips rows you already have and suggests categories. PDF statements: download the Excel/CSV version from your bank.';
+
+  @override
+  String get statementOpen => 'Import statement';
+
+  @override
+  String get voiceStart => 'Speak';
+
+  @override
+  String get voiceConsent =>
+      'This device has no offline speech recogniser. The system recognition service can be used - audio may be sent to the system provider (Google/Apple). Quly Thu Chi never receives or stores audio. Continue?';
+
+  @override
+  String get voiceConsentOk => 'Use system service';
+
+  @override
+  String get voiceDenied => 'Microphone permission not granted';
+
+  @override
+  String get voiceUnavailable => 'Speech recognition unavailable';
+
+  @override
+  String get moreAutoImport => 'Auto import';
+
+  @override
+  String get emailTitle => 'Email forwarding';
+
+  @override
+  String get emailExplain =>
+      'Forward your bank\'s transaction emails to a private address; the app turns them into transactions to review. Off by default.';
+
+  @override
+  String get emailNeedSignIn => 'Sign in to sync to use this';
+
+  @override
+  String get emailEnable => 'Turn on email forwarding';
+
+  @override
+  String get emailDisclosure =>
+      'This is the ONLY exception to end-to-end encryption: email travels the Internet unencrypted, and the Quly Thu Chi server sees the content for a few milliseconds while sealing it with your key. The server never stores the plain text; sealed mail is deleted once the app downloads it or after 30 days. Forward only transaction alerts, never mail with passwords/OTPs.';
+
+  @override
+  String get emailCopy => 'Copy';
+
+  @override
+  String get emailCopied => 'Address copied';
+
+  @override
+  String get emailRotate => 'New address';
+
+  @override
+  String get emailRotateConfirm =>
+      'The current address stops accepting mail immediately. You\'ll need to update the forwarding rule in your mailbox.';
+
+  @override
+  String get emailDisable => 'Turn off';
+
+  @override
+  String get emailDisableConfirm => 'Turn off email forwarding? The address and any undownloaded mail are deleted.';
+
+  @override
+  String get emailWarning =>
+      'E2EE exception: the server sees email content while sealing it. Keep the address private - anyone who knows it can send mail to it.';
 }

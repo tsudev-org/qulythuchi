@@ -1612,4 +1612,180 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get syncBlockOtherUser =>
       'Máy này đã đồng bộ với tài khoản tsudev khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app.';
+
+  @override
+  String get autoImportTitle => 'Tự nhập';
+
+  @override
+  String get autoConfirm => 'Tự xác nhận';
+
+  @override
+  String get autoConfirmHint => 'Ghi thẳng vào số dư, không qua hàng chờ. Nên để tắt cho tới khi bạn tin bộ đọc.';
+
+  @override
+  String get bankNotifTitle => 'Thông báo ngân hàng';
+
+  @override
+  String get bankNotifAndroidOnly => 'Chỉ có trên Android: hệ điều hành khác không cho app đọc thông báo của app khác.';
+
+  @override
+  String get bankNotifExplain =>
+      'Đọc thông báo biến động số dư của app ngân hàng bạn chọn để tạo giao dịch chờ xác nhận. Nội dung chỉ xử lý trên máy, được mã hóa khi chờ, không gửi đi đâu.';
+
+  @override
+  String get bankNotifEnable => 'Đọc thông báo ngân hàng';
+
+  @override
+  String get bankNotifDisclosure =>
+      'Quly Thu Chi sẽ xin quyền \"Truy cập thông báo\". App chỉ giữ thông báo của các app ngân hàng bạn chọn, bỏ qua mọi app khác và tin OTP, và không gửi nội dung ra khỏi máy. Bạn có thể thu hồi quyền bất cứ lúc nào trong Cài đặt của hệ thống.';
+
+  @override
+  String get bankNotifDisclosureOk => 'Đồng ý, tiếp tục';
+
+  @override
+  String get bankNotifNoPermission => 'Chưa cấp quyền truy cập thông báo';
+
+  @override
+  String get bankNotifGrant => 'Cấp quyền';
+
+  @override
+  String get bankNotifAddApp => 'Thêm app ngân hàng';
+
+  @override
+  String get bankNotifPickApp => 'Chọn app';
+
+  @override
+  String get bankNotifKnownApps => 'Ngân hàng và ví điện tử phổ biến được xếp trước';
+
+  @override
+  String bankNotifLastRun(int added, int ignored) {
+    return 'Lần gần nhất: thêm $added giao dịch chờ xác nhận, bỏ qua $ignored thông báo';
+  }
+
+  @override
+  String get captureMobileOnly =>
+      'Giọng nói và quét hóa đơn chạy trên điện thoại (Android/iOS), nhận dạng ngay trên máy.';
+
+  @override
+  String get importAsPending => 'Đưa vào hàng chờ xác nhận';
+
+  @override
+  String get importAsPendingHint => 'Chưa tính vào số dư cho tới khi bạn xác nhận';
+
+  @override
+  String get importColDebit => 'Cột ghi nợ (tiền ra)';
+
+  @override
+  String get importColCredit => 'Cột ghi có (tiền vào)';
+
+  @override
+  String importDoneDup(int ok, int skipped, int dup) {
+    return 'Đã nhập $ok giao dịch, bỏ qua $skipped dòng lỗi và $dup dòng đã có';
+  }
+
+  @override
+  String get quickTitle => 'Ghi nhanh';
+
+  @override
+  String get quickExplain =>
+      'Gõ hoặc nói một câu như \"ăn trưa 50 nghìn\", \"hôm qua đổ xăng 80k\", \"nhận lương 15 triệu\". App tự tách số tiền, ngày, thu/chi và gợi ý danh mục.';
+
+  @override
+  String get quickLabel => 'Câu ghi nhanh';
+
+  @override
+  String get quickHint => 'ăn trưa 50 nghìn';
+
+  @override
+  String get quickNeedVndWallet => 'Cần một ví VND để ghi nhanh.';
+
+  @override
+  String get quickNoAmount => 'Chưa thấy số tiền trong câu';
+
+  @override
+  String get quickMaybeDuplicate => 'Có giao dịch giống khoản này trong 1 ngày qua - kiểm tra để tránh ghi trùng.';
+
+  @override
+  String get quickSaved => 'Đã ghi';
+
+  @override
+  String get scanReceipt => 'Quét hóa đơn';
+
+  @override
+  String get scanDefaultNote => 'Hóa đơn';
+
+  @override
+  String get scanFailed => 'Không đọc được ảnh';
+
+  @override
+  String get scanNoTotal => 'Không tìm thấy tổng tiền trên hóa đơn - hãy gõ số tiền';
+
+  @override
+  String get statementTitle => 'Sao kê ngân hàng';
+
+  @override
+  String get statementExplain =>
+      'Nhập tệp CSV hoặc XLSX tải từ ngân hàng. App tự tìm bảng giao dịch, cột ghi nợ/ghi có, bỏ dòng đã có và gợi ý danh mục. Sao kê PDF: hãy tải bản Excel/CSV từ ngân hàng.';
+
+  @override
+  String get statementOpen => 'Nhập sao kê';
+
+  @override
+  String get voiceStart => 'Nói';
+
+  @override
+  String get voiceConsent =>
+      'Máy này không có bộ nhận dạng giọng nói ngoại tuyến. Có thể dùng dịch vụ nhận dạng của hệ điều hành - âm thanh có thể được gửi tới nhà cung cấp hệ điều hành (Google/Apple). Quly Thu Chi không nhận hay lưu âm thanh. Tiếp tục?';
+
+  @override
+  String get voiceConsentOk => 'Dùng dịch vụ hệ điều hành';
+
+  @override
+  String get voiceDenied => 'Chưa cấp quyền micro';
+
+  @override
+  String get voiceUnavailable => 'Không nhận dạng được giọng nói';
+
+  @override
+  String get moreAutoImport => 'Tự nhập';
+
+  @override
+  String get emailTitle => 'Email chuyển tiếp';
+
+  @override
+  String get emailExplain =>
+      'Chuyển tiếp email báo giao dịch của ngân hàng tới một địa chỉ riêng; app tạo giao dịch chờ xác nhận. Tắt mặc định.';
+
+  @override
+  String get emailNeedSignIn => 'Đăng nhập đồng bộ để dùng';
+
+  @override
+  String get emailEnable => 'Bật email chuyển tiếp';
+
+  @override
+  String get emailDisclosure =>
+      'Đây là NGOẠI LỆ DUY NHẤT của mã hóa đầu-cuối: email đi qua Internet ở dạng thường, và máy chủ Quly Thu Chi thấy nội dung trong vài mili giây khi nhận để niêm phong bằng khóa của bạn. Máy chủ không lưu bản rõ; thư niêm phong bị xóa khi app tải về hoặc sau 30 ngày. Chỉ chuyển tiếp email báo giao dịch, đừng chuyển thư có mật khẩu/OTP.';
+
+  @override
+  String get emailCopy => 'Sao chép';
+
+  @override
+  String get emailCopied => 'Đã sao chép địa chỉ';
+
+  @override
+  String get emailRotate => 'Đổi địa chỉ';
+
+  @override
+  String get emailRotateConfirm =>
+      'Địa chỉ hiện tại sẽ ngừng nhận thư ngay. Bạn cần cập nhật quy tắc chuyển tiếp ở hộp thư của mình.';
+
+  @override
+  String get emailDisable => 'Tắt';
+
+  @override
+  String get emailDisableConfirm => 'Tắt email chuyển tiếp? Địa chỉ bị xóa cùng mọi thư chưa tải về.';
+
+  @override
+  String get emailWarning =>
+      'Ngoại lệ E2EE: máy chủ thấy nội dung email trong lúc niêm phong. Địa chỉ là bí mật - ai biết địa chỉ đều gửi thư vào được.';
 }

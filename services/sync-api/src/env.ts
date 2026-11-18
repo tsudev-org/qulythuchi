@@ -5,6 +5,8 @@ export interface Env {
   PUBLIC_ORIGIN: string;
   OIDC_ISSUER: string;
   OIDC_CLIENT_ID: string;
+  /** Miền nhận email chuyển tiếp (Email Routing catch-all ⇒ Worker này), ví dụ `in.qulythuchi.tsudev.com`. */
+  INBOX_DOMAIN: string;
   /** HMAC ký access token của app. >= 32 ký tự ngẫu nhiên, `wrangler secret put`. */
   SESSION_SECRET: string;
   /** Muối băm IP trong nhật ký, `wrangler secret put`. */

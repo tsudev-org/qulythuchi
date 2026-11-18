@@ -20,7 +20,8 @@
   "vars": {
     "PUBLIC_ORIGIN": "https://qulythuchi.tsudev.com",
     "OIDC_ISSUER": "https://tsudev.com/oidc",
-    "OIDC_CLIENT_ID": "qulythuchi"
+    "OIDC_CLIENT_ID": "qulythuchi",
+    "INBOX_DOMAIN": "in.qulythuchi.tsudev.com"
   },
   // Không cron: tài khoản đã hết 5 cron gói Free. Dọn dữ liệu chạy kèm ~1% yêu cầu /api (src/maintenance.ts).
   "observability": { "enabled": true },
