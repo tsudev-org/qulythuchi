@@ -2765,7 +2765,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncSignIn.
   ///
   /// In vi, this message translates to:
-  /// **'Đăng nhập bằng tài khoản tsudev'**
+  /// **'Đăng nhập bằng tài khoản TsuDEV'**
   String get syncSignIn;
 
   /// No description provided for @syncWaitingBrowser.
@@ -3041,7 +3041,7 @@ abstract class AppLocalizations {
   /// No description provided for @syncBlockOtherUser.
   ///
   /// In vi, this message translates to:
-  /// **'Máy này đã đồng bộ với tài khoản tsudev khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app.'**
+  /// **'Máy này đã đồng bộ với tài khoản TsuDEV khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app.'**
   String get syncBlockOtherUser;
 
   /// No description provided for @autoImportTitle.

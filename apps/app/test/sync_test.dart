@@ -302,7 +302,7 @@ void main() {
     expect(b.data.categories, isNotEmpty);
   });
 
-  test('máy đã gắn tài khoản tsudev u1 không đăng nhập được u2', () async {
+  test('máy đã gắn tài khoản TsuDEV u1 không đăng nhập được u2', () async {
     final a = await device(server, 'u1');
     await a.sync.signIn();
     await a.sync.syncNow();

@@ -1453,7 +1453,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get syncWelcomeSignIn => 'Đăng nhập để lấy dữ liệu đã đồng bộ';
 
   @override
-  String get syncSignIn => 'Đăng nhập bằng tài khoản tsudev';
+  String get syncSignIn => 'Đăng nhập bằng tài khoản TsuDEV';
 
   @override
   String get syncWaitingBrowser => 'Đang chờ đăng nhập trong trình duyệt…';
@@ -1611,7 +1611,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get syncBlockOtherUser =>
-      'Máy này đã đồng bộ với tài khoản tsudev khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app.';
+      'Máy này đã đồng bộ với tài khoản TsuDEV khác. Đăng nhập đúng tài khoản đó, hoặc đặt lại app.';
 
   @override
   String get autoImportTitle => 'Tự nhập';

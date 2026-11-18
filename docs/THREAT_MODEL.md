@@ -11,7 +11,7 @@
 | Giao dịch, ví, ngân sách, ghi chú | D3 | Thiết bị (SQLCipher), máy chủ (bản mã) | XChaCha20-Poly1305 theo khóa ví |
 | Khóa chủ MK | D3 | Keychain/Keystore (đã mở), máy chủ (đã bọc 2 lần) | Argon2id(mật khẩu) / KDF(24 từ) |
 | Mật khẩu mã hóa, 24 từ | D3 | Chỉ trong đầu người dùng / giấy | Không bao giờ truyền đi |
-| Phiên đăng nhập tsudev | D3 | Kho bí mật OS | Token xoay vòng, thu hồi thiết bị |
+| Phiên đăng nhập TsuDEV | D3 | Kho bí mật OS | Token xoay vòng, thu hồi thiết bị |
 | Email + id tài khoản | D2 | Máy chủ | TLS, không log |
 
 Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. Máy chủ, mạng, CDN, sao lưu đám mây đều là vùng KHÔNG tin cậy.
@@ -37,7 +37,7 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T15 | Dữ liệu đồng bộ hỏng/độc làm sập app | D | Giải mã thất bại ⇒ lỗi chung; `fromBytes` từ chối số thực, kiểu lạ, tên trường lạ; mô hình đọc trường lỗi về giá trị an toàn | ✅ P1 |
 | T16 | Người dùng khác đọc/ghi đè dữ liệu qua API (IDOR), chiếm phiên bằng token cắp | S, I, E | Mọi truy vấn lọc `user_id` từ phiên; khóa `(user_id, id)`; refresh xoay vòng phát hiện dùng lại; thu hồi thiết bị tức thì; cookie `__Host-` Strict + CSRF; test `services/sync-api/test/*` | ✅ P5 |
 | T17 | Lấp đầy D1/R2 hoặc dồn yêu cầu (từ chối dịch vụ gói 0 đồng) | D | Giới hạn tần suất theo IP/tài khoản, giới hạn thân, hạn mức 50/200 MiB, cỡ tối đa bản ghi/tệp | ✅ P5 |
-| T18 | Máy chủ độc/thiết bị lẫn tài khoản làm trộn hai khóa chủ hoặc đẩy dữ liệu sang tài khoản tsudev khác | T, I | So danh tính gói khóa, ràng buộc CSDL với id người dùng, không tự trộn (ADR-0011 mục 3, 6) | ✅ P6 |
+| T18 | Máy chủ độc/thiết bị lẫn tài khoản làm trộn hai khóa chủ hoặc đẩy dữ liệu sang tài khoản TsuDEV khác | T, I | So danh tính gói khóa, ràng buộc CSDL với id người dùng, không tự trộn (ADR-0011 mục 3, 6) | ✅ P6 |
 | T19 | App độc/thư rác/máy chủ độc chèn giao dịch giả qua thông báo, email, sao kê | S, T | Chỉ nghe gói app người dùng chọn; mọi giao dịch tự nhập vào hàng chờ "Cần xác nhận" (tự xác nhận tắt mặc định); OTP bị bỏ; hộp thư ≤ 200 thư | ✅ P7 |
 | T20 | Rò nội dung thông báo/ảnh hóa đơn/giọng nói khỏi thiết bị | I | Hàng đợi thông báo mã hóa Keystore, không sao lưu; OCR ML Kit trên máy, xóa ảnh tạm; giọng nói `onDevice`, dịch vụ HĐH chỉ khi đồng ý; widget không hiện dữ liệu | ✅ P7 |
 

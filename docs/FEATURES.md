@@ -19,12 +19,12 @@
 | Mục tiêu | Mục tiêu tiết kiệm có hạn, tiến độ, gợi ý mức góp mỗi tháng | Spendee, Money Lover | P3 |
 | Sự kiện | Gắn giao dịch vào sự kiện/chuyến đi, tổng kết riêng | Money Lover, Spendee | P3 |
 | Báo cáo | Thu-chi theo kỳ, cơ cấu danh mục, xu hướng, dòng tiền, so sánh kỳ, tài sản ròng, lịch chi tiêu | Money Manager, MISA, TNEX | P4 |
-| Tìm kiếm | Tìm không dấu tiếng Việt, lọc nhiều điều kiện, lưu bộ lọc | (chuẩn tsudev SEARCH_AND_FILTER) | P4 |
+| Tìm kiếm | Tìm không dấu tiếng Việt, lọc nhiều điều kiện, lưu bộ lọc | (chuẩn TsuDEV SEARCH_AND_FILTER) | P4 |
 | Xuất/nhập | CSV, XLSX, PDF; nhập từ file CSV của app khác; sao lưu tệp mã hóa | Money Manager, MISA | P4 |
 | Tự nhập | Thông báo biến động số dư (Android), sao kê ngân hàng, OCR hóa đơn, giọng nói "ăn trưa 50 nghìn", email chuyển tiếp | MISA (giọng nói), Money Lover (liên kết NH) | P7 |
 | Thông minh | Tự xếp danh mục theo lịch sử (trên máy), phát hiện khoản bất thường/trùng lặp | Mint, PocketGuard | P7 |
 | Tiện ích | Widget màn hình chính, lối tắt ghi nhanh, máy tính tích hợp ở ô số tiền | Fast Budget, Money Manager | P7 |
-| Đồng bộ | Mọi thiết bị cùng tài khoản tsudev, ngoại tuyến vẫn dùng được, E2EE | Home Budget with Sync, Spendee | P5-P6 |
+| Đồng bộ | Mọi thiết bị cùng tài khoản TsuDEV, ngoại tuyến vẫn dùng được, E2EE | Home Budget with Sync, Spendee | P5-P6 |
 | Ví chung | Gia đình/nhóm cùng ghi một ví, phân quyền, E2EE theo ví | Spendee, Home Budget | P9 |
 | Bảo mật | Khóa app sinh trắc/PIN, tự khóa khi nền, chặn chụp màn hình, chế độ ẩn số dư, xóa từ xa thiết bị mất | Money Lover, MISA | P2, P6 |
-| Giao diện | Sáng/tối theo token tsudev, tiếng Việt/Anh, định dạng số VN, truy cập được (WCAG 2.2 AA) | - | P2 |
+| Giao diện | Sáng/tối theo token TsuDEV, tiếng Việt/Anh, định dạng số VN, truy cập được (WCAG 2.2 AA) | - | P2 |

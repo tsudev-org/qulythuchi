@@ -1455,7 +1455,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get syncWelcomeSignIn => 'Sign in to get your synced data';
 
   @override
-  String get syncSignIn => 'Sign in with tsudev account';
+  String get syncSignIn => 'Sign in with TsuDEV account';
 
   @override
   String get syncWaitingBrowser => 'Waiting for sign-in in the browser…';
@@ -1615,7 +1615,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncBlockOtherUser =>
-      'This device already syncs with another tsudev account. Sign in with that account or reset the app.';
+      'This device already syncs with another TsuDEV account. Sign in with that account or reset the app.';
 
   @override
   String get autoImportTitle => 'Auto import';

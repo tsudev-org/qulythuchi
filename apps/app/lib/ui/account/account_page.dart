@@ -38,7 +38,7 @@ String formatDateTime(DateTime t) {
   return '${_two(x.hour)}:${_two(x.minute)} ${_two(x.day)}/${_two(x.month)}/${x.year}';
 }
 
-/// Tài khoản tsudev + đồng bộ: đăng nhập/đăng xuất, trạng thái, thiết bị, dung lượng, xuất, xóa tài khoản.
+/// Tài khoản TsuDEV + đồng bộ: đăng nhập/đăng xuất, trạng thái, thiết bị, dung lượng, xuất, xóa tài khoản.
 class AccountPage extends ConsumerStatefulWidget {
   const AccountPage({super.key});
 
