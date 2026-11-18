@@ -24,7 +24,7 @@ function kiemTra(tep, html) {
   const mota = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
   const dai = [...mota.replace(/&[a-z#0-9]+;/g, 'x')].length;
   if (dai < 120 || dai > 160) loi.push(`${ten}: description ${dai} ký tự (cần 120-160)`);
-  const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
+  const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)];
   for (const [, attrs, body] of scripts) {
     if (!/\bsrc="\//.test(attrs) || body.trim()) loi.push(`${ten}: script nội tuyến (CSP chặn): ${attrs}`);
   }
@@ -39,7 +39,13 @@ function kiemTra(tep, html) {
   for (const a of html.matchAll(/<a [^>]*target="_blank"[^>]*>/g)) {
     if (!a[0].includes('rel="noopener noreferrer"')) loi.push(`${ten}: thiếu rel noopener noreferrer`);
   }
-  const chu = html.replace(/<pre[\s\S]*?<\/pre>/g, '').replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ');
+  // Chỉ để đếm dấu gạch trong chữ hiển thị của HTML do chính repo sinh (không phải lọc an toàn): bỏ khối rồi bỏ thẻ,
+  // lặp tới khi ổn định.
+  let chu = html;
+  for (let truoc = ''; truoc !== chu; ) {
+    truoc = chu;
+    chu = chu.replace(/<(pre|script|style)\b[\s\S]*?<\/\1\s*>/gi, ' ').replace(/<[^>]*>/g, ' ');
+  }
   if (/[\u2013\u2014]/.test(chu)) loi.push(`${ten}: có em-dash/en-dash trong chữ hiển thị`);
   for (const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)) lienKet.push([ten, m[1]]);
 }
