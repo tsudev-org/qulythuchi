@@ -9,21 +9,26 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P8 - Web + site** (phiếu `logs/handover/20261118-03_p7-xong-bat-dau-p8.md`, prompt ở mục 6b).
-  👤: bật Email Routing `in.qulythuchi.tsudev.com` ⇒ Worker `qulythuchi`; nghiệm thu đăng nhập thật (`sync_smoke.dart login`).
+- [ ] **P9 - Ví chung gia đình** (phiếu `logs/handover/20261118-04_p8-xong-bat-dau-p9.md`, prompt ở mục 6b).
+  👤: bật Email Routing `in.qulythuchi.tsudev.com` ⇒ Worker `qulythuchi`; thử đăng nhập trên `/app/` production.
 - [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
   desktop (Tesseract), widget/lối tắt iOS.
-- [ ] P9 - Ví chung gia đình
-- [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android)
+- [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
+- [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); sinh icon app gốc từ dây chuyền thương hiệu (hiện chỉ web)
 
 ## Đang thực hiện
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| P8 - Web + site (`feat/p8-web-site`) | agent-qulythuchi | 18/11/2026 19:55 |
+| (trống) | | |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 18/11/2026 - P8 Web + site (agent-qulythuchi): `apps/site` Astro (trang chủ, Tính năng, Bảo mật và quyền riêng tư,
+  Tải về, 404, sitemap; đen + tím, bộ chọn giao diện), dây chuyền thương hiệu từ logo tsudev, web app Flutter ở `/app/`
+  (`--csp --no-web-resources-cdn`, không service worker, CSP `<meta>`), MỘT Worker phục vụ tĩnh + API (Static Assets),
+  `scripts/build-web.sh`, chặn deploy thiếu tệp tĩnh, job CI Website. LÊN PRODUCTION cùng migration 0002 + Email
+  Worker của P7; Playwright với production đạt. ADR-0013, phiếu rà soát P8. Đăng nhập thật trên app đạt 18/11 (QT2).
 - 18/11/2026 - P7 Tự nhập + thông minh (agent-qulythuchi): lõi `autoimport/` (số tiền tiếng Việt nói/viết, câu ghi
   nhanh, bộ đọc thông báo ngân hàng chung, hóa đơn OCR, gợi ý danh mục học trên máy, trùng/bất thường); app: màn Tự
   nhập + Ghi nhanh (gõ/giọng nói `onDevice`/OCR ML Kit), sao kê CSV/XLSX (dòng tiêu đề, ghi nợ/có, chống trùng, hàng
@@ -79,6 +84,7 @@
 - 17/11/2026 - Xuất bản rõ có cảnh báo; sao lưu `.qtbak` = gói khóa + phong bì `bak|<id>`, khôi phục chỉ trên máy chưa có tài khoản: `docs/adr/0009-*`
 - 18/11/2026 - Máy chủ: không gian bản ghi = tài khoản, rev trong giao tác, tệp xuyên Worker, xóa tài khoản 30 ngày: `docs/adr/0010-*`
 - 18/11/2026 - Đồng bộ app: không trộn khóa chủ, gói máy chủ chỉ nhận khi mở được bằng khóa chủ, ghim CA gốc: `docs/adr/0011-*`
+- 18/11/2026 - Một Worker phục vụ site + web app `/app/` + API, CSP riêng cho app bằng `<meta>`: `docs/adr/0013-*`
 - 18/11/2026 - Tự nhập: bộ đọc chung, mọi nguồn vào hàng chờ, hàng đợi thông báo Keystore, email niêm phong tweetnacl: `docs/adr/0012-*`
 - 17/11/2026 - Phiên bản theo phiếu toàn hệ 20261117-V1: `YY.M.DDNN`, thẻ `vYY.M.DDNN`, versionCode `YYMDDNN`
 
