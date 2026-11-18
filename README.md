@@ -1,7 +1,7 @@
 # Quly Thu Chi
 
 Quản lý thu chi cá nhân và gia đình - **mã hóa đầu-cuối, dùng được khi mất mạng, đồng bộ mọi thiết bị** cùng tài
-khoản tsudev. Android, iOS, Windows, macOS, Linux và web tại <https://qulythuchi.tsudev.com>.
+khoản TsuDEV. Android, iOS, Windows, macOS, Linux và web tại <https://qulythuchi.tsudev.com>.
 
 > Trạng thái: đang xây dựng (Phase 0 - nền móng). Kế hoạch: [`docs/PLAN.md`](docs/PLAN.md).
 

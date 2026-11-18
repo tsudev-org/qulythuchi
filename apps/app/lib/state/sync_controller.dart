@@ -63,7 +63,7 @@ const _doneHtml =
 
 enum SyncPhase { signedOut, idle, syncing, blocked, error }
 
-/// Hồ sơ tài khoản tsudev đang đăng nhập (D2 - lưu trong CSDL đã mã hóa, không ra log).
+/// Hồ sơ tài khoản TsuDEV đang đăng nhập (D2 - lưu trong CSDL đã mã hóa, không ra log).
 @immutable
 final class SyncProfile {
   const SyncProfile({required this.userId, required this.displayName, this.email});

@@ -21,7 +21,7 @@ enum SyncBlock {
   /// Tài khoản đang chờ xóa: máy chủ chỉ cho đọc.
   pendingDeletion,
 
-  /// Máy này đã đồng bộ với tài khoản tsudev khác.
+  /// Máy này đã đồng bộ với tài khoản TsuDEV khác.
   otherUser,
 }
 
@@ -74,7 +74,7 @@ final class SyncEngine {
 
   int get cursor => _metaInt(_mCursor);
 
-  /// Ràng buộc dữ liệu máy này với một tài khoản tsudev (id máy chủ). Khác ⇒ [SyncBlock.otherUser].
+  /// Ràng buộc dữ liệu máy này với một tài khoản TsuDEV (id máy chủ). Khác ⇒ [SyncBlock.otherUser].
   void bindUser(String userId) {
     final bound = store.getMeta(_mUser);
     if (bound == null) {

@@ -30,7 +30,7 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
   đẩy sau, trạng thái và số thay đổi chờ gửi, danh sách/thu hồi thiết bị, dung lượng máy chủ, xuất dữ liệu máy chủ,
   xóa tài khoản (30 ngày, hủy được), đăng xuất giữ dữ liệu trên máy. Thiết bị mới "Đăng nhập để lấy dữ liệu đã đồng
   bộ" mở bằng mật khẩu mã hóa hoặc 24 từ. Bảo vệ: chỉ tin tập CA gốc ghim, không trộn hai khóa chủ, ghim vân tay danh
-  tính, phát hiện máy chủ quay lui, bỏ bản ghi bị tráo, phát hiện đổi tài khoản tsudev (ADR-0011).
+  tính, phát hiện máy chủ quay lui, bỏ bản ghi bị tráo, phát hiện đổi tài khoản TsuDEV (ADR-0011).
 - Máy chủ đồng bộ zero-knowledge `services/sync-api` (P5) trên Cloudflare Workers + D1 + R2, chạy tại
   `https://qulythuchi.tsudev.com`: đăng nhập qua tsudev.com (OIDC + PKCE, mã một lần cho app, token truy cập 15 phút
   + làm mới xoay vòng phát hiện dùng lại, phiên web cookie `__Host-`), đẩy/kéo bản ghi đã mã hóa theo con trỏ `rev`

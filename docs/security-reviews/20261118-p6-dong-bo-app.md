@@ -7,7 +7,7 @@
 ## 1. Thay đổi này đụng vào đâu
 
 - [x] Xác thực hoặc quản lý phiên (đăng nhập trình duyệt hệ thống + PKCE, lưu/xoay vòng refresh token, đăng xuất)
-- [x] Phân quyền hoặc kiểm tra quyền sở hữu đối tượng (thu hồi thiết bị, ràng buộc CSDL với một tài khoản tsudev)
+- [x] Phân quyền hoặc kiểm tra quyền sở hữu đối tượng (thu hồi thiết bị, ràng buộc CSDL với một tài khoản TsuDEV)
 - [ ] Tải tệp lên hoặc phục vụ tệp (tệp đính kèm chưa nối - P7)
 - [x] Truy vấn cơ sở dữ liệu có dữ liệu do người dùng nhập (SQLite cục bộ, tham số hóa)
 - [ ] Hiển thị nội dung HTML (chỉ trang "đã đăng nhập" tĩnh của cổng vòng lặp, không chèn dữ liệu)
@@ -21,7 +21,7 @@
 | Bản ghi, khóa ví, gói khóa gửi/nhận | D3 | TLS (CA ghim) + E2EE | sqlite3mc trên máy; bản mã trên máy chủ | Như P2/P5 |
 | Refresh token | D3 (xác thực) | TLS | Kho bí mật HĐH (Keystore/Keychain/libsecret/DPAPI) | Tới khi đăng xuất/xoay |
 | Access token | D3 (xác thực) | TLS | Chỉ trong bộ nhớ | 15 phút |
-| Hồ sơ tsudev (id, tên, email) | D2 | TLS | `meta` trong CSDL mã hóa (web: IndexedDB) | Tới khi đăng xuất |
+| Hồ sơ TsuDEV (id, tên, email) | D2 | TLS | `meta` trong CSDL mã hóa (web: IndexedDB) | Tới khi đăng xuất |
 | Con trỏ, rev lớn nhất, vân tay danh tính | D1 | - | `meta` | Tới khi đăng xuất |
 
 ## 3. Đối chiếu OWASP (MASVS cho app)
@@ -59,8 +59,8 @@
    "thiết bị bị thu hồi từ máy khác".
 10. **Ca**: người dùng sửa dữ liệu trong lúc đang đồng bộ ⇒ ghi đè mất sửa đổi. - **Chặn ở**: áp trang kéo trong giao tác
     đồng bộ + nạp lại repository; xóa dirty chỉ khi bản niêm phong không đổi. - **Test**: "sửa đồng thời hai trường".
-11. **Ca**: đăng nhập nhầm tài khoản tsudev khác ⇒ đẩy dữ liệu sang tài khoản người khác. - **Chặn ở**: ràng buộc id
-    người dùng. - **Test**: "máy đã gắn tài khoản tsudev u1 không đăng nhập được u2".
+11. **Ca**: đăng nhập nhầm tài khoản TsuDEV khác ⇒ đẩy dữ liệu sang tài khoản người khác. - **Chặn ở**: ràng buộc id
+    người dùng. - **Test**: "máy đã gắn tài khoản TsuDEV u1 không đăng nhập được u2".
 
 ## 5. Kiểm tra bắt buộc
 

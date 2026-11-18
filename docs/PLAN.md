@@ -7,7 +7,7 @@
 ## Mục tiêu
 
 App quản lý thu chi **local-first, mã hóa đầu-cuối (E2EE)**, chạy trên Android, iOS, Windows, macOS, Linux và
-web (`https://qulythuchi.tsudev.com`), đồng bộ giữa các thiết bị cùng tài khoản tsudev. Chi phí vận hành 0 đồng.
+web (`https://qulythuchi.tsudev.com`), đồng bộ giữa các thiết bị cùng tài khoản TsuDEV. Chi phí vận hành 0 đồng.
 
 ## Ràng buộc đã chốt với chủ dự án (17/11/2026)
 
@@ -32,7 +32,7 @@ web (`https://qulythuchi.tsudev.com`), đồng bộ giữa các thiết bị cù
 | P2 | App Flutter khung | 6 đích build; drift + SQLCipher; i18n vi/en; token thiết kế; khóa app sinh trắc/PIN; ví, danh mục, giao dịch, chuyển ví |
 | P3 | Nghiệp vụ nâng cao | Ngân sách (danh mục/phong bì/6 hũ), giao dịch định kỳ, hóa đơn + nhắc, sổ nợ/vay, mục tiêu tiết kiệm, sự kiện/chuyến đi, đa tiền tệ |
 | P4 | Báo cáo + dữ liệu | Biểu đồ, dòng tiền, lịch chi tiêu, "an toàn để tiêu", tìm kiếm không dấu, xuất/nhập CSV/XLSX/PDF, sao lưu tệp mã hóa |
-| P5 | Máy chủ `services/sync-api` | Workers + D1 + R2: RP OIDC tsudev, token app, thiết bị, API đồng bộ bản mã, tệp đính kèm, giới hạn tần suất, header bảo mật; triển khai production |
+| P5 | Máy chủ `services/sync-api` | Workers + D1 + R2: RP OIDC TsuDEV, token app, thiết bị, API đồng bộ bản mã, tệp đính kèm, giới hạn tần suất, header bảo mật; triển khai production |
 | P6 | Đồng bộ trong app | Đăng nhập, thiết lập mật khẩu mã hóa + khóa khôi phục 24 từ, đồng bộ nền, quản lý/thu hồi thiết bị, ghim chứng chỉ |
 | P7 | Tự nhập + thông minh | Bộ đọc thông báo ngân hàng VN, bộ phân tích sao kê, OCR trên máy, giọng nói tiếng Việt, email chuyển tiếp niêm phong, tự xếp danh mục, widget |
 | P8 | Web + site | Flutter web (PWA) tại `/app`, trang giới thiệu Astro, tải về, chính sách riêng tư; thẻ ở tsudev.com/apps |
@@ -47,4 +47,4 @@ ranh giới file ở `AGENTS.md` B.3.
 - Đăng ký client OIDC `qulythuchi` ở tsudev.com, redirect `https://qulythuchi.tsudev.com/auth/callback` (P5).
 - Token Cloudflare (Workers, D1, R2, Email Routing, DNS cho `qulythuchi.tsudev.com`) đặt ở thư mục ngoài repo; thu hồi sau khi xong.
 - Khóa ký Android (giữ ngoại tuyến) → secret Environment `release` (P10).
-- Duyệt logo riêng (`BRAND_ASSETS.md` mục 15) - tạm dùng logo tsudev.
+- Duyệt logo riêng (`BRAND_ASSETS.md` mục 15) - tạm dùng logo TsuDEV.
