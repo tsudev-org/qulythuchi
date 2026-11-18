@@ -10,7 +10,7 @@
 ## Hàng đợi task (làm từ trên xuống)
 
 - [ ] **P9 - Ví chung gia đình** (phiếu `logs/handover/20261118-04_p8-xong-bat-dau-p9.md`, prompt ở mục 6b).
-  👤: bật Email Routing `in.qulythuchi.tsudev.com` ⇒ Worker `qulythuchi`; thử đăng nhập trên `/app/` production.
+  👤: thử đăng nhập trên `/app/` production; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
 - [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
   desktop (Tesseract), widget/lối tắt iOS.
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
@@ -24,6 +24,10 @@
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 18/11/2026 - Email Routing (chủ dự án chạy lệnh, agent kiểm): miền con `in.qulythuchi.tsudev.com` bật (MX route1/2/3 +
+  SPF đã lan truyền); catch-all của ZONE tsudev.com ⇒ Worker `qulythuchi` (trước đó tắt/drop). Worker từ chối ngay thư
+  không thuộc INBOX_DOMAIN nên địa chỉ lạ của tsudev.com vẫn bị trả lại như cũ; 4 quy tắc chuyển tiếp contact@/
+  privacy@/abuse@/security@ giữ nguyên. Sản phẩm khác cần catch-all ⇒ phải tách lại (ghi ADR-0012).
 - 18/11/2026 - P8 Web + site (agent-qulythuchi): `apps/site` Astro (trang chủ, Tính năng, Bảo mật và quyền riêng tư,
   Tải về, 404, sitemap; đen + tím, bộ chọn giao diện), dây chuyền thương hiệu từ logo tsudev, web app Flutter ở `/app/`
   (`--csp --no-web-resources-cdn`, không service worker, CSP `<meta>`), MỘT Worker phục vụ tĩnh + API (Static Assets),
