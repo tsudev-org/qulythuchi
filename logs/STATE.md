@@ -9,6 +9,10 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
+- [ ] **P9a - Tiện ích tài chính cá nhân** (yêu cầu chủ dự án 19/11/2026, phiếu `logs/handover/20261119-01_*`): chuyển
+  số dư theo kỳ, chuẩn hóa mục thu + khoản thu nhiều đợt (freelance), thuế TNCN + nhắc hạn, quét/tạo QR thanh toán
+  (VietQR/EMVCo) mở app ngân hàng, đủ tiền tệ ISO 4217, nhập dữ liệu theo tệp mẫu, màn đăng nhập Google/GitHub/tsudev
+  + chế độ khách. Apple ID: cần đề xuất chuẩn (AUTH_AND_ACCOUNT mục 3 cấm nhà cung cấp thứ tư).
 - [ ] **P9 - Ví chung gia đình** (phiếu `logs/handover/20261118-04_p8-xong-bat-dau-p9.md`, prompt ở mục 6b).
   👤: thử đăng nhập trên `/app/` production; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
 - [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
@@ -20,7 +24,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| (trống) | | |
+| P9a Tiện ích tài chính cá nhân | agent-qulythuchi | 19/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
