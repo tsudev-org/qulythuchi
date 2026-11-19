@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 import 'package:uuid/uuid.dart';
@@ -8,6 +10,7 @@ import '../domain/extra_models.dart';
 import '../domain/txn_filter.dart';
 import '../domain/vn_search.dart';
 import '../security/vault.dart';
+import '../sync/shared_wallets.dart';
 
 /// Ảnh chụp bất biến của dữ liệu đã giải mã, đưa cho giao diện.
 @immutable
@@ -27,7 +30,23 @@ final class LedgerData {
     this.incomePlans = const [],
     this.taxProfile = const TaxProfile(),
     this.skipped = 0,
+    this.walletRoles = const {},
+    this.sharedCategories = const [],
   });
+
+  /// Quyền của mình trong từng ví chung (ví không có ở đây là ví riêng - toàn quyền).
+  final Map<String, WalletRole> walletRoles;
+
+  /// Danh mục người khác dùng trong ví chung mà mình không có (chỉ để hiện tên).
+  final List<Category> sharedCategories;
+
+  /// Được thêm/sửa/xóa giao dịch trong ví này.
+  bool canWrite(String? walletId) => walletRoles[walletId]?.canWrite ?? true;
+
+  /// Được sửa/xóa thông tin ví (tên, loại, tiền tệ) và quản lý thành viên.
+  bool canManage(String? walletId) => walletRoles[walletId]?.canManage ?? true;
+
+  bool isShared(String? walletId) => walletRoles.containsKey(walletId);
 
   final List<Wallet> wallets;
   final List<Category> categories;
@@ -55,7 +74,8 @@ final class LedgerData {
   final int skipped;
 
   Wallet? wallet(String? id) => wallets.where((w) => w.id == id).firstOrNull;
-  Category? category(String? id) => categories.where((c) => c.id == id).firstOrNull;
+  Category? category(String? id) =>
+      categories.where((c) => c.id == id).firstOrNull ?? sharedCategories.where((c) => c.id == id).firstOrNull;
   Txn? txn(String id) => txns.where((t) => t.id == id).firstOrNull;
   Budget? budget(String? id) => budgets.where((b) => b.id == id).firstOrNull;
   Recurring? recurring(String? id) => recurrings.where((r) => r.id == id).firstOrNull;
@@ -137,7 +157,7 @@ final class LedgerException implements Exception {
 }
 
 /// Đọc/ghi bản ghi: mọi thứ ra khỏi lớp này xuống SQLite đều đã niêm phong bằng khóa ví/khóa tài khoản.
-final class LedgerRepository {
+final class LedgerRepository implements SharingBook {
   LedgerRepository(this._store, this._vault) : _clock = HlcClock(_vault.nodeId);
 
   final RecordStore _store;
@@ -195,6 +215,7 @@ final class LedgerRepository {
     final incomePlans = <IncomePlan>[];
     var taxProfile = const TaxProfile();
     SyncRecord? jarRecord;
+    final sharedCats = <String, Category>{};
     for (final r in _records.values) {
       if (r.isDeleted) continue;
       try {
@@ -225,6 +246,10 @@ final class LedgerRepository {
             incomePlans.add(IncomePlan.fromRecord(r));
           case RecordTypes.taxProfile:
             taxProfile = TaxProfile.fromRecord(r);
+          case walletCatsType:
+            for (final c in _walletCats(r)) {
+              sharedCats[c.id] = c;
+            }
           case RecordTypes.jarPlan:
             // Nhiều thiết bị cùng tạo kế hoạch: bản ghi có HLC mới nhất thắng.
             if (jarRecord == null || (r.maxHlc != null && jarRecord.maxHlc != null && r.maxHlc! > jarRecord.maxHlc!)) {
@@ -275,6 +300,11 @@ final class LedgerRepository {
         }),
       taxProfile: taxProfile,
       skipped: skipped,
+      walletRoles: {for (final w in _store.sharedWallets()) w.walletId: ?WalletRole.fromName(w.role)},
+      sharedCategories: [
+        for (final c in sharedCats.values)
+          if (!categories.any((m) => m.id == c.id)) c,
+      ],
     );
   }
 
@@ -299,6 +329,14 @@ final class LedgerRepository {
   static bool _same(Object? a, Object? b) => canonicalJson(a) == canonicalJson(b);
 
   void _persist(List<SyncRecord> records) {
+    final roles = {for (final w in _store.sharedWallets()) w.walletId: WalletRole.fromName(w.role)};
+    for (final r in records) {
+      if (r.walletId == null || !roles.containsKey(r.walletId)) continue;
+      final role = roles[r.walletId];
+      // Máy chủ cũng chặn (read_only / forbidden) - chặn sớm để không sinh bản ghi dirty vĩnh viễn.
+      if (role == null || !role.canWrite) throw const LedgerException('readOnly');
+      if (r.type == RecordTypes.wallet && !role.canManage) throw const LedgerException('ownerOnly');
+    }
     final rows = [
       for (final r in records)
         SealedRow(
@@ -312,6 +350,84 @@ final class LedgerRepository {
     for (final r in records) {
       _records[r.id] = r;
     }
+  }
+
+  // ------------------------------------------------------------------ Ví chung (P9, ADR-0015)
+
+  /// Bản ghi danh mục mình dùng trong một ví chung (không gian ví, mỗi thiết bị một bản ghi).
+  static const walletCatsType = 'wallet_cats';
+
+  static List<Category> _walletCats(SyncRecord r) {
+    final out = <Category>[];
+    final list = r['cats'];
+    if (list is! List) return out;
+    for (final c in list) {
+      if (c is! Map) continue;
+      final id = c['id'];
+      final name = c['name'];
+      if (id is! String || name is! String) continue;
+      out.add(
+        Category(
+          id: id,
+          name: name,
+          kind: CategoryKind.values.where((k) => k.name == c['kind']).firstOrNull ?? CategoryKind.expense,
+          parentId: c['parentId'] as String?,
+          icon: c['icon'] as String?,
+          color: c['color'] as String?,
+        ),
+      );
+    }
+    return out;
+  }
+
+  @override
+  List<ShareSecret> shareSecrets() => [
+    for (final r in _records.values)
+      if (r.type == ShareSecret.recordType && !r.isDeleted) ?ShareSecret.fromRecord(r),
+  ];
+
+  @override
+  void saveShareSecret(ShareSecret s) => _persist([_apply(_base(s.id, ShareSecret.recordType, null), s.toValues())]);
+
+  @override
+  void forgetShareSecrets(String walletId) {
+    final gone = [
+      for (final r in _records.values)
+        if (r.type == ShareSecret.recordType && !r.isDeleted && r['walletId'] == walletId) r.markDeleted(_clock),
+    ];
+    if (gone.isNotEmpty) _persist(gone);
+  }
+
+  @override
+  void publishWalletCategories(String walletId) {
+    final mine = {
+      for (final r in _records.values)
+        if (r.type == RecordTypes.category && !r.isDeleted) r.id: r,
+    };
+    final used = <String>{};
+    for (final r in _records.values) {
+      if (r.type != RecordTypes.transaction || r.isDeleted || r.walletId != walletId) continue;
+      final id = r['categoryId'];
+      if (id is String && mine.containsKey(id)) {
+        used.add(id);
+        final parent = mine[id]!['parentId'];
+        if (parent is String && mine.containsKey(parent)) used.add(parent);
+      }
+    }
+    final cats = [
+      for (final id in used.toList()..sort())
+        {'id': id, ...Category.fromRecord(mine[id]!).toValues()..remove('archived')},
+    ];
+    final metaKey = 'wcats.$walletId';
+    final raw = _store.getMeta(metaKey);
+    final id = raw == null ? newId() : String.fromCharCodes(raw);
+    final existing = _records[id];
+    if (existing == null && cats.isEmpty) return;
+    if (existing != null && canonicalJson(existing['cats']) == canonicalJson(cats)) return;
+    if (raw == null) _store.putMeta(metaKey, Uint8List.fromList(id.codeUnits));
+    _persist([
+      _apply(_base(id, walletCatsType, walletId), {'cats': cats}),
+    ]);
   }
 
   // ------------------------------------------------------------------ Ví

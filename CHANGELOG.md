@@ -10,6 +10,15 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- Ví chung gia đình (P9, ADR-0015):
+  - "Chia sẻ và thành viên" trong mỗi ví: chia sẻ ví, mời theo quyền Người ghi hoặc Người xem bằng mã/liên kết/QR (dùng
+    một lần trong 7 ngày), đổi quyền, thu hồi, hủy lời mời, mã an toàn 12 chữ số để so với người cùng ví.
+  - "Tham gia ví chung" (nút trên màn Ví, liên kết web `#/moi/<mã>`): dán mã, xem lời mời, tham gia; ví xuất hiện khi chủ
+    ví mở app. Thành viên rời ví được, dữ liệu ví bị xóa khỏi máy.
+  - Mã hóa đầu-cuối giữ nguyên: khóa ví trao bằng X-Wing kèm bí mật của mã mời (máy chủ không giả được thành viên hay
+    khóa ví); thu hồi thành viên = đổi khóa ví và mã hóa lại toàn ví; danh mục người khác dùng trong ví hiện đúng tên.
+  - Máy chủ: migration 0003, không gian bản ghi theo ví, phân quyền chủ/ghi/xem, xoay khóa trong một giao tác; xuất dữ
+    liệu và xóa tài khoản xử lý ví chung.
 - Tiện ích tài chính cá nhân (P9a, ADR-0014):
   - Thẻ "Số dư theo tháng" ở Tổng quan: số dư đầu tháng chuyển từ tháng trước + thu - chi = số dư cuối tháng chuyển
     sang tháng sau, xem lùi/tới từng tháng, tỉ lệ để dành; tắt "Chuyển số dư sang tháng sau" để chỉ xem thu/chi.

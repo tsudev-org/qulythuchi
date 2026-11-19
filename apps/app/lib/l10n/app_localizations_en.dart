@@ -2502,4 +2502,213 @@ class AppLocalizationsEn extends AppLocalizations {
   String importTemplateDone(int count, int wallets, int categories) {
     return 'Imported $count transactions, created $wallets wallets and $categories categories.';
   }
+
+  @override
+  String get shareTitle => 'Shared wallet';
+
+  @override
+  String get shareMembersEntry => 'Sharing and members';
+
+  @override
+  String get shareBadge => 'Shared';
+
+  @override
+  String get shareIntro =>
+      'Invite family members to record in this wallet together. The wallet key is handed over end-to-end encrypted: the server only sees ciphertext and cannot read amounts or notes.';
+
+  @override
+  String get shareStart => 'Share this wallet';
+
+  @override
+  String get shareNeedSignIn => 'Sign in and sync to use shared wallets.';
+
+  @override
+  String get shareGoSignIn => 'Go to Account and sync';
+
+  @override
+  String get shareNotLoaded => 'Could not load the member list.';
+
+  @override
+  String get shareRetry => 'Retry';
+
+  @override
+  String get shareMembers => 'Members';
+
+  @override
+  String get shareInvites => 'Open invitations';
+
+  @override
+  String get shareInvite => 'Invite a member';
+
+  @override
+  String get shareRoleOwner => 'Owner';
+
+  @override
+  String get shareRoleEditor => 'Editor';
+
+  @override
+  String get shareRoleViewer => 'Viewer';
+
+  @override
+  String get shareRoleEditorHint => 'Add, edit and delete transactions in the wallet';
+
+  @override
+  String get shareRoleViewerHint => 'View only';
+
+  @override
+  String shareYourRole(String role) {
+    return 'Your role: $role';
+  }
+
+  @override
+  String get shareYou => 'You';
+
+  @override
+  String shareSafetyCode(String code) {
+    return 'Safety code: $code';
+  }
+
+  @override
+  String shareMySafetyCode(String code) {
+    return 'Your safety code: $code. Compare safety codes by phone or in person with people in this wallet.';
+  }
+
+  @override
+  String shareChangeTo(String role) {
+    return 'Change to $role';
+  }
+
+  @override
+  String get shareRemove => 'Remove from wallet';
+
+  @override
+  String shareRemoveConfirm(String name) {
+    return 'Remove $name? The wallet gets a new key and is re-encrypted; this person can no longer read new data.';
+  }
+
+  @override
+  String get shareRemoved => 'Removed and the wallet key was rotated.';
+
+  @override
+  String get shareInviteWaiting => 'Waiting for the recipient';
+
+  @override
+  String shareInviteAccepted(String name) {
+    return '$name accepted - finishing up';
+  }
+
+  @override
+  String get shareInviteCancel => 'Cancel invitation';
+
+  @override
+  String get shareInviteRoleTitle => 'Invite as';
+
+  @override
+  String get shareInviteCreate => 'Create invitation';
+
+  @override
+  String get shareInviteCodeTitle => 'Send the invitation code';
+
+  @override
+  String get shareInviteCodeBody =>
+      'Send this code or link privately, or let them scan the QR code. It works once within 7 days. Anyone with the code can accept, so do not post it publicly.';
+
+  @override
+  String get shareCopyCode => 'Copy code';
+
+  @override
+  String get shareCopyLink => 'Copy link';
+
+  @override
+  String get shareCopied => 'Copied.';
+
+  @override
+  String get shareLeave => 'Leave shared wallet';
+
+  @override
+  String shareLeaveConfirm(String name) {
+    return 'Leave \"$name\"? The wallet\'s data will be removed from this device.';
+  }
+
+  @override
+  String get shareLeft => 'You left the shared wallet.';
+
+  @override
+  String get shareReadOnlyNote => 'Shared wallet: only the owner can edit wallet details.';
+
+  @override
+  String shareBadInvites(int count) {
+    return 'Cancelled $count invitation(s) because the proof did not match (someone may not have the real code).';
+  }
+
+  @override
+  String get joinTitle => 'Join a shared wallet';
+
+  @override
+  String get joinCodeLabel => 'Invitation code or link';
+
+  @override
+  String get joinPreview => 'View invitation';
+
+  @override
+  String get joinInvalidCode => 'The invitation code is not valid.';
+
+  @override
+  String joinFrom(String name) {
+    return 'Invitation from $name';
+  }
+
+  @override
+  String joinRole(String role) {
+    return 'Role: $role';
+  }
+
+  @override
+  String get joinAccept => 'Join';
+
+  @override
+  String get joinSent => 'Invitation accepted. The wallet appears once the owner opens the app.';
+
+  @override
+  String get joinPending => 'Waiting for the owner';
+
+  @override
+  String get joinOwnerUnknown => 'the owner';
+
+  @override
+  String get joinAlreadyAccepted => 'You already accepted this invitation.';
+
+  @override
+  String get shareErrInviteGone => 'The invitation does not exist or has expired.';
+
+  @override
+  String get shareErrInviteTaken => 'Someone else already used this invitation. Ask the owner for a new code.';
+
+  @override
+  String get shareErrInviteOwn => 'This invitation is for your own wallet.';
+
+  @override
+  String get shareErrAlreadyMember => 'You are already in this wallet.';
+
+  @override
+  String get shareErrNoKeys => 'Sync once to upload your encryption keys first.';
+
+  @override
+  String get shareErrLimit => 'The limit of shared wallets or members was reached.';
+
+  @override
+  String get shareErrStale => 'The wallet just changed. Sync and try again.';
+
+  @override
+  String get shareErrMissingSecret =>
+      'This device lacks a member\'s sharing secret. Sync, or try on the device that created the invitation.';
+
+  @override
+  String get shareErrForbidden => 'Only the owner can do this.';
+
+  @override
+  String get errReadOnly => 'You can only view this shared wallet.';
+
+  @override
+  String get errOwnerOnly => 'Only the owner can edit shared wallet details.';
 }

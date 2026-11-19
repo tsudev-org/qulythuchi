@@ -20,6 +20,7 @@ export 'src/money/money.dart';
 export 'src/money/money_format.dart';
 export 'src/payment/emvco.dart';
 export 'src/payment/vn_banks.dart';
+export 'src/sharing/wallet_sharing.dart';
 export 'src/sync/canonical_json.dart';
 export 'src/sync/hlc.dart';
 export 'src/sync/sync_record.dart';

@@ -1548,5 +1548,137 @@
         "type": "int"
       }
     }
-  }
+  },
+  "shareTitle": "Ví chung",
+  "shareMembersEntry": "Chia sẻ và thành viên",
+  "shareBadge": "Ví chung",
+  "shareIntro": "Mời người trong gia đình cùng ghi chép ví này. Khóa ví được trao qua mã hóa đầu-cuối: máy chủ chỉ thấy bản mã, không đọc được số tiền hay ghi chú.",
+  "shareStart": "Chia sẻ ví này",
+  "shareNeedSignIn": "Cần đăng nhập và đồng bộ để dùng ví chung.",
+  "shareGoSignIn": "Đến Tài khoản và đồng bộ",
+  "shareNotLoaded": "Chưa tải được danh sách thành viên.",
+  "shareRetry": "Thử lại",
+  "shareMembers": "Thành viên",
+  "shareInvites": "Lời mời đang mở",
+  "shareInvite": "Mời thành viên",
+  "shareRoleOwner": "Chủ ví",
+  "shareRoleEditor": "Người ghi",
+  "shareRoleViewer": "Người xem",
+  "shareRoleEditorHint": "Thêm, sửa, xóa giao dịch trong ví",
+  "shareRoleViewerHint": "Chỉ xem, không ghi",
+  "shareYourRole": "Quyền của bạn: {role}",
+  "@shareYourRole": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "shareYou": "Bạn",
+  "shareSafetyCode": "Mã an toàn: {code}",
+  "@shareSafetyCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "shareMySafetyCode": "Mã an toàn của bạn: {code}. Hai người cùng ví nên so mã an toàn qua điện thoại hoặc gặp mặt.",
+  "@shareMySafetyCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "shareChangeTo": "Đổi thành {role}",
+  "@shareChangeTo": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "shareRemove": "Thu hồi quyền",
+  "shareRemoveConfirm": "Thu hồi quyền của {name}? Ví sẽ được đổi khóa mới và mã hóa lại; người này không đọc được dữ liệu mới nữa.",
+  "@shareRemoveConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "shareRemoved": "Đã thu hồi và đổi khóa ví.",
+  "shareInviteWaiting": "Chờ người nhận",
+  "shareInviteAccepted": "{name} đã nhận - đang hoàn tất",
+  "@shareInviteAccepted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "shareInviteCancel": "Hủy lời mời",
+  "shareInviteRoleTitle": "Mời với quyền",
+  "shareInviteCreate": "Tạo lời mời",
+  "shareInviteCodeTitle": "Gửi mã mời",
+  "shareInviteCodeBody": "Gửi mã hoặc liên kết này cho người được mời qua tin nhắn riêng, hoặc cho họ quét mã QR. Mã dùng được một lần trong 7 ngày. Ai có mã đều có thể nhận lời mời, nên đừng đăng công khai.",
+  "shareCopyCode": "Sao chép mã",
+  "shareCopyLink": "Sao chép liên kết",
+  "shareCopied": "Đã sao chép.",
+  "shareLeave": "Rời ví chung",
+  "shareLeaveConfirm": "Rời ví \"{name}\"? Dữ liệu của ví sẽ bị xóa khỏi máy này.",
+  "@shareLeaveConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "shareLeft": "Đã rời ví chung.",
+  "shareReadOnlyNote": "Ví chung: chỉ chủ ví sửa được thông tin ví.",
+  "shareBadInvites": "Đã hủy {count} lời mời vì bằng chứng không khớp (có thể ai đó không có mã thật).",
+  "@shareBadInvites": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "joinTitle": "Tham gia ví chung",
+  "joinCodeLabel": "Mã hoặc liên kết mời",
+  "joinPreview": "Xem lời mời",
+  "joinInvalidCode": "Mã mời không đúng định dạng.",
+  "joinFrom": "Lời mời từ {name}",
+  "@joinFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "joinRole": "Quyền: {role}",
+  "@joinRole": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "joinAccept": "Tham gia",
+  "joinSent": "Đã nhận lời mời. Ví sẽ xuất hiện khi chủ ví mở app.",
+  "joinPending": "Đang chờ chủ ví xác nhận",
+  "joinOwnerUnknown": "chủ ví",
+  "joinAlreadyAccepted": "Bạn đã nhận lời mời này.",
+  "shareErrInviteGone": "Lời mời không tồn tại hoặc đã hết hạn.",
+  "shareErrInviteTaken": "Lời mời đã được người khác dùng. Hãy xin chủ ví mã mới.",
+  "shareErrInviteOwn": "Đây là lời mời vào ví của chính bạn.",
+  "shareErrAlreadyMember": "Bạn đã ở trong ví này.",
+  "shareErrNoKeys": "Hãy đồng bộ một lần để tải khóa mã hóa lên trước.",
+  "shareErrLimit": "Đã đạt giới hạn số ví chung hoặc thành viên.",
+  "shareErrStale": "Ví vừa thay đổi. Hãy đồng bộ rồi thử lại.",
+  "shareErrMissingSecret": "Máy này chưa có đủ thông tin của một thành viên. Hãy đồng bộ hoặc thử trên máy đã tạo lời mời.",
+  "shareErrForbidden": "Chỉ chủ ví được làm việc này.",
+  "errReadOnly": "Bạn chỉ có quyền xem ví chung này.",
+  "errOwnerOnly": "Chỉ chủ ví được sửa thông tin ví chung."
 }

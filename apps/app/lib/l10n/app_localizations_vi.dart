@@ -2499,4 +2499,213 @@ class AppLocalizationsVi extends AppLocalizations {
   String importTemplateDone(int count, int wallets, int categories) {
     return 'Đã nhập $count giao dịch, tạo $wallets ví, $categories danh mục.';
   }
+
+  @override
+  String get shareTitle => 'Ví chung';
+
+  @override
+  String get shareMembersEntry => 'Chia sẻ và thành viên';
+
+  @override
+  String get shareBadge => 'Ví chung';
+
+  @override
+  String get shareIntro =>
+      'Mời người trong gia đình cùng ghi chép ví này. Khóa ví được trao qua mã hóa đầu-cuối: máy chủ chỉ thấy bản mã, không đọc được số tiền hay ghi chú.';
+
+  @override
+  String get shareStart => 'Chia sẻ ví này';
+
+  @override
+  String get shareNeedSignIn => 'Cần đăng nhập và đồng bộ để dùng ví chung.';
+
+  @override
+  String get shareGoSignIn => 'Đến Tài khoản và đồng bộ';
+
+  @override
+  String get shareNotLoaded => 'Chưa tải được danh sách thành viên.';
+
+  @override
+  String get shareRetry => 'Thử lại';
+
+  @override
+  String get shareMembers => 'Thành viên';
+
+  @override
+  String get shareInvites => 'Lời mời đang mở';
+
+  @override
+  String get shareInvite => 'Mời thành viên';
+
+  @override
+  String get shareRoleOwner => 'Chủ ví';
+
+  @override
+  String get shareRoleEditor => 'Người ghi';
+
+  @override
+  String get shareRoleViewer => 'Người xem';
+
+  @override
+  String get shareRoleEditorHint => 'Thêm, sửa, xóa giao dịch trong ví';
+
+  @override
+  String get shareRoleViewerHint => 'Chỉ xem, không ghi';
+
+  @override
+  String shareYourRole(String role) {
+    return 'Quyền của bạn: $role';
+  }
+
+  @override
+  String get shareYou => 'Bạn';
+
+  @override
+  String shareSafetyCode(String code) {
+    return 'Mã an toàn: $code';
+  }
+
+  @override
+  String shareMySafetyCode(String code) {
+    return 'Mã an toàn của bạn: $code. Hai người cùng ví nên so mã an toàn qua điện thoại hoặc gặp mặt.';
+  }
+
+  @override
+  String shareChangeTo(String role) {
+    return 'Đổi thành $role';
+  }
+
+  @override
+  String get shareRemove => 'Thu hồi quyền';
+
+  @override
+  String shareRemoveConfirm(String name) {
+    return 'Thu hồi quyền của $name? Ví sẽ được đổi khóa mới và mã hóa lại; người này không đọc được dữ liệu mới nữa.';
+  }
+
+  @override
+  String get shareRemoved => 'Đã thu hồi và đổi khóa ví.';
+
+  @override
+  String get shareInviteWaiting => 'Chờ người nhận';
+
+  @override
+  String shareInviteAccepted(String name) {
+    return '$name đã nhận - đang hoàn tất';
+  }
+
+  @override
+  String get shareInviteCancel => 'Hủy lời mời';
+
+  @override
+  String get shareInviteRoleTitle => 'Mời với quyền';
+
+  @override
+  String get shareInviteCreate => 'Tạo lời mời';
+
+  @override
+  String get shareInviteCodeTitle => 'Gửi mã mời';
+
+  @override
+  String get shareInviteCodeBody =>
+      'Gửi mã hoặc liên kết này cho người được mời qua tin nhắn riêng, hoặc cho họ quét mã QR. Mã dùng được một lần trong 7 ngày. Ai có mã đều có thể nhận lời mời, nên đừng đăng công khai.';
+
+  @override
+  String get shareCopyCode => 'Sao chép mã';
+
+  @override
+  String get shareCopyLink => 'Sao chép liên kết';
+
+  @override
+  String get shareCopied => 'Đã sao chép.';
+
+  @override
+  String get shareLeave => 'Rời ví chung';
+
+  @override
+  String shareLeaveConfirm(String name) {
+    return 'Rời ví \"$name\"? Dữ liệu của ví sẽ bị xóa khỏi máy này.';
+  }
+
+  @override
+  String get shareLeft => 'Đã rời ví chung.';
+
+  @override
+  String get shareReadOnlyNote => 'Ví chung: chỉ chủ ví sửa được thông tin ví.';
+
+  @override
+  String shareBadInvites(int count) {
+    return 'Đã hủy $count lời mời vì bằng chứng không khớp (có thể ai đó không có mã thật).';
+  }
+
+  @override
+  String get joinTitle => 'Tham gia ví chung';
+
+  @override
+  String get joinCodeLabel => 'Mã hoặc liên kết mời';
+
+  @override
+  String get joinPreview => 'Xem lời mời';
+
+  @override
+  String get joinInvalidCode => 'Mã mời không đúng định dạng.';
+
+  @override
+  String joinFrom(String name) {
+    return 'Lời mời từ $name';
+  }
+
+  @override
+  String joinRole(String role) {
+    return 'Quyền: $role';
+  }
+
+  @override
+  String get joinAccept => 'Tham gia';
+
+  @override
+  String get joinSent => 'Đã nhận lời mời. Ví sẽ xuất hiện khi chủ ví mở app.';
+
+  @override
+  String get joinPending => 'Đang chờ chủ ví xác nhận';
+
+  @override
+  String get joinOwnerUnknown => 'chủ ví';
+
+  @override
+  String get joinAlreadyAccepted => 'Bạn đã nhận lời mời này.';
+
+  @override
+  String get shareErrInviteGone => 'Lời mời không tồn tại hoặc đã hết hạn.';
+
+  @override
+  String get shareErrInviteTaken => 'Lời mời đã được người khác dùng. Hãy xin chủ ví mã mới.';
+
+  @override
+  String get shareErrInviteOwn => 'Đây là lời mời vào ví của chính bạn.';
+
+  @override
+  String get shareErrAlreadyMember => 'Bạn đã ở trong ví này.';
+
+  @override
+  String get shareErrNoKeys => 'Hãy đồng bộ một lần để tải khóa mã hóa lên trước.';
+
+  @override
+  String get shareErrLimit => 'Đã đạt giới hạn số ví chung hoặc thành viên.';
+
+  @override
+  String get shareErrStale => 'Ví vừa thay đổi. Hãy đồng bộ rồi thử lại.';
+
+  @override
+  String get shareErrMissingSecret =>
+      'Máy này chưa có đủ thông tin của một thành viên. Hãy đồng bộ hoặc thử trên máy đã tạo lời mời.';
+
+  @override
+  String get shareErrForbidden => 'Chỉ chủ ví được làm việc này.';
+
+  @override
+  String get errReadOnly => 'Bạn chỉ có quyền xem ví chung này.';
+
+  @override
+  String get errOwnerOnly => 'Chỉ chủ ví được sửa thông tin ví chung.';
 }

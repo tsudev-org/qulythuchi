@@ -27,14 +27,42 @@ Future<void> main() async {
     final rec = SyncRecord(id: id, type: 'txn', walletId: walletId).setAll({'amount': 50000, 'note': note}, clock);
     records.add({'id': id, 'type': 'txn', 'wallet_id': walletId, 'sealed': base64.encode(cipher.seal(rec, walletKey))});
   }
+  // Ví chung (ADR-0015): tài khoản thứ hai làm thành viên, khối chia sẻ X-Wing + bí mật cặp, bản bọc cho chủ ví.
+  final member = kh.createAccount(
+    'mat-khau-thanh-vien-gia',
+    kdf: kh.newKdfParams(opsLimit: 2, memLimit: 19 * 1024 * 1024),
+  );
+  final sharing = WalletSharing(sodium);
+  final invite = sharing.newInvite();
+  final share = sharing.shareKey(
+    walletKey: walletKey,
+    walletId: walletId,
+    version: 1,
+    recipientKemPublicKey: member.bundle.kemPublicKey,
+    pairSecret: invite.secret,
+  );
+  final proof = sharing.acceptProof(
+    secret: invite.secret,
+    walletId: walletId,
+    inviteId: invite.inviteId,
+    kemPublicKey: member.bundle.kemPublicKey,
+  );
   print(
     const JsonEncoder.withIndent('  ').convert({
       'description': 'SINH TỰ ĐỘNG bởi packages/core/tool/gen_server_fixture.dart - không sửa tay. Dữ liệu giả.',
       'bundle': setup.bundle.toJson(),
       'wallet_key': {'wallet_id': walletId, 'wrapped': base64.encode(wrapped)},
       'records': records,
+      'shared': {
+        'member_bundle': member.bundle.toJson(),
+        'invite_id': invite.inviteId,
+        'owner_wrapped': base64.encode(sharing.wrapForSelf(setup.masterKey, walletKey, walletId, 1)),
+        'member_share': base64.encode(share),
+        'proof': base64.encode(proof),
+      },
     }),
   );
   walletKey.dispose();
   setup.masterKey.dispose();
+  member.masterKey.dispose();
 }

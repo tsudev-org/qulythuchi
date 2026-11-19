@@ -5,12 +5,14 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:qulythuchi_core/qulythuchi_core.dart' show InviteCode, WalletRole;
 
 import '../data/key_storage.dart';
 import '../security/vault.dart';
 import '../sync/api_client.dart';
 import '../sync/http_client.dart';
 import '../sync/login_launcher.dart';
+import '../sync/shared_wallets.dart';
 import '../sync/sync_engine.dart';
 import 'providers.dart';
 
@@ -215,6 +217,7 @@ final class SyncController extends Notifier<SyncState> {
       api: _api,
       store: s.store,
       vault: s.vault,
+      book: ref.read(repositoryProvider),
       onApplied: () => ref.read(ledgerProvider.notifier).reload(),
     );
   }
@@ -364,6 +367,7 @@ final class SyncController extends Notifier<SyncState> {
         quotaFull: report.quotaFull,
         rejected: report.rejected,
       );
+      if (report.shared != null) ref.read(sharedWalletsProvider.notifier).set(report.shared!, report.badInvites);
     } on SyncBlockedException catch (e) {
       _periodic?.cancel();
       state = state.copyWith(phase: SyncPhase.blocked, block: e.block, pending: services.store.dirtyCount);
@@ -391,4 +395,85 @@ final class SyncController extends Notifier<SyncState> {
     await _api.delete('/api/v1/me/deletion');
     if (state.block == SyncBlock.pendingDeletion) unawaited(syncNow());
   }
+
+  // ------------------------------------------------------------------ Ví chung (P9, ADR-0015)
+
+  /// Chạy một thao tác ví chung khi đã đăng nhập + mở khóa, sau lượt đồng bộ đang chạy (không ghi chồng CSDL).
+  Future<T> _shared<T>(Future<T> Function(SyncEngine e) body) async {
+    if (!state.signedIn) throw const SharingException('notSignedIn');
+    final running = _running;
+    if (running != null) await running;
+    final engine = _engine();
+    final profile = state.profile;
+    if (profile != null) engine.bindUser(profile.userId);
+    final out = await body(engine);
+    return out;
+  }
+
+  Future<void> _afterShared(SyncEngine e) async {
+    final (overview, bad) = await e.refreshShared();
+    ref.read(sharedWalletsProvider.notifier).set(overview, bad);
+    unawaited(syncNow());
+  }
+
+  Future<void> refreshShared() => _shared(_afterShared);
+
+  Future<void> shareWallet(String walletId) => _shared((e) async {
+    await e.shareWallet(walletId);
+    await _afterShared(e);
+  });
+
+  Future<InviteCode> createInvite(String walletId, WalletRole role) => _shared((e) async {
+    final code = await e.createInvite(walletId, role);
+    await _afterShared(e);
+    return code;
+  });
+
+  Future<void> cancelInvite(String walletId, String inviteId) => _shared((e) async {
+    await e.cancelInvite(walletId, inviteId);
+    await _afterShared(e);
+  });
+
+  Future<void> changeRole(String walletId, String userId, WalletRole role) => _shared((e) async {
+    await e.changeRole(walletId, userId, role);
+    await _afterShared(e);
+  });
+
+  /// Thu hồi thành viên = xoay khóa ví (ADR-0015 mục 5).
+  Future<void> removeMember(String walletId, String userId) => _shared((e) async {
+    final (overview, _) = await e.refreshShared();
+    final w = overview.wallet(walletId);
+    if (w == null) throw const SharingException('missingKey');
+    await e.rotateWalletKey(w, remove: {userId});
+    await _afterShared(e);
+  });
+
+  Future<InvitePreview> previewInvite(InviteCode code) => _shared((e) => e.previewInvite(code));
+
+  Future<void> acceptInvite(InvitePreview p) => _shared((e) async {
+    await e.acceptInvite(p);
+    await _afterShared(e);
+  });
+
+  Future<void> leaveWallet(String walletId) => _shared((e) async {
+    await e.leaveWallet(walletId);
+    await _afterShared(e);
+  });
+}
+
+/// Ảnh chụp ví chung gần nhất (từ lượt đồng bộ hoặc thao tác ví chung) - chỉ trong bộ nhớ.
+final class SharedWalletsState {
+  const SharedWalletsState({this.overview, this.badInvites = 0});
+  final SharedOverview? overview;
+  final int badInvites;
+}
+
+final sharedWalletsProvider = NotifierProvider<SharedWalletsNotifier, SharedWalletsState>(SharedWalletsNotifier.new);
+
+final class SharedWalletsNotifier extends Notifier<SharedWalletsState> {
+  @override
+  SharedWalletsState build() => const SharedWalletsState();
+
+  void set(SharedOverview overview, int badInvites) =>
+      state = SharedWalletsState(overview: overview, badInvites: badInvites);
 }

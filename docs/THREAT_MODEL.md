@@ -2,7 +2,7 @@
 
 > Phiếu rà soát gốc theo `.standards/docs/templates/SECURITY_REVIEW.md`, áp cho toàn hệ thống (dữ liệu **D3**).
 > Mọi PR đụng `packages/core/lib/src/crypto`, `sync`, xác thực hoặc máy chủ `MUST` cập nhật mục liên quan.
-> Phiên bản: P1 (17/11/2026) - lõi mã hóa; P5 máy chủ; P6 (18/11/2026) đồng bộ app (ADR-0011); P7 (18/11/2026) tự nhập (ADR-0012). Bổ sung ở P9 (ví chung).
+> Phiên bản: P1 (17/11/2026) - lõi mã hóa; P5 máy chủ; P6 (18/11/2026) đồng bộ app (ADR-0011); P7 (18/11/2026) tự nhập (ADR-0012); P9 (19/11/2026) ví chung (ADR-0015).
 
 ## 1. Tài sản và ranh giới tin cậy
 
@@ -28,7 +28,7 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T6 | MITM / CA giả | T, I | TLS 1.3 + chỉ tin tập CA gốc ghim (ADR-0011 mục 8); E2EE vẫn che nội dung | ✅ P6 (web: trình duyệt) |
 | T7 | Mất điện thoại đang mở khóa | I | Khóa app sinh trắc/PIN, tự khóa khi nền, MK trong Keystore yêu cầu xác thực; thu hồi thiết bị từ xa | ✅ P2 (khóa app), ✅ P6 (thu hồi từ màn Tài khoản) |
 | T8 | App độc trên máy đọc CSDL/ảnh chụp màn hình | I | SQLCipher, FLAG_SECURE/ẩn khi đa nhiệm, không ghi D3 ra log | ⏳ P2 |
-| T9 | Thành viên ví chung bị thu hồi vẫn giữ khóa cũ | I | Xoay khóa ví + mã hóa lại; chia sẻ bằng X-Wing (lai hậu lượng tử) | ✅ P1 (chia sẻ); ⏳ P9 (xoay) |
+| T9 | Thành viên ví chung bị thu hồi vẫn giữ khóa cũ | I | Xoay khóa ví + mã hóa lại trong một giao tác máy chủ; ghi bằng phiên bản cũ ⇒ `stale_key`; người rời ⇒ chủ ví tự xoay; chia sẻ bằng X-Wing (lai hậu lượng tử) | ✅ P1 (chia sẻ); ✅ P9 (xoay, ADR-0015) - dữ liệu đã tải trước khi bị thu hồi vẫn ở máy họ |
 | T10 | Kẻ thu thập bản mã hôm nay, giải bằng máy tính lượng tử sau này | I | Dữ liệu dùng khóa đối xứng 256 bit (an toàn trước Grover); trao khóa bằng X-Wing ML-KEM-768 + X25519 | ✅ P1; email dùng X25519 (ngoại lệ, ADR-0006) |
 | T11 | Email chuyển tiếp lộ trên máy chủ | I | Tắt mặc định + màn công bố ngoại lệ E2EE; niêm phong `crypto_box_seal` trước khi ghi D1, không log nội dung, xóa khi app tải về hoặc sau 30 ngày; địa chỉ 128 bit đổi/tắt được | ✅ P7 (ADR-0012) - rủi ro còn lại: thấy bản rõ trong lượt xử lý |
 | T12 | Chuỗi cung ứng: gói phụ thuộc độc | T | Ghim phiên bản, Dependabot, gitleaks, CodeQL, chỉ phụ thuộc đã khai (mục 5) | ✅ P0-P1 |
@@ -39,6 +39,10 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T17 | Lấp đầy D1/R2 hoặc dồn yêu cầu (từ chối dịch vụ gói 0 đồng) | D | Giới hạn tần suất theo IP/tài khoản, giới hạn thân, hạn mức 50/200 MiB, cỡ tối đa bản ghi/tệp | ✅ P5 |
 | T18 | Máy chủ độc/thiết bị lẫn tài khoản làm trộn hai khóa chủ hoặc đẩy dữ liệu sang tài khoản TsuDEV khác | T, I | So danh tính gói khóa, ràng buộc CSDL với id người dùng, không tự trộn (ADR-0011 mục 3, 6) | ✅ P6 |
 | T19 | App độc/thư rác/máy chủ độc chèn giao dịch giả qua thông báo, email, sao kê | S, T | Chỉ nghe gói app người dùng chọn; mọi giao dịch tự nhập vào hàng chờ "Cần xác nhận" (tự xác nhận tắt mặc định); OTP bị bỏ; hộp thư ≤ 200 thư | ✅ P7 |
+| T21 | Máy chủ độc thay khóa công khai của người được mời bằng khóa của nó để nhận khóa ví chung | S, I | Bằng chứng nhận lời mời BLAKE2b có khóa = bí mật mã mời (máy chủ không có), chủ ví kiểm trên thiết bị trước khi chia khóa; mã an toàn để so qua kênh ngoài | ✅ P9 (ADR-0015) |
+| T22 | Máy chủ độc gửi thành viên khóa ví do nó tạo để đọc dữ liệu họ ghi | S, I | KEK khối chia sẻ = BLAKE2b(khóa = bí mật cặp, bí mật chung X-Wing ‖ bản mã) ⇒ khối giả không mở được | ✅ P9 |
+| T23 | Leo thang quyền trong ví chung (người xem ghi, người ghi sửa/xóa ví, người ngoài đọc) | E | Máy chủ kiểm thành viên + quyền ở mọi lượt (`read_only`, `forbidden`, 404); app chặn sớm | ✅ P9 |
+| T24 | Lộ mã mời qua kênh ngoài (tin nhắn bị đọc trộm) | S | Mã dùng một lần, sống 7 ngày; chủ ví thấy tài khoản đã nhận và thu hồi được; mã một mình không mở được khối khóa | ✅ P9 - rủi ro còn lại: kẻ nhận trước người thật |
 | T20 | Rò nội dung thông báo/ảnh hóa đơn/giọng nói khỏi thiết bị | I | Hàng đợi thông báo mã hóa Keystore, không sao lưu; OCR ML Kit trên máy, xóa ảnh tạm; giọng nói `onDevice`, dịch vụ HĐH chỉ khi đồng ý; widget không hiện dữ liệu | ✅ P7 |
 
 ## 3. Phụ thuộc mật mã (SECURITY_BASELINE mục 5)
@@ -54,3 +58,4 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 - Quên cả mật khẩu lẫn 24 từ ⇒ mất dữ liệu đồng bộ. Chấp nhận - là bản chất E2EE, phải cảnh báo rõ ở P6.
 - Siêu dữ liệu lộ: số bản ghi, kích thước đệm, thời điểm đồng bộ, số ví. Chấp nhận; xem xét gộp lô ở P6.
 - Web không có SQLCipher (ADR-0001 mục 4).
+- Ví chung: máy chủ thấy ai cùng ví với ai, quyền, ai ghi lần cuối; tên/email thành viên hiện cho người cùng ví (ADR-0015 mục 3).

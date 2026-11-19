@@ -14,6 +14,34 @@ final class SealedRow {
   final int rev;
 }
 
+/// Trạng thái cục bộ của một ví chung. [localVer]: phiên bản khóa đang niêm phong các bản ghi của ví trên máy này
+/// (nhỏ hơn [keyVer] ⇒ cần mã hóa lại khi đã có khóa mới).
+final class SharedWalletRow {
+  const SharedWalletRow({
+    required this.walletId,
+    required this.role,
+    required this.keyVer,
+    required this.localVer,
+    this.cursor = 0,
+    this.maxRev = 0,
+  });
+  final String walletId;
+  final String role;
+  final int keyVer;
+  final int localVer;
+  final int cursor;
+  final int maxRev;
+
+  SharedWalletRow copyWith({String? role, int? keyVer, int? localVer, int? cursor, int? maxRev}) => SharedWalletRow(
+    walletId: walletId,
+    role: role ?? this.role,
+    keyVer: keyVer ?? this.keyVer,
+    localVer: localVer ?? this.localVer,
+    cursor: cursor ?? this.cursor,
+    maxRev: maxRev ?? this.maxRev,
+  );
+}
+
 /// Kho thô trên SQLite: chỉ lưu byte đã mã hóa và siêu dữ liệu tối thiểu (ADR-0001 mục 4).
 final class RecordStore {
   RecordStore(this._db) {
@@ -21,7 +49,7 @@ final class RecordStore {
   }
 
   final CommonDatabase _db;
-  static const schemaVersion = 1;
+  static const schemaVersion = 2;
 
   void _migrate() {
     final v = _db.userVersion;
@@ -42,7 +70,109 @@ final class RecordStore {
       ''');
       _db.userVersion = 1;
     }
+    if (v < 2) {
+      // P9 ví chung (ADR-0015): trạng thái từng ví chung (quyền, phiên bản khóa, con trỏ kéo của không gian ví) và khóa
+      // ví theo phiên bản, bọc bằng khóa chủ (ngữ cảnh swk|ví|phiên bản).
+      _db.execute('''
+        CREATE TABLE IF NOT EXISTS shared_wallets (
+          wallet_id TEXT PRIMARY KEY,
+          role TEXT NOT NULL,
+          key_ver INTEGER NOT NULL,
+          local_ver INTEGER NOT NULL,
+          cursor INTEGER NOT NULL DEFAULT 0,
+          max_rev INTEGER NOT NULL DEFAULT 0
+        ) STRICT;
+        CREATE TABLE IF NOT EXISTS shared_keys (
+          wallet_id TEXT NOT NULL,
+          key_ver INTEGER NOT NULL,
+          wrapped BLOB NOT NULL,
+          PRIMARY KEY (wallet_id, key_ver)
+        ) STRICT;
+      ''');
+      _db.userVersion = 2;
+    }
   }
+
+  // ------------------------------------------------------------------ Ví chung (P9)
+
+  List<SharedWalletRow> sharedWallets() => [
+    for (final r in _db.select('SELECT wallet_id, role, key_ver, local_ver, cursor, max_rev FROM shared_wallets'))
+      SharedWalletRow(
+        walletId: r['wallet_id'] as String,
+        role: r['role'] as String,
+        keyVer: r['key_ver'] as int,
+        localVer: r['local_ver'] as int,
+        cursor: r['cursor'] as int,
+        maxRev: r['max_rev'] as int,
+      ),
+  ];
+
+  SharedWalletRow? sharedWallet(String walletId) => sharedWallets().where((w) => w.walletId == walletId).firstOrNull;
+
+  void putSharedWallet(SharedWalletRow w) => _db.execute(
+    'INSERT INTO shared_wallets(wallet_id, role, key_ver, local_ver, cursor, max_rev) VALUES(?, ?, ?, ?, ?, ?) '
+    'ON CONFLICT(wallet_id) DO UPDATE SET role = excluded.role, key_ver = excluded.key_ver, '
+    'local_ver = excluded.local_ver, cursor = excluded.cursor, max_rev = excluded.max_rev',
+    [w.walletId, w.role, w.keyVer, w.localVer, w.cursor, w.maxRev],
+  );
+
+  Map<int, Uint8List> sharedKeys(String walletId) => {
+    for (final r in _db.select('SELECT key_ver, wrapped FROM shared_keys WHERE wallet_id = ?', [walletId]))
+      r['key_ver'] as int: r['wrapped'] as Uint8List,
+  };
+
+  void putSharedKey(String walletId, int keyVer, Uint8List wrapped) => _db.execute(
+    'INSERT INTO shared_keys(wallet_id, key_ver, wrapped) VALUES(?, ?, ?) '
+    'ON CONFLICT(wallet_id, key_ver) DO UPDATE SET wrapped = excluded.wrapped',
+    [walletId, keyVer, wrapped],
+  );
+
+  /// Bản ghi của một ví (để mã hóa lại khi xoay khóa).
+  List<SealedRow> walletRecords(String walletId) => [
+    for (final r in _db.select(
+      'SELECT id, type, wallet_id, sealed, rev, dirty FROM records WHERE wallet_id = ? ORDER BY rowid',
+      [walletId],
+    ))
+      _row(r),
+  ];
+
+  /// Ghi đè bản niêm phong (mã hóa lại bằng khóa mới), giữ rev; [dirty] null = giữ cờ cũ.
+  void resealRecord(String id, Uint8List sealed, {bool? dirty}) => _db.execute(
+    dirty == null
+        ? 'UPDATE records SET sealed = ? WHERE id = ?'
+        : 'UPDATE records SET sealed = ?, dirty = ? WHERE id = ?',
+    [sealed, if (dirty != null) dirty ? 1 : 0, id],
+  );
+
+  /// Ví vừa thành ví chung trên máy này: rev cũ thuộc không gian tài khoản, không so được với rev của ví ⇒ về 0 để lượt
+  /// kéo đầu tiên của ví hợp nhất lại mọi bản ghi.
+  void resetWalletRevs(String walletId) => _db.execute('UPDATE records SET rev = 0 WHERE wallet_id = ?', [walletId]);
+
+  /// Bỏ hẳn một ví chung khỏi máy (bị thu hồi / tự rời): bản ghi, khóa, trạng thái.
+  void dropSharedWallet(String walletId) => transaction(() {
+    _db.execute('DELETE FROM records WHERE wallet_id = ?', [walletId]);
+    _db.execute('DELETE FROM shared_keys WHERE wallet_id = ?', [walletId]);
+    _db.execute('DELETE FROM shared_wallets WHERE wallet_id = ?', [walletId]);
+  });
+
+  /// Bản ghi chưa đẩy của không gian tài khoản (bỏ bản ghi của ví chung - chúng đi đường riêng).
+  List<SealedRow> dirtyAccountRecords(int limit) => [
+    for (final r in _db.select(
+      'SELECT id, type, wallet_id, sealed, rev, dirty FROM records WHERE dirty = 1 '
+      'AND (wallet_id IS NULL OR wallet_id NOT IN (SELECT wallet_id FROM shared_wallets)) ORDER BY rowid LIMIT ?',
+      [limit],
+    ))
+      _row(r),
+  ];
+
+  /// Bản ghi chưa đẩy của một ví chung.
+  List<SealedRow> dirtyWalletRecords(String walletId, int limit) => [
+    for (final r in _db.select(
+      'SELECT id, type, wallet_id, sealed, rev, dirty FROM records WHERE dirty = 1 AND wallet_id = ? ORDER BY rowid LIMIT ?',
+      [walletId, limit],
+    ))
+      _row(r),
+  ];
 
   Uint8List? getMeta(String key) {
     final rs = _db.select('SELECT v FROM meta WHERE k = ?', [key]);
@@ -185,6 +315,8 @@ final class RecordStore {
     transaction(() {
       _db.execute('DELETE FROM records');
       _db.execute('DELETE FROM wallet_keys');
+      _db.execute('DELETE FROM shared_keys');
+      _db.execute('DELETE FROM shared_wallets');
       _db.execute('DELETE FROM meta');
     });
   }

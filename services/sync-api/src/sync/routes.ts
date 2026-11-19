@@ -54,7 +54,7 @@ interface RecordRow {
 
 export type PushResult =
   | { id: string; status: 'applied' | 'unchanged'; rev: number }
-  | { id: string; status: 'rejected'; reason: 'invalid_envelope' | 'too_large' | 'identity_mismatch' | 'duplicate' | 'quota' };
+  | { id: string; status: 'rejected'; reason: 'invalid_envelope' | 'too_large' | 'identity_mismatch' | 'duplicate' | 'quota' | 'shared_wallet' };
 
 export const syncRoutes = new Hono<AppEnv>();
 
@@ -84,6 +84,18 @@ syncRoutes.post('/api/v1/sync/push', bodyLimit({ maxSize: PUSH_BODY_LIMIT }), as
     .bind(userId)
     .first<{ bytes: number }>();
   let bytes = usage?.bytes ?? 0;
+  // Ví đã chia sẻ có không gian riêng (ADR-0015): bản ghi của nó không được quay lại không gian tài khoản (thiết bị cũ
+  // chưa biết ví đã chia sẻ ⇒ từ chối, máy khách mới đẩy sang /wallets/:id/push).
+  const walletIds = [...new Set(parsed.data.records.map((r) => r.wallet_id).filter((w): w is string => w !== null))];
+  const shared = new Set<string>();
+  for (let i = 0; i < walletIds.length; i += 90) {
+    const chunk = walletIds.slice(i, i + 90);
+    const rows = await db
+      .prepare(`SELECT id FROM shared_wallets WHERE id IN (${chunk.map(() => '?').join(',')})`)
+      .bind(...chunk)
+      .all<{ id: string }>();
+    for (const r of rows.results) shared.add(r.id);
+  }
 
   const results: PushResult[] = [];
   const writes: D1PreparedStatement[] = [];
@@ -97,6 +109,10 @@ syncRoutes.post('/api/v1/sync/push', bodyLimit({ maxSize: PUSH_BODY_LIMIT }), as
       continue;
     }
     seen.add(r.id);
+    if (r.wallet_id !== null && shared.has(r.wallet_id)) {
+      results.push({ id: r.id, status: 'rejected', reason: 'shared_wallet' });
+      continue;
+    }
     const sealed = fromBase64(r.sealed);
     if (!sealed || !isEnvelope(sealed, RECORD_MIN_PADDED)) {
       results.push({ id: r.id, status: 'rejected', reason: 'invalid_envelope' });

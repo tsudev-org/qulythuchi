@@ -12,6 +12,7 @@ import { ApiError, errorResponse } from './lib/errors';
 import { cleanup } from './maintenance';
 import { meRoutes } from './me/routes';
 import { syncRoutes } from './sync/routes';
+import { walletRoutes } from './wallets/routes';
 
 const app = new Hono<AppEnv>();
 
@@ -53,6 +54,7 @@ app.route('/', keysRoutes);
 app.route('/', filesRoutes);
 app.route('/', meRoutes);
 app.route('/', inboxRoutes);
+app.route('/', walletRoutes);
 
 // Site Astro + web app /app/ là tệp tĩnh (Workers Static Assets, wrangler.jsonc): Worker chỉ chạy cho /api/* và /auth/*.
 

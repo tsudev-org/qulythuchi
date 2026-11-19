@@ -29,3 +29,20 @@ assert L.crypto_kdf_derive_from_key(outk, ctypes.c_size_t(32), ctypes.c_uint64(r
 assert outk.raw.hex() == r['keyHex']; print('ĐẠT kdf khôi phục')
 ent = bytes.fromhex(r['entropyHex']); bits = ''.join(f'{b:08b}' for b in ent) + f'{hashlib.sha256(ent).digest()[0]:08b}'
 assert [words[int(bits[i*11:i*11+11], 2)] for i in range(24)] == r['words']; print('ĐẠT BIP39')
+# Ví chung (ADR-0015): bằng chứng nhận lời mời + KEK chia sẻ + phong bì swk. X-Wing không kiểm ở đây (1.0.18 chưa có).
+s = v['sharing']; psk = bytes.fromhex(s['pairSecretHex'])
+def b2b(msg, key):
+    o = ctypes.create_string_buffer(32)
+    assert L.crypto_generichash(o, ctypes.c_size_t(32), msg, ctypes.c_ulonglong(len(msg)), key, ctypes.c_size_t(len(key))) == 0
+    return o.raw
+seqb = lambda n, st: bytes((st + i) & 0xff for i in range(n))
+pk = seqb(s['kemPublicKeyBytes'], s['kemPublicKeyStart']); ct = seqb(s['kemCiphertextBytes'], s['kemCiphertextStart'])
+assert b2b(f"QTINV1|{s['walletId']}|{s['inviteId']}|".encode() + pk, psk).hex() == s['proofHex']; print('ĐẠT bằng chứng mời')
+kek = b2b(b'QTSHARE2' + bytes.fromhex(s['sharedSecretHex']) + ct, psk)
+blob = bytes.fromhex(s['shareBlobHex']); assert blob[:3] == b'QS\x01' and blob[3:3 + len(ct)] == ct
+env = blob[3 + len(ct):]; assert env[:4] == b'QT\x01\x01'
+aad = env[:4] + f"swk|{s['walletId']}|{s['version']}".encode(); n2 = env[4:28]; c2 = env[28:]
+out = ctypes.create_string_buffer(len(c2)); olen = ctypes.c_ulonglong()
+assert L.crypto_aead_xchacha20poly1305_ietf_decrypt(out, ctypes.byref(olen), None, c2, ctypes.c_ulonglong(len(c2)), aad, ctypes.c_ulonglong(len(aad)), n2, kek) == 0
+ulen = ctypes.c_size_t(); assert L.sodium_unpad(ctypes.byref(ulen), out, ctypes.c_size_t(olen.value), ctypes.c_size_t(16)) == 0
+assert out.raw[:ulen.value].hex() == s['walletKeyHex']; print('ĐẠT chia sẻ khóa ví')

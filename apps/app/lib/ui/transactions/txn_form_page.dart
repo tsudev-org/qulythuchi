@@ -73,7 +73,8 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
       if (mounted) ScaffoldMessenger.of(context).hideCurrentSnackBar();
     });
     final data = ref.read(ledgerProvider);
-    final active = data.wallets.where((w) => !w.archived).toList();
+    // Ví chung chỉ xem không được chọn để ghi.
+    final active = data.wallets.where((w) => !w.archived && data.canWrite(w.id)).toList();
     _walletId = active.firstOrNull?.id;
     _mode = switch (widget.initialKind) {
       'income' => _Mode.income,
@@ -293,7 +294,7 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
   }
 
   List<DropdownMenuItem<String>> _walletItems(LedgerData data, {String? keep}) => [
-    for (final w in data.wallets.where((w) => !w.archived || w.id == keep))
+    for (final w in data.wallets.where((w) => (!w.archived && data.canWrite(w.id)) || w.id == keep))
       DropdownMenuItem(
         value: w.id,
         child: Text('${w.name} (${w.currency.code})', overflow: TextOverflow.ellipsis),
