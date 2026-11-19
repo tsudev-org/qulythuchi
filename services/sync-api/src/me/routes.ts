@@ -9,6 +9,7 @@ import { rateLimit } from '../lib/ratelimit';
 import { UUID } from '../lib/validate';
 import { ACCOUNT_FILE_QUOTA } from '../files/routes';
 import { ACCOUNT_RECORD_QUOTA } from '../sync/routes';
+import { PRO_GRACE_MS, callerOf, enforcing, getEntitlement, isPro, type Entitlement } from '../pro/entitlements';
 
 /** Ân hạn xóa tài khoản (AUTH_AND_ACCOUNT.md mục 12). */
 export const DELETION_GRACE_MS = 30 * 24 * 60 * 60 * 1000;
@@ -50,6 +51,43 @@ meRoutes.get('/api/v1/me', async (c) => {
     status: deletionAt === null ? 'active' : 'pending_deletion',
     deletion: deletionAt === null ? null : { scheduled_at: iso(deletionAt), days_remaining: Math.max(0, Math.ceil((deletionAt - Date.now()) / 86_400_000)) },
     device_id: deviceId,
+  });
+});
+
+/**
+ * Quyền lợi TsuDEV Pro của tài khoản (ADR-0016). App dùng để ẩn/hiện nút và thông báo nhiều thiết bị; mọi quyết định
+ * thật vẫn ở máy chủ. `jws` là bản gốc tsudev.com ký - app tự kiểm bằng JWKS rồi mới đệm (≤ 7 ngày).
+ * `?refresh=1` hỏi lại tsudev.com ngay (sau khi mua) - giới hạn 10 lần/giờ.
+ */
+meRoutes.get('/api/v1/me/entitlements', async (c) => {
+  const { userId } = c.get('auth');
+  const enforce = enforcing(c.env);
+  const force = c.req.query('refresh') === '1';
+  if (force) await rateLimit(c.env.DB, `ent-refresh:${userId}`, 10, 3_600_000);
+  let e: Entitlement | null = null;
+  if (enforce || c.env.RP_PRIVATE_JWK) {
+    try {
+      e = await getEntitlement(c.env, userId, callerOf(c), { force });
+    } catch (err) {
+      // Chưa bật gate: tsudev.com lỗi không được làm hỏng app (đồng bộ vẫn mở như cũ).
+      if (enforce) throw err;
+    }
+  }
+  const at = Date.now();
+  const pro = isPro(e, at);
+  const lapsedUntil = !pro && e && e.proUntil > 0 ? e.proUntil : null;
+  return c.json({
+    enforce,
+    status: e === null ? 'unknown' : e.status === 'ok' ? 'ok' : 'reauth',
+    pro,
+    // Gate tắt ⇒ đồng bộ vẫn mở cho mọi tài khoản (bản thử nghiệm trước khi bật Pro).
+    can_sync: !enforce || pro,
+    pro_until: e && e.proUntil > 0 ? iso(e.proUntil) : null,
+    // Pro đã hết: kéo/xuất được tới mốc này, sau đó bản mã trên máy chủ bị xoá (PRODUCT_POLICY 7.2).
+    server_data_until: enforce && lapsedUntil !== null ? iso(lapsedUntil + PRO_GRACE_MS) : null,
+    badge: e?.badge ?? 'none',
+    devices_30d: e?.devices30d ?? 0,
+    jws: e?.status === 'ok' ? e.jws : null,
   });
 });
 

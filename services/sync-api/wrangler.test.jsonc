@@ -10,6 +10,8 @@
     "PUBLIC_ORIGIN": "https://qulythuchi.tsudev.com",
     "OIDC_ISSUER": "https://idp.test/oidc",
     "OIDC_CLIENT_ID": "qulythuchi",
-    "INBOX_DOMAIN": "in.qulythuchi.tsudev.com"
+    "INBOX_DOMAIN": "in.qulythuchi.tsudev.com",
+    "ENTITLEMENTS_URL": "https://idp.test/api/rp/entitlements",
+    "PRO_ENFORCE": "on"
   }
 }

@@ -5,6 +5,7 @@ import type { AppEnv } from '../env';
 import { badRequest, ApiError } from '../lib/errors';
 import { rateLimit } from '../lib/ratelimit';
 import { ENVELOPE_HEADER, ENVELOPE_OVERHEAD, UUID } from '../lib/validate';
+import { requirePro } from '../pro/entitlements';
 
 /**
  * Tệp đính kèm (ảnh hóa đơn...) ĐÃ mã hóa ở máy khách (phong bì v1, khối đệm 4096 - ADR-0007).
@@ -12,7 +13,7 @@ import { ENVELOPE_HEADER, ENVELOPE_OVERHEAD, UUID } from '../lib/validate';
  * Khóa R2: `u/<user_id>/<file_id>` - không thể đọc chéo tài khoản vì user_id lấy từ phiên, không từ URL.
  */
 export const MAX_FILE_BYTES = 10 * 1024 * 1024;
-export const ACCOUNT_FILE_QUOTA = 200 * 1024 * 1024;
+export const ACCOUNT_FILE_QUOTA = 1024 * 1024 * 1024;
 const FILE_MIN_PADDED = 4096;
 
 export const filesRoutes = new Hono<AppEnv>();
@@ -26,7 +27,8 @@ function fileId(raw: string): string {
   return raw;
 }
 
-filesRoutes.put('/api/v1/files/:id', async (c) => {
+// Tải tệp lên cần TsuDEV Pro (ADR-0016); tải về/xoá luôn mở.
+filesRoutes.put('/api/v1/files/:id', requirePro, async (c) => {
   const { userId } = c.get('auth');
   const id = fileId(c.req.param('id'));
   await rateLimit(c.env.DB, `files-w:${userId}`, 60, 60_000);

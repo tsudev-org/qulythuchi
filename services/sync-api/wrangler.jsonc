@@ -2,7 +2,8 @@
 // MỘT Worker phục vụ cả site tĩnh (apps/site/dist: trang Astro + web app Flutter ở /app/) lẫn API (ADR-0013).
 // /api/* và /auth/* chạy mã Worker trước; mọi đường khác là tệp tĩnh (không tính lượt gọi Worker). Header của tệp
 // tĩnh: apps/site/public/_headers. Dựng thư mục tĩnh: ./scripts/build-web.sh (ở gốc repo) TRƯỚC `npm run deploy`.
-// KHÔNG chứa bí mật. Secret (`wrangler secret put`): SESSION_SECRET (>= 32 ký tự ngẫu nhiên), IP_HASH_SALT.
+// KHÔNG chứa bí mật. Secret (`wrangler secret put`): SESSION_SECRET (>= 32 ký tự ngẫu nhiên), IP_HASH_SALT,
+// RP_PRIVATE_JWK (khoá riêng EC P-256 của kênh RP - sinh bằng scripts/rp-key.mjs).
 // id D1 là định danh tài nguyên, không phải bí mật (chỉ dùng được kèm token tài khoản).
 {
   "$schema": "node_modules/wrangler/config-schema.json",
@@ -29,7 +30,12 @@
     "PUBLIC_ORIGIN": "https://qulythuchi.tsudev.com",
     "OIDC_ISSUER": "https://tsudev.com/oidc",
     "OIDC_CLIENT_ID": "qulythuchi",
-    "INBOX_DOMAIN": "in.qulythuchi.tsudev.com"
+    "INBOX_DOMAIN": "in.qulythuchi.tsudev.com",
+    // T7/ADR-0016: kênh RP của máy chủ quyền lợi tsudev.com (cũng là `aud` của client assertion).
+    "ENTITLEMENTS_URL": "https://tsudev.com/api/rp/entitlements",
+    // "on" CHỈ sau khi: (1) khoá RP công khai đã đăng ký ở tsudev.com, (2) secret RP_PRIVATE_JWK đã đặt,
+    // (3) chủ dự án đồng ý xoá dữ liệu thử nghiệm (bật lên là dọn bản mã của tài khoản không Pro).
+    "PRO_ENFORCE": "off"
   },
   // Không cron: tài khoản đã hết 5 cron gói Free. Dọn dữ liệu chạy kèm ~1% yêu cầu /api (src/maintenance.ts).
   "observability": { "enabled": true },

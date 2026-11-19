@@ -1,6 +1,7 @@
 import PostalMime from 'postal-mime';
 
 import type { Env } from '../env';
+import { cachedEntitlement, enforcing, isPro } from '../pro/entitlements';
 import { sealFor } from './seal';
 
 /** Email thô tối đa nhận (chủ yếu là thông báo giao dịch, không cần tệp đính kèm lớn). */
@@ -62,6 +63,11 @@ export async function handleEmail(message: ForwardableEmailMessage, env: Env): P
     .bind(local)
     .first<{ user_id: string; bundle: string; pending: number }>();
   if (!row) {
+    message.setReject('Unknown recipient');
+    return;
+  }
+  // Pro hết hạn ⇒ ngừng nhận thư (chỉ xem đệm, không gọi tsudev.com trong Email Worker).
+  if (enforcing(env) && !isPro(await cachedEntitlement(env, row.user_id))) {
     message.setReject('Unknown recipient');
     return;
   }

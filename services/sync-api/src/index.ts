@@ -40,7 +40,7 @@ app.use(
   cors({
     origin: (origin, c: Context<AppEnv>) => (origin === c.env.PUBLIC_ORIGIN ? origin : null),
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowHeaders: ['Content-Type', 'Authorization', 'X-Qt-Csrf'],
+    allowHeaders: ['Content-Type', 'Authorization', 'X-Qt-Csrf', 'X-Tsu-Installation', 'X-Tsu-Platform'],
     credentials: true,
     maxAge: 600,
   }),
