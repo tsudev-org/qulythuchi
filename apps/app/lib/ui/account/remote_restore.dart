@@ -11,10 +11,10 @@ import 'account_page.dart' show syncErrorText;
 
 /// Màn chào trên thiết bị mới: đăng nhập tsudev ⇒ máy chủ có tài khoản mã hóa ⇒ mở bằng mật khẩu/24 từ ⇒ đồng bộ về.
 /// Trả true nếu máy chủ CHƯA có tài khoản (người gọi chuyển sang bước tạo mật khẩu; lần đồng bộ đầu sẽ đẩy lên).
-Future<bool> signInAndRestoreFlow(BuildContext context, WidgetRef ref) async {
+Future<bool> signInAndRestoreFlow(BuildContext context, WidgetRef ref, {String? provider}) async {
   final l = context.l10n;
   final sync = ref.read(syncProvider.notifier);
-  final err = await sync.signIn();
+  final err = await sync.signIn(provider: provider);
   if (!context.mounted) return false;
   if (err != null) {
     context.toast(syncErrorText(l, err));

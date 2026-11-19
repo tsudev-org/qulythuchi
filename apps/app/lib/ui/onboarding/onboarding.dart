@@ -13,6 +13,7 @@ import '../account/remote_restore.dart';
 import '../data/data_page.dart' show restoreFromBackupFlow;
 import '../widgets/auth_widgets.dart';
 import '../widgets/common.dart';
+import '../widgets/sign_in_buttons.dart';
 
 enum _Step { welcome, password, words, verify, pin }
 
@@ -36,8 +37,10 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     return switch (_step) {
       _Step.welcome => _Welcome(
         onStart: () => setState(() => _step = _Step.password),
-        onSyncSignIn: () async {
-          if (await signInAndRestoreFlow(context, ref) && mounted) setState(() => _step = _Step.password);
+        onSyncSignIn: (provider) async {
+          if (await signInAndRestoreFlow(context, ref, provider: provider) && mounted) {
+            setState(() => _step = _Step.password);
+          }
         },
       ),
       _Step.password => _CreatePassword(
@@ -67,7 +70,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
 class _Welcome extends ConsumerWidget {
   const _Welcome({required this.onStart, required this.onSyncSignIn});
   final VoidCallback onStart;
-  final VoidCallback onSyncSignIn;
+  final Future<void> Function(String? provider) onSyncSignIn;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,12 +81,29 @@ class _Welcome extends ConsumerWidget {
       children: [
         ExcludeSemantics(child: Icon(Icons.lock_outline, size: 64, color: context.palette.primary)),
         const SizedBox(height: 24),
-        FilledButton(onPressed: onStart, child: Text(l.welcomeStart)),
+        Text(l.syncWelcomeSignIn, style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center),
+        const SizedBox(height: 12),
+        SignInButtons(onSignIn: onSyncSignIn),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            const Expanded(child: Divider()),
+            Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: Text(l.signInOr)),
+            const Expanded(child: Divider()),
+          ],
+        ),
         const SizedBox(height: 12),
         OutlinedButton.icon(
-          onPressed: onSyncSignIn,
-          icon: const Icon(Icons.cloud_download_outlined),
-          label: Text(l.syncWelcomeSignIn),
+          key: const Key('welcome.guest'),
+          onPressed: onStart,
+          icon: const Icon(Icons.person_outline),
+          label: Text(l.welcomeGuest),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          l.welcomeGuestNote,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: context.palette.textMuted, fontSize: 12),
         ),
         const SizedBox(height: 12),
         TextButton.icon(

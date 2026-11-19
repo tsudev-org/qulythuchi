@@ -73,7 +73,10 @@ class _CurrencyDialogState extends State<_CurrencyDialog> {
     Widget tile(Currency c) => ListTile(
       dense: true,
       selected: c == widget.selected,
-      leading: SizedBox(width: 48, child: Text(c.code, style: const TextStyle(fontWeight: FontWeight.w600))),
+      leading: SizedBox(
+        width: 48,
+        child: Text(c.code, style: const TextStyle(fontWeight: FontWeight.w600)),
+      ),
       title: Text(c.displayName(lang), overflow: TextOverflow.ellipsis),
       trailing: Text(c.symbol),
       onTap: () => Navigator.pop(context, c),

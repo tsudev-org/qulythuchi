@@ -251,7 +251,9 @@ class _IncomePlanFormPageState extends ConsumerState<IncomePlanFormPage> {
                   TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l.actionCancel)),
                   FilledButton(
                     key: const Key('income.receive.save'),
-                    onPressed: net <= 0 || withheld < 0 ? null : () => Navigator.pop(ctx, (walletId, net, withheld, date)),
+                    onPressed: net <= 0 || withheld < 0
+                        ? null
+                        : () => Navigator.pop(ctx, (walletId, net, withheld, date)),
                     child: Text(l.actionSave),
                   ),
                 ],
@@ -365,10 +367,7 @@ class _IncomePlanFormPageState extends ConsumerState<IncomePlanFormPage> {
           subtitle: Text(l.incomeWithholdingSub),
           contentPadding: EdgeInsets.zero,
         ),
-        Semantics(
-          header: true,
-          child: Text(l.incomeInstallments, style: Theme.of(context).textTheme.titleMedium),
-        ),
+        Semantics(header: true, child: Text(l.incomeInstallments, style: Theme.of(context).textTheme.titleMedium)),
         Text(l.incomeInstallmentsHelp, style: TextStyle(color: p.textSecondary)),
         for (final (idx, i) in _inst.indexed)
           Card(
@@ -439,15 +438,10 @@ class _IncomePlanFormPageState extends ConsumerState<IncomePlanFormPage> {
           decoration: InputDecoration(labelText: l.txnNote),
         ),
         if (progress != null && progress.receipts.isNotEmpty) ...[
-          Semantics(
-            header: true,
-            child: Text(l.incomeReceiptsTitle, style: Theme.of(context).textTheme.titleMedium),
-          ),
+          Semantics(header: true, child: Text(l.incomeReceiptsTitle, style: Theme.of(context).textTheme.titleMedium)),
           Card(
             child: Column(
-              children: [
-                for (final t in progress.receipts.reversed) TxnTile(txn: t, data: data, showDate: true),
-              ],
+              children: [for (final t in progress.receipts.reversed) TxnTile(txn: t, data: data, showDate: true)],
             ),
           ),
         ],

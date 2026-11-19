@@ -63,7 +63,14 @@ export function redirectUri(env: Env) {
   return `${env.PUBLIC_ORIGIN}/auth/callback`;
 }
 
-export async function authorizationUrl(env: Env, p: { state: string; nonce: string; challenge: string }) {
+/** Lối vào liên kết được phép gợi ý cho IdP (AUTH_AND_ACCOUNT.md mục 3 - không thêm nhà cung cấp thứ tư). */
+export const LOGIN_PROVIDERS = ['google', 'github'] as const;
+export type LoginProvider = (typeof LOGIN_PROVIDERS)[number];
+
+export async function authorizationUrl(
+  env: Env,
+  p: { state: string; nonce: string; challenge: string; provider?: LoginProvider },
+) {
   const d = await discovery(env);
   const url = new URL(d.authorization_endpoint);
   url.search = new URLSearchParams({
@@ -75,6 +82,8 @@ export async function authorizationUrl(env: Env, p: { state: string; nonce: stri
     nonce: p.nonce,
     code_challenge: p.challenge,
     code_challenge_method: 'S256',
+    // Gợi ý tsudev.com mở thẳng lối Google/GitHub; IdP chưa hỗ trợ thì bỏ qua tham số lạ (vẫn hiện đủ 3 lối).
+    ...(p.provider ? { idp_hint: p.provider } : {}),
   }).toString();
   return url.toString();
 }

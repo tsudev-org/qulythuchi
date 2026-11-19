@@ -1788,4 +1788,715 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get emailWarning =>
       'Ngoại lệ E2EE: máy chủ thấy nội dung email trong lúc niêm phong. Địa chỉ là bí mật - ai biết địa chỉ đều gửi thư vào được.';
+
+  @override
+  String get copied => 'Đã sao chép';
+
+  @override
+  String get currencyPick => 'Chọn tiền tệ';
+
+  @override
+  String get currencySearch => 'Tìm theo mã hoặc tên (USD, yên, bảng Anh...)';
+
+  @override
+  String get currencyPopular => 'Hay dùng';
+
+  @override
+  String currencyAll(int count) {
+    return 'Tất cả ($count tiền tệ ISO 4217)';
+  }
+
+  @override
+  String get currencyNone => 'Không tìm thấy tiền tệ phù hợp.';
+
+  @override
+  String get guestModeNote =>
+      'Không đăng nhập vẫn dùng đầy đủ mọi tính năng ở chế độ khách: dữ liệu chỉ nằm trên máy này, mã hóa bằng mật khẩu của bạn.';
+
+  @override
+  String get welcomeGuest => 'Dùng ngay, không cần tài khoản';
+
+  @override
+  String get welcomeGuestNote =>
+      'Chế độ khách: dữ liệu chỉ lưu trên máy này. Có thể đăng nhập để đồng bộ bất cứ lúc nào.';
+
+  @override
+  String get signInGoogle => 'Tiếp tục với Google';
+
+  @override
+  String get signInGithub => 'Tiếp tục với GitHub';
+
+  @override
+  String get signInTsudev => 'Tài khoản tsudev (email)';
+
+  @override
+  String get signInLastUsed => 'Lần trước bạn dùng cách này';
+
+  @override
+  String get signInOr => 'hoặc';
+
+  @override
+  String get settingsCarryOver => 'Chuyển số dư sang tháng sau';
+
+  @override
+  String get settingsCarryOverSub =>
+      'Số dư cuối tháng trước thành số dư đầu tháng này trên thẻ Số dư theo tháng. Tắt để chỉ xem thu, chi trong tháng.';
+
+  @override
+  String get settingsTaxReminders => 'Nhắc hạn thuế và đợt thu';
+
+  @override
+  String get settingsTaxRemindersSub =>
+      'Báo trước 7 ngày và 1 ngày hạn quyết toán thuế TNCN; báo ngày đến hạn đợt thu của khoản thu.';
+
+  @override
+  String periodTitle(int month, int year) {
+    return 'Tháng $month/$year';
+  }
+
+  @override
+  String get periodPrev => 'Kỳ trước';
+
+  @override
+  String get periodNext => 'Kỳ sau';
+
+  @override
+  String get periodThisMonth => 'Tháng này';
+
+  @override
+  String periodOpening(int month) {
+    return 'Số dư đầu kỳ (chuyển từ tháng $month)';
+  }
+
+  @override
+  String get periodIncome => 'Thu trong tháng';
+
+  @override
+  String get periodExpense => 'Chi trong tháng';
+
+  @override
+  String get periodOther => 'Chuyển ví, phí, điều chỉnh';
+
+  @override
+  String get periodWithheld => 'Thuế đã bị khấu trừ (không trừ số dư)';
+
+  @override
+  String periodClosing(int month) {
+    return 'Số dư cuối kỳ (chuyển sang tháng $month)';
+  }
+
+  @override
+  String get periodNet => 'Chênh lệch thu - chi';
+
+  @override
+  String periodSavingRate(String rate) {
+    return 'Tỉ lệ để dành: $rate';
+  }
+
+  @override
+  String get incomeTitle => 'Khoản thu';
+
+  @override
+  String get incomeRecord => 'Ghi khoản thu';
+
+  @override
+  String get incomePlanNew => 'Thêm khoản thu nhiều đợt';
+
+  @override
+  String get incomePlanEdit => 'Sửa khoản thu';
+
+  @override
+  String incomeYear(int year) {
+    return 'Năm $year';
+  }
+
+  @override
+  String get incomeByMonth => 'Theo tháng';
+
+  @override
+  String get incomeByYear => 'Cả năm';
+
+  @override
+  String get incomeTotalReceived => 'Tổng thực nhận';
+
+  @override
+  String incomeReceipts(int count) {
+    return '$count lần nhận';
+  }
+
+  @override
+  String incomeWithheldTotal(String amount) {
+    return 'thuế khấu trừ $amount';
+  }
+
+  @override
+  String incomeGrossTotal(String amount) {
+    return 'trước thuế $amount';
+  }
+
+  @override
+  String get incomeSumBy => 'Cộng thu theo';
+
+  @override
+  String get incomeByPayer => 'Người trả';
+
+  @override
+  String get incomeByCategory => 'Danh mục';
+
+  @override
+  String get incomeByPlan => 'Khoản thu';
+
+  @override
+  String get incomeNoPayer => '(Chưa ghi người trả)';
+
+  @override
+  String get incomeNoPlan => '(Thu lẻ, không thuộc khoản thu)';
+
+  @override
+  String get incomeNone => 'Chưa có khoản thu trong kỳ này.';
+
+  @override
+  String incomeLast(String date) {
+    return 'gần nhất $date';
+  }
+
+  @override
+  String get incomePlansTitle => 'Khoản thu nhiều đợt';
+
+  @override
+  String get incomePlansHelp =>
+      'Theo dõi job freelance, hợp đồng, tiền cho thuê... nhận tiền nhiều đợt: đã nhận bao nhiêu, còn bao nhiêu, đợt nào trễ.';
+
+  @override
+  String get incomePlansEmpty => 'Chưa có khoản thu nào. Bấm \"Thêm khoản thu nhiều đợt\" để bắt đầu.';
+
+  @override
+  String incomeShowClosed(int count) {
+    return 'Hiện $count khoản đã xong/hủy';
+  }
+
+  @override
+  String get incomeHideClosed => 'Ẩn khoản đã xong';
+
+  @override
+  String get incomeStatusActive => 'Đang thu';
+
+  @override
+  String get incomeStatusDone => 'Đã xong';
+
+  @override
+  String get incomeStatusCancelled => 'Đã hủy';
+
+  @override
+  String get incomeStatus => 'Trạng thái';
+
+  @override
+  String incomeProgress(String received, String total) {
+    return 'Đã nhận $received / $total';
+  }
+
+  @override
+  String incomeReceivedSoFar(String amount) {
+    return 'Đã nhận $amount';
+  }
+
+  @override
+  String incomeNext(String label, String amount, String date) {
+    return 'Đợt kế tiếp: $label $amount, hạn $date';
+  }
+
+  @override
+  String get incomeInstallment => 'Đợt';
+
+  @override
+  String incomeOverdue(String amount) {
+    return 'Quá hạn chưa nhận: $amount';
+  }
+
+  @override
+  String get incomePlanName => 'Tên job/dự án';
+
+  @override
+  String get incomePlanNameHint => 'Ví dụ: Thiết kế web quán cà phê';
+
+  @override
+  String get incomePayer => 'Người/đơn vị trả tiền';
+
+  @override
+  String get incomePlanTotal => 'Tổng giá trị thỏa thuận (để trống nếu chưa chốt)';
+
+  @override
+  String get incomeDefaultWallet => 'Ví nhận tiền mặc định';
+
+  @override
+  String get incomeStart => 'Ngày bắt đầu';
+
+  @override
+  String get incomeDue => 'Hạn hoàn thành';
+
+  @override
+  String get incomeWithholding => 'Bên trả khấu trừ thuế 10%';
+
+  @override
+  String get incomeWithholdingSub =>
+      'Thu nhập vãng lai (không hợp đồng lao động hoặc dưới 3 tháng): khi ghi lần nhận tiền, app tự tính thuế bị khấu trừ.';
+
+  @override
+  String get incomeInstallments => 'Các đợt dự kiến';
+
+  @override
+  String get incomeInstallmentsHelp => 'Không bắt buộc. Ví dụ: đặt cọc 30%, bản thử 40%, nghiệm thu 30%.';
+
+  @override
+  String incomeInstallmentLabel(int n) {
+    return 'Đợt $n';
+  }
+
+  @override
+  String get incomeInstallmentHint => 'Đặt cọc, nghiệm thu...';
+
+  @override
+  String get incomeAddInstallment => 'Thêm đợt';
+
+  @override
+  String get incomeReceive => 'Ghi lần nhận tiền';
+
+  @override
+  String get incomeGrossAmount => 'Số tiền theo hợp đồng (trước thuế)';
+
+  @override
+  String incomeWithholdHint(String threshold) {
+    return 'Để trống: app tự tính 10% nếu lần trả từ $threshold trở lên.';
+  }
+
+  @override
+  String incomeNetPreview(String amount) {
+    return 'Thực nhận vào ví: $amount';
+  }
+
+  @override
+  String incomeNoWalletForCurrency(String currency) {
+    return 'Cần một ví $currency để ghi lần nhận tiền.';
+  }
+
+  @override
+  String incomePlanDeleteConfirm(String name) {
+    return 'Xóa khoản thu \"$name\"? Các lần nhận tiền đã ghi vẫn giữ nguyên.';
+  }
+
+  @override
+  String get incomeReceiptsTitle => 'Các lần đã nhận';
+
+  @override
+  String get incomePlanField => 'Thuộc khoản thu';
+
+  @override
+  String get txnTaxWithheld => 'Thuế TNCN bị khấu trừ';
+
+  @override
+  String get txnTaxWithheldHelp =>
+      'Số tiền là số THỰC NHẬN. Ghi phần thuế bên trả đã giữ lại để tính đúng thu nhập trước thuế và quyết toán.';
+
+  @override
+  String get taxTitle => 'Thuế thu nhập cá nhân';
+
+  @override
+  String get taxDisclaimer =>
+      'Ước tính để tham khảo theo quy định Việt Nam, không thay thế tư vấn thuế. Hãy đối chiếu văn bản gốc và cơ quan thuế trước khi khai, nộp.';
+
+  @override
+  String get taxProfile => 'Hồ sơ thuế';
+
+  @override
+  String get taxDependents => 'Người phụ thuộc';
+
+  @override
+  String taxDependentsN(int count) {
+    return '$count người phụ thuộc';
+  }
+
+  @override
+  String get taxLess => 'Bớt';
+
+  @override
+  String get taxMore => 'Thêm';
+
+  @override
+  String get taxInsurance => 'Bảo hiểm bắt buộc đóng mỗi tháng';
+
+  @override
+  String get taxInsuranceHelp => 'Để trống: ước tính 10,5% lương (BHXH 8%, BHYT 1,5%, BHTN 1%) trong mức trần.';
+
+  @override
+  String taxInsuranceN(String amount) {
+    return 'bảo hiểm $amount/tháng';
+  }
+
+  @override
+  String get taxResident => 'Cá nhân cư trú';
+
+  @override
+  String get taxNonResident => 'Không cư trú';
+
+  @override
+  String get taxResidentSub =>
+      'Ở Việt Nam từ 183 ngày/năm hoặc có nơi ở thường xuyên. Không cư trú: thuế 20% trên lương, không giảm trừ.';
+
+  @override
+  String get taxBusiness => 'Có kinh doanh (hộ, cá nhân kinh doanh)';
+
+  @override
+  String get taxBusinessSub =>
+      'Bật nhắc hạn khai thuế theo quý và cảnh báo khi doanh thu năm vượt ngưỡng không chịu thuế.';
+
+  @override
+  String taxUnclassified(int count) {
+    return '$count danh mục thu chưa phân loại thuế: thu nhập trong đó không được tính vào ước tính.';
+  }
+
+  @override
+  String get taxStandardCategories => 'Bổ sung danh mục thu chuẩn (đã phân loại thuế)';
+
+  @override
+  String taxStandardDone(int count) {
+    return 'Đã thêm/cập nhật $count danh mục';
+  }
+
+  @override
+  String taxEstimateTitle(int year) {
+    return 'Ước tính quyết toán năm $year';
+  }
+
+  @override
+  String get taxSalaryIncome => 'Thu nhập từ tiền lương, tiền công';
+
+  @override
+  String get taxCasualIncome => 'Thu nhập vãng lai, freelance';
+
+  @override
+  String get taxBusinessRevenue => 'Doanh thu kinh doanh (tính riêng)';
+
+  @override
+  String get taxInvestmentIncome => 'Thu nhập đầu tư vốn (tính riêng)';
+
+  @override
+  String get taxExemptIncome => 'Thu nhập miễn thuế';
+
+  @override
+  String get taxUnclassifiedIncome => 'Thu nhập chưa phân loại';
+
+  @override
+  String get taxInsuranceYear => 'Bảo hiểm bắt buộc';
+
+  @override
+  String get taxDeductionYear => 'Giảm trừ gia cảnh (12 tháng)';
+
+  @override
+  String get taxTaxable => 'Thu nhập tính thuế';
+
+  @override
+  String get taxDue => 'Thuế phải nộp cả năm';
+
+  @override
+  String get taxWithheld => 'Đã bị khấu trừ tại nguồn';
+
+  @override
+  String get taxPayMore => 'Ước tính phải nộp thêm';
+
+  @override
+  String get taxRefund => 'Ước tính được hoàn';
+
+  @override
+  String taxSettlementNote(String date) {
+    return 'Tự quyết toán hạn chót $date. Nộp trên thuedientu.gdt.gov.vn hoặc app eTax Mobile.';
+  }
+
+  @override
+  String taxBusinessOver(String amount) {
+    return 'Doanh thu kinh doanh vượt $amount/năm: có thể phải khai, nộp thuế.';
+  }
+
+  @override
+  String get taxCalcTitle => 'Tính lương gross / net';
+
+  @override
+  String get taxFromGross => 'Từ gross';
+
+  @override
+  String get taxFromNet => 'Từ net';
+
+  @override
+  String get taxGrossSalary => 'Lương gross (trước thuế, bảo hiểm)';
+
+  @override
+  String get taxNetSalary => 'Lương net (thực nhận)';
+
+  @override
+  String get taxInsuranceMonth => 'Bảo hiểm bắt buộc';
+
+  @override
+  String get taxDeductionMonth => 'Giảm trừ gia cảnh';
+
+  @override
+  String get taxMonthTax => 'Thuế TNCN tháng';
+
+  @override
+  String get taxDeadlines => 'Hạn sắp tới';
+
+  @override
+  String taxDeadlineSelf(int year) {
+    return 'Hạn tự quyết toán thuế TNCN năm $year';
+  }
+
+  @override
+  String taxDeadlineAuthorize(int year) {
+    return 'Nộp giấy ủy quyền quyết toán năm $year cho công ty (nếu ủy quyền)';
+  }
+
+  @override
+  String get taxDeadlineBusiness => 'Hạn khai thuế quý (hộ kinh doanh)';
+
+  @override
+  String taxDeadlineIn(String date, int days) {
+    return '$date (còn $days ngày)';
+  }
+
+  @override
+  String taxRulesTitle(int year) {
+    return 'Quy định áp dụng từ $year';
+  }
+
+  @override
+  String get taxPersonalDeduction => 'Giảm trừ bản thân / tháng';
+
+  @override
+  String get taxDependentDeduction => 'Giảm trừ mỗi người phụ thuộc / tháng';
+
+  @override
+  String taxBracketUpTo(int n, String amount) {
+    return 'Bậc $n: đến $amount/tháng';
+  }
+
+  @override
+  String taxBracketOver(int n, String amount) {
+    return 'Bậc $n: trên $amount/tháng';
+  }
+
+  @override
+  String taxCasualRule(String amount) {
+    return 'Khấu trừ vãng lai khi mỗi lần trả từ $amount';
+  }
+
+  @override
+  String get taxBusinessThreshold => 'Doanh thu kinh doanh không chịu thuế / năm';
+
+  @override
+  String taxSource(String source, String date) {
+    return 'Nguồn: $source. Cập nhật $date.';
+  }
+
+  @override
+  String get taxCategoriesTitle => 'Phân loại thuế của danh mục thu';
+
+  @override
+  String get taxInherit => 'Theo danh mục cha';
+
+  @override
+  String get taxTypeUnknown => 'Chưa phân loại';
+
+  @override
+  String get taxTypeUnknownHelp => 'Không tính vào ước tính thuế';
+
+  @override
+  String get taxTypeSalary => 'Tiền lương, tiền công';
+
+  @override
+  String get taxTypeSalaryHelp => 'Hợp đồng lao động từ 3 tháng, thưởng, phụ cấp chịu thuế';
+
+  @override
+  String get taxTypeCasual => 'Vãng lai, freelance';
+
+  @override
+  String get taxTypeCasualHelp => 'Không hợp đồng hoặc dưới 3 tháng; bên trả khấu trừ 10%';
+
+  @override
+  String get taxTypeBusiness => 'Kinh doanh, cho thuê';
+
+  @override
+  String get taxTypeBusinessHelp => 'Tính theo doanh thu, có ngưỡng không chịu thuế';
+
+  @override
+  String get taxTypeInvestment => 'Đầu tư vốn';
+
+  @override
+  String get taxTypeInvestmentHelp => 'Cổ tức, lãi trái phiếu... thuế suất riêng';
+
+  @override
+  String get taxTypeExempt => 'Miễn thuế';
+
+  @override
+  String get taxTypeExemptHelp => 'Lãi tiền gửi ngân hàng, quà tặng trong gia đình, hoàn tiền';
+
+  @override
+  String get qrTitle => 'QR thanh toán';
+
+  @override
+  String get qrTabPay => 'Quét để trả';
+
+  @override
+  String get qrTabReceive => 'Mã nhận tiền';
+
+  @override
+  String get qrPayIntro =>
+      'Quét mã VietQR/EMVCo của người nhận để xem đúng số tài khoản, số tiền, nội dung, rồi mở app ngân hàng và ghi khoản chi. Mã được đọc ngay trên máy.';
+
+  @override
+  String get qrNoCamera =>
+      'Thiết bị này chưa quét bằng camera được. Dán nội dung mã QR (chuỗi bắt đầu bằng 000201) vào ô dưới.';
+
+  @override
+  String get qrCameraError => 'Không mở được camera. Hãy cấp quyền camera hoặc dán nội dung mã.';
+
+  @override
+  String get qrPasteLabel => 'Nội dung mã QR';
+
+  @override
+  String get qrPaste => 'Dán';
+
+  @override
+  String get qrRead => 'Đọc mã';
+
+  @override
+  String get qrErrCrc => 'Mã QR bị sai hoặc đã bị sửa (kiểm tra CRC không khớp). Đừng thanh toán bằng mã này.';
+
+  @override
+  String get qrErrNotPayment => 'Đây không phải mã QR thanh toán EMVCo/VietQR.';
+
+  @override
+  String get qrErrInvalid => 'Mã QR không đúng cấu trúc.';
+
+  @override
+  String get qrNoAmount => 'Mã không ghi số tiền: bạn tự nhập trong app ngân hàng.';
+
+  @override
+  String get qrPayee => 'Người nhận';
+
+  @override
+  String get qrBank => 'Ngân hàng';
+
+  @override
+  String get qrAccount => 'Số tài khoản';
+
+  @override
+  String get qrMessage => 'Nội dung chuyển khoản';
+
+  @override
+  String get qrCity => 'Nơi nhận';
+
+  @override
+  String get qrIsCard => 'Định danh là số thẻ.';
+
+  @override
+  String get qrOpenBank => 'Mở app ngân hàng (điền sẵn)';
+
+  @override
+  String get qrOpenBankNote =>
+      'Hoặc mở app ngân hàng, chọn quét QR và quét lại mã này; luôn kiểm tra tên người nhận trước khi xác nhận.';
+
+  @override
+  String get qrForeignNote =>
+      'Mã nước ngoài: thanh toán bằng app ví/ngân hàng hỗ trợ hệ này, rồi ghi khoản chi tại đây.';
+
+  @override
+  String get qrConsentTitle => 'Mở app ngân hàng qua VietQR.io';
+
+  @override
+  String get qrConsentBody =>
+      'Để điền sẵn lệnh chuyển, app gửi số tài khoản NGƯỜI NHẬN, số tiền và nội dung tới dl.vietqr.io (dịch vụ bên thứ ba) để chuyển sang app ngân hàng bạn chọn. Không gửi dữ liệu sổ thu chi của bạn. Đồng ý?';
+
+  @override
+  String get qrConsentOk => 'Đồng ý, mở app';
+
+  @override
+  String get qrChooseBankApp => 'Chọn app ngân hàng của bạn';
+
+  @override
+  String get qrLastUsed => 'Dùng lần trước';
+
+  @override
+  String get qrOpenFailed => 'Không mở được app ngân hàng trên thiết bị này.';
+
+  @override
+  String get qrRecordExpense => 'Ghi khoản chi này';
+
+  @override
+  String get qrScanAgain => 'Quét mã khác';
+
+  @override
+  String get qrReceiveIntro =>
+      'Tạo mã VietQR để khách hàng quét chuyển tiền cho bạn. Mã tạo ngay trên máy, số tài khoản không được lưu hay gửi đi.';
+
+  @override
+  String get qrAmountOptional => 'Số tiền (để trống: người trả tự nhập)';
+
+  @override
+  String get qrMessageHelp => 'Tối đa 25 ký tự, tự bỏ dấu để mọi ngân hàng đọc được.';
+
+  @override
+  String get qrCreate => 'Tạo mã';
+
+  @override
+  String get qrErrAccount => 'Số tài khoản chỉ gồm chữ và số, tối đa 19 ký tự.';
+
+  @override
+  String get qrImageLabel => 'Mã QR nhận tiền';
+
+  @override
+  String get qrCopyContent => 'Sao chép nội dung mã';
+
+  @override
+  String get importTemplateHelp =>
+      'Chuyển dữ liệu từ app khác: tải tệp mẫu, dán dữ liệu cũ vào đúng cột (Ngày, Loại, Số tiền, Ví...), rồi chọn tệp để nhập. Ví và danh mục chưa có được tạo tự động.';
+
+  @override
+  String get importTemplateCsv => 'Tệp mẫu CSV';
+
+  @override
+  String get importTemplateXlsx => 'Tệp mẫu Excel';
+
+  @override
+  String get importTemplateSaved => 'Đã lưu tệp mẫu';
+
+  @override
+  String get importTemplateDetected => 'Đã nhận ra tệp mẫu Quly Thu Chi';
+
+  @override
+  String importTemplateSummary(int rows, int wallets, int categories) {
+    return '$rows giao dịch, tạo mới $wallets ví và $categories danh mục.';
+  }
+
+  @override
+  String importTemplateNewWallets(String names) {
+    return 'Ví mới: $names';
+  }
+
+  @override
+  String importTemplateDuplicates(int count) {
+    return 'Bỏ $count dòng trùng giao dịch đã có.';
+  }
+
+  @override
+  String importTemplateSkipped(int count, String rows) {
+    return 'Bỏ $count dòng thiếu/sai dữ liệu (dòng $rows).';
+  }
+
+  @override
+  String importTemplateRun(int count) {
+    return 'Nhập $count giao dịch';
+  }
+
+  @override
+  String importTemplateDone(int count, int wallets, int categories) {
+    return 'Đã nhập $count giao dịch, tạo $wallets ví, $categories danh mục.';
+  }
 }

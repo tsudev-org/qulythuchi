@@ -8,7 +8,6 @@ import '../../theme/tokens.g.dart';
 import '../widgets/amount_field.dart';
 import '../widgets/common.dart';
 import '../widgets/currency_field.dart';
-import 'wallets_page.dart';
 
 class WalletFormPage extends ConsumerStatefulWidget {
   const WalletFormPage({super.key, this.walletId});

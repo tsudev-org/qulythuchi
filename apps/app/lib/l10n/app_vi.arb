@@ -1018,5 +1018,535 @@
   "emailRotateConfirm": "Địa chỉ hiện tại sẽ ngừng nhận thư ngay. Bạn cần cập nhật quy tắc chuyển tiếp ở hộp thư của mình.",
   "emailDisable": "Tắt",
   "emailDisableConfirm": "Tắt email chuyển tiếp? Địa chỉ bị xóa cùng mọi thư chưa tải về.",
-  "emailWarning": "Ngoại lệ E2EE: máy chủ thấy nội dung email trong lúc niêm phong. Địa chỉ là bí mật - ai biết địa chỉ đều gửi thư vào được."
+  "emailWarning": "Ngoại lệ E2EE: máy chủ thấy nội dung email trong lúc niêm phong. Địa chỉ là bí mật - ai biết địa chỉ đều gửi thư vào được.",
+  "copied": "Đã sao chép",
+  "currencyPick": "Chọn tiền tệ",
+  "currencySearch": "Tìm theo mã hoặc tên (USD, yên, bảng Anh...)",
+  "currencyPopular": "Hay dùng",
+  "currencyAll": "Tất cả ({count} tiền tệ ISO 4217)",
+  "@currencyAll": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "currencyNone": "Không tìm thấy tiền tệ phù hợp.",
+  "guestModeNote": "Không đăng nhập vẫn dùng đầy đủ mọi tính năng ở chế độ khách: dữ liệu chỉ nằm trên máy này, mã hóa bằng mật khẩu của bạn.",
+  "welcomeGuest": "Dùng ngay, không cần tài khoản",
+  "welcomeGuestNote": "Chế độ khách: dữ liệu chỉ lưu trên máy này. Có thể đăng nhập để đồng bộ bất cứ lúc nào.",
+  "signInGoogle": "Tiếp tục với Google",
+  "signInGithub": "Tiếp tục với GitHub",
+  "signInTsudev": "Tài khoản tsudev (email)",
+  "signInLastUsed": "Lần trước bạn dùng cách này",
+  "signInOr": "hoặc",
+  "settingsCarryOver": "Chuyển số dư sang tháng sau",
+  "settingsCarryOverSub": "Số dư cuối tháng trước thành số dư đầu tháng này trên thẻ Số dư theo tháng. Tắt để chỉ xem thu, chi trong tháng.",
+  "settingsTaxReminders": "Nhắc hạn thuế và đợt thu",
+  "settingsTaxRemindersSub": "Báo trước 7 ngày và 1 ngày hạn quyết toán thuế TNCN; báo ngày đến hạn đợt thu của khoản thu.",
+  "periodTitle": "Tháng {month}/{year}",
+  "@periodTitle": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "periodPrev": "Kỳ trước",
+  "periodNext": "Kỳ sau",
+  "periodThisMonth": "Tháng này",
+  "periodOpening": "Số dư đầu kỳ (chuyển từ tháng {month})",
+  "@periodOpening": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      }
+    }
+  },
+  "periodIncome": "Thu trong tháng",
+  "periodExpense": "Chi trong tháng",
+  "periodOther": "Chuyển ví, phí, điều chỉnh",
+  "periodWithheld": "Thuế đã bị khấu trừ (không trừ số dư)",
+  "periodClosing": "Số dư cuối kỳ (chuyển sang tháng {month})",
+  "@periodClosing": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      }
+    }
+  },
+  "periodNet": "Chênh lệch thu - chi",
+  "periodSavingRate": "Tỉ lệ để dành: {rate}",
+  "@periodSavingRate": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeTitle": "Khoản thu",
+  "incomeRecord": "Ghi khoản thu",
+  "incomePlanNew": "Thêm khoản thu nhiều đợt",
+  "incomePlanEdit": "Sửa khoản thu",
+  "incomeYear": "Năm {year}",
+  "@incomeYear": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "incomeByMonth": "Theo tháng",
+  "incomeByYear": "Cả năm",
+  "incomeTotalReceived": "Tổng thực nhận",
+  "incomeReceipts": "{count} lần nhận",
+  "@incomeReceipts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "incomeWithheldTotal": "thuế khấu trừ {amount}",
+  "@incomeWithheldTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeGrossTotal": "trước thuế {amount}",
+  "@incomeGrossTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeSumBy": "Cộng thu theo",
+  "incomeByPayer": "Người trả",
+  "incomeByCategory": "Danh mục",
+  "incomeByPlan": "Khoản thu",
+  "incomeNoPayer": "(Chưa ghi người trả)",
+  "incomeNoPlan": "(Thu lẻ, không thuộc khoản thu)",
+  "incomeNone": "Chưa có khoản thu trong kỳ này.",
+  "incomeLast": "gần nhất {date}",
+  "@incomeLast": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "incomePlansTitle": "Khoản thu nhiều đợt",
+  "incomePlansHelp": "Theo dõi job freelance, hợp đồng, tiền cho thuê... nhận tiền nhiều đợt: đã nhận bao nhiêu, còn bao nhiêu, đợt nào trễ.",
+  "incomePlansEmpty": "Chưa có khoản thu nào. Bấm \"Thêm khoản thu nhiều đợt\" để bắt đầu.",
+  "incomeShowClosed": "Hiện {count} khoản đã xong/hủy",
+  "@incomeShowClosed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "incomeHideClosed": "Ẩn khoản đã xong",
+  "incomeStatusActive": "Đang thu",
+  "incomeStatusDone": "Đã xong",
+  "incomeStatusCancelled": "Đã hủy",
+  "incomeStatus": "Trạng thái",
+  "incomeProgress": "Đã nhận {received} / {total}",
+  "@incomeProgress": {
+    "placeholders": {
+      "received": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeReceivedSoFar": "Đã nhận {amount}",
+  "@incomeReceivedSoFar": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeNext": "Đợt kế tiếp: {label} {amount}, hạn {date}",
+  "@incomeNext": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeInstallment": "Đợt",
+  "incomeOverdue": "Quá hạn chưa nhận: {amount}",
+  "@incomeOverdue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "incomePlanName": "Tên job/dự án",
+  "incomePlanNameHint": "Ví dụ: Thiết kế web quán cà phê",
+  "incomePayer": "Người/đơn vị trả tiền",
+  "incomePlanTotal": "Tổng giá trị thỏa thuận (để trống nếu chưa chốt)",
+  "incomeDefaultWallet": "Ví nhận tiền mặc định",
+  "incomeStart": "Ngày bắt đầu",
+  "incomeDue": "Hạn hoàn thành",
+  "incomeWithholding": "Bên trả khấu trừ thuế 10%",
+  "incomeWithholdingSub": "Thu nhập vãng lai (không hợp đồng lao động hoặc dưới 3 tháng): khi ghi lần nhận tiền, app tự tính thuế bị khấu trừ.",
+  "incomeInstallments": "Các đợt dự kiến",
+  "incomeInstallmentsHelp": "Không bắt buộc. Ví dụ: đặt cọc 30%, bản thử 40%, nghiệm thu 30%.",
+  "incomeInstallmentLabel": "Đợt {n}",
+  "@incomeInstallmentLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "incomeInstallmentHint": "Đặt cọc, nghiệm thu...",
+  "incomeAddInstallment": "Thêm đợt",
+  "incomeReceive": "Ghi lần nhận tiền",
+  "incomeGrossAmount": "Số tiền theo hợp đồng (trước thuế)",
+  "incomeWithholdHint": "Để trống: app tự tính 10% nếu lần trả từ {threshold} trở lên.",
+  "@incomeWithholdHint": {
+    "placeholders": {
+      "threshold": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeNetPreview": "Thực nhận vào ví: {amount}",
+  "@incomeNetPreview": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeNoWalletForCurrency": "Cần một ví {currency} để ghi lần nhận tiền.",
+  "@incomeNoWalletForCurrency": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "incomePlanDeleteConfirm": "Xóa khoản thu \"{name}\"? Các lần nhận tiền đã ghi vẫn giữ nguyên.",
+  "@incomePlanDeleteConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "incomeReceiptsTitle": "Các lần đã nhận",
+  "incomePlanField": "Thuộc khoản thu",
+  "txnTaxWithheld": "Thuế TNCN bị khấu trừ",
+  "txnTaxWithheldHelp": "Số tiền là số THỰC NHẬN. Ghi phần thuế bên trả đã giữ lại để tính đúng thu nhập trước thuế và quyết toán.",
+  "taxTitle": "Thuế thu nhập cá nhân",
+  "taxDisclaimer": "Ước tính để tham khảo theo quy định Việt Nam, không thay thế tư vấn thuế. Hãy đối chiếu văn bản gốc và cơ quan thuế trước khi khai, nộp.",
+  "taxProfile": "Hồ sơ thuế",
+  "taxDependents": "Người phụ thuộc",
+  "taxDependentsN": "{count} người phụ thuộc",
+  "@taxDependentsN": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taxLess": "Bớt",
+  "taxMore": "Thêm",
+  "taxInsurance": "Bảo hiểm bắt buộc đóng mỗi tháng",
+  "taxInsuranceHelp": "Để trống: ước tính 10,5% lương (BHXH 8%, BHYT 1,5%, BHTN 1%) trong mức trần.",
+  "taxInsuranceN": "bảo hiểm {amount}/tháng",
+  "@taxInsuranceN": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "taxResident": "Cá nhân cư trú",
+  "taxNonResident": "Không cư trú",
+  "taxResidentSub": "Ở Việt Nam từ 183 ngày/năm hoặc có nơi ở thường xuyên. Không cư trú: thuế 20% trên lương, không giảm trừ.",
+  "taxBusiness": "Có kinh doanh (hộ, cá nhân kinh doanh)",
+  "taxBusinessSub": "Bật nhắc hạn khai thuế theo quý và cảnh báo khi doanh thu năm vượt ngưỡng không chịu thuế.",
+  "taxUnclassified": "{count} danh mục thu chưa phân loại thuế: thu nhập trong đó không được tính vào ước tính.",
+  "@taxUnclassified": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taxStandardCategories": "Bổ sung danh mục thu chuẩn (đã phân loại thuế)",
+  "taxStandardDone": "Đã thêm/cập nhật {count} danh mục",
+  "@taxStandardDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taxEstimateTitle": "Ước tính quyết toán năm {year}",
+  "@taxEstimateTitle": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "taxSalaryIncome": "Thu nhập từ tiền lương, tiền công",
+  "taxCasualIncome": "Thu nhập vãng lai, freelance",
+  "taxBusinessRevenue": "Doanh thu kinh doanh (tính riêng)",
+  "taxInvestmentIncome": "Thu nhập đầu tư vốn (tính riêng)",
+  "taxExemptIncome": "Thu nhập miễn thuế",
+  "taxUnclassifiedIncome": "Thu nhập chưa phân loại",
+  "taxInsuranceYear": "Bảo hiểm bắt buộc",
+  "taxDeductionYear": "Giảm trừ gia cảnh (12 tháng)",
+  "taxTaxable": "Thu nhập tính thuế",
+  "taxDue": "Thuế phải nộp cả năm",
+  "taxWithheld": "Đã bị khấu trừ tại nguồn",
+  "taxPayMore": "Ước tính phải nộp thêm",
+  "taxRefund": "Ước tính được hoàn",
+  "taxSettlementNote": "Tự quyết toán hạn chót {date}. Nộp trên thuedientu.gdt.gov.vn hoặc app eTax Mobile.",
+  "@taxSettlementNote": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "taxBusinessOver": "Doanh thu kinh doanh vượt {amount}/năm: có thể phải khai, nộp thuế.",
+  "@taxBusinessOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "taxCalcTitle": "Tính lương gross / net",
+  "taxFromGross": "Từ gross",
+  "taxFromNet": "Từ net",
+  "taxGrossSalary": "Lương gross (trước thuế, bảo hiểm)",
+  "taxNetSalary": "Lương net (thực nhận)",
+  "taxInsuranceMonth": "Bảo hiểm bắt buộc",
+  "taxDeductionMonth": "Giảm trừ gia cảnh",
+  "taxMonthTax": "Thuế TNCN tháng",
+  "taxDeadlines": "Hạn sắp tới",
+  "taxDeadlineSelf": "Hạn tự quyết toán thuế TNCN năm {year}",
+  "@taxDeadlineSelf": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "taxDeadlineAuthorize": "Nộp giấy ủy quyền quyết toán năm {year} cho công ty (nếu ủy quyền)",
+  "@taxDeadlineAuthorize": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "taxDeadlineBusiness": "Hạn khai thuế quý (hộ kinh doanh)",
+  "taxDeadlineIn": "{date} (còn {days} ngày)",
+  "@taxDeadlineIn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "taxRulesTitle": "Quy định áp dụng từ {year}",
+  "@taxRulesTitle": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "taxPersonalDeduction": "Giảm trừ bản thân / tháng",
+  "taxDependentDeduction": "Giảm trừ mỗi người phụ thuộc / tháng",
+  "taxBracketUpTo": "Bậc {n}: đến {amount}/tháng",
+  "@taxBracketUpTo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "taxBracketOver": "Bậc {n}: trên {amount}/tháng",
+  "@taxBracketOver": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "taxCasualRule": "Khấu trừ vãng lai khi mỗi lần trả từ {amount}",
+  "@taxCasualRule": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "taxBusinessThreshold": "Doanh thu kinh doanh không chịu thuế / năm",
+  "taxSource": "Nguồn: {source}. Cập nhật {date}.",
+  "@taxSource": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "taxCategoriesTitle": "Phân loại thuế của danh mục thu",
+  "taxInherit": "Theo danh mục cha",
+  "taxTypeUnknown": "Chưa phân loại",
+  "taxTypeUnknownHelp": "Không tính vào ước tính thuế",
+  "taxTypeSalary": "Tiền lương, tiền công",
+  "taxTypeSalaryHelp": "Hợp đồng lao động từ 3 tháng, thưởng, phụ cấp chịu thuế",
+  "taxTypeCasual": "Vãng lai, freelance",
+  "taxTypeCasualHelp": "Không hợp đồng hoặc dưới 3 tháng; bên trả khấu trừ 10%",
+  "taxTypeBusiness": "Kinh doanh, cho thuê",
+  "taxTypeBusinessHelp": "Tính theo doanh thu, có ngưỡng không chịu thuế",
+  "taxTypeInvestment": "Đầu tư vốn",
+  "taxTypeInvestmentHelp": "Cổ tức, lãi trái phiếu... thuế suất riêng",
+  "taxTypeExempt": "Miễn thuế",
+  "taxTypeExemptHelp": "Lãi tiền gửi ngân hàng, quà tặng trong gia đình, hoàn tiền",
+  "qrTitle": "QR thanh toán",
+  "qrTabPay": "Quét để trả",
+  "qrTabReceive": "Mã nhận tiền",
+  "qrPayIntro": "Quét mã VietQR/EMVCo của người nhận để xem đúng số tài khoản, số tiền, nội dung, rồi mở app ngân hàng và ghi khoản chi. Mã được đọc ngay trên máy.",
+  "qrNoCamera": "Thiết bị này chưa quét bằng camera được. Dán nội dung mã QR (chuỗi bắt đầu bằng 000201) vào ô dưới.",
+  "qrCameraError": "Không mở được camera. Hãy cấp quyền camera hoặc dán nội dung mã.",
+  "qrPasteLabel": "Nội dung mã QR",
+  "qrPaste": "Dán",
+  "qrRead": "Đọc mã",
+  "qrErrCrc": "Mã QR bị sai hoặc đã bị sửa (kiểm tra CRC không khớp). Đừng thanh toán bằng mã này.",
+  "qrErrNotPayment": "Đây không phải mã QR thanh toán EMVCo/VietQR.",
+  "qrErrInvalid": "Mã QR không đúng cấu trúc.",
+  "qrNoAmount": "Mã không ghi số tiền: bạn tự nhập trong app ngân hàng.",
+  "qrPayee": "Người nhận",
+  "qrBank": "Ngân hàng",
+  "qrAccount": "Số tài khoản",
+  "qrMessage": "Nội dung chuyển khoản",
+  "qrCity": "Nơi nhận",
+  "qrIsCard": "Định danh là số thẻ.",
+  "qrOpenBank": "Mở app ngân hàng (điền sẵn)",
+  "qrOpenBankNote": "Hoặc mở app ngân hàng, chọn quét QR và quét lại mã này; luôn kiểm tra tên người nhận trước khi xác nhận.",
+  "qrForeignNote": "Mã nước ngoài: thanh toán bằng app ví/ngân hàng hỗ trợ hệ này, rồi ghi khoản chi tại đây.",
+  "qrConsentTitle": "Mở app ngân hàng qua VietQR.io",
+  "qrConsentBody": "Để điền sẵn lệnh chuyển, app gửi số tài khoản NGƯỜI NHẬN, số tiền và nội dung tới dl.vietqr.io (dịch vụ bên thứ ba) để chuyển sang app ngân hàng bạn chọn. Không gửi dữ liệu sổ thu chi của bạn. Đồng ý?",
+  "qrConsentOk": "Đồng ý, mở app",
+  "qrChooseBankApp": "Chọn app ngân hàng của bạn",
+  "qrLastUsed": "Dùng lần trước",
+  "qrOpenFailed": "Không mở được app ngân hàng trên thiết bị này.",
+  "qrRecordExpense": "Ghi khoản chi này",
+  "qrScanAgain": "Quét mã khác",
+  "qrReceiveIntro": "Tạo mã VietQR để khách hàng quét chuyển tiền cho bạn. Mã tạo ngay trên máy, số tài khoản không được lưu hay gửi đi.",
+  "qrAmountOptional": "Số tiền (để trống: người trả tự nhập)",
+  "qrMessageHelp": "Tối đa 25 ký tự, tự bỏ dấu để mọi ngân hàng đọc được.",
+  "qrCreate": "Tạo mã",
+  "qrErrAccount": "Số tài khoản chỉ gồm chữ và số, tối đa 19 ký tự.",
+  "qrImageLabel": "Mã QR nhận tiền",
+  "qrCopyContent": "Sao chép nội dung mã",
+  "importTemplateHelp": "Chuyển dữ liệu từ app khác: tải tệp mẫu, dán dữ liệu cũ vào đúng cột (Ngày, Loại, Số tiền, Ví...), rồi chọn tệp để nhập. Ví và danh mục chưa có được tạo tự động.",
+  "importTemplateCsv": "Tệp mẫu CSV",
+  "importTemplateXlsx": "Tệp mẫu Excel",
+  "importTemplateSaved": "Đã lưu tệp mẫu",
+  "importTemplateDetected": "Đã nhận ra tệp mẫu Quly Thu Chi",
+  "importTemplateSummary": "{rows} giao dịch, tạo mới {wallets} ví và {categories} danh mục.",
+  "@importTemplateSummary": {
+    "placeholders": {
+      "rows": {
+        "type": "int"
+      },
+      "wallets": {
+        "type": "int"
+      },
+      "categories": {
+        "type": "int"
+      }
+    }
+  },
+  "importTemplateNewWallets": "Ví mới: {names}",
+  "@importTemplateNewWallets": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "importTemplateDuplicates": "Bỏ {count} dòng trùng giao dịch đã có.",
+  "@importTemplateDuplicates": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importTemplateSkipped": "Bỏ {count} dòng thiếu/sai dữ liệu (dòng {rows}).",
+  "@importTemplateSkipped": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "rows": {
+        "type": "String"
+      }
+    }
+  },
+  "importTemplateRun": "Nhập {count} giao dịch",
+  "@importTemplateRun": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importTemplateDone": "Đã nhập {count} giao dịch, tạo {wallets} ví, {categories} danh mục.",
+  "@importTemplateDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "wallets": {
+        "type": "int"
+      },
+      "categories": {
+        "type": "int"
+      }
+    }
+  }
 }

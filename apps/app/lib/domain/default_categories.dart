@@ -131,7 +131,13 @@ const standardIncomeCategories = <DefaultCategory>[
     kind: CategoryKind.income,
     children: [
       DefaultCategory('Bán đồ', 'Sales', 'sell', kind: CategoryKind.income),
-      DefaultCategory('Được tặng', 'Gifts received', 'redeem', kind: CategoryKind.income, taxType: IncomeTaxType.exempt),
+      DefaultCategory(
+        'Được tặng',
+        'Gifts received',
+        'redeem',
+        kind: CategoryKind.income,
+        taxType: IncomeTaxType.exempt,
+      ),
       DefaultCategory('Hoàn tiền', 'Refunds', 'undo', kind: CategoryKind.income, taxType: IncomeTaxType.exempt),
     ],
   ),

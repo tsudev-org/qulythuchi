@@ -124,12 +124,14 @@ Future<bool> confirmDialog(
   BuildContext context, {
   required String message,
   String? confirmLabel,
+  String? title,
   bool destructive = true,
 }) async {
   final p = context.palette;
   final ok = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
+      title: title == null ? null : Text(title),
       content: Text(message),
       actions: [
         TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(ctx.l10n.actionCancel)),

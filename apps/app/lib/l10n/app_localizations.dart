@@ -3367,6 +3367,1230 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Ngoại lệ E2EE: máy chủ thấy nội dung email trong lúc niêm phong. Địa chỉ là bí mật - ai biết địa chỉ đều gửi thư vào được.'**
   String get emailWarning;
+
+  /// No description provided for @copied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép'**
+  String get copied;
+
+  /// No description provided for @currencyPick.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn tiền tệ'**
+  String get currencyPick;
+
+  /// No description provided for @currencySearch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm theo mã hoặc tên (USD, yên, bảng Anh...)'**
+  String get currencySearch;
+
+  /// No description provided for @currencyPopular.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hay dùng'**
+  String get currencyPopular;
+
+  /// No description provided for @currencyAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả ({count} tiền tệ ISO 4217)'**
+  String currencyAll(int count);
+
+  /// No description provided for @currencyNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy tiền tệ phù hợp.'**
+  String get currencyNone;
+
+  /// No description provided for @guestModeNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đăng nhập vẫn dùng đầy đủ mọi tính năng ở chế độ khách: dữ liệu chỉ nằm trên máy này, mã hóa bằng mật khẩu của bạn.'**
+  String get guestModeNote;
+
+  /// No description provided for @welcomeGuest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dùng ngay, không cần tài khoản'**
+  String get welcomeGuest;
+
+  /// No description provided for @welcomeGuestNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chế độ khách: dữ liệu chỉ lưu trên máy này. Có thể đăng nhập để đồng bộ bất cứ lúc nào.'**
+  String get welcomeGuestNote;
+
+  /// No description provided for @signInGoogle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục với Google'**
+  String get signInGoogle;
+
+  /// No description provided for @signInGithub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục với GitHub'**
+  String get signInGithub;
+
+  /// No description provided for @signInTsudev.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản tsudev (email)'**
+  String get signInTsudev;
+
+  /// No description provided for @signInLastUsed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần trước bạn dùng cách này'**
+  String get signInLastUsed;
+
+  /// No description provided for @signInOr.
+  ///
+  /// In vi, this message translates to:
+  /// **'hoặc'**
+  String get signInOr;
+
+  /// No description provided for @settingsCarryOver.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuyển số dư sang tháng sau'**
+  String get settingsCarryOver;
+
+  /// No description provided for @settingsCarryOverSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư cuối tháng trước thành số dư đầu tháng này trên thẻ Số dư theo tháng. Tắt để chỉ xem thu, chi trong tháng.'**
+  String get settingsCarryOverSub;
+
+  /// No description provided for @settingsTaxReminders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc hạn thuế và đợt thu'**
+  String get settingsTaxReminders;
+
+  /// No description provided for @settingsTaxRemindersSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo trước 7 ngày và 1 ngày hạn quyết toán thuế TNCN; báo ngày đến hạn đợt thu của khoản thu.'**
+  String get settingsTaxRemindersSub;
+
+  /// No description provided for @periodTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng {month}/{year}'**
+  String periodTitle(int month, int year);
+
+  /// No description provided for @periodPrev.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỳ trước'**
+  String get periodPrev;
+
+  /// No description provided for @periodNext.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỳ sau'**
+  String get periodNext;
+
+  /// No description provided for @periodThisMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng này'**
+  String get periodThisMonth;
+
+  /// No description provided for @periodOpening.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư đầu kỳ (chuyển từ tháng {month})'**
+  String periodOpening(int month);
+
+  /// No description provided for @periodIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu trong tháng'**
+  String get periodIncome;
+
+  /// No description provided for @periodExpense.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi trong tháng'**
+  String get periodExpense;
+
+  /// No description provided for @periodOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuyển ví, phí, điều chỉnh'**
+  String get periodOther;
+
+  /// No description provided for @periodWithheld.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuế đã bị khấu trừ (không trừ số dư)'**
+  String get periodWithheld;
+
+  /// No description provided for @periodClosing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư cuối kỳ (chuyển sang tháng {month})'**
+  String periodClosing(int month);
+
+  /// No description provided for @periodNet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chênh lệch thu - chi'**
+  String get periodNet;
+
+  /// No description provided for @periodSavingRate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉ lệ để dành: {rate}'**
+  String periodSavingRate(String rate);
+
+  /// No description provided for @incomeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoản thu'**
+  String get incomeTitle;
+
+  /// No description provided for @incomeRecord.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi khoản thu'**
+  String get incomeRecord;
+
+  /// No description provided for @incomePlanNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm khoản thu nhiều đợt'**
+  String get incomePlanNew;
+
+  /// No description provided for @incomePlanEdit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa khoản thu'**
+  String get incomePlanEdit;
+
+  /// No description provided for @incomeYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Năm {year}'**
+  String incomeYear(int year);
+
+  /// No description provided for @incomeByMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo tháng'**
+  String get incomeByMonth;
+
+  /// No description provided for @incomeByYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cả năm'**
+  String get incomeByYear;
+
+  /// No description provided for @incomeTotalReceived.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng thực nhận'**
+  String get incomeTotalReceived;
+
+  /// No description provided for @incomeReceipts.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} lần nhận'**
+  String incomeReceipts(int count);
+
+  /// No description provided for @incomeWithheldTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'thuế khấu trừ {amount}'**
+  String incomeWithheldTotal(String amount);
+
+  /// No description provided for @incomeGrossTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'trước thuế {amount}'**
+  String incomeGrossTotal(String amount);
+
+  /// No description provided for @incomeSumBy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cộng thu theo'**
+  String get incomeSumBy;
+
+  /// No description provided for @incomeByPayer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người trả'**
+  String get incomeByPayer;
+
+  /// No description provided for @incomeByCategory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh mục'**
+  String get incomeByCategory;
+
+  /// No description provided for @incomeByPlan.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoản thu'**
+  String get incomeByPlan;
+
+  /// No description provided for @incomeNoPayer.
+  ///
+  /// In vi, this message translates to:
+  /// **'(Chưa ghi người trả)'**
+  String get incomeNoPayer;
+
+  /// No description provided for @incomeNoPlan.
+  ///
+  /// In vi, this message translates to:
+  /// **'(Thu lẻ, không thuộc khoản thu)'**
+  String get incomeNoPlan;
+
+  /// No description provided for @incomeNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có khoản thu trong kỳ này.'**
+  String get incomeNone;
+
+  /// No description provided for @incomeLast.
+  ///
+  /// In vi, this message translates to:
+  /// **'gần nhất {date}'**
+  String incomeLast(String date);
+
+  /// No description provided for @incomePlansTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoản thu nhiều đợt'**
+  String get incomePlansTitle;
+
+  /// No description provided for @incomePlansHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo dõi job freelance, hợp đồng, tiền cho thuê... nhận tiền nhiều đợt: đã nhận bao nhiêu, còn bao nhiêu, đợt nào trễ.'**
+  String get incomePlansHelp;
+
+  /// No description provided for @incomePlansEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có khoản thu nào. Bấm \"Thêm khoản thu nhiều đợt\" để bắt đầu.'**
+  String get incomePlansEmpty;
+
+  /// No description provided for @incomeShowClosed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiện {count} khoản đã xong/hủy'**
+  String incomeShowClosed(int count);
+
+  /// No description provided for @incomeHideClosed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ẩn khoản đã xong'**
+  String get incomeHideClosed;
+
+  /// No description provided for @incomeStatusActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang thu'**
+  String get incomeStatusActive;
+
+  /// No description provided for @incomeStatusDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xong'**
+  String get incomeStatusDone;
+
+  /// No description provided for @incomeStatusCancelled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hủy'**
+  String get incomeStatusCancelled;
+
+  /// No description provided for @incomeStatus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trạng thái'**
+  String get incomeStatus;
+
+  /// No description provided for @incomeProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận {received} / {total}'**
+  String incomeProgress(String received, String total);
+
+  /// No description provided for @incomeReceivedSoFar.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận {amount}'**
+  String incomeReceivedSoFar(String amount);
+
+  /// No description provided for @incomeNext.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đợt kế tiếp: {label} {amount}, hạn {date}'**
+  String incomeNext(String label, String amount, String date);
+
+  /// No description provided for @incomeInstallment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đợt'**
+  String get incomeInstallment;
+
+  /// No description provided for @incomeOverdue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quá hạn chưa nhận: {amount}'**
+  String incomeOverdue(String amount);
+
+  /// No description provided for @incomePlanName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên job/dự án'**
+  String get incomePlanName;
+
+  /// No description provided for @incomePlanNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví dụ: Thiết kế web quán cà phê'**
+  String get incomePlanNameHint;
+
+  /// No description provided for @incomePayer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người/đơn vị trả tiền'**
+  String get incomePayer;
+
+  /// No description provided for @incomePlanTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng giá trị thỏa thuận (để trống nếu chưa chốt)'**
+  String get incomePlanTotal;
+
+  /// No description provided for @incomeDefaultWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví nhận tiền mặc định'**
+  String get incomeDefaultWallet;
+
+  /// No description provided for @incomeStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày bắt đầu'**
+  String get incomeStart;
+
+  /// No description provided for @incomeDue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn hoàn thành'**
+  String get incomeDue;
+
+  /// No description provided for @incomeWithholding.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bên trả khấu trừ thuế 10%'**
+  String get incomeWithholding;
+
+  /// No description provided for @incomeWithholdingSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập vãng lai (không hợp đồng lao động hoặc dưới 3 tháng): khi ghi lần nhận tiền, app tự tính thuế bị khấu trừ.'**
+  String get incomeWithholdingSub;
+
+  /// No description provided for @incomeInstallments.
+  ///
+  /// In vi, this message translates to:
+  /// **'Các đợt dự kiến'**
+  String get incomeInstallments;
+
+  /// No description provided for @incomeInstallmentsHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không bắt buộc. Ví dụ: đặt cọc 30%, bản thử 40%, nghiệm thu 30%.'**
+  String get incomeInstallmentsHelp;
+
+  /// No description provided for @incomeInstallmentLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đợt {n}'**
+  String incomeInstallmentLabel(int n);
+
+  /// No description provided for @incomeInstallmentHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt cọc, nghiệm thu...'**
+  String get incomeInstallmentHint;
+
+  /// No description provided for @incomeAddInstallment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm đợt'**
+  String get incomeAddInstallment;
+
+  /// No description provided for @incomeReceive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi lần nhận tiền'**
+  String get incomeReceive;
+
+  /// No description provided for @incomeGrossAmount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền theo hợp đồng (trước thuế)'**
+  String get incomeGrossAmount;
+
+  /// No description provided for @incomeWithholdHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để trống: app tự tính 10% nếu lần trả từ {threshold} trở lên.'**
+  String incomeWithholdHint(String threshold);
+
+  /// No description provided for @incomeNetPreview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thực nhận vào ví: {amount}'**
+  String incomeNetPreview(String amount);
+
+  /// No description provided for @incomeNoWalletForCurrency.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần một ví {currency} để ghi lần nhận tiền.'**
+  String incomeNoWalletForCurrency(String currency);
+
+  /// No description provided for @incomePlanDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa khoản thu \"{name}\"? Các lần nhận tiền đã ghi vẫn giữ nguyên.'**
+  String incomePlanDeleteConfirm(String name);
+
+  /// No description provided for @incomeReceiptsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Các lần đã nhận'**
+  String get incomeReceiptsTitle;
+
+  /// No description provided for @incomePlanField.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuộc khoản thu'**
+  String get incomePlanField;
+
+  /// No description provided for @txnTaxWithheld.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuế TNCN bị khấu trừ'**
+  String get txnTaxWithheld;
+
+  /// No description provided for @txnTaxWithheldHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền là số THỰC NHẬN. Ghi phần thuế bên trả đã giữ lại để tính đúng thu nhập trước thuế và quyết toán.'**
+  String get txnTaxWithheldHelp;
+
+  /// No description provided for @taxTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuế thu nhập cá nhân'**
+  String get taxTitle;
+
+  /// No description provided for @taxDisclaimer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ước tính để tham khảo theo quy định Việt Nam, không thay thế tư vấn thuế. Hãy đối chiếu văn bản gốc và cơ quan thuế trước khi khai, nộp.'**
+  String get taxDisclaimer;
+
+  /// No description provided for @taxProfile.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồ sơ thuế'**
+  String get taxProfile;
+
+  /// No description provided for @taxDependents.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người phụ thuộc'**
+  String get taxDependents;
+
+  /// No description provided for @taxDependentsN.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} người phụ thuộc'**
+  String taxDependentsN(int count);
+
+  /// No description provided for @taxLess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bớt'**
+  String get taxLess;
+
+  /// No description provided for @taxMore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm'**
+  String get taxMore;
+
+  /// No description provided for @taxInsurance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảo hiểm bắt buộc đóng mỗi tháng'**
+  String get taxInsurance;
+
+  /// No description provided for @taxInsuranceHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để trống: ước tính 10,5% lương (BHXH 8%, BHYT 1,5%, BHTN 1%) trong mức trần.'**
+  String get taxInsuranceHelp;
+
+  /// No description provided for @taxInsuranceN.
+  ///
+  /// In vi, this message translates to:
+  /// **'bảo hiểm {amount}/tháng'**
+  String taxInsuranceN(String amount);
+
+  /// No description provided for @taxResident.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cá nhân cư trú'**
+  String get taxResident;
+
+  /// No description provided for @taxNonResident.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không cư trú'**
+  String get taxNonResident;
+
+  /// No description provided for @taxResidentSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ở Việt Nam từ 183 ngày/năm hoặc có nơi ở thường xuyên. Không cư trú: thuế 20% trên lương, không giảm trừ.'**
+  String get taxResidentSub;
+
+  /// No description provided for @taxBusiness.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có kinh doanh (hộ, cá nhân kinh doanh)'**
+  String get taxBusiness;
+
+  /// No description provided for @taxBusinessSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bật nhắc hạn khai thuế theo quý và cảnh báo khi doanh thu năm vượt ngưỡng không chịu thuế.'**
+  String get taxBusinessSub;
+
+  /// No description provided for @taxUnclassified.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} danh mục thu chưa phân loại thuế: thu nhập trong đó không được tính vào ước tính.'**
+  String taxUnclassified(int count);
+
+  /// No description provided for @taxStandardCategories.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bổ sung danh mục thu chuẩn (đã phân loại thuế)'**
+  String get taxStandardCategories;
+
+  /// No description provided for @taxStandardDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thêm/cập nhật {count} danh mục'**
+  String taxStandardDone(int count);
+
+  /// No description provided for @taxEstimateTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ước tính quyết toán năm {year}'**
+  String taxEstimateTitle(int year);
+
+  /// No description provided for @taxSalaryIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập từ tiền lương, tiền công'**
+  String get taxSalaryIncome;
+
+  /// No description provided for @taxCasualIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập vãng lai, freelance'**
+  String get taxCasualIncome;
+
+  /// No description provided for @taxBusinessRevenue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Doanh thu kinh doanh (tính riêng)'**
+  String get taxBusinessRevenue;
+
+  /// No description provided for @taxInvestmentIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập đầu tư vốn (tính riêng)'**
+  String get taxInvestmentIncome;
+
+  /// No description provided for @taxExemptIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập miễn thuế'**
+  String get taxExemptIncome;
+
+  /// No description provided for @taxUnclassifiedIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập chưa phân loại'**
+  String get taxUnclassifiedIncome;
+
+  /// No description provided for @taxInsuranceYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảo hiểm bắt buộc'**
+  String get taxInsuranceYear;
+
+  /// No description provided for @taxDeductionYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giảm trừ gia cảnh (12 tháng)'**
+  String get taxDeductionYear;
+
+  /// No description provided for @taxTaxable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập tính thuế'**
+  String get taxTaxable;
+
+  /// No description provided for @taxDue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuế phải nộp cả năm'**
+  String get taxDue;
+
+  /// No description provided for @taxWithheld.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bị khấu trừ tại nguồn'**
+  String get taxWithheld;
+
+  /// No description provided for @taxPayMore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ước tính phải nộp thêm'**
+  String get taxPayMore;
+
+  /// No description provided for @taxRefund.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ước tính được hoàn'**
+  String get taxRefund;
+
+  /// No description provided for @taxSettlementNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự quyết toán hạn chót {date}. Nộp trên thuedientu.gdt.gov.vn hoặc app eTax Mobile.'**
+  String taxSettlementNote(String date);
+
+  /// No description provided for @taxBusinessOver.
+  ///
+  /// In vi, this message translates to:
+  /// **'Doanh thu kinh doanh vượt {amount}/năm: có thể phải khai, nộp thuế.'**
+  String taxBusinessOver(String amount);
+
+  /// No description provided for @taxCalcTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tính lương gross / net'**
+  String get taxCalcTitle;
+
+  /// No description provided for @taxFromGross.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ gross'**
+  String get taxFromGross;
+
+  /// No description provided for @taxFromNet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ net'**
+  String get taxFromNet;
+
+  /// No description provided for @taxGrossSalary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lương gross (trước thuế, bảo hiểm)'**
+  String get taxGrossSalary;
+
+  /// No description provided for @taxNetSalary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lương net (thực nhận)'**
+  String get taxNetSalary;
+
+  /// No description provided for @taxInsuranceMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảo hiểm bắt buộc'**
+  String get taxInsuranceMonth;
+
+  /// No description provided for @taxDeductionMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giảm trừ gia cảnh'**
+  String get taxDeductionMonth;
+
+  /// No description provided for @taxMonthTax.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuế TNCN tháng'**
+  String get taxMonthTax;
+
+  /// No description provided for @taxDeadlines.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn sắp tới'**
+  String get taxDeadlines;
+
+  /// No description provided for @taxDeadlineSelf.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn tự quyết toán thuế TNCN năm {year}'**
+  String taxDeadlineSelf(int year);
+
+  /// No description provided for @taxDeadlineAuthorize.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nộp giấy ủy quyền quyết toán năm {year} cho công ty (nếu ủy quyền)'**
+  String taxDeadlineAuthorize(int year);
+
+  /// No description provided for @taxDeadlineBusiness.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn khai thuế quý (hộ kinh doanh)'**
+  String get taxDeadlineBusiness;
+
+  /// No description provided for @taxDeadlineIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'{date} (còn {days} ngày)'**
+  String taxDeadlineIn(String date, int days);
+
+  /// No description provided for @taxRulesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quy định áp dụng từ {year}'**
+  String taxRulesTitle(int year);
+
+  /// No description provided for @taxPersonalDeduction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giảm trừ bản thân / tháng'**
+  String get taxPersonalDeduction;
+
+  /// No description provided for @taxDependentDeduction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giảm trừ mỗi người phụ thuộc / tháng'**
+  String get taxDependentDeduction;
+
+  /// No description provided for @taxBracketUpTo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bậc {n}: đến {amount}/tháng'**
+  String taxBracketUpTo(int n, String amount);
+
+  /// No description provided for @taxBracketOver.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bậc {n}: trên {amount}/tháng'**
+  String taxBracketOver(int n, String amount);
+
+  /// No description provided for @taxCasualRule.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khấu trừ vãng lai khi mỗi lần trả từ {amount}'**
+  String taxCasualRule(String amount);
+
+  /// No description provided for @taxBusinessThreshold.
+  ///
+  /// In vi, this message translates to:
+  /// **'Doanh thu kinh doanh không chịu thuế / năm'**
+  String get taxBusinessThreshold;
+
+  /// No description provided for @taxSource.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nguồn: {source}. Cập nhật {date}.'**
+  String taxSource(String source, String date);
+
+  /// No description provided for @taxCategoriesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phân loại thuế của danh mục thu'**
+  String get taxCategoriesTitle;
+
+  /// No description provided for @taxInherit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo danh mục cha'**
+  String get taxInherit;
+
+  /// No description provided for @taxTypeUnknown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa phân loại'**
+  String get taxTypeUnknown;
+
+  /// No description provided for @taxTypeUnknownHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tính vào ước tính thuế'**
+  String get taxTypeUnknownHelp;
+
+  /// No description provided for @taxTypeSalary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền lương, tiền công'**
+  String get taxTypeSalary;
+
+  /// No description provided for @taxTypeSalaryHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hợp đồng lao động từ 3 tháng, thưởng, phụ cấp chịu thuế'**
+  String get taxTypeSalaryHelp;
+
+  /// No description provided for @taxTypeCasual.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vãng lai, freelance'**
+  String get taxTypeCasual;
+
+  /// No description provided for @taxTypeCasualHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không hợp đồng hoặc dưới 3 tháng; bên trả khấu trừ 10%'**
+  String get taxTypeCasualHelp;
+
+  /// No description provided for @taxTypeBusiness.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kinh doanh, cho thuê'**
+  String get taxTypeBusiness;
+
+  /// No description provided for @taxTypeBusinessHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tính theo doanh thu, có ngưỡng không chịu thuế'**
+  String get taxTypeBusinessHelp;
+
+  /// No description provided for @taxTypeInvestment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đầu tư vốn'**
+  String get taxTypeInvestment;
+
+  /// No description provided for @taxTypeInvestmentHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cổ tức, lãi trái phiếu... thuế suất riêng'**
+  String get taxTypeInvestmentHelp;
+
+  /// No description provided for @taxTypeExempt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Miễn thuế'**
+  String get taxTypeExempt;
+
+  /// No description provided for @taxTypeExemptHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lãi tiền gửi ngân hàng, quà tặng trong gia đình, hoàn tiền'**
+  String get taxTypeExemptHelp;
+
+  /// No description provided for @qrTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'QR thanh toán'**
+  String get qrTitle;
+
+  /// No description provided for @qrTabPay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét để trả'**
+  String get qrTabPay;
+
+  /// No description provided for @qrTabReceive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã nhận tiền'**
+  String get qrTabReceive;
+
+  /// No description provided for @qrPayIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét mã VietQR/EMVCo của người nhận để xem đúng số tài khoản, số tiền, nội dung, rồi mở app ngân hàng và ghi khoản chi. Mã được đọc ngay trên máy.'**
+  String get qrPayIntro;
+
+  /// No description provided for @qrNoCamera.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiết bị này chưa quét bằng camera được. Dán nội dung mã QR (chuỗi bắt đầu bằng 000201) vào ô dưới.'**
+  String get qrNoCamera;
+
+  /// No description provided for @qrCameraError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được camera. Hãy cấp quyền camera hoặc dán nội dung mã.'**
+  String get qrCameraError;
+
+  /// No description provided for @qrPasteLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nội dung mã QR'**
+  String get qrPasteLabel;
+
+  /// No description provided for @qrPaste.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dán'**
+  String get qrPaste;
+
+  /// No description provided for @qrRead.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đọc mã'**
+  String get qrRead;
+
+  /// No description provided for @qrErrCrc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã QR bị sai hoặc đã bị sửa (kiểm tra CRC không khớp). Đừng thanh toán bằng mã này.'**
+  String get qrErrCrc;
+
+  /// No description provided for @qrErrNotPayment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đây không phải mã QR thanh toán EMVCo/VietQR.'**
+  String get qrErrNotPayment;
+
+  /// No description provided for @qrErrInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã QR không đúng cấu trúc.'**
+  String get qrErrInvalid;
+
+  /// No description provided for @qrNoAmount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã không ghi số tiền: bạn tự nhập trong app ngân hàng.'**
+  String get qrNoAmount;
+
+  /// No description provided for @qrPayee.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người nhận'**
+  String get qrPayee;
+
+  /// No description provided for @qrBank.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngân hàng'**
+  String get qrBank;
+
+  /// No description provided for @qrAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tài khoản'**
+  String get qrAccount;
+
+  /// No description provided for @qrMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nội dung chuyển khoản'**
+  String get qrMessage;
+
+  /// No description provided for @qrCity.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nơi nhận'**
+  String get qrCity;
+
+  /// No description provided for @qrIsCard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Định danh là số thẻ.'**
+  String get qrIsCard;
+
+  /// No description provided for @qrOpenBank.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở app ngân hàng (điền sẵn)'**
+  String get qrOpenBank;
+
+  /// No description provided for @qrOpenBankNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoặc mở app ngân hàng, chọn quét QR và quét lại mã này; luôn kiểm tra tên người nhận trước khi xác nhận.'**
+  String get qrOpenBankNote;
+
+  /// No description provided for @qrForeignNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã nước ngoài: thanh toán bằng app ví/ngân hàng hỗ trợ hệ này, rồi ghi khoản chi tại đây.'**
+  String get qrForeignNote;
+
+  /// No description provided for @qrConsentTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở app ngân hàng qua VietQR.io'**
+  String get qrConsentTitle;
+
+  /// No description provided for @qrConsentBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để điền sẵn lệnh chuyển, app gửi số tài khoản NGƯỜI NHẬN, số tiền và nội dung tới dl.vietqr.io (dịch vụ bên thứ ba) để chuyển sang app ngân hàng bạn chọn. Không gửi dữ liệu sổ thu chi của bạn. Đồng ý?'**
+  String get qrConsentBody;
+
+  /// No description provided for @qrConsentOk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng ý, mở app'**
+  String get qrConsentOk;
+
+  /// No description provided for @qrChooseBankApp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn app ngân hàng của bạn'**
+  String get qrChooseBankApp;
+
+  /// No description provided for @qrLastUsed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dùng lần trước'**
+  String get qrLastUsed;
+
+  /// No description provided for @qrOpenFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được app ngân hàng trên thiết bị này.'**
+  String get qrOpenFailed;
+
+  /// No description provided for @qrRecordExpense.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi khoản chi này'**
+  String get qrRecordExpense;
+
+  /// No description provided for @qrScanAgain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét mã khác'**
+  String get qrScanAgain;
+
+  /// No description provided for @qrReceiveIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo mã VietQR để khách hàng quét chuyển tiền cho bạn. Mã tạo ngay trên máy, số tài khoản không được lưu hay gửi đi.'**
+  String get qrReceiveIntro;
+
+  /// No description provided for @qrAmountOptional.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền (để trống: người trả tự nhập)'**
+  String get qrAmountOptional;
+
+  /// No description provided for @qrMessageHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa 25 ký tự, tự bỏ dấu để mọi ngân hàng đọc được.'**
+  String get qrMessageHelp;
+
+  /// No description provided for @qrCreate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo mã'**
+  String get qrCreate;
+
+  /// No description provided for @qrErrAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tài khoản chỉ gồm chữ và số, tối đa 19 ký tự.'**
+  String get qrErrAccount;
+
+  /// No description provided for @qrImageLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã QR nhận tiền'**
+  String get qrImageLabel;
+
+  /// No description provided for @qrCopyContent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép nội dung mã'**
+  String get qrCopyContent;
+
+  /// No description provided for @importTemplateHelp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuyển dữ liệu từ app khác: tải tệp mẫu, dán dữ liệu cũ vào đúng cột (Ngày, Loại, Số tiền, Ví...), rồi chọn tệp để nhập. Ví và danh mục chưa có được tạo tự động.'**
+  String get importTemplateHelp;
+
+  /// No description provided for @importTemplateCsv.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tệp mẫu CSV'**
+  String get importTemplateCsv;
+
+  /// No description provided for @importTemplateXlsx.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tệp mẫu Excel'**
+  String get importTemplateXlsx;
+
+  /// No description provided for @importTemplateSaved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu tệp mẫu'**
+  String get importTemplateSaved;
+
+  /// No description provided for @importTemplateDetected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận ra tệp mẫu Quly Thu Chi'**
+  String get importTemplateDetected;
+
+  /// No description provided for @importTemplateSummary.
+  ///
+  /// In vi, this message translates to:
+  /// **'{rows} giao dịch, tạo mới {wallets} ví và {categories} danh mục.'**
+  String importTemplateSummary(int rows, int wallets, int categories);
+
+  /// No description provided for @importTemplateNewWallets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví mới: {names}'**
+  String importTemplateNewWallets(String names);
+
+  /// No description provided for @importTemplateDuplicates.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ {count} dòng trùng giao dịch đã có.'**
+  String importTemplateDuplicates(int count);
+
+  /// No description provided for @importTemplateSkipped.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ {count} dòng thiếu/sai dữ liệu (dòng {rows}).'**
+  String importTemplateSkipped(int count, String rows);
+
+  /// No description provided for @importTemplateRun.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập {count} giao dịch'**
+  String importTemplateRun(int count);
+
+  /// No description provided for @importTemplateDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhập {count} giao dịch, tạo {wallets} ví, {categories} danh mục.'**
+  String importTemplateDone(int count, int wallets, int categories);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

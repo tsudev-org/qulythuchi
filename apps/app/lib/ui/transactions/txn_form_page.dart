@@ -23,6 +23,7 @@ class TxnFormPage extends ConsumerStatefulWidget {
     this.initialNote,
     this.initialPayee,
     this.initialIncomePlanId,
+    this.initialCurrency,
   });
   final String? txnId;
   final String? initialKind;
@@ -32,6 +33,9 @@ class TxnFormPage extends ConsumerStatefulWidget {
   final String? initialNote;
   final String? initialPayee;
   final String? initialIncomePlanId;
+
+  /// Mã tiền tệ của [initialAmount]: chọn ví đầu tiên cùng tiền tệ.
+  final String? initialCurrency;
 
   /// Mở từ "Góp tiền" của mục tiêu.
   final String? initialGoalId;
@@ -85,6 +89,10 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
       _payee.text = plan.payer ?? '';
       _note.text = plan.name;
       if (data.wallet(plan.defaultWalletId) != null) _walletId = plan.defaultWalletId;
+    }
+    if (widget.initialCurrency != null) {
+      final w = active.where((w) => w.currency.code == widget.initialCurrency).firstOrNull;
+      if (w != null) _walletId = w.id;
     }
     if (widget.initialNote != null) _note.text = widget.initialNote!;
     if (widget.initialPayee != null) _payee.text = widget.initialPayee!;

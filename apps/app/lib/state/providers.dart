@@ -218,6 +218,8 @@ final class LedgerNotifier extends Notifier<LedgerData> {
     (r) => r.recordIncomeReceipt(planId, walletId: walletId, net: net, withheld: withheld, date: date, note: note),
   );
   TaxProfile saveTaxProfile(TaxProfile p) => _mutate((r) => r.saveTaxProfile(p));
+  int importPlan({required List<Wallet> wallets, required List<Category> categories, required List<Txn> txns}) =>
+      _mutate((r) => r.importPlan(wallets: wallets, categories: categories, txns: txns));
   int ensureStandardIncomeCategories(DefaultCategoryLocale l) => _mutate((r) => r.ensureStandardIncomeCategories(l));
 }
 

@@ -508,6 +508,43 @@ final class LedgerRepository {
     return txns.length;
   }
 
+  /// Nhập theo tệp mẫu: tạo ví mới (kèm khóa ví), danh mục mới (cha trước con) rồi mọi giao dịch, ghi trong MỘT
+  /// lần. Kiểm hợp lệ toàn bộ trước khi ghi. Trả số giao dịch (cặp chuyển ví tính 1).
+  int importPlan({required List<Wallet> wallets, required List<Category> categories, required List<Txn> txns}) {
+    for (final w in wallets) {
+      if (w.name.trim().isEmpty || _records.containsKey(w.id)) throw const LedgerException('nameRequired');
+    }
+    final out = <SyncRecord>[];
+    // Đưa ví/danh mục mới vào bộ nhớ tạm để kiểm giao dịch; lỗi ⇒ gỡ ra, không ghi gì.
+    final staged = <String>[];
+    try {
+      for (final w in wallets) {
+        final r = _apply(_base(w.id, RecordTypes.wallet, w.id), w.toValues());
+        _records[w.id] = r;
+        staged.add(w.id);
+        out.add(r);
+      }
+      for (final c in categories) {
+        final r = _apply(_base(c.id, RecordTypes.category, null), c.toValues());
+        _records[c.id] = r;
+        staged.add(c.id);
+        out.add(r);
+      }
+      for (final t in txns) {
+        if (t.kind != TxnKind.transferIn && t.kind != TxnKind.transferOut) _checkTxn(t);
+        out.add(_apply(_base(t.id, RecordTypes.transaction, t.walletId), t.toValues()));
+      }
+    } on Object {
+      staged.forEach(_records.remove);
+      rethrow;
+    }
+    for (final w in wallets) {
+      _vault.createWalletKey(w.id);
+    }
+    _persist(out);
+    return txns.where((t) => t.kind != TxnKind.transferIn).length;
+  }
+
   /// Lưu chuyển ví: HAI bản ghi cùng `transferId`, ghi trong một giao tác.
   /// [received] khác [amount] khi hai ví khác tiền tệ (P2: người dùng tự nhập số tiền nhận).
   (Txn, Txn) saveTransfer({

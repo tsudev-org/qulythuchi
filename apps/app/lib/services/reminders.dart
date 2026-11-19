@@ -24,7 +24,11 @@ List<DateTime> reminderTimes(LedgerData data, DateTime now, {bool bills = true, 
   }
 
   if (tax) {
-    for (final d in VnTaxCalendar.upcoming(today, days: reminderHorizonDays, business: data.taxProfile.businessHousehold)) {
+    for (final d in VnTaxCalendar.upcoming(
+      today,
+      days: reminderHorizonDays,
+      business: data.taxProfile.businessHousehold,
+    )) {
       at(d.date.addDays(-7));
       at(d.date.addDays(-1));
     }

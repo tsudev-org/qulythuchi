@@ -45,7 +45,7 @@ void main() {
     expect(normalizeVi('Phở'), 'pho');
   });
 
-  test('bộ danh mục mặc định: 28 mục, tên vi/en đầy đủ, thu/chi đúng', () {
+  test('bộ danh mục mặc định: 36 mục, tên vi/en đầy đủ, thu/chi đúng', () {
     var count = 0;
     for (final g in defaultCategories) {
       count += 1 + g.children.length;
@@ -55,7 +55,7 @@ void main() {
         expect(c.kind, g.kind);
       }
     }
-    expect(count, 28);
+    expect(count, 36);
   });
 
   test('chính sách PIN', () {

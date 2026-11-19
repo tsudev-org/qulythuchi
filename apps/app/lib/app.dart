@@ -24,10 +24,13 @@ import 'ui/debts/debt_form_page.dart';
 import 'ui/debts/debts_page.dart';
 import 'ui/events/event_form_page.dart';
 import 'ui/events/events_page.dart';
+import 'ui/income/income_page.dart';
+import 'ui/income/income_plan_form_page.dart';
 import 'ui/lock/lock_page.dart';
 import 'ui/more/more_page.dart';
 import 'ui/onboarding/onboarding.dart';
 import 'ui/overview/overview_page.dart';
+import 'ui/payment/qr_pay_page.dart';
 import 'ui/plan/budget_form_page.dart';
 import 'ui/plan/goal_form_page.dart';
 import 'ui/plan/plan_page.dart';
@@ -37,6 +40,7 @@ import 'ui/recurring/recurring_page.dart';
 import 'ui/reports/reports_page.dart';
 import 'ui/settings/settings_page.dart';
 import 'ui/shell.dart';
+import 'ui/tax/tax_page.dart';
 import 'ui/transactions/txn_form_page.dart';
 import 'ui/transactions/txn_list_page.dart';
 import 'ui/wallets/wallet_form_page.dart';
@@ -93,6 +97,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                       initialNote: s.uri.queryParameters['note'],
                       initialPayee: s.uri.queryParameters['payee'],
                       initialIncomePlanId: s.uri.queryParameters['plan'],
+                      initialCurrency: s.uri.queryParameters['cur'],
                     ),
                   ),
                   GoRoute(
@@ -151,6 +156,19 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(path: 'reports', builder: (_, _) => const ReportsPage()),
                   GoRoute(path: 'data', builder: (_, _) => const DataPage()),
                   GoRoute(path: 'auto-import', builder: (_, _) => const AutoImportPage()),
+                  GoRoute(path: 'tax', builder: (_, _) => const TaxPage()),
+                  GoRoute(path: 'qr', builder: (_, _) => const QrPayPage()),
+                  GoRoute(
+                    path: 'income',
+                    builder: (_, _) => const IncomePage(),
+                    routes: [
+                      GoRoute(path: 'new', builder: (_, _) => const IncomePlanFormPage()),
+                      GoRoute(
+                        path: ':id',
+                        builder: (_, s) => IncomePlanFormPage(planId: s.pathParameters['id']),
+                      ),
+                    ],
+                  ),
                   GoRoute(
                     path: 'recurring',
                     builder: (_, _) => const RecurringPage(),

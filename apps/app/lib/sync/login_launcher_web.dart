@@ -10,7 +10,7 @@ Future<LoginOutcome> runSystemBrowserLogin(Uri server, {required String doneHtml
 /// Web (cùng gốc `qulythuchi.tsudev.com/app/`): máy chủ đặt cookie `__Host-qt_session` rồi quay lại `/app/`.
 Future<void> startWebLogin(Uri server) async {
   await launchUrl(
-    Uri(path: '/auth/web/start', queryParameters: {'return_to': '/app/'}),
+    Uri(path: '/auth/web/start', queryParameters: {'return_to': '/app/', ...server.queryParameters}),
     webOnlyWindowName: '_self',
   );
 }

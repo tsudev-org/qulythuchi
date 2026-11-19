@@ -54,7 +54,7 @@ class _IncomePageState extends ConsumerState<IncomePage> {
     }
     String groupLabel(String? key) => switch (_by) {
       IncomeGroupBy.payer => key ?? l.incomeNoPayer,
-      IncomeGroupBy.category => data.category(key)?.name ?? l.txnNoCategory,
+      IncomeGroupBy.category => data.category(key)?.name ?? l.uncategorized,
       IncomeGroupBy.plan => data.incomePlan(key)?.name ?? l.incomeNoPlan,
     };
     final plans = data.incomePlans.where((x) => _showClosed || x.status == IncomePlanStatus.active).toList();
@@ -190,7 +190,9 @@ class _IncomePageState extends ConsumerState<IncomePage> {
             Text(l.incomePlansHelp, style: TextStyle(color: p.textSecondary)),
             const SizedBox(height: QtSpace.s2),
             if (plans.isEmpty)
-              Card(child: Padding(padding: const EdgeInsets.all(QtSpace.s4), child: Text(l.incomePlansEmpty)))
+              Card(
+                child: Padding(padding: const EdgeInsets.all(QtSpace.s4), child: Text(l.incomePlansEmpty)),
+              )
             else
               for (final plan in plans)
                 Padding(

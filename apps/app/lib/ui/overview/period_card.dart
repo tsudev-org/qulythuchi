@@ -48,12 +48,13 @@ class PeriodBalanceCard extends ConsumerWidget {
       child: Row(
         children: [
           Expanded(
-            child: Text(
-              label,
-              style: strong ? text.titleSmall : TextStyle(color: p.textSecondary),
-            ),
+            child: Text(label, style: strong ? text.titleSmall : TextStyle(color: p.textSecondary)),
           ),
-          MoneyText(m, key: key, style: (strong ? text.titleMedium : text.bodyMedium)?.copyWith(color: color)),
+          MoneyText(
+            m,
+            key: key,
+            style: (strong ? text.titleMedium : text.bodyMedium)?.copyWith(color: color),
+          ),
         ],
       ),
     );
@@ -104,12 +105,7 @@ class PeriodBalanceCard extends ConsumerWidget {
               if (!s.taxWithheld.isZero) row(l.periodWithheld, s.taxWithheld),
               const Divider(),
               if (carry)
-                row(
-                  l.periodClosing(next.month),
-                  s.closing,
-                  strong: true,
-                  key: Key('period.closing.${s.currency.code}'),
-                )
+                row(l.periodClosing(next.month), s.closing, strong: true, key: Key('period.closing.${s.currency.code}'))
               else
                 row(l.periodNet, s.net, strong: true, color: s.net.isNegative ? p.danger : p.success),
               if (s.savingRateBp != null)

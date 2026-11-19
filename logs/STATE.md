@@ -9,24 +9,29 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P9a - Tiện ích tài chính cá nhân** (yêu cầu chủ dự án 19/11/2026, phiếu `logs/handover/20261119-01_*`): chuyển
-  số dư theo kỳ, chuẩn hóa mục thu + khoản thu nhiều đợt (freelance), thuế TNCN + nhắc hạn, quét/tạo QR thanh toán
-  (VietQR/EMVCo) mở app ngân hàng, đủ tiền tệ ISO 4217, nhập dữ liệu theo tệp mẫu, màn đăng nhập Google/GitHub/tsudev
-  + chế độ khách. Apple ID: cần đề xuất chuẩn (AUTH_AND_ACCOUNT mục 3 cấm nhà cung cấp thứ tư).
 - [ ] **P9 - Ví chung gia đình** (phiếu `logs/handover/20261118-04_p8-xong-bat-dau-p9.md`, prompt ở mục 6b).
   👤: thử đăng nhập trên `/app/` production; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
 - [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
   desktop (Tesseract), widget/lối tắt iOS.
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
+- [ ] T7 toàn hệ (`~/projects/logs/handover/20261119-01_*` hàng T7): Pro tháng/năm + Ủng hộ + huy hiệu (PRODUCT_POLICY 3.3).
+- [ ] AP1 toàn hệ (`~/projects/logs/handover/20261119-AP1_*`): workflow `apple.yml` iOS/macOS cho `apps/app`.
+- [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); sinh icon app gốc từ dây chuyền thương hiệu (hiện chỉ web)
 
 ## Đang thực hiện
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| P9a Tiện ích tài chính cá nhân | agent-qulythuchi | 19/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 19/11/2026 - P9a Tiện ích tài chính cá nhân (agent-qulythuchi, ADR-0014, phiếu rà soát `20261119-p9a-tien-ich`):
+  số dư theo kỳ (chuyển số dư hiển thị, không bút toán), khoản thu nhiều đợt + thuế khấu trừ, thuế TNCN 2020/2026 +
+  gross/net + nhắc hạn, QR VietQR/EMVCo (kiểm CRC, mở app ngân hàng qua dl.vietqr.io có đồng ý, tạo mã nhận), 157 tiền
+  tệ ISO 4217, nhập theo tệp mẫu CSV/XLSX, ba lối đăng nhập + chế độ khách, máy chủ gửi `idp_hint`. IdP tsudev.com nhận
+  `idp_hint` ở tsudev#326 (QT4, phiên tsudev). Lõi 85, app đủ, máy chủ 53 test đạt. Deploy web chạy từ main sau khi gộp
+  (gồm luôn T3).
 
 - 18/11/2026 - Email Routing (chủ dự án chạy lệnh, agent kiểm): miền con `in.qulythuchi.tsudev.com` bật (MX route1/2/3 +
   SPF đã lan truyền); catch-all của ZONE tsudev.com ⇒ Worker `qulythuchi` (trước đó tắt/drop). Worker từ chối ngay thư

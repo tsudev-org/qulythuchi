@@ -146,8 +146,6 @@ class OverviewPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: QtSpace.s4),
-                  const PeriodBalanceCard(),
-                  const SizedBox(height: QtSpace.s4),
                   _SafeToSpendCard(safe: safe),
                   if (pending.isNotEmpty) ...[
                     const SizedBox(height: QtSpace.s6),
@@ -186,6 +184,8 @@ class OverviewPage extends ConsumerWidget {
                       ),
                     ),
                   ],
+                  const SizedBox(height: QtSpace.s6),
+                  const PeriodBalanceCard(),
                   if (bills.isNotEmpty) ...[
                     const SizedBox(height: QtSpace.s6),
                     _SectionHeader(title: l.billsUpcoming, onMore: () => context.go('/more/recurring'), more: l.seeAll),

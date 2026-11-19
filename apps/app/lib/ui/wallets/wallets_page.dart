@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:qulythuchi_core/qulythuchi_core.dart';
 
 import '../../state/providers.dart';
 import '../../theme/app_theme.dart';
@@ -90,6 +89,3 @@ class _WalletsPageState extends ConsumerState<WalletsPage> {
     );
   }
 }
-
-/// Dùng chung: tiền tệ cho phép chọn khi tạo ví.
-List<Currency> get selectableCurrencies => Currency.all;

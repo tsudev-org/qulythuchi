@@ -222,9 +222,11 @@ final class SyncController extends Notifier<SyncState> {
   // ------------------------------------------------------------------ Đăng nhập / đăng xuất
 
   /// Đăng nhập bằng trình duyệt hệ thống. Trả null nếu thành công, ngược lại mã lỗi để dịch.
-  Future<String?> signIn() async {
+  /// [provider]: `google`/`github` ⇒ gợi ý tsudev.com mở thẳng lối đó; null ⇒ tài khoản tsudev (email).
+  Future<String?> signIn({String? provider}) async {
     final config = ref.read(syncConfigProvider);
-    final server = config.server ?? defaultServer;
+    final base = config.server ?? defaultServer;
+    final server = provider == null ? base : base.replace(queryParameters: {'provider': provider});
     if (config.cookieMode) {
       await startWebLogin(server);
       return null;
