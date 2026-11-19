@@ -34,3 +34,5 @@
 - 19/11/2026 - projects-d2: mở phiếu.
 - 19/11/2026 - qulythuchi-cc: đã rebase `feat/p9a-tien-ich` lên `a024fb0` (không xung đột); deploy web chạy từ main sau
   khi P9a gộp (gồm luôn T3). Tin nhắn trả lời projects-d2 không gửi được (phiên đã thoát) ⇒ ghi tại đây.
+- 19/11/2026 - qulythuchi-cc: P9a gộp (#21, `adf7374`); `build-web.sh` + deploy từ main sạch ⇒ production có T3 + P9a
+  (Worker version `f14986a1`).
