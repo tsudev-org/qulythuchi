@@ -1,7 +1,7 @@
 # ADR-0016: Pro + Ủng hộ - đồng bộ/sao lưu đám mây là Pro, quyền lợi kiểm ở máy chủ theo tsudev.com
 
-- **Trạng thái**: ĐỀ XUẤT - chờ tsudev-standards v3.9.0 (PRO-A) và máy chủ quyền lợi tsudev.com (PRO-B, tsudev
-  ADR-0002 + kênh RP). Chưa viết mã.
+- **Trạng thái**: ĐỀ XUẤT - nội dung ĐÃ CHỐT (19/11/2026, phiếu PRO1 mục 8-9). Chuyển ĐÃ CHẤP NHẬN khi tsudev-standards
+  v3.9.0 (PRO-A) phát hành; phần dùng máy chủ quyền lợi chờ PRO-B.
 - **Ngày**: 19/11/2026
 - **Người quyết định**: chủ dự án (phạm vi Pro, 19/11/2026); agent-qulythuchi (cách làm)
 - **Liên quan**: `.standards/docs/PRODUCT_POLICY.md` mục 3-4; phiếu toàn hệ
@@ -30,8 +30,8 @@ Phiếu T7 yêu cầu Pro tháng/năm + Ủng hộ + huy hiệu. Khi khởi đ�
    | Sao lưu/khôi phục tệp `.qtbak`, xuất/nhập CSV | ✅ (quyền mang dữ liệu đi) | ✅ |
    | Đồng bộ + sao lưu đám mây giữa các thiết bị | - | ✅ |
    | Ví chung: tạo ví chung, mời thành viên | - | ✅ |
-   | Ví chung: tham gia ví do người khác mời (đề xuất miễn phí, để một người Pro dùng được cho cả nhà; 👤 xác nhận) | ✅ | ✅ |
-   | Hạn mức máy chủ (chỉ có ý nghĩa khi đồng bộ) | - | bản ghi 200 MiB, tệp 1 GiB (đo hạn mức D1/R2 0 đồng trước khi chốt) |
+   | Ví chung: tham gia ví do người khác mời (chốt Q5: một người Pro dùng được cho cả nhà) | ✅ | ✅ |
+   | Hạn mức máy chủ (chỉ có ý nghĩa khi đồng bộ) | - | bản ghi 200 MiB, tệp 1 GiB (mặc định toàn hệ 100 MiB + 1 GiB; qulythuchi cần nhiều hơn vì lịch sử giao dịch nhiều năm) |
    | Xuất PDF/XLSX, báo cáo nâng cao (nhiều kỳ, tài sản ròng) | - | ✅ |
    | Tự nhập nâng cao: email chuyển tiếp, đọc thông báo ngân hàng | - | ✅ |
    | Ghi nhanh gõ/giọng nói, OCR trên máy, sao kê CSV/XLSX | ✅ | ✅ |
@@ -41,14 +41,17 @@ Phiếu T7 yêu cầu Pro tháng/năm + Ủng hộ + huy hiệu. Khi khởi đ�
 3. **Gate ở máy chủ**: `sync/push`, `PUT /files`, tạo ví chung/mời, bật hộp thư email ⇒ không Pro trả `402 pro_required`.
    `sync/pull` + `me/export` vẫn mở trong thời gian ân hạn. App chỉ ẩn/hiện nút theo quyền lợi đã đệm (≤ 7 ngày), không
    tự cấp quyền.
-4. **Play Billing** (bản Play): app mở luồng mua với `obfuscatedAccountId` = băm id tài khoản; `purchaseToken` đi app ⇒
+4. **Play Billing** (bản Play): thuê bao `tsudev_pro` (`thang`/`nam`) và tiêu hao `ung_ho_20k`…`ung_ho_200k` (gói chung
+   TsuDEV Pro 49.000 ₫/tháng, 490.000 ₫/năm - PRO1 mục 9.1). App mở luồng mua với `obfuscatedAccountId` =
+   base64url(SHA-256(`tsudev-pro|` + `sub`)); `purchaseToken` đi app ⇒
    `sync-api` ⇒ tsudev (PRO-B), không bao giờ xác minh trong app. Bản web/desktop/APK ngoài Play: mở `tsudev.com/pro`
    và `tsudev.com/ung-ho`. Bản Play không có liên kết thanh toán ra web (PRODUCT_POLICY 4.3).
 5. **Thông báo nhiều thiết bị** theo phiếu PRO1 mục 3. Số thiết bị lấy từ `devices_30d` của JWS (PRO-B b2); bảng
    `devices` của `sync-api` chỉ dùng thêm khi tài khoản đã đồng bộ.
-6. **Người dùng cũ** (đang đồng bộ miễn phí): theo câu trả lời 👤 ở phiếu PRO1 mục 8 câu 2. Đề xuất: báo trước trong app
-   ≥ 30 ngày; tới ngày chốt thì ngừng nhận đẩy, cho kéo + xuất thêm 90 ngày, sau đó xoá bản mã theo quy trình xoá tài
-   khoản (ADR-0010 mục 7) có thông báo. Dữ liệu trên thiết bị không đổi.
+6. **Chuyển sang Pro**: chưa có người dùng thật (👤 xác nhận 19/11/2026) ⇒ tắt đồng bộ miễn phí thẳng ở bản kế tiếp,
+   không cần ân hạn chuyển tiếp; dữ liệu thử nghiệm trên D1/R2 được xoá (báo 👤 trước khi xoá production). Quy tắc lâu
+   dài khi Pro hết hạn: chặn đẩy ngay, kéo + xuất thêm 90 ngày, app báo trước ở mốc 30 và 7 ngày, rồi xoá bản mã trên máy
+   chủ theo quy trình xoá (ADR-0010 mục 7). Dữ liệu trên thiết bị không bao giờ bị xoá.
 7. **Huy hiệu**: dùng component Flutter chung (PRO-C), không tự vẽ bản riêng. Hiện cạnh tên ở màn Tài khoản và danh
    sách thành viên ví chung (chỉ khi người đó không ẩn).
 
@@ -58,5 +61,7 @@ Phiếu T7 yêu cầu Pro tháng/năm + Ủng hộ + huy hiệu. Khi khởi đ�
   chuyển tiếp Play) ⇒ app (lớp `Entitlements`, màn Pro/Ủng hộ, thông báo 30 ngày, huy hiệu, vi + en, test widget hai
   khổ) ⇒ phiếu rà soát `docs/security-reviews/<ngày>-t7-pro-ung-ho.md` + THREAT_MODEL (giả mạo quyền lợi, dùng lại biên
   nhận, vượt gate, liệt kê thiết bị).
-- Đổi đồng bộ từ miễn phí sang Pro là thay đổi lớn với người dùng ⇒ cần ghi CHANGELOG và báo trong app theo mục 2.6.
+- Định danh, JWS, mã lỗi `402 pro_required`, nội dung thông báo vi/en: dùng NGUYÊN VĂN hợp đồng chung PRO1 mục 9.
+- Làm được trước PRO-B: màn Pro/Ủng hộ, thông báo nhiều thiết bị (nguồn quyền lợi giả trong test), lớp `Entitlements`
+  kiểm JWS bằng JWKS (test với khoá thử), gate ở máy chủ với nguồn quyền lợi tiêm vào được.
 - Lõi `packages/core` không đổi (quyền lợi không phải dữ liệu D3, không đụng phong bì).

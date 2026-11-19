@@ -14,8 +14,9 @@
 - [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
   desktop (Tesseract), widget/lối tắt iOS.
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
-- [ ] ⏸ T7/PRO1 - Pro + Ủng hộ + huy hiệu, **đồng bộ/sao lưu đám mây thành Pro** (👤 chốt 19/11/2026): CHỜ tsudev-standards
-  v3.9.0 (PRO-A) + máy chủ quyền lợi tsudev (PRO-B, có kênh RP) + 👤 trả lời phiếu gốc PRO1 mục 8. Đọc
+- [ ] ⏸ T7/PRO1 - Pro + Ủng hộ + huy hiệu, **đồng bộ/sao lưu đám mây thành Pro** (👤 chốt 19/11/2026): Quyết định + hợp đồng
+  chung ĐÃ CHỐT (phiếu gốc PRO1 mục 8-9). Chờ tsudev-standards v3.9.0 (PRO-A); phần máy chủ quyền lợi chờ PRO-B; phần
+  không phụ thuộc làm được ngay (ADR-0016 mục 3). Đọc
   `docs/adr/0016-*` (ĐỀ XUẤT) + `logs/handover/20261119-PRO1_luu-cuc-bo-pro-dong-bo.md`.
 - [ ] AP1 toàn hệ (`~/projects/logs/handover/20261119-AP1_*`): workflow `apple.yml` iOS/macOS cho `apps/app`.
 - [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
