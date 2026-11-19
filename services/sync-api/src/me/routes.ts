@@ -114,12 +114,25 @@ meRoutes.get('/api/v1/me/export', async (c) => {
   const { userId } = c.get('auth');
   await rateLimit(c.env.DB, `export:${userId}`, 5, 3_600_000);
   const db = c.env.DB;
-  const [user, bundle, wallets, records, files] = await db.batch<Record<string, unknown>>([
+  const [user, bundle, wallets, records, files, shared, sharedRecords] = await db.batch<Record<string, unknown>>([
     db.prepare('SELECT id, email, display_name, created_at FROM users WHERE id = ?').bind(userId),
     db.prepare('SELECT bundle FROM account_bundles WHERE user_id = ?').bind(userId),
     db.prepare('SELECT wallet_id, wrapped FROM wallet_keys WHERE user_id = ?').bind(userId),
     db.prepare('SELECT id, type, wallet_id, sealed, deleted, rev FROM records WHERE user_id = ? ORDER BY rev').bind(userId),
     db.prepare('SELECT id, wallet_id, size, created_at FROM files WHERE user_id = ?').bind(userId),
+    // Ví chung mình là thành viên (ADR-0015): khóa đã bọc của mình + bản mã của ví (vẫn chỉ là bản mã).
+    db
+      .prepare(
+        `SELECT s.wallet_id, s.key_ver, s.wrapped, m.role FROM wallet_key_shares s
+         JOIN wallet_members m ON m.wallet_id = s.wallet_id AND m.user_id = s.user_id WHERE s.user_id = ? ORDER BY s.key_ver`,
+      )
+      .bind(userId),
+    db
+      .prepare(
+        `SELECT r.wallet_id, r.id, r.type, r.sealed, r.deleted, r.key_ver, r.rev FROM wallet_records r
+         WHERE r.wallet_id IN (SELECT wallet_id FROM wallet_members WHERE user_id = ?) ORDER BY r.wallet_id, r.rev`,
+      )
+      .bind(userId),
   ]);
   const b = bundle?.results[0]?.bundle;
   const body = {
@@ -138,6 +151,21 @@ meRoutes.get('/api/v1/me/export', async (c) => {
       rev: r.rev,
     })),
     files: files?.results ?? [],
+    shared_wallet_keys: (shared?.results ?? []).map((k) => ({
+      wallet_id: k.wallet_id,
+      role: k.role,
+      key_ver: k.key_ver,
+      wrapped: base64(new Uint8Array(k.wrapped as ArrayBuffer)),
+    })),
+    shared_records: (sharedRecords?.results ?? []).map((r) => ({
+      wallet_id: r.wallet_id,
+      id: r.id,
+      type: r.type,
+      sealed: base64(new Uint8Array(r.sealed as ArrayBuffer)),
+      deleted: r.deleted === 1,
+      key_ver: r.key_ver,
+      rev: r.rev,
+    })),
   };
   return c.json(body, 200, { 'Content-Disposition': 'attachment; filename="qulythuchi-may-chu.json"' });
 });

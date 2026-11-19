@@ -26,6 +26,12 @@ Dữ liệu mẫu THẬT của lõi: `test/fixtures/core-v1.json`, sinh lại b�
 | `GET /api/v1/sync/pull?since=&limit=` | Bản ghi có `rev > since`, `cursor`, `has_more` |
 | `GET /api/v1/keys`, `PUT /api/v1/keys/account`, `PUT /api/v1/keys/wallets` | Gói khóa tài khoản, khóa ví đã bọc |
 | `PUT/GET/DELETE /api/v1/files/:id` | Tệp đính kèm đã mã hóa (≤ 10 MiB) |
+| `POST/GET /api/v1/wallets` | Ví chung (ADR-0015): biến ví riêng thành ví chung (chuyển bản ghi sang không gian ví), danh sách ví + khóa đã bọc + thành viên + lời mời |
+| `POST/DELETE /api/v1/wallets/:id/invites[/:invite]` | Chủ ví tạo/hủy lời mời (7 ngày); nửa bí mật của mã mời không tới máy chủ |
+| `GET /api/v1/invites/:id`, `POST /api/v1/invites/:id/accept` | Xem và nhận lời mời (bằng chứng BLAKE2b, chủ ví kiểm trên thiết bị) |
+| `POST /api/v1/wallets/:id/members`, `PUT .../members/:user`, `DELETE .../members/me` | Hoàn tất lời mời + chia khóa, đổi quyền, tự rời ví |
+| `POST /api/v1/wallets/:id/rotate` | Thu hồi thành viên + xoay khóa ví trong một giao tác |
+| `POST /api/v1/wallets/:id/push`, `GET /api/v1/wallets/:id/pull` | Đồng bộ bản mã trong không gian ví (`key_ver` phải là phiên bản hiện tại) |
 | `GET /api/v1/me`, `/me/usage`, `/me/devices`, `DELETE /me/devices/:id`, `/me/export`, `POST/DELETE /me/deletion` | Hồ sơ, thiết bị, xuất, xóa tài khoản |
 
 Lỗi luôn là `{code, message}` (message tiếng Việt cố định, không chứa dữ liệu người dùng).

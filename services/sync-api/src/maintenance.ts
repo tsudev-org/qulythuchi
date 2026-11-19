@@ -23,6 +23,10 @@ export async function cleanup(env: Env, at = Date.now()) {
       )
       .bind(at - 90 * DAY),
     db.prepare('DELETE FROM devices WHERE revoked_at IS NOT NULL AND revoked_at < ?').bind(at - 90 * DAY),
+    // Lời mời ví chung hết hạn mà không ai nhận, hoặc đã nhận nhưng chủ ví bỏ quá 30 ngày.
+    db
+      .prepare('DELETE FROM wallet_invites WHERE (accepted_at IS NULL AND expires_at < ?) OR accepted_at < ?')
+      .bind(at, at - 30 * DAY),
     db.prepare('DELETE FROM audit_log WHERE at < ?').bind(at - 365 * DAY),
     // Email niêm phong app chưa tải về sau 30 ngày (ADR-0006).
     db.prepare('DELETE FROM inbound_mail WHERE received_at < ?').bind(at - 30 * DAY),
@@ -50,6 +54,18 @@ export async function purgeDeletedAccounts(env: Env, at = Date.now(), maxUsers =
       if (!page.truncated) break;
     }
     await db.batch([
+      // Ví chung (ADR-0015): ví mình làm chủ bị xóa cùng bản ghi/lời mời/thành viên (FK CASCADE khi xóa shared_wallets);
+      // ví mình là thành viên: rời ví, báo chủ ví xoay khóa.
+      db
+        .prepare(
+          `UPDATE shared_wallets SET needs_rotation = 1, updated_at = ?2 WHERE owner_id <> ?1
+           AND id IN (SELECT wallet_id FROM wallet_members WHERE user_id = ?1)`,
+        )
+        .bind(id, at),
+      db.prepare('DELETE FROM shared_wallets WHERE owner_id = ?').bind(id),
+      db.prepare('DELETE FROM wallet_members WHERE user_id = ?').bind(id),
+      db.prepare('DELETE FROM wallet_key_shares WHERE user_id = ?').bind(id),
+      db.prepare('DELETE FROM wallet_invites WHERE accepted_by = ?').bind(id),
       db.prepare('DELETE FROM records WHERE user_id = ?').bind(id),
       db.prepare('DELETE FROM wallet_keys WHERE user_id = ?').bind(id),
       db.prepare('DELETE FROM account_bundles WHERE user_id = ?').bind(id),
