@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+import '../money/currency.dart';
 import '../money/money.dart';
 import 'civil_date.dart';
 import 'models.dart';
@@ -148,6 +149,127 @@ abstract final class Ledger {
     );
   }
 
+  /// Tóm tắt một kỳ cho các ví [wallets], gộp theo tiền tệ: số dư đầu kỳ (= cuối kỳ trước, tức số dư được CHUYỂN
+  /// sang), thu, chi, chuyển ví ròng, điều chỉnh, cuối kỳ. Giao dịch chờ xác nhận không tính. Chuyển giữa hai ví cùng
+  /// nằm trong [wallets] triệt tiêu nhau (chỉ còn phí).
+  static List<PeriodSummary> periodSummary(Iterable<Wallet> wallets, Iterable<Txn> txns, DateRange range) {
+    final byId = {for (final w in wallets) w.id: w};
+    final acc = <Currency, _PeriodAcc>{};
+    for (final w in byId.values) {
+      (acc[w.currency] ??= _PeriodAcc()).opening += w.openingBalance;
+    }
+    for (final t in txns) {
+      final w = byId[t.walletId];
+      if (w == null || t.pending) continue;
+      final a = acc[w.currency]!;
+      if (t.date < range.start) {
+        a.opening += t.balanceEffect;
+        continue;
+      }
+      if (t.date > range.end) continue;
+      switch (t.kind) {
+        case TxnKind.income:
+          a.income += t.amount;
+          a.withheld += t.taxWithheld;
+        case TxnKind.expense:
+          a.expense += t.amount;
+        case TxnKind.transferIn:
+          a.transfer += t.amount;
+        case TxnKind.transferOut:
+          a.transfer -= t.amount;
+          a.fees += t.fee;
+        case TxnKind.adjustment:
+          a.adjustment += t.amount;
+      }
+    }
+    return [
+      for (final MapEntry(key: c, value: a) in acc.entries)
+        PeriodSummary(
+          range: range,
+          currency: c,
+          opening: Money(a.opening, c),
+          income: Money(a.income, c),
+          expense: Money(a.expense, c),
+          transferNet: Money(a.transfer, c),
+          fees: Money(a.fees, c),
+          adjustment: Money(a.adjustment, c),
+          taxWithheld: Money(a.withheld, c),
+        ),
+    ];
+  }
+
+  /// Tiến độ khoản thu nhiều đợt, tính từ các giao dịch thu có `incomePlanId` = [p.id].
+  static IncomePlanProgress incomePlanProgress(IncomePlan p, Iterable<Txn> txns, CivilDate today) {
+    final receipts = [
+      for (final t in txns)
+        if (t.incomePlanId == p.id && t.kind == TxnKind.income && !t.pending) t,
+    ]..sort((a, b) => a.date.compareTo(b.date));
+    var net = 0, withheld = 0;
+    for (final t in receipts) {
+      net += t.amount;
+      withheld += t.taxWithheld;
+    }
+    final gross = net + withheld;
+    // Đợt dự kiến: lần lượt "trả" bằng số đã nhận (trước thuế), đợt đầu tiên chưa đủ là đợt kế tiếp.
+    var cover = gross;
+    PlannedInstallment? next;
+    var overdue = 0;
+    for (final i in p.installments) {
+      if (cover >= i.amount) {
+        cover -= i.amount;
+        continue;
+      }
+      next ??= i;
+      if (i.date < today) overdue += i.amount - cover;
+      cover = 0;
+    }
+    final remaining = p.total <= 0 ? 0 : (p.total - gross).clamp(0, p.total);
+    return IncomePlanProgress(
+      receipts: receipts,
+      received: Money(net, p.currency),
+      withheld: Money(withheld, p.currency),
+      gross: Money(gross, p.currency),
+      remaining: Money(remaining, p.currency),
+      progressBp: p.total <= 0 ? null : (gross * 10000 ~/ p.total).clamp(0, 10000),
+      nextInstallment: next,
+      overdue: Money(overdue, p.currency),
+    );
+  }
+
+  /// "Cộng thu": tổng thu trong [range] gộp theo [key] (người trả, danh mục, khoản thu...), theo tiền tệ ví.
+  /// Trả danh sách giảm dần theo số tiền thực nhận.
+  static List<IncomeGroup> incomeBy(
+    Iterable<Wallet> wallets,
+    Iterable<Txn> txns,
+    DateRange range,
+    String? Function(Txn) key,
+  ) {
+    final cur = {for (final w in wallets) w.id: w.currency};
+    final groups = <(String?, Currency), _IncomeAcc>{};
+    for (final t in txns) {
+      final c = cur[t.walletId];
+      if (c == null || t.kind != TxnKind.income || t.pending || t.excludeFromReports || !range.contains(t.date)) {
+        continue;
+      }
+      final a = groups[(key(t), c)] ??= _IncomeAcc();
+      a.net += t.amount;
+      a.withheld += t.taxWithheld;
+      a.count++;
+      if (a.last == null || t.date > a.last!) a.last = t.date;
+    }
+    final out = [
+      for (final MapEntry(key: (k, c), value: a) in groups.entries)
+        IncomeGroup(
+          key: k,
+          received: Money(a.net, c),
+          withheld: Money(a.withheld, c),
+          count: a.count,
+          lastDate: a.last!,
+        ),
+    ]..sort((a, b) => b.received.minor.compareTo(a.received.minor));
+    return out;
+  }
+
   /// Tổng chi theo danh mục trong khoảng ngày (cho báo cáo), chỉ các ví trong [walletIds].
   static Map<String?, int> expenseByCategory(Iterable<Txn> txns, DateRange range, Set<String> walletIds) {
     final result = <String?, int>{};
@@ -210,4 +332,100 @@ final class GoalStatus {
   final Money remaining;
   final int progressBp;
   final Money? monthlyNeeded;
+}
+
+final class _PeriodAcc {
+  int opening = 0, income = 0, expense = 0, transfer = 0, fees = 0, adjustment = 0, withheld = 0;
+}
+
+final class _IncomeAcc {
+  int net = 0, withheld = 0, count = 0;
+  CivilDate? last;
+}
+
+/// Tóm tắt kỳ của một tiền tệ. `closing = opening + income - expense + transferNet - fees + adjustment`.
+@immutable
+final class PeriodSummary {
+  const PeriodSummary({
+    required this.range,
+    required this.currency,
+    required this.opening,
+    required this.income,
+    required this.expense,
+    required this.transferNet,
+    required this.fees,
+    required this.adjustment,
+    required this.taxWithheld,
+  });
+
+  final DateRange range;
+  final Currency currency;
+
+  /// Số dư đầu kỳ = số dư cuối kỳ trước được chuyển sang.
+  final Money opening;
+  final Money income;
+  final Money expense;
+
+  /// Chuyển vào/ra với ví NGOÀI tập đang xem (ròng).
+  final Money transferNet;
+  final Money fees;
+  final Money adjustment;
+
+  /// Thuế TNCN bên trả đã khấu trừ trên các khoản thu của kỳ (không ảnh hưởng số dư).
+  final Money taxWithheld;
+
+  /// Chênh lệch thu - chi trong kỳ.
+  Money get net => income - expense;
+  Money get closing => opening + income - expense + transferNet - fees + adjustment;
+
+  /// Tỉ lệ để dành (phần vạn) = (thu - chi) / thu; null khi không có thu.
+  int? get savingRateBp => income.isZero ? null : (net.minor * 10000 ~/ income.minor);
+}
+
+@immutable
+final class IncomePlanProgress {
+  const IncomePlanProgress({
+    required this.receipts,
+    required this.received,
+    required this.withheld,
+    required this.gross,
+    required this.remaining,
+    required this.progressBp,
+    required this.nextInstallment,
+    required this.overdue,
+  });
+
+  /// Các lần đã nhận, cũ trước.
+  final List<Txn> receipts;
+
+  /// Thực nhận (sau thuế khấu trừ).
+  final Money received;
+  final Money withheld;
+
+  /// Thực nhận + thuế khấu trừ - so với tổng thỏa thuận.
+  final Money gross;
+
+  /// Còn phải thu theo tổng thỏa thuận (0 nếu không chốt tổng).
+  final Money remaining;
+  final int? progressBp;
+  final PlannedInstallment? nextInstallment;
+
+  /// Phần của các đợt đã quá hạn mà chưa nhận.
+  final Money overdue;
+}
+
+@immutable
+final class IncomeGroup {
+  const IncomeGroup({
+    required this.key,
+    required this.received,
+    required this.withheld,
+    required this.count,
+    required this.lastDate,
+  });
+  final String? key;
+  final Money received;
+  final Money withheld;
+  final int count;
+  final CivilDate lastDate;
 }
