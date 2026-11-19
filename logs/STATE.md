@@ -14,7 +14,9 @@
 - [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
   desktop (Tesseract), widget/lối tắt iOS.
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
-- [ ] T7 toàn hệ (`~/projects/logs/handover/20261119-01_*` hàng T7): Pro tháng/năm + Ủng hộ + huy hiệu (PRODUCT_POLICY 3.3).
+- [ ] ⏸ T7/PRO1 - Pro + Ủng hộ + huy hiệu, **đồng bộ/sao lưu đám mây thành Pro** (👤 chốt 19/11/2026): CHỜ tsudev-standards
+  v3.9.0 (PRO-A) + máy chủ quyền lợi tsudev (PRO-B, có kênh RP) + 👤 trả lời phiếu gốc PRO1 mục 8. Đọc
+  `docs/adr/0016-*` (ĐỀ XUẤT) + `logs/handover/20261119-PRO1_luu-cuc-bo-pro-dong-bo.md`.
 - [ ] AP1 toàn hệ (`~/projects/logs/handover/20261119-AP1_*`): workflow `apple.yml` iOS/macOS cho `apps/app`.
 - [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); sinh icon app gốc từ dây chuyền thương hiệu (hiện chỉ web)
@@ -25,6 +27,12 @@
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 19/11/2026 - T7 dừng trước khi viết mã (agent-qulythuchi, phiên qulythuchi-b2): T5/T6 ở tsudev chưa có mã, và tsudev
+  ADR-0002 bác phương án app tự xác minh Play ⇒ 👤 chọn "phiếu trước, chờ T5". 👤 chốt thêm cho toàn hệ: miễn phí chỉ lưu
+  cục bộ, đồng bộ/sao lưu đám mây là Pro, nhắc mỗi 30 ngày khi ≥ 2 thiết bị. Đã viết phiếu gốc
+  `~/projects/logs/handover/20261119-PRO1_*` + phiếu con ở 22 repo + ADR-0016 (ĐỀ XUẤT); nhắn tsudev-55, tsucwico-c4,
+  lotus-share-1c; tsuscan-56 đã xác nhận nhận phiếu.
 
 - 19/11/2026 - P9 Ví chung gia đình (agent-qulythuchi, ADR-0015, phiếu rà soát `20261119-p9-vi-chung`): lõi
   `WalletSharing` (mã mời UUID + bí mật 32 B, bằng chứng BLAKE2b có khóa, khối chia sẻ `QS 01` = X-Wing + KEK trộn bí
@@ -108,6 +116,7 @@
 - 19/11/2026 - Ví chung: không gian bản ghi theo ví, mã mời có bí mật cặp, thu hồi = xoay khóa: `docs/adr/0015-*`
 - 18/11/2026 - Một Worker phục vụ site + web app `/app/` + API, CSP riêng cho app bằng `<meta>`: `docs/adr/0013-*`
 - 18/11/2026 - Tự nhập: bộ đọc chung, mọi nguồn vào hàng chờ, hàng đợi thông báo Keystore, email niêm phong tweetnacl: `docs/adr/0012-*`
+- 19/11/2026 - Pro (👤 chốt): đồng bộ/sao lưu đám mây, tạo ví chung, hạn mức, xuất PDF/XLSX + báo cáo nâng cao, tự nhập nâng cao; CSV + `.qtbak` vẫn miễn phí: `docs/adr/0016-*` (ĐỀ XUẤT)
 - 17/11/2026 - Phiên bản theo phiếu toàn hệ 20261117-V1: `YY.M.DDNN`, thẻ `vYY.M.DDNN`, versionCode `YYMDDNN`
 
 ## Sự cố bảo mật
