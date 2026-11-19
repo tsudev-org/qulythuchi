@@ -110,7 +110,12 @@ final class Vault {
   SecureKey? _master;
   SecureKey? _acctKey;
   final Map<String, SecureKey> _walletKeys = {};
+
+  /// Ví chung (P9): khóa theo phiên bản + phiên bản hiện tại của từng ví.
+  final Map<String, Map<int, SecureKey>> _sharedKeys = {};
+  final Map<String, int> _sharedCurrent = {};
   late final RecordCipher cipher = RecordCipher(_kh.envelope);
+  late final WalletSharing sharing = WalletSharing(_sodium);
 
   bool get hasAccount => _store.getMeta(_mBundle) != null;
   bool get isUnlocked => _master != null;
@@ -198,6 +203,16 @@ final class Vault {
     try {
       _acctKey = _kh.openWalletKey(master, _acctKeyId, _store.getMeta(_mAcctKey)!);
       _store.walletKeys().forEach((id, wrapped) => _walletKeys[id] = _kh.openWalletKey(master, id, wrapped));
+      for (final w in _store.sharedWallets()) {
+        _sharedCurrent[w.walletId] = w.localVer;
+        _store.sharedKeys(w.walletId).forEach((ver, wrapped) {
+          try {
+            (_sharedKeys[w.walletId] ??= {})[ver] = sharing.openForSelf(master, wrapped, w.walletId, ver);
+          } on EnvelopeException {
+            // Bản bọc hỏng: phiên bản này không dùng được, lượt đồng bộ sau nhận lại từ máy chủ.
+          }
+        });
+      }
     } on Object {
       master.dispose();
       lock();
@@ -213,9 +228,16 @@ final class Vault {
     for (final k in _walletKeys.values) {
       k.dispose();
     }
+    for (final m in _sharedKeys.values) {
+      for (final k in m.values) {
+        k.dispose();
+      }
+    }
     _master = null;
     _acctKey = null;
     _walletKeys.clear();
+    _sharedKeys.clear();
+    _sharedCurrent.clear();
   }
 
   /// Đổi mật khẩu mã hóa (cần đang mở khóa và biết mật khẩu cũ).
@@ -243,14 +265,96 @@ final class Vault {
     _walletKeys[walletId] = key;
   }
 
-  bool hasWalletKey(String walletId) => _walletKeys.containsKey(walletId);
+  bool hasWalletKey(String walletId) => _currentKey(walletId) != null;
 
-  /// Khóa dùng để niêm phong bản ghi thuộc [walletId] (null = cấp tài khoản).
+  SecureKey? _currentKey(String walletId) {
+    final ver = _sharedCurrent[walletId];
+    if (ver != null) return keyForVersion(walletId, ver);
+    return _walletKeys[walletId];
+  }
+
+  /// Khóa dùng để niêm phong bản ghi thuộc [walletId] (null = cấp tài khoản). Ví chung: phiên bản đang niêm phong
+  /// bản ghi trên máy này (`local_ver`).
   SecureKey keyFor(String? walletId) {
     _requireMaster;
     if (walletId == null) return _acctKey!;
-    return _walletKeys[walletId] ?? (throw StateError('Không có khóa cho ví này'));
+    return _currentKey(walletId) ?? (throw StateError('Không có khóa cho ví này'));
   }
+
+  // ------------------------------------------------------------------ Ví chung (P9, ADR-0015)
+
+  /// Khóa ví chung phiên bản [ver]. Phiên bản 1 của ví do mình tạo chính là khóa ví riêng trước khi chia sẻ.
+  SecureKey? keyForVersion(String walletId, int ver) =>
+      _sharedKeys[walletId]?[ver] ?? (ver == 1 ? _walletKeys[walletId] : null);
+
+  /// Đặt phiên bản đang niêm phong bản ghi của ví trên máy này (sau khi mã hóa lại xong).
+  void setLocalKeyVersion(String walletId, int ver) => _sharedCurrent[walletId] = ver;
+
+  void forgetSharedWallet(String walletId) {
+    final m = _sharedKeys.remove(walletId);
+    for (final k in m?.values ?? const <SecureKey>[]) {
+      k.dispose();
+    }
+    _sharedCurrent.remove(walletId);
+  }
+
+  /// Nhận khóa phiên bản [ver] (đã mở) và lưu bản bọc bằng khóa chủ. Vault giữ [key] (không dispose ở ngoài).
+  void installSharedKey(String walletId, int ver, SecureKey key) {
+    _store.putSharedKey(walletId, ver, sharing.wrapForSelf(_requireMaster, key, walletId, ver));
+    final m = _sharedKeys[walletId] ??= {};
+    m[ver]?.dispose();
+    m[ver] = key;
+  }
+
+  /// Bản bọc phiên bản [ver] cho chính tài khoản mình (gửi máy chủ để các thiết bị khác của mình mở).
+  /// [key]: khóa mới chưa cài (xoay khóa - chỉ cài sau khi máy chủ nhận).
+  Uint8List wrapSharedForSelf(String walletId, int ver, {SecureKey? key}) => sharing.wrapForSelf(
+    _requireMaster,
+    key ?? keyForVersion(walletId, ver) ?? (throw StateError('Chưa có khóa phiên bản này')),
+    walletId,
+    ver,
+  );
+
+  /// Mở bản bọc khóa ví chung nhận từ máy chủ: phong bì của chính mình, hoặc khối X-Wing + một trong các bí mật cặp.
+  /// Không mở được ⇒ null (bỏ qua, không cài khóa lạ).
+  SecureKey? openSharedKey(String walletId, int ver, Uint8List wrapped, Iterable<Uint8List> pairSecrets) {
+    final master = _requireMaster;
+    if (!WalletSharing.isShareBlob(wrapped)) {
+      try {
+        return sharing.openForSelf(master, wrapped, walletId, ver);
+      } on EnvelopeException {
+        return null;
+      }
+    }
+    final identity = _kh.openIdentity(_bundle, master);
+    try {
+      for (final secret in pairSecrets) {
+        try {
+          return sharing.openShare(wrapped, walletId: walletId, version: ver, identity: identity, pairSecret: secret);
+        } on EnvelopeException {
+          continue;
+        }
+      }
+      return null;
+    } finally {
+      identity.dispose();
+    }
+  }
+
+  /// Khối chia sẻ khóa phiên bản [ver] tới thành viên (khóa X-Wing [kemPublicKey], bí mật cặp [pairSecret]).
+  Uint8List shareKeyTo(String walletId, int ver, Uint8List kemPublicKey, Uint8List pairSecret, {SecureKey? key}) =>
+      sharing.shareKey(
+        walletKey: key ?? keyForVersion(walletId, ver) ?? (throw StateError('Chưa có khóa phiên bản này')),
+        walletId: walletId,
+        version: ver,
+        recipientKemPublicKey: kemPublicKey,
+        pairSecret: pairSecret,
+      );
+
+  Uint8List get kemPublicKey => _bundle.kemPublicKey;
+
+  /// Mã an toàn của tài khoản này (so với người cùng ví qua kênh ngoài).
+  String get safetyCode => sharing.safetyCode(_bundle.kemPublicKey, _bundle.boxPublicKey);
 
   // ------------------------------------------------------------------ Mở nhanh: PIN, sinh trắc
 
