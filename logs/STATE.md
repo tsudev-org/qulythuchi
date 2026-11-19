@@ -9,8 +9,8 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] **P9 - Ví chung gia đình** (phiếu `logs/handover/20261118-04_p8-xong-bat-dau-p9.md`, prompt ở mục 6b).
-  👤: thử đăng nhập trên `/app/` production; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
+- [ ] 👤 Nghiệm thu P9 trên production bằng HAI tài khoản tsudev thật (phiếu `logs/handover/20261119-03_p9-xong.md` mục 2b);
+  thử đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
 - [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
   desktop (Tesseract), widget/lối tắt iOS.
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
@@ -23,9 +23,15 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| P9 Ví chung gia đình (nhánh `feat/p9-vi-chung`) | agent-qulythuchi | 19/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 19/11/2026 - P9 Ví chung gia đình (agent-qulythuchi, ADR-0015, phiếu rà soát `20261119-p9-vi-chung`): lõi
+  `WalletSharing` (mã mời UUID + bí mật 32 B, bằng chứng BLAKE2b có khóa, khối chia sẻ `QS 01` = X-Wing + KEK trộn bí
+  mật cặp, bọc theo phiên bản `swk|ví|ver`, mã an toàn); máy chủ migration 0003 (không gian bản ghi theo ví, quyền
+  chủ/ghi/xem, xoay khóa trong một giao tác, `stale_key`, `shared_wallet`); app (CSDL schema v2, đồng bộ không gian ví,
+  chủ ví kiểm bằng chứng trước khi chia khóa, tự xoay khi có người rời, màn Chia sẻ và thành viên + Tham gia ví chung,
+  vi+en). Lõi 95, máy chủ 59, app 99 test đạt; PR #23 CI xanh, gộp `cc003d6`. LÊN PRODUCTION (Worker version `1665dbe4`, migration 0003 áp D1 remote): `/`, `/app/`, `/api/v1/health` 200; `/api/v1/wallets`, `/api/v1/invites/:id` 401 khi chưa đăng nhập; web app chứa màn ví chung. CHƯA nghiệm thu bằng hai tài khoản thật (👤).
 
 - 19/11/2026 - P9a Tiện ích tài chính cá nhân (agent-qulythuchi, ADR-0014, phiếu rà soát `20261119-p9a-tien-ich`):
   số dư theo kỳ (chuyển số dư hiển thị, không bút toán), khoản thu nhiều đợt + thuế khấu trừ, thuế TNCN 2020/2026 +
@@ -99,6 +105,7 @@
 - 17/11/2026 - Xuất bản rõ có cảnh báo; sao lưu `.qtbak` = gói khóa + phong bì `bak|<id>`, khôi phục chỉ trên máy chưa có tài khoản: `docs/adr/0009-*`
 - 18/11/2026 - Máy chủ: không gian bản ghi = tài khoản, rev trong giao tác, tệp xuyên Worker, xóa tài khoản 30 ngày: `docs/adr/0010-*`
 - 18/11/2026 - Đồng bộ app: không trộn khóa chủ, gói máy chủ chỉ nhận khi mở được bằng khóa chủ, ghim CA gốc: `docs/adr/0011-*`
+- 19/11/2026 - Ví chung: không gian bản ghi theo ví, mã mời có bí mật cặp, thu hồi = xoay khóa: `docs/adr/0015-*`
 - 18/11/2026 - Một Worker phục vụ site + web app `/app/` + API, CSP riêng cho app bằng `<meta>`: `docs/adr/0013-*`
 - 18/11/2026 - Tự nhập: bộ đọc chung, mọi nguồn vào hàng chờ, hàng đợi thông báo Keystore, email niêm phong tweetnacl: `docs/adr/0012-*`
 - 17/11/2026 - Phiên bản theo phiếu toàn hệ 20261117-V1: `YY.M.DDNN`, thẻ `vYY.M.DDNN`, versionCode `YYMDDNN`
