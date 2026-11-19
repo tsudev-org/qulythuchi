@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:sodium/sodium_sumo.dart';
 import 'package:unorm_dart/unorm_dart.dart' as unorm;
 
+import '../sharing/wallet_sharing.dart' show WalletSharing;
 import 'envelope.dart';
 import 'recovery_phrase.dart';
 
@@ -311,6 +312,9 @@ final class KeyHierarchy {
   }
 
   /// Chia sẻ khóa ví tới thành viên qua X-Wing (lai hậu lượng tử). Đầu ra: bản mã KEM ‖ phong bì.
+  ///
+  /// KHÔNG dùng cho ví chung: khối này không xác thực người gửi (máy chủ độc tự tạo được). Ví chung dùng
+  /// [WalletSharing.shareKey] - X-Wing + bí mật cặp từ mã mời (ADR-0015).
   Uint8List shareWalletKey(SecureKey walletKey, String walletId, Uint8List recipientKemPublicKey) {
     final enc = _sodium.crypto.kem.enc(publicKey: recipientKemPublicKey);
     final kek = _sodium.crypto.kdf.deriveFromKey(

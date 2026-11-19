@@ -36,6 +36,13 @@ final class EnvelopeContext {
   /// Khóa ví được bọc bởi khóa chủ.
   factory EnvelopeContext.walletKey(String walletId) => EnvelopeContext._('wk|${_part(walletId)}', 16);
 
+  /// Khóa ví chung phiên bản [version] (P9, ADR-0015): bọc bởi khóa chủ hoặc bởi KEK chia sẻ X-Wing + bí mật cặp.
+  /// Phiên bản nằm trong AAD ⇒ máy chủ không đổi số phiên bản của một bản bọc được.
+  factory EnvelopeContext.sharedWalletKey(String walletId, int version) {
+    if (version < 1 || version > 0x7fffffff) throw ArgumentError.value(version, 'version');
+    return EnvelopeContext._('swk|${_part(walletId)}|$version', 16);
+  }
+
   /// Khóa bí mật danh tính được bọc bởi khóa chủ.
   factory EnvelopeContext.identityKey(String kind) => EnvelopeContext._('ik|${_part(kind)}', 16);
 
