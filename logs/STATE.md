@@ -23,6 +23,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| P9 Ví chung gia đình (nhánh `feat/p9-vi-chung`) | agent-qulythuchi | 19/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
