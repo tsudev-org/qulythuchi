@@ -30,8 +30,9 @@
   số dư theo kỳ (chuyển số dư hiển thị, không bút toán), khoản thu nhiều đợt + thuế khấu trừ, thuế TNCN 2020/2026 +
   gross/net + nhắc hạn, QR VietQR/EMVCo (kiểm CRC, mở app ngân hàng qua dl.vietqr.io có đồng ý, tạo mã nhận), 157 tiền
   tệ ISO 4217, nhập theo tệp mẫu CSV/XLSX, ba lối đăng nhập + chế độ khách, máy chủ gửi `idp_hint`. IdP tsudev.com nhận
-  `idp_hint` ở tsudev#326 (QT4, phiên tsudev). Lõi 85, app đủ, máy chủ 53 test đạt. Deploy web chạy từ main sau khi gộp
-  (gồm luôn T3).
+  `idp_hint` ở tsudev#326 (QT4, phiên tsudev). Lõi 85, app đủ, máy chủ 53 test đạt; PR #21 CI xanh, gộp `adf7374`.
+  LÊN PRODUCTION (Worker version `f14986a1`, gồm luôn T3): `/`, `/app/` 200, `/auth/web/start?provider=google` ⇒
+  `idp_hint=google`. Dependabot #2 (picomatch, apps/site) là advisory ĐÃ RÚT - không cần xử lý.
 
 - 18/11/2026 - Email Routing (chủ dự án chạy lệnh, agent kiểm): miền con `in.qulythuchi.tsudev.com` bật (MX route1/2/3 +
   SPF đã lan truyền); catch-all của ZONE tsudev.com ⇒ Worker `qulythuchi` (trước đó tắt/drop). Worker từ chối ngay thư
