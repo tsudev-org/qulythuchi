@@ -118,11 +118,13 @@ class _WalletFormPageState extends ConsumerState<WalletFormPage> {
     final l = context.l10n;
     final data = ref.watch(ledgerProvider);
     final hasTxns = _editing != null && data.txns.any((t) => t.walletId == _editing!.id);
+    // Ví chung: chỉ chủ ví sửa thông tin/xóa ví (máy chủ cũng chặn).
+    final canManage = _editing == null || data.canManage(_editing!.id);
     return Scaffold(
       appBar: AppBar(
         title: Text(_editing == null ? l.walletNew : l.walletEdit),
         actions: [
-          if (_editing != null)
+          if (_editing != null && canManage)
             IconButton(tooltip: l.actionDelete, icon: const Icon(Icons.delete_outline), onPressed: _delete),
         ],
       ),
@@ -142,10 +144,22 @@ class _WalletFormPageState extends ConsumerState<WalletFormPage> {
                     ),
                   ),
                 ),
+                const SizedBox(height: QtSpace.s2),
+                Card(
+                  child: ListTile(
+                    key: const Key('wallet.members'),
+                    leading: Icon(data.isShared(_editing!.id) ? Icons.group_outlined : Icons.group_add_outlined),
+                    title: Text(l.shareMembersEntry),
+                    subtitle: canManage ? null : Text(l.shareReadOnlyNote),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => context.go('/wallets/${_editing!.id}/members'),
+                  ),
+                ),
                 const SizedBox(height: QtSpace.s4),
               ],
               TextFormField(
                 controller: _name,
+                readOnly: !canManage,
                 autofocus: _editing == null,
                 maxLength: 60,
                 textInputAction: TextInputAction.next,
@@ -206,7 +220,7 @@ class _WalletFormPageState extends ConsumerState<WalletFormPage> {
                   contentPadding: EdgeInsets.zero,
                 ),
               const SizedBox(height: QtSpace.s6),
-              FilledButton(onPressed: _save, child: Text(l.actionSave)),
+              if (canManage) FilledButton(onPressed: _save, child: Text(l.actionSave)),
             ],
           ),
         ),

@@ -292,7 +292,7 @@ extension on FakeSyncServer {
                     },
                 ],
                 'invites': w.members[uid] != 'owner'
-                    ? const []
+                    ? const <Object?>[]
                     : [
                         for (final e in invites.entries)
                           if (e.value['wallet_id'] == w.id)

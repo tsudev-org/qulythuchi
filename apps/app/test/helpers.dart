@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qulythuchi/app.dart';
 import 'package:qulythuchi/data/key_storage.dart';
@@ -42,6 +43,7 @@ Future<void> pumpApp(
   WidgetTester tester,
   AppServices services, {
   Map<String, Object> prefs = const {'locale': 'vi'},
+  List<Override> extra = const [],
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
   final sp = await SharedPreferences.getInstance();
@@ -54,6 +56,7 @@ Future<void> pumpApp(
         // flutter test giả lập Android nhưng không có plugin/kênh gốc: dùng bản không-làm-gì.
         notificationBridgeProvider.overrideWithValue(const NoopNotificationBridge()),
         quickLinksListenerProvider.overrideWithValue((_) => null),
+        ...extra,
       ],
       child: const QulyApp(),
     ),

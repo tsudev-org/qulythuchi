@@ -43,6 +43,8 @@ import 'ui/shell.dart';
 import 'ui/tax/tax_page.dart';
 import 'ui/transactions/txn_form_page.dart';
 import 'ui/transactions/txn_list_page.dart';
+import 'ui/wallets/join_wallet_page.dart';
+import 'ui/wallets/shared_wallet_page.dart';
 import 'ui/wallets/wallet_form_page.dart';
 import 'ui/wallets/wallets_page.dart';
 
@@ -76,6 +78,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: '/welcome', builder: (_, _) => const OnboardingFlow()),
       GoRoute(path: '/lock', builder: (_, _) => const LockPage()),
+      // Liên kết mời `…/app/#/moi/<mã>` (ADR-0015): mã nằm sau # nên không tới máy chủ.
+      GoRoute(
+        path: '/moi/:code',
+        redirect: (_, s) => Uri(path: '/wallets/join', queryParameters: {'code': s.pathParameters['code']}).toString(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => AppShell(shell: shell),
         branches: [
@@ -136,8 +143,18 @@ final routerProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(path: 'new', builder: (_, _) => const WalletFormPage()),
                   GoRoute(
+                    path: 'join',
+                    builder: (_, s) => JoinWalletPage(initialCode: s.uri.queryParameters['code']),
+                  ),
+                  GoRoute(
                     path: ':id',
                     builder: (_, s) => WalletFormPage(walletId: s.pathParameters['id']),
+                    routes: [
+                      GoRoute(
+                        path: 'members',
+                        builder: (_, s) => SharedWalletPage(walletId: s.pathParameters['id']!),
+                      ),
+                    ],
                   ),
                 ],
               ),

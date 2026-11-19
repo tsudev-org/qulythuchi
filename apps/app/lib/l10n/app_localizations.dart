@@ -4591,6 +4591,378 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã nhập {count} giao dịch, tạo {wallets} ví, {categories} danh mục.'**
   String importTemplateDone(int count, int wallets, int categories);
+
+  /// No description provided for @shareTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví chung'**
+  String get shareTitle;
+
+  /// No description provided for @shareMembersEntry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ và thành viên'**
+  String get shareMembersEntry;
+
+  /// No description provided for @shareBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví chung'**
+  String get shareBadge;
+
+  /// No description provided for @shareIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời người trong gia đình cùng ghi chép ví này. Khóa ví được trao qua mã hóa đầu-cuối: máy chủ chỉ thấy bản mã, không đọc được số tiền hay ghi chú.'**
+  String get shareIntro;
+
+  /// No description provided for @shareStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ ví này'**
+  String get shareStart;
+
+  /// No description provided for @shareNeedSignIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần đăng nhập và đồng bộ để dùng ví chung.'**
+  String get shareNeedSignIn;
+
+  /// No description provided for @shareGoSignIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đến Tài khoản và đồng bộ'**
+  String get shareGoSignIn;
+
+  /// No description provided for @shareNotLoaded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa tải được danh sách thành viên.'**
+  String get shareNotLoaded;
+
+  /// No description provided for @shareRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get shareRetry;
+
+  /// No description provided for @shareMembers.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành viên'**
+  String get shareMembers;
+
+  /// No description provided for @shareInvites.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lời mời đang mở'**
+  String get shareInvites;
+
+  /// No description provided for @shareInvite.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời thành viên'**
+  String get shareInvite;
+
+  /// No description provided for @shareRoleOwner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ ví'**
+  String get shareRoleOwner;
+
+  /// No description provided for @shareRoleEditor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người ghi'**
+  String get shareRoleEditor;
+
+  /// No description provided for @shareRoleViewer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người xem'**
+  String get shareRoleViewer;
+
+  /// No description provided for @shareRoleEditorHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm, sửa, xóa giao dịch trong ví'**
+  String get shareRoleEditorHint;
+
+  /// No description provided for @shareRoleViewerHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ xem, không ghi'**
+  String get shareRoleViewerHint;
+
+  /// No description provided for @shareYourRole.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền của bạn: {role}'**
+  String shareYourRole(String role);
+
+  /// No description provided for @shareYou.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn'**
+  String get shareYou;
+
+  /// No description provided for @shareSafetyCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã an toàn: {code}'**
+  String shareSafetyCode(String code);
+
+  /// No description provided for @shareMySafetyCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã an toàn của bạn: {code}. Hai người cùng ví nên so mã an toàn qua điện thoại hoặc gặp mặt.'**
+  String shareMySafetyCode(String code);
+
+  /// No description provided for @shareChangeTo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi thành {role}'**
+  String shareChangeTo(String role);
+
+  /// No description provided for @shareRemove.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu hồi quyền'**
+  String get shareRemove;
+
+  /// No description provided for @shareRemoveConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu hồi quyền của {name}? Ví sẽ được đổi khóa mới và mã hóa lại; người này không đọc được dữ liệu mới nữa.'**
+  String shareRemoveConfirm(String name);
+
+  /// No description provided for @shareRemoved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thu hồi và đổi khóa ví.'**
+  String get shareRemoved;
+
+  /// No description provided for @shareInviteWaiting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ người nhận'**
+  String get shareInviteWaiting;
+
+  /// No description provided for @shareInviteAccepted.
+  ///
+  /// In vi, this message translates to:
+  /// **'{name} đã nhận - đang hoàn tất'**
+  String shareInviteAccepted(String name);
+
+  /// No description provided for @shareInviteCancel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hủy lời mời'**
+  String get shareInviteCancel;
+
+  /// No description provided for @shareInviteRoleTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời với quyền'**
+  String get shareInviteRoleTitle;
+
+  /// No description provided for @shareInviteCreate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo lời mời'**
+  String get shareInviteCreate;
+
+  /// No description provided for @shareInviteCodeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi mã mời'**
+  String get shareInviteCodeTitle;
+
+  /// No description provided for @shareInviteCodeBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi mã hoặc liên kết này cho người được mời qua tin nhắn riêng, hoặc cho họ quét mã QR. Mã dùng được một lần trong 7 ngày. Ai có mã đều có thể nhận lời mời, nên đừng đăng công khai.'**
+  String get shareInviteCodeBody;
+
+  /// No description provided for @shareCopyCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép mã'**
+  String get shareCopyCode;
+
+  /// No description provided for @shareCopyLink.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép liên kết'**
+  String get shareCopyLink;
+
+  /// No description provided for @shareCopied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép.'**
+  String get shareCopied;
+
+  /// No description provided for @shareLeave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rời ví chung'**
+  String get shareLeave;
+
+  /// No description provided for @shareLeaveConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rời ví \"{name}\"? Dữ liệu của ví sẽ bị xóa khỏi máy này.'**
+  String shareLeaveConfirm(String name);
+
+  /// No description provided for @shareLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã rời ví chung.'**
+  String get shareLeft;
+
+  /// No description provided for @shareReadOnlyNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví chung: chỉ chủ ví sửa được thông tin ví.'**
+  String get shareReadOnlyNote;
+
+  /// No description provided for @shareBadInvites.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hủy {count} lời mời vì bằng chứng không khớp (có thể ai đó không có mã thật).'**
+  String shareBadInvites(int count);
+
+  /// No description provided for @joinTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tham gia ví chung'**
+  String get joinTitle;
+
+  /// No description provided for @joinCodeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã hoặc liên kết mời'**
+  String get joinCodeLabel;
+
+  /// No description provided for @joinPreview.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem lời mời'**
+  String get joinPreview;
+
+  /// No description provided for @joinInvalidCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã mời không đúng định dạng.'**
+  String get joinInvalidCode;
+
+  /// No description provided for @joinFrom.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lời mời từ {name}'**
+  String joinFrom(String name);
+
+  /// No description provided for @joinRole.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền: {role}'**
+  String joinRole(String role);
+
+  /// No description provided for @joinAccept.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tham gia'**
+  String get joinAccept;
+
+  /// No description provided for @joinSent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận lời mời. Ví sẽ xuất hiện khi chủ ví mở app.'**
+  String get joinSent;
+
+  /// No description provided for @joinPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chờ chủ ví xác nhận'**
+  String get joinPending;
+
+  /// No description provided for @joinOwnerUnknown.
+  ///
+  /// In vi, this message translates to:
+  /// **'chủ ví'**
+  String get joinOwnerUnknown;
+
+  /// No description provided for @joinAlreadyAccepted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã nhận lời mời này.'**
+  String get joinAlreadyAccepted;
+
+  /// No description provided for @shareErrInviteGone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lời mời không tồn tại hoặc đã hết hạn.'**
+  String get shareErrInviteGone;
+
+  /// No description provided for @shareErrInviteTaken.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lời mời đã được người khác dùng. Hãy xin chủ ví mã mới.'**
+  String get shareErrInviteTaken;
+
+  /// No description provided for @shareErrInviteOwn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đây là lời mời vào ví của chính bạn.'**
+  String get shareErrInviteOwn;
+
+  /// No description provided for @shareErrAlreadyMember.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã ở trong ví này.'**
+  String get shareErrAlreadyMember;
+
+  /// No description provided for @shareErrNoKeys.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy đồng bộ một lần để tải khóa mã hóa lên trước.'**
+  String get shareErrNoKeys;
+
+  /// No description provided for @shareErrLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đạt giới hạn số ví chung hoặc thành viên.'**
+  String get shareErrLimit;
+
+  /// No description provided for @shareErrStale.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ví vừa thay đổi. Hãy đồng bộ rồi thử lại.'**
+  String get shareErrStale;
+
+  /// No description provided for @shareErrMissingSecret.
+  ///
+  /// In vi, this message translates to:
+  /// **'Máy này chưa có đủ thông tin của một thành viên. Hãy đồng bộ hoặc thử trên máy đã tạo lời mời.'**
+  String get shareErrMissingSecret;
+
+  /// No description provided for @shareErrForbidden.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ chủ ví được làm việc này.'**
+  String get shareErrForbidden;
+
+  /// No description provided for @errReadOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chỉ có quyền xem ví chung này.'**
+  String get errReadOnly;
+
+  /// No description provided for @errOwnerOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ chủ ví được sửa thông tin ví chung.'**
+  String get errOwnerOnly;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

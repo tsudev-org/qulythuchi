@@ -168,6 +168,8 @@ String errorMessage(BuildContext context, Object error) {
       'remindRange' => l.errRemindRange,
       'notFound' => l.errNotFound,
       'walletLocked' => l.errWalletLocked,
+      'readOnly' => l.errReadOnly,
+      'ownerOnly' => l.errOwnerOnly,
       _ => l.errGeneric,
     };
   }

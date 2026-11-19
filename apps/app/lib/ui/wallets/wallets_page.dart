@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qulythuchi_core/qulythuchi_core.dart' show WalletRole;
 
 import '../../state/providers.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import '../widgets/common.dart';
+import 'shared_wallet_page.dart' show roleLabel;
 
 class WalletsPage extends ConsumerStatefulWidget {
   const WalletsPage({super.key});
@@ -27,7 +29,17 @@ class _WalletsPageState extends ConsumerState<WalletsPage> {
     final totals = data.totals();
 
     return Scaffold(
-      appBar: AppBar(title: Text(l.navWallets)),
+      appBar: AppBar(
+        title: Text(l.navWallets),
+        actions: [
+          IconButton(
+            key: const Key('wallets.join'),
+            tooltip: l.joinTitle,
+            icon: const Icon(Icons.group_add_outlined),
+            onPressed: () => context.go('/wallets/join'),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         tooltip: l.walletNew,
         onPressed: () => context.go('/wallets/new'),
@@ -62,13 +74,15 @@ class _WalletsPageState extends ConsumerState<WalletsPage> {
                       children: [
                         for (final w in wallets)
                           ListTile(
-                            leading: Icon(walletTypeIcon(w.type)),
+                            leading: Icon(data.isShared(w.id) ? Icons.group_outlined : walletTypeIcon(w.type)),
                             title: Text(w.name, maxLines: 1, overflow: TextOverflow.ellipsis),
                             subtitle: Text(
                               [
                                 walletTypeLabel(l, w.type),
                                 w.currency.code,
                                 if (w.archived) l.walletArchivedBadge,
+                                if (data.walletRoles[w.id] case final r?)
+                                  r == WalletRole.owner ? l.shareBadge : '${l.shareBadge} (${roleLabel(l, r)})',
                               ].join(' · '),
                             ),
                             trailing: MoneyText(data.balance(w), style: const TextStyle(fontWeight: FontWeight.w600)),
