@@ -16,11 +16,20 @@ import 'ui/startup_error.dart';
 const _dbName = 'qulythuchi';
 const _kDbKey = 'qt.dbKey';
 
+/// Khóa CSDL đã có trước lần chạy này ⇒ máy đã cài (dùng cho di trú mặc định giao diện/ngôn ngữ).
+bool _dbExisted = false;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
+  final hadPrefs = prefs.getKeys().isNotEmpty;
   try {
     final services = await bootstrap();
+    await migrateFirstRunDefaults(
+      prefs,
+      installedBefore: hadPrefs || _dbExisted,
+      device: PlatformDispatcher.instance.locale,
+    );
     runApp(
       ProviderScope(
         overrides: [servicesProvider.overrideWithValue(services), sharedPreferencesProvider.overrideWithValue(prefs)],
@@ -41,6 +50,7 @@ Future<AppServices> bootstrap() async {
   String? hexKey;
   if (databaseEncryptedAtRest) {
     hexKey = await keyStorage.read(_kDbKey);
+    _dbExisted = hexKey != null;
     if (hexKey == null) {
       final bytes = sodium.randombytes.buf(32);
       hexKey = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();

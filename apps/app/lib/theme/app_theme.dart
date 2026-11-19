@@ -9,10 +9,11 @@ enum ThemeChoice {
   dark,
   system;
 
+  /// Chưa lưu lựa chọn ⇒ Hệ thống (tsudev-standards PRODUCT_POLICY mục 1.2).
   static ThemeChoice parse(String? raw) => switch (raw) {
     'light' || 'warm' => ThemeChoice.light,
-    'system' => ThemeChoice.system,
-    _ => ThemeChoice.dark,
+    'dark' => ThemeChoice.dark,
+    _ => ThemeChoice.system,
   };
 
   ThemeMode get mode => switch (this) {

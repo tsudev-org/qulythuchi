@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../l10n/app_localizations.dart';
+import '../state/settings.dart';
 import '../theme/app_theme.dart';
 
 /// Màn hình khi không mở được kho bí mật/CSDL (ví dụ: libsecret chưa chạy trên Linux, kho khóa bị xóa).
@@ -20,6 +21,7 @@ class StartupErrorApp extends StatelessWidget {
       darkTheme: buildTheme(Brightness.dark),
       themeMode: choice.mode,
       locale: loc == null ? null : Locale(loc),
+      localeResolutionCallback: (device, _) => resolveAppLocale(device),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
