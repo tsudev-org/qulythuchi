@@ -110,7 +110,7 @@ class _GoalFormPageState extends ConsumerState<GoalFormPage> {
           initialValue: _currency,
           isExpanded: true,
           decoration: InputDecoration(labelText: l.walletCurrency),
-          items: [for (final c in Currency.known) DropdownMenuItem(value: c, child: Text('${c.code} (${c.symbol})'))],
+          items: [for (final c in Currency.all) DropdownMenuItem(value: c, child: Text('${c.code} (${c.symbol})'))],
           onChanged: _editing == null ? (v) => setState(() => _currency = v ?? _currency) : null,
         ),
         AmountField(controller: _target, currency: _currency, label: l.goalTarget),

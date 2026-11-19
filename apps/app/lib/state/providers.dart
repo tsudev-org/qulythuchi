@@ -205,6 +205,22 @@ final class LedgerNotifier extends Notifier<LedgerData> {
   Txn recordDebtPayment(String debtId, int amount, CivilDate date, {String? note}) =>
       _mutate((r) => r.recordDebtPayment(debtId, amount, date, note: note));
   void deleteDebt(String id) => _mutate((r) => r.deleteDebt(id));
+  IncomePlan saveIncomePlan(IncomePlan p) => _mutate((r) => r.saveIncomePlan(p));
+  void deleteIncomePlan(String id) => _mutate((r) => r.deleteIncomePlan(id));
+  Txn recordIncomeReceipt(
+    String planId, {
+    required String walletId,
+    required int net,
+    int withheld = 0,
+    required CivilDate date,
+    String? note,
+  }) => _mutate(
+    (r) => r.recordIncomeReceipt(planId, walletId: walletId, net: net, withheld: withheld, date: date, note: note),
+  );
+  TaxProfile saveTaxProfile(TaxProfile p) => _mutate((r) => r.saveTaxProfile(p));
+  int importPlan({required List<Wallet> wallets, required List<Category> categories, required List<Txn> txns}) =>
+      _mutate((r) => r.importPlan(wallets: wallets, categories: categories, txns: txns));
+  int ensureStandardIncomeCategories(DefaultCategoryLocale l) => _mutate((r) => r.ensureStandardIncomeCategories(l));
 }
 
 /// Bộ lên lịch thông báo (ghi đè trong test bằng [NoopReminderScheduler]).

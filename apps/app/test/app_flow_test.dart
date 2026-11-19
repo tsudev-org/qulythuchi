@@ -7,7 +7,7 @@ import 'helpers.dart';
 
 Future<void> _onboard(WidgetTester tester, AppServices services) async {
   expect(find.text('Chào mừng tới Quly Thu Chi'), findsOneWidget);
-  await tester.tap(find.text('Bắt đầu'));
+  await tester.tap(find.byKey(const Key('welcome.guest')));
   await settle(tester);
 
   // Mật khẩu ngắn bị chặn.
@@ -101,7 +101,7 @@ void main() {
       expect(find.textContaining('-100.000'), findsWidgets);
 
       final wallets = services.store.allRecords();
-      expect(wallets.length, greaterThan(28)); // 28 danh mục + ví + giao dịch, tất cả đã niêm phong
+      expect(wallets.length, greaterThan(28)); // 36 danh mục + ví + giao dịch, tất cả đã niêm phong
       expect(tester.takeException(), isNull);
     });
   }
@@ -132,7 +132,7 @@ void main() {
     await setSurface(tester, const Size(360, 800));
     await pumpApp(tester, makeServices(sodium!), prefs: {'locale': 'en', 'theme': 'light'});
     expect(find.text('Welcome to Quly Thu Chi'), findsOneWidget);
-    expect(Theme.of(tester.element(find.text('Get started'))).brightness, Brightness.light);
+    expect(Theme.of(tester.element(find.byKey(const Key('welcome.guest')))).brightness, Brightness.light);
     expect(Currency.vnd.code, 'VND');
   });
 }

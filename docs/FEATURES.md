@@ -9,7 +9,7 @@
 | Ví | Nhiều ví: tiền mặt, ngân hàng, thẻ tín dụng (hạn mức, ngày sao kê/đến hạn), ví điện tử, tiết kiệm; ẩn/lưu trữ ví; số dư đầu kỳ | Money Lover, MISA, Money Manager | P2 |
 | Giao dịch | Thu, chi, chuyển ví (kèm phí), điều chỉnh số dư; ghi chú, thẻ, ảnh hóa đơn, địa điểm (tùy chọn), người liên quan | Money Lover, Spendee | P2 |
 | Danh mục | Phân cấp 2 tầng, biểu tượng/màu, bộ mặc định tiếng Việt, gộp/di chuyển | MISA, Money Manager | P2 |
-| Tiền tệ | Đa tiền tệ, tỉ giá nhập tay (P3) + tự cập nhật qua máy chủ Quly Thu Chi lấy từ nguồn miễn phí (P6 - app không gọi thẳng bên thứ ba); VND mặc định; tiền lưu số nguyên đơn vị nhỏ nhất | Money Lover, Spendee | P3, P6 |
+| Tiền tệ | Đa tiền tệ (đủ 157 mã ISO 4217 - P9a), tỉ giá nhập tay (P3) + tự cập nhật qua máy chủ Quly Thu Chi lấy từ nguồn miễn phí (P6 - app không gọi thẳng bên thứ ba); VND mặc định; tiền lưu số nguyên đơn vị nhỏ nhất | Money Lover, Spendee | P3, P6 |
 | Ngân sách | Theo danh mục/ví/chu kỳ (tuần, tháng, tùy chọn), chuyển dư sang kỳ sau, cảnh báo 80%/100% | Money Lover, Home Budget | P3 |
 | Phong bì | Ngân sách phong bì (envelope) + phương pháp **6 hũ** với tỉ lệ tự phân bổ thu nhập | Fast Budget, MoneyOi | P3 |
 | An toàn để tiêu | Số tiền còn tiêu được hôm nay = thu nhập - hóa đơn sắp tới - mục tiêu - đã chi | PocketGuard | P4 |
@@ -25,6 +25,12 @@
 | Thông minh | Tự xếp danh mục theo lịch sử (trên máy), phát hiện khoản bất thường/trùng lặp | Mint, PocketGuard | P7 |
 | Tiện ích | Widget màn hình chính, lối tắt ghi nhanh, máy tính tích hợp ở ô số tiền | Fast Budget, Money Manager | P7 |
 | Đồng bộ | Mọi thiết bị cùng tài khoản TsuDEV, ngoại tuyến vẫn dùng được, E2EE | Home Budget with Sync, Spendee | P5-P6 |
+| Số dư theo kỳ | Số dư đầu tháng chuyển từ tháng trước, thu, chi, cuối tháng chuyển sang tháng sau (bật/tắt) | MISA, Money Lover | P9a |
+| Khoản thu | Cộng thu theo người trả/danh mục/khoản thu; job freelance nhận nhiều đợt (đợt dự kiến, đã nhận, quá hạn); thuế khấu trừ tại nguồn | (yêu cầu chủ dự án) | P9a |
+| Thuế TNCN | Ước tính quyết toán năm, lương gross/net, phân loại thuế danh mục thu, hạn + nhắc (Việt Nam) | (yêu cầu chủ dự án) | P9a |
+| QR thanh toán | Quét VietQR/EMVCo kiểm CRC, mở app ngân hàng điền sẵn, ghi khoản chi; tạo mã nhận tiền | MoMo, app ngân hàng VN | P9a |
+| Nhập tệp mẫu | Tệp mẫu CSV/XLSX theo cấu trúc app, tự tạo ví/danh mục, chuyển dữ liệu từ app khác | MISA | P9a |
+| Đăng nhập | Google, GitHub, tài khoản tsudev qua IdP tsudev.com; chế độ khách đầy đủ chức năng | (chuẩn AUTH_AND_ACCOUNT) | P6, P9a |
 | Ví chung | Gia đình/nhóm cùng ghi một ví, phân quyền, E2EE theo ví | Spendee, Home Budget | P9 |
 | Bảo mật | Khóa app sinh trắc/PIN, tự khóa khi nền, chặn chụp màn hình, chế độ ẩn số dư, xóa từ xa thiết bị mất | Money Lover, MISA | P2, P6 |
 | Giao diện | Sáng/tối theo token TsuDEV, tiếng Việt/Anh, định dạng số VN, truy cập được (WCAG 2.2 AA) | - | P2 |

@@ -87,7 +87,7 @@ void main() {
       repo = LedgerRepository(store, vault);
       final data = repo.load();
       expect(data.skipped, 0);
-      expect(data.categories, hasLength(28));
+      expect(data.categories, hasLength(36));
       expect(data.balance(data.wallet(a.id)!).minor, 500000 - 45000 - 101000);
       expect(data.balance(data.wallet(b.id)!).minor, 100000);
       expect(data.txns.where((t) => t.transferId != null), hasLength(2));

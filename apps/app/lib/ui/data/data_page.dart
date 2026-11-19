@@ -12,9 +12,11 @@ import '../../l10n/app_localizations.dart';
 import '../../services/auto_import.dart';
 import '../../services/export.dart';
 import '../../services/import_csv.dart';
+import '../../services/import_template.dart';
 import '../../services/xlsx_reader.dart';
 import '../../state/ledger_repository.dart';
 import '../../state/providers.dart';
+import '../../state/settings.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import '../widgets/common.dart';
@@ -256,6 +258,32 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
   bool _negativeIsExpense = true;
   bool _hasHeader = true;
   String? _walletId;
+  Map<TemplateField, int>? _template;
+
+  Future<void> _downloadTemplate(bool xlsx) async {
+    final vi = context.appLocale == AppLocale.vi;
+    final name = vi ? 'quly-thu-chi-mau-nhap' : 'quly-thu-chi-import-template';
+    final ok = xlsx
+        ? await saveBytes(name, 'xlsx', templateXlsx(vi: vi), MimeType.microsoftExcel)
+        : await saveBytes(name, 'csv', templateCsv(vi: vi), MimeType.csv);
+    if (ok && mounted) context.toast(context.l10n.importTemplateSaved);
+  }
+
+  void _runTemplate(TemplatePlan plan) {
+    final l = context.l10n;
+    try {
+      final n = ref
+          .read(ledgerProvider.notifier)
+          .importPlan(wallets: plan.newWallets, categories: plan.newCategories, txns: plan.txns);
+      setState(() {
+        _rows = null;
+        _template = null;
+      });
+      context.toast(l.importTemplateDone(n, plan.newWallets.length, plan.newCategories.length));
+    } on Object catch (e) {
+      context.toast(errorMessage(context, e));
+    }
+  }
 
   Future<void> _pick() async {
     final l = context.l10n;
@@ -280,10 +308,20 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
       // XLSX là tệp zip (bắt đầu "PK").
       final rows = bytes.length > 2 && bytes[0] == 0x50 && bytes[1] == 0x4B ? parseXlsx(bytes) : parseCsv(bytes);
       if (rows.isEmpty) throw const FormatException('empty');
+      final template = detectTemplate(rows.first);
+      if (template != null) {
+        setState(() {
+          _rows = rows;
+          _template = template;
+          _headerRow = 0;
+        });
+        return;
+      }
       final headerRow = findHeaderRow(rows);
       final g = guessColumns(rows[headerRow]);
       setState(() {
         _rows = rows;
+        _template = null;
         _headerRow = headerRow;
         _date = g.date ?? 0;
         _debit = g.debit;
@@ -373,18 +411,69 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
           onChanged: (v) => setState(() => onChanged(v)),
         );
 
-    final result = rows == null ? null : _result(data);
+    final template = _template;
+    final plan = rows == null || template == null
+        ? null
+        : planTemplateImport(
+            rows,
+            template,
+            wallets: data.wallets,
+            categories: data.categories,
+            existing: data.txns,
+            newId: ref.read(ledgerProvider.notifier).newId,
+            defaultCurrency: Currency.of(ref.read(settingsProvider).baseCurrency),
+          );
+    final result = rows == null || template != null ? null : _result(data);
     return _Section(
       title: l.importTitle,
       children: [
-        if (wallets.isEmpty)
-          Text(l.importNeedWallet)
-        else ...[
-          OutlinedButton.icon(
-            onPressed: _pick,
-            icon: const Icon(Icons.upload_file_outlined),
-            label: Text(l.importPick),
+        Text(l.importTemplateHelp, style: TextStyle(color: context.palette.textSecondary)),
+        Wrap(
+          spacing: QtSpace.s2,
+          runSpacing: QtSpace.s2,
+          children: [
+            OutlinedButton.icon(
+              key: const Key('import.templateCsv'),
+              onPressed: () => _downloadTemplate(false),
+              icon: const Icon(Icons.download_outlined),
+              label: Text(l.importTemplateCsv),
+            ),
+            OutlinedButton.icon(
+              key: const Key('import.templateXlsx'),
+              onPressed: () => _downloadTemplate(true),
+              icon: const Icon(Icons.grid_on_outlined),
+              label: Text(l.importTemplateXlsx),
+            ),
+          ],
+        ),
+        FilledButton.tonalIcon(
+          key: const Key('import.pick'),
+          onPressed: _pick,
+          icon: const Icon(Icons.upload_file_outlined),
+          label: Text(l.importPick),
+        ),
+        if (plan != null) ...[
+          Text(l.importTemplateDetected, style: Theme.of(context).textTheme.titleSmall),
+          Text(
+            l.importTemplateSummary(plan.rowCount, plan.newWallets.length, plan.newCategories.length),
+            key: const Key('import.templateSummary'),
           ),
+          if (plan.newWallets.isNotEmpty)
+            Text(l.importTemplateNewWallets(plan.newWallets.map((w) => '${w.name} (${w.currency.code})').join(', '))),
+          if (plan.duplicates > 0) Text(l.importTemplateDuplicates(plan.duplicates)),
+          if (plan.skippedRows.isNotEmpty)
+            Text(
+              l.importTemplateSkipped(plan.skippedRows.length, plan.skippedRows.take(15).join(', ')),
+              style: TextStyle(color: context.palette.warning),
+            ),
+          FilledButton(
+            key: const Key('import.templateRun'),
+            onPressed: plan.rowCount == 0 ? null : () => _runTemplate(plan),
+            child: Text(l.importTemplateRun(plan.rowCount)),
+          ),
+        ] else if (wallets.isEmpty) ...[
+          if (rows != null) Text(l.importNeedWallet),
+        ] else ...[
           if (rows != null) ...[
             Text(l.importMapping, style: Theme.of(context).textTheme.titleSmall),
             DropdownButtonFormField<String>(

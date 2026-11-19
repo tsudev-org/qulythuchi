@@ -14,6 +14,7 @@ import '../quick_entry/quick_entry_sheet.dart';
 import '../recurring/recurring_page.dart';
 import '../transactions/txn_tile.dart';
 import '../widgets/common.dart';
+import 'period_card.dart';
 
 class OverviewPage extends ConsumerWidget {
   const OverviewPage({super.key});
@@ -183,6 +184,8 @@ class OverviewPage extends ConsumerWidget {
                       ),
                     ),
                   ],
+                  const SizedBox(height: QtSpace.s6),
+                  const PeriodBalanceCard(),
                   if (bills.isNotEmpty) ...[
                     const SizedBox(height: QtSpace.s6),
                     _SectionHeader(title: l.billsUpcoming, onMore: () => context.go('/more/recurring'), more: l.seeAll),

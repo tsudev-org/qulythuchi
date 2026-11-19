@@ -39,6 +39,7 @@ Money parseMoney(String input, Currency currency, {AppLocale locale = AppLocale.
   for (final c in Currency.known) {
     text = text.replaceAll(c.symbol, '');
   }
+  if (!RegExp(r'[0-9.,\-+]').hasMatch(currency.symbol)) text = text.replaceAll(currency.symbol, '');
   text = text.replaceAll(currency.code, '');
   var negative = false;
   if (text.startsWith('-')) {

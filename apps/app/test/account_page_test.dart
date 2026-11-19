@@ -54,7 +54,7 @@ void main() {
     expect(find.text('Chưa bật đồng bộ'), findsOneWidget);
 
     await tester.runAsync(() async {
-      await tester.tap(find.text('Đăng nhập bằng tài khoản TsuDEV'));
+      await tester.tap(find.byKey(const Key('signin.tsudev')));
       await Future<void>.delayed(const Duration(milliseconds: 300));
     });
     await realSettle(tester);

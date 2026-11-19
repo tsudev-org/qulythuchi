@@ -7,7 +7,7 @@ import { audit, clientIp } from '../lib/audit';
 import { ApiError } from '../lib/errors';
 import { pkceChallenge, randomToken, sha256Hex, timingSafeEqual } from '../lib/crypto';
 import { rateLimit } from '../lib/ratelimit';
-import { authorizationUrl, exchangeCode } from './oidc';
+import { authorizationUrl, exchangeCode, LOGIN_PROVIDERS, type LoginProvider } from './oidc';
 import { isAllowedAppRedirect, safeReturnTo } from './redirects';
 import {
   ACCESS_TTL_S,
@@ -29,7 +29,7 @@ const limitAuth = (c: Context<AppEnv>) => rateLimit(c.env.DB, `auth:${clientIp(c
 async function beginLogin(
   c: Context<AppEnv>,
   kind: 'web' | 'app',
-  extra: { appRedirect?: string; appState?: string; appChallenge?: string; returnTo?: string },
+  extra: { appRedirect?: string; appState?: string; appChallenge?: string; returnTo?: string; provider?: LoginProvider },
 ) {
   await limitAuth(c);
   const state = randomToken(24);
@@ -58,7 +58,10 @@ async function beginLogin(
     )
     .run();
   setCookie(c, LOGIN_COOKIE, binder, { path: '/', secure: true, httpOnly: true, sameSite: 'Lax', maxAge: 600 });
-  return c.redirect(await authorizationUrl(c.env, { state, nonce, challenge: await pkceChallenge(verifier) }), 302);
+  return c.redirect(
+    await authorizationUrl(c.env, { state, nonce, challenge: await pkceChallenge(verifier), provider: extra.provider }),
+    302,
+  );
 }
 
 const appStart = z.object({
@@ -66,7 +69,12 @@ const appStart = z.object({
   state: z.string().min(16).max(256).regex(/^[A-Za-z0-9_-]+$/),
   code_challenge: z.string().regex(/^[A-Za-z0-9_-]{43}$/),
   code_challenge_method: z.literal('S256'),
+  provider: z.enum(LOGIN_PROVIDERS).optional(),
 });
+
+function providerOf(v: string | undefined): LoginProvider | undefined {
+  return (LOGIN_PROVIDERS as readonly string[]).includes(v ?? '') ? (v as LoginProvider) : undefined;
+}
 
 const tokenBody = z.discriminatedUnion('grant_type', [
   z.object({
@@ -98,7 +106,9 @@ export function userJson(u: {
 
 export const authRoutes = new Hono<AppEnv>();
 
-authRoutes.get('/auth/web/start', (c) => beginLogin(c, 'web', { returnTo: safeReturnTo(c.req.query('return_to')) }));
+authRoutes.get('/auth/web/start', (c) =>
+  beginLogin(c, 'web', { returnTo: safeReturnTo(c.req.query('return_to')), provider: providerOf(c.req.query('provider')) }),
+);
 
 authRoutes.get('/auth/app/start', async (c) => {
   const parsed = appStart.safeParse(c.req.query());
@@ -110,6 +120,7 @@ authRoutes.get('/auth/app/start', async (c) => {
     appRedirect: parsed.data.redirect_uri,
     appState: parsed.data.state,
     appChallenge: parsed.data.code_challenge,
+    provider: parsed.data.provider,
   });
 });
 

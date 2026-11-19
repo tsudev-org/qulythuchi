@@ -1792,4 +1792,714 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get emailWarning =>
       'E2EE exception: the server sees email content while sealing it. Keep the address private - anyone who knows it can send mail to it.';
+
+  @override
+  String get copied => 'Copied';
+
+  @override
+  String get currencyPick => 'Choose currency';
+
+  @override
+  String get currencySearch => 'Search by code or name (USD, yen, pound...)';
+
+  @override
+  String get currencyPopular => 'Popular';
+
+  @override
+  String currencyAll(int count) {
+    return 'All ($count ISO 4217 currencies)';
+  }
+
+  @override
+  String get currencyNone => 'No matching currency.';
+
+  @override
+  String get guestModeNote =>
+      'Without signing in you can use every feature in guest mode: data stays on this device, encrypted with your password.';
+
+  @override
+  String get welcomeGuest => 'Use now without an account';
+
+  @override
+  String get welcomeGuestNote => 'Guest mode: data stays on this device. You can sign in to sync at any time.';
+
+  @override
+  String get signInGoogle => 'Continue with Google';
+
+  @override
+  String get signInGithub => 'Continue with GitHub';
+
+  @override
+  String get signInTsudev => 'tsudev account (email)';
+
+  @override
+  String get signInLastUsed => 'You used this last time';
+
+  @override
+  String get signInOr => 'or';
+
+  @override
+  String get settingsCarryOver => 'Carry balance over to next month';
+
+  @override
+  String get settingsCarryOverSub =>
+      'Last month\'s closing balance becomes this month\'s opening balance on the monthly card. Turn off to see only the month\'s income and spending.';
+
+  @override
+  String get settingsTaxReminders => 'Tax deadline and payment reminders';
+
+  @override
+  String get settingsTaxRemindersSub =>
+      'Notify 7 days and 1 day before the personal income tax deadline, and on income installment due dates.';
+
+  @override
+  String periodTitle(int month, int year) {
+    return '$month/$year';
+  }
+
+  @override
+  String get periodPrev => 'Previous period';
+
+  @override
+  String get periodNext => 'Next period';
+
+  @override
+  String get periodThisMonth => 'This month';
+
+  @override
+  String periodOpening(int month) {
+    return 'Opening balance (carried from month $month)';
+  }
+
+  @override
+  String get periodIncome => 'Income this month';
+
+  @override
+  String get periodExpense => 'Spending this month';
+
+  @override
+  String get periodOther => 'Transfers, fees, adjustments';
+
+  @override
+  String get periodWithheld => 'Tax withheld (not deducted from balance)';
+
+  @override
+  String periodClosing(int month) {
+    return 'Closing balance (carried to month $month)';
+  }
+
+  @override
+  String get periodNet => 'Income minus spending';
+
+  @override
+  String periodSavingRate(String rate) {
+    return 'Savings rate: $rate';
+  }
+
+  @override
+  String get incomeTitle => 'Income';
+
+  @override
+  String get incomeRecord => 'Record income';
+
+  @override
+  String get incomePlanNew => 'New multi-payment income';
+
+  @override
+  String get incomePlanEdit => 'Edit income';
+
+  @override
+  String incomeYear(int year) {
+    return 'Year $year';
+  }
+
+  @override
+  String get incomeByMonth => 'Monthly';
+
+  @override
+  String get incomeByYear => 'Yearly';
+
+  @override
+  String get incomeTotalReceived => 'Total received';
+
+  @override
+  String incomeReceipts(int count) {
+    return '$count payments';
+  }
+
+  @override
+  String incomeWithheldTotal(String amount) {
+    return 'tax withheld $amount';
+  }
+
+  @override
+  String incomeGrossTotal(String amount) {
+    return 'before tax $amount';
+  }
+
+  @override
+  String get incomeSumBy => 'Income by';
+
+  @override
+  String get incomeByPayer => 'Payer';
+
+  @override
+  String get incomeByCategory => 'Category';
+
+  @override
+  String get incomeByPlan => 'Income plan';
+
+  @override
+  String get incomeNoPayer => '(No payer)';
+
+  @override
+  String get incomeNoPlan => '(One-off, not in a plan)';
+
+  @override
+  String get incomeNone => 'No income in this period.';
+
+  @override
+  String incomeLast(String date) {
+    return 'last $date';
+  }
+
+  @override
+  String get incomePlansTitle => 'Multi-payment income';
+
+  @override
+  String get incomePlansHelp =>
+      'Track freelance jobs, contracts, rent... paid in several installments: what\'s received, what\'s left, what\'s late.';
+
+  @override
+  String get incomePlansEmpty => 'No income plans yet. Tap \"New multi-payment income\" to start.';
+
+  @override
+  String incomeShowClosed(int count) {
+    return 'Show $count finished/cancelled';
+  }
+
+  @override
+  String get incomeHideClosed => 'Hide finished';
+
+  @override
+  String get incomeStatusActive => 'Active';
+
+  @override
+  String get incomeStatusDone => 'Completed';
+
+  @override
+  String get incomeStatusCancelled => 'Cancelled';
+
+  @override
+  String get incomeStatus => 'Status';
+
+  @override
+  String incomeProgress(String received, String total) {
+    return 'Received $received of $total';
+  }
+
+  @override
+  String incomeReceivedSoFar(String amount) {
+    return 'Received $amount';
+  }
+
+  @override
+  String incomeNext(String label, String amount, String date) {
+    return 'Next: $label $amount, due $date';
+  }
+
+  @override
+  String get incomeInstallment => 'Installment';
+
+  @override
+  String incomeOverdue(String amount) {
+    return 'Overdue, not received: $amount';
+  }
+
+  @override
+  String get incomePlanName => 'Job/project name';
+
+  @override
+  String get incomePlanNameHint => 'e.g. Coffee shop website';
+
+  @override
+  String get incomePayer => 'Payer (client)';
+
+  @override
+  String get incomePlanTotal => 'Agreed total (leave empty if open-ended)';
+
+  @override
+  String get incomeDefaultWallet => 'Default receiving wallet';
+
+  @override
+  String get incomeStart => 'Start date';
+
+  @override
+  String get incomeDue => 'Due date';
+
+  @override
+  String get incomeWithholding => 'Payer withholds 10% tax';
+
+  @override
+  String get incomeWithholdingSub =>
+      'Casual income (no or under-3-month labour contract): the app computes the withheld tax when you record a payment.';
+
+  @override
+  String get incomeInstallments => 'Planned installments';
+
+  @override
+  String get incomeInstallmentsHelp => 'Optional. e.g. 30% deposit, 40% draft, 30% on delivery.';
+
+  @override
+  String incomeInstallmentLabel(int n) {
+    return 'Installment $n';
+  }
+
+  @override
+  String get incomeInstallmentHint => 'Deposit, delivery...';
+
+  @override
+  String get incomeAddInstallment => 'Add installment';
+
+  @override
+  String get incomeReceive => 'Record a payment';
+
+  @override
+  String get incomeGrossAmount => 'Contract amount (before tax)';
+
+  @override
+  String incomeWithholdHint(String threshold) {
+    return 'Leave empty: the app computes 10% if the payment is $threshold or more.';
+  }
+
+  @override
+  String incomeNetPreview(String amount) {
+    return 'Net to wallet: $amount';
+  }
+
+  @override
+  String incomeNoWalletForCurrency(String currency) {
+    return 'You need a $currency wallet to record payments.';
+  }
+
+  @override
+  String incomePlanDeleteConfirm(String name) {
+    return 'Delete \"$name\"? Recorded payments are kept.';
+  }
+
+  @override
+  String get incomeReceiptsTitle => 'Payments received';
+
+  @override
+  String get incomePlanField => 'Income plan';
+
+  @override
+  String get txnTaxWithheld => 'Income tax withheld';
+
+  @override
+  String get txnTaxWithheldHelp =>
+      'Amount is what you actually RECEIVED. Enter the tax the payer withheld so gross income and tax settlement are right.';
+
+  @override
+  String get taxTitle => 'Personal income tax';
+
+  @override
+  String get taxDisclaimer =>
+      'Estimate for reference under Vietnamese rules, not tax advice. Check the official texts and the tax office before filing.';
+
+  @override
+  String get taxProfile => 'Tax profile';
+
+  @override
+  String get taxDependents => 'Dependents';
+
+  @override
+  String taxDependentsN(int count) {
+    return '$count dependents';
+  }
+
+  @override
+  String get taxLess => 'Less';
+
+  @override
+  String get taxMore => 'More';
+
+  @override
+  String get taxInsurance => 'Mandatory insurance per month';
+
+  @override
+  String get taxInsuranceHelp =>
+      'Leave empty: estimate 10.5% of salary (social 8%, health 1.5%, unemployment 1%) within the cap.';
+
+  @override
+  String taxInsuranceN(String amount) {
+    return 'insurance $amount/month';
+  }
+
+  @override
+  String get taxResident => 'Tax resident';
+
+  @override
+  String get taxNonResident => 'Non-resident';
+
+  @override
+  String get taxResidentSub =>
+      'In Vietnam 183+ days a year or with a permanent residence. Non-residents: flat 20% on salary, no deductions.';
+
+  @override
+  String get taxBusiness => 'Run a business (household or individual)';
+
+  @override
+  String get taxBusinessSub =>
+      'Enables quarterly filing reminders and a warning when yearly revenue exceeds the tax-free threshold.';
+
+  @override
+  String taxUnclassified(int count) {
+    return '$count income categories have no tax type: their income is left out of the estimate.';
+  }
+
+  @override
+  String get taxStandardCategories => 'Add standard income categories (with tax types)';
+
+  @override
+  String taxStandardDone(int count) {
+    return 'Added/updated $count categories';
+  }
+
+  @override
+  String taxEstimateTitle(int year) {
+    return '$year settlement estimate';
+  }
+
+  @override
+  String get taxSalaryIncome => 'Salary and wages';
+
+  @override
+  String get taxCasualIncome => 'Casual and freelance income';
+
+  @override
+  String get taxBusinessRevenue => 'Business revenue (taxed separately)';
+
+  @override
+  String get taxInvestmentIncome => 'Investment income (taxed separately)';
+
+  @override
+  String get taxExemptIncome => 'Tax-exempt income';
+
+  @override
+  String get taxUnclassifiedIncome => 'Unclassified income';
+
+  @override
+  String get taxInsuranceYear => 'Mandatory insurance';
+
+  @override
+  String get taxDeductionYear => 'Family deductions (12 months)';
+
+  @override
+  String get taxTaxable => 'Taxable income';
+
+  @override
+  String get taxDue => 'Tax due for the year';
+
+  @override
+  String get taxWithheld => 'Already withheld';
+
+  @override
+  String get taxPayMore => 'Estimated amount to pay';
+
+  @override
+  String get taxRefund => 'Estimated refund';
+
+  @override
+  String taxSettlementNote(String date) {
+    return 'Self-settlement deadline $date. File at thuedientu.gdt.gov.vn or the eTax Mobile app.';
+  }
+
+  @override
+  String taxBusinessOver(String amount) {
+    return 'Business revenue exceeds $amount/year: you may need to file and pay tax.';
+  }
+
+  @override
+  String get taxCalcTitle => 'Gross / net salary calculator';
+
+  @override
+  String get taxFromGross => 'From gross';
+
+  @override
+  String get taxFromNet => 'From net';
+
+  @override
+  String get taxGrossSalary => 'Gross salary';
+
+  @override
+  String get taxNetSalary => 'Net salary (take-home)';
+
+  @override
+  String get taxInsuranceMonth => 'Mandatory insurance';
+
+  @override
+  String get taxDeductionMonth => 'Family deductions';
+
+  @override
+  String get taxMonthTax => 'Monthly income tax';
+
+  @override
+  String get taxDeadlines => 'Upcoming deadlines';
+
+  @override
+  String taxDeadlineSelf(int year) {
+    return 'Self-settlement deadline for $year';
+  }
+
+  @override
+  String taxDeadlineAuthorize(int year) {
+    return 'Give your employer the $year settlement authorization (if delegating)';
+  }
+
+  @override
+  String get taxDeadlineBusiness => 'Quarterly business tax filing';
+
+  @override
+  String taxDeadlineIn(String date, int days) {
+    return '$date ($days days left)';
+  }
+
+  @override
+  String taxRulesTitle(int year) {
+    return 'Rules in force from $year';
+  }
+
+  @override
+  String get taxPersonalDeduction => 'Personal deduction / month';
+
+  @override
+  String get taxDependentDeduction => 'Per dependent / month';
+
+  @override
+  String taxBracketUpTo(int n, String amount) {
+    return 'Bracket $n: up to $amount/month';
+  }
+
+  @override
+  String taxBracketOver(int n, String amount) {
+    return 'Bracket $n: over $amount/month';
+  }
+
+  @override
+  String taxCasualRule(String amount) {
+    return 'Casual-income withholding from $amount per payment';
+  }
+
+  @override
+  String get taxBusinessThreshold => 'Tax-free business revenue / year';
+
+  @override
+  String taxSource(String source, String date) {
+    return 'Source: $source. Updated $date.';
+  }
+
+  @override
+  String get taxCategoriesTitle => 'Tax type of income categories';
+
+  @override
+  String get taxInherit => 'Same as parent';
+
+  @override
+  String get taxTypeUnknown => 'Not set';
+
+  @override
+  String get taxTypeUnknownHelp => 'Left out of the estimate';
+
+  @override
+  String get taxTypeSalary => 'Salary';
+
+  @override
+  String get taxTypeSalaryHelp => 'Labour contract of 3+ months, taxable bonuses and allowances';
+
+  @override
+  String get taxTypeCasual => 'Casual / freelance';
+
+  @override
+  String get taxTypeCasualHelp => 'No contract or under 3 months; payer withholds 10%';
+
+  @override
+  String get taxTypeBusiness => 'Business / rental';
+
+  @override
+  String get taxTypeBusinessHelp => 'Taxed on revenue, with a tax-free threshold';
+
+  @override
+  String get taxTypeInvestment => 'Investment';
+
+  @override
+  String get taxTypeInvestmentHelp => 'Dividends, bond interest... separate rates';
+
+  @override
+  String get taxTypeExempt => 'Tax-exempt';
+
+  @override
+  String get taxTypeExemptHelp => 'Bank deposit interest, family gifts, refunds';
+
+  @override
+  String get qrTitle => 'Payment QR';
+
+  @override
+  String get qrTabPay => 'Scan to pay';
+
+  @override
+  String get qrTabReceive => 'Receive';
+
+  @override
+  String get qrPayIntro =>
+      'Scan the payee\'s VietQR/EMVCo code to check account, amount and message, then open your bank app and record the expense. Codes are read on this device.';
+
+  @override
+  String get qrNoCamera => 'Camera scanning isn\'t available here. Paste the QR content (starts with 000201) below.';
+
+  @override
+  String get qrCameraError => 'Can\'t open the camera. Allow camera access or paste the code content.';
+
+  @override
+  String get qrPasteLabel => 'QR content';
+
+  @override
+  String get qrPaste => 'Paste';
+
+  @override
+  String get qrRead => 'Read code';
+
+  @override
+  String get qrErrCrc => 'This QR is corrupted or was altered (CRC mismatch). Don\'t pay with it.';
+
+  @override
+  String get qrErrNotPayment => 'This isn\'t an EMVCo/VietQR payment code.';
+
+  @override
+  String get qrErrInvalid => 'The QR code is malformed.';
+
+  @override
+  String get qrNoAmount => 'No amount in the code: enter it in your bank app.';
+
+  @override
+  String get qrPayee => 'Payee';
+
+  @override
+  String get qrBank => 'Bank';
+
+  @override
+  String get qrAccount => 'Account number';
+
+  @override
+  String get qrMessage => 'Transfer message';
+
+  @override
+  String get qrCity => 'Location';
+
+  @override
+  String get qrIsCard => 'Identifier is a card number.';
+
+  @override
+  String get qrOpenBank => 'Open bank app (prefilled)';
+
+  @override
+  String get qrOpenBankNote =>
+      'Or open your bank app\'s QR scanner and scan this code again; always check the payee name before confirming.';
+
+  @override
+  String get qrForeignNote =>
+      'Foreign code: pay with a wallet or bank app that supports it, then record the expense here.';
+
+  @override
+  String get qrConsentTitle => 'Open bank app via VietQR.io';
+
+  @override
+  String get qrConsentBody =>
+      'To prefill the transfer, the app sends the PAYEE\'s account, amount and message to dl.vietqr.io (a third-party service) to hand over to the bank app you choose. None of your ledger data is sent. Continue?';
+
+  @override
+  String get qrConsentOk => 'Agree and open';
+
+  @override
+  String get qrChooseBankApp => 'Choose your bank app';
+
+  @override
+  String get qrLastUsed => 'Used last time';
+
+  @override
+  String get qrOpenFailed => 'Couldn\'t open the bank app on this device.';
+
+  @override
+  String get qrRecordExpense => 'Record this expense';
+
+  @override
+  String get qrScanAgain => 'Scan another code';
+
+  @override
+  String get qrReceiveIntro =>
+      'Create a VietQR code for clients to pay you. It\'s generated on this device; the account number isn\'t stored or sent.';
+
+  @override
+  String get qrAmountOptional => 'Amount (empty: payer enters it)';
+
+  @override
+  String get qrMessageHelp => 'Up to 25 characters; accents are removed for bank compatibility.';
+
+  @override
+  String get qrCreate => 'Create code';
+
+  @override
+  String get qrErrAccount => 'Account number: letters and digits only, up to 19.';
+
+  @override
+  String get qrImageLabel => 'Payment request QR code';
+
+  @override
+  String get qrCopyContent => 'Copy code content';
+
+  @override
+  String get importTemplateHelp =>
+      'Moving from another app: download the template, paste your old data into its columns (Date, Type, Amount, Wallet...), then pick the file. Missing wallets and categories are created automatically.';
+
+  @override
+  String get importTemplateCsv => 'CSV template';
+
+  @override
+  String get importTemplateXlsx => 'Excel template';
+
+  @override
+  String get importTemplateSaved => 'Template saved';
+
+  @override
+  String get importTemplateDetected => 'Quly Thu Chi template detected';
+
+  @override
+  String importTemplateSummary(int rows, int wallets, int categories) {
+    return '$rows transactions; $wallets new wallets and $categories new categories.';
+  }
+
+  @override
+  String importTemplateNewWallets(String names) {
+    return 'New wallets: $names';
+  }
+
+  @override
+  String importTemplateDuplicates(int count) {
+    return 'Skipping $count rows that duplicate existing transactions.';
+  }
+
+  @override
+  String importTemplateSkipped(int count, String rows) {
+    return 'Skipping $count rows with missing/invalid data (rows $rows).';
+  }
+
+  @override
+  String importTemplateRun(int count) {
+    return 'Import $count transactions';
+  }
+
+  @override
+  String importTemplateDone(int count, int wallets, int categories) {
+    return 'Imported $count transactions, created $wallets wallets and $categories categories.';
+  }
 }

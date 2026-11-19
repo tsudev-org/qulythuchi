@@ -14,9 +14,28 @@ enum _Mode { expense, income, transfer, adjustment }
 
 /// Thêm/sửa giao dịch. [txnId] null = thêm mới.
 class TxnFormPage extends ConsumerStatefulWidget {
-  const TxnFormPage({super.key, this.txnId, this.initialKind, this.initialGoalId});
+  const TxnFormPage({
+    super.key,
+    this.txnId,
+    this.initialKind,
+    this.initialGoalId,
+    this.initialAmount,
+    this.initialNote,
+    this.initialPayee,
+    this.initialIncomePlanId,
+    this.initialCurrency,
+  });
   final String? txnId;
   final String? initialKind;
+
+  /// Điền sẵn từ QR thanh toán / khoản thu: số tiền (đơn vị nhỏ nhất, theo tiền tệ ví đầu tiên), ghi chú, người nhận.
+  final int? initialAmount;
+  final String? initialNote;
+  final String? initialPayee;
+  final String? initialIncomePlanId;
+
+  /// Mã tiền tệ của [initialAmount]: chọn ví đầu tiên cùng tiền tệ.
+  final String? initialCurrency;
 
   /// Mở từ "Góp tiền" của mục tiêu.
   final String? initialGoalId;
@@ -32,6 +51,8 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
   final _received = TextEditingController();
   final _note = TextEditingController();
   final _payee = TextEditingController();
+  final _withheld = TextEditingController();
+  String? _incomePlanId;
 
   _Mode _mode = _Mode.expense;
   String? _walletId;
@@ -60,6 +81,28 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
       _ => _Mode.expense,
     };
     if (data.goal(widget.initialGoalId) != null) _goalId = widget.initialGoalId;
+    final plan = data.incomePlan(widget.initialIncomePlanId);
+    if (plan != null) {
+      _mode = _Mode.income;
+      _incomePlanId = plan.id;
+      _categoryId = plan.categoryId;
+      _payee.text = plan.payer ?? '';
+      _note.text = plan.name;
+      if (data.wallet(plan.defaultWalletId) != null) _walletId = plan.defaultWalletId;
+    }
+    if (widget.initialCurrency != null) {
+      final w = active.where((w) => w.currency.code == widget.initialCurrency).firstOrNull;
+      if (w != null) _walletId = w.id;
+    }
+    if (widget.initialNote != null) _note.text = widget.initialNote!;
+    if (widget.initialPayee != null) _payee.text = widget.initialPayee!;
+    if (widget.initialAmount != null && widget.txnId == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        final cur = ref.read(ledgerProvider).wallet(_walletId)?.currency ?? Currency.vnd;
+        _amount.text = formatMoney(Money(widget.initialAmount!, cur), locale: context.appLocale, withSymbol: false);
+      });
+    }
     if (widget.txnId != null) {
       final t = data.txn(widget.txnId!);
       if (t == null) {
@@ -106,13 +149,15 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
           _categoryId = t.categoryId;
           _payee.text = t.payee ?? '';
           _amount.text = fmt(t.amount, t.walletId);
+          _incomePlanId = t.incomePlanId;
+          if (t.taxWithheld > 0) _withheld.text = fmt(t.taxWithheld, t.walletId);
       }
     });
   }
 
   @override
   void dispose() {
-    for (final c in [_amount, _fee, _received, _note, _payee]) {
+    for (final c in [_amount, _fee, _received, _note, _payee, _withheld]) {
       c.dispose();
     }
     super.dispose();
@@ -173,6 +218,10 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
             pending: base?.pending ?? false,
             excludeFromReports: base?.excludeFromReports ?? false,
             attachmentIds: base?.attachmentIds ?? const [],
+            incomePlanId: _mode == _Mode.income ? _incomePlanId : null,
+            taxWithheld: _mode == _Mode.income
+                ? (AmountField.tryValue(_withheld.text, wallet.currency, locale)?.minor ?? 0)
+                : 0,
           ),
         );
       }
@@ -422,6 +471,47 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
                 ),
               ),
               const SizedBox(height: QtSpace.s4),
+              if (_mode == _Mode.income) ...[
+                if (data.incomePlans.isNotEmpty) ...[
+                  DropdownButtonFormField<String?>(
+                    initialValue: data.incomePlan(_incomePlanId) == null ? null : _incomePlanId,
+                    isExpanded: true,
+                    decoration: InputDecoration(labelText: l.incomePlanField),
+                    items: [
+                      DropdownMenuItem(value: null, child: Text(l.none)),
+                      for (final ip in data.incomePlans.where(
+                        (x) => x.status == IncomePlanStatus.active || x.id == _incomePlanId,
+                      ))
+                        DropdownMenuItem(
+                          value: ip.id,
+                          child: Text(ip.name, overflow: TextOverflow.ellipsis),
+                        ),
+                    ],
+                    onChanged: (v) => setState(() {
+                      _incomePlanId = v;
+                      final ip = data.incomePlan(v);
+                      if (ip != null) {
+                        _categoryId ??= ip.categoryId;
+                        if (_payee.text.trim().isEmpty) _payee.text = ip.payer ?? '';
+                      }
+                    }),
+                  ),
+                  const SizedBox(height: QtSpace.s4),
+                ],
+                if (data.wallet(_walletId) != null) ...[
+                  AmountField(
+                    controller: _withheld,
+                    currency: data.wallet(_walletId)!.currency,
+                    label: l.txnTaxWithheld,
+                    allowZero: true,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: QtSpace.s1),
+                    child: Text(l.txnTaxWithheldHelp, style: Theme.of(context).textTheme.bodySmall),
+                  ),
+                  const SizedBox(height: QtSpace.s4),
+                ],
+              ],
               if (_mode == _Mode.expense || _mode == _Mode.income) ...[
                 TextFormField(
                   controller: _payee,

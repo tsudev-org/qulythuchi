@@ -24,6 +24,8 @@ final class LedgerData {
     this.rates = const [],
     this.jarPlan,
     this.savedFilters = const [],
+    this.incomePlans = const [],
+    this.taxProfile = const TaxProfile(),
     this.skipped = 0,
   });
 
@@ -45,6 +47,10 @@ final class LedgerData {
   final JarPlan? jarPlan;
   final List<SavedFilter> savedFilters;
 
+  /// Khoản thu nhiều đợt, đang thu trước rồi theo tên.
+  final List<IncomePlan> incomePlans;
+  final TaxProfile taxProfile;
+
   /// Số bản ghi không mở được (hỏng hoặc bị tráo) - chỉ đếm, không ghi nội dung ra log.
   final int skipped;
 
@@ -56,6 +62,7 @@ final class LedgerData {
   Debt? debt(String? id) => debts.where((d) => d.id == id).firstOrNull;
   Goal? goal(String? id) => goals.where((g) => g.id == id).firstOrNull;
   Event? event(String? id) => events.where((e) => e.id == id).firstOrNull;
+  IncomePlan? incomePlan(String? id) => incomePlans.where((p) => p.id == id).firstOrNull;
 
   /// Giao dịch đối ứng của một vế chuyển ví.
   Txn? counterpart(Txn t) =>
@@ -185,6 +192,8 @@ final class LedgerRepository {
     final events = <Event>[];
     final rates = <FxRate>[];
     final savedFilters = <SavedFilter>[];
+    final incomePlans = <IncomePlan>[];
+    var taxProfile = const TaxProfile();
     SyncRecord? jarRecord;
     for (final r in _records.values) {
       if (r.isDeleted) continue;
@@ -212,6 +221,10 @@ final class LedgerRepository {
           case SavedFilter.recordType:
             final f = SavedFilter.fromRecord(r);
             if (f != null) savedFilters.add(f);
+          case RecordTypes.incomePlan:
+            incomePlans.add(IncomePlan.fromRecord(r));
+          case RecordTypes.taxProfile:
+            taxProfile = TaxProfile.fromRecord(r);
           case RecordTypes.jarPlan:
             // Nhiều thiết bị cùng tạo kế hoạch: bản ghi có HLC mới nhất thắng.
             if (jarRecord == null || (r.maxHlc != null && jarRecord.maxHlc != null && r.maxHlc! > jarRecord.maxHlc!)) {
@@ -255,6 +268,12 @@ final class LedgerRepository {
       rates: rates,
       jarPlan: jarRecord == null ? null : JarPlanCodec.fromRecord(jarRecord),
       savedFilters: savedFilters..sort((a, b) => _byName(a.name, b.name)),
+      incomePlans: incomePlans
+        ..sort((a, b) {
+          final c = a.status.index.compareTo(b.status.index);
+          return c != 0 ? c : _byName(a.name, b.name);
+        }),
+      taxProfile: taxProfile,
       skipped: skipped,
     );
   }
@@ -359,7 +378,13 @@ final class LedgerRepository {
       out.add(
         _apply(
           SyncRecord(id: parentId, type: RecordTypes.category, walletId: null),
-          Category(id: parentId, name: group.name(locale), kind: group.kind, icon: group.icon).toValues(),
+          Category(
+            id: parentId,
+            name: group.name(locale),
+            kind: group.kind,
+            icon: group.icon,
+            taxType: group.taxType,
+          ).toValues(),
         ),
       );
       for (final child in group.children) {
@@ -373,12 +398,61 @@ final class LedgerRepository {
               kind: group.kind,
               parentId: parentId,
               icon: child.icon,
+              taxType: child.taxType,
             ).toValues(),
           ),
         );
       }
     }
     _persist(out);
+  }
+
+  /// Bổ sung bộ danh mục thu chuẩn cho tài khoản cũ: thêm mục còn thiếu (so tên không dấu, cả hai ngôn ngữ) và gán
+  /// loại thuế cho danh mục thu trùng tên chưa phân loại. Trả số danh mục được thêm hoặc cập nhật.
+  int ensureStandardIncomeCategories(DefaultCategoryLocale locale) {
+    final existing = <String, Category>{};
+    for (final r in _records.values) {
+      if (r.isDeleted || r.type != RecordTypes.category) continue;
+      final c = Category.fromRecord(r);
+      if (c.kind == CategoryKind.income) existing[normalizeVi(c.name)] = c;
+    }
+    Category? find(DefaultCategory d) => existing[normalizeVi(d.vi)] ?? existing[normalizeVi(d.en)];
+    final out = <SyncRecord>[];
+    void upsert(DefaultCategory d, String? parentId, void Function(String id) withId) {
+      final found = find(d);
+      if (found != null) {
+        if (found.taxType == IncomeTaxType.unknown && d.taxType != IncomeTaxType.unknown) {
+          out.add(_apply(_records[found.id]!, {'taxType': d.taxType.name}));
+        }
+        withId(found.id);
+        return;
+      }
+      final id = newId();
+      out.add(
+        _apply(
+          SyncRecord(id: id, type: RecordTypes.category, walletId: null),
+          Category(
+            id: id,
+            name: d.name(locale),
+            kind: CategoryKind.income,
+            parentId: parentId,
+            icon: d.icon,
+            taxType: d.taxType,
+          ).toValues(),
+        ),
+      );
+      withId(id);
+    }
+
+    for (final group in standardIncomeCategories) {
+      upsert(group, null, (pid) {
+        for (final child in group.children) {
+          upsert(child, pid, (_) {});
+        }
+      });
+    }
+    _persist(out);
+    return out.length;
   }
 
   // ------------------------------------------------------------------ Giao dịch
@@ -388,6 +462,10 @@ final class LedgerRepository {
     if (w == null || w.isDeleted) throw const LedgerException('walletMissing');
     if (t.kind != TxnKind.adjustment && t.amount <= 0) throw const LedgerException('amountPositive');
     if (t.fee < 0) throw const LedgerException('amountPositive');
+    if (t.taxWithheld < 0 || (t.taxWithheld > 0 && t.kind != TxnKind.income)) {
+      throw const LedgerException('amountPositive');
+    }
+    if (t.incomePlanId != null && t.kind != TxnKind.income) throw const LedgerException('kindMismatch');
     if (t.categoryId != null) {
       final c = _records[t.categoryId];
       if (c != null && !c.isDeleted) {
@@ -428,6 +506,43 @@ final class LedgerRepository {
     }
     _persist([for (final t in txns) _apply(_base(t.id, RecordTypes.transaction, t.walletId), t.toValues())]);
     return txns.length;
+  }
+
+  /// Nhập theo tệp mẫu: tạo ví mới (kèm khóa ví), danh mục mới (cha trước con) rồi mọi giao dịch, ghi trong MỘT
+  /// lần. Kiểm hợp lệ toàn bộ trước khi ghi. Trả số giao dịch (cặp chuyển ví tính 1).
+  int importPlan({required List<Wallet> wallets, required List<Category> categories, required List<Txn> txns}) {
+    for (final w in wallets) {
+      if (w.name.trim().isEmpty || _records.containsKey(w.id)) throw const LedgerException('nameRequired');
+    }
+    final out = <SyncRecord>[];
+    // Đưa ví/danh mục mới vào bộ nhớ tạm để kiểm giao dịch; lỗi ⇒ gỡ ra, không ghi gì.
+    final staged = <String>[];
+    try {
+      for (final w in wallets) {
+        final r = _apply(_base(w.id, RecordTypes.wallet, w.id), w.toValues());
+        _records[w.id] = r;
+        staged.add(w.id);
+        out.add(r);
+      }
+      for (final c in categories) {
+        final r = _apply(_base(c.id, RecordTypes.category, null), c.toValues());
+        _records[c.id] = r;
+        staged.add(c.id);
+        out.add(r);
+      }
+      for (final t in txns) {
+        if (t.kind != TxnKind.transferIn && t.kind != TxnKind.transferOut) _checkTxn(t);
+        out.add(_apply(_base(t.id, RecordTypes.transaction, t.walletId), t.toValues()));
+      }
+    } on Object {
+      staged.forEach(_records.remove);
+      rethrow;
+    }
+    for (final w in wallets) {
+      _vault.createWalletKey(w.id);
+    }
+    _persist(out);
+    return txns.where((t) => t.kind != TxnKind.transferIn).length;
   }
 
   /// Lưu chuyển ví: HAI bản ghi cùng `transferId`, ghi trong một giao tác.
@@ -745,6 +860,57 @@ final class LedgerRepository {
 
   /// Xóa khoản nợ; giao dịch đã ghi giữ nguyên (số dư ví không đổi).
   void deleteDebt(String id) => _deleteRecord(id);
+
+  // ------------------------------------------------------------------ Khoản thu nhiều đợt, hồ sơ thuế
+
+  IncomePlan saveIncomePlan(IncomePlan p) {
+    if (p.name.trim().isEmpty) throw const LedgerException('nameRequired');
+    if (p.total < 0 || p.withholdingBp < 0 || p.withholdingBp > 5000) throw const LedgerException('amountPositive');
+    if (p.installments.any((i) => i.amount <= 0)) throw const LedgerException('amountPositive');
+    if (p.startDate != null && p.dueDate != null && p.dueDate! < p.startDate!) {
+      throw const LedgerException('dateRange');
+    }
+    _saveAccountRecord(p.id, RecordTypes.incomePlan, p.toValues());
+    return p;
+  }
+
+  /// Xóa khoản thu; các lần nhận tiền đã ghi giữ nguyên (chỉ mất liên kết).
+  void deleteIncomePlan(String id) => _deleteRecord(id);
+
+  /// Ghi một lần nhận tiền của khoản thu: [net] thực nhận, [withheld] thuế bên trả khấu trừ.
+  Txn recordIncomeReceipt(
+    String planId, {
+    required String walletId,
+    required int net,
+    int withheld = 0,
+    required CivilDate date,
+    String? note,
+  }) {
+    final r = _records[planId];
+    if (r == null || r.isDeleted) throw const LedgerException('notFound');
+    final p = IncomePlan.fromRecord(r);
+    final t = Txn(
+      id: newId(),
+      walletId: walletId,
+      kind: TxnKind.income,
+      amount: net,
+      date: date,
+      categoryId: p.categoryId,
+      payee: p.payer,
+      note: note ?? p.name,
+      incomePlanId: p.id,
+      taxWithheld: withheld,
+    );
+    return saveTxn(t);
+  }
+
+  TaxProfile saveTaxProfile(TaxProfile p) {
+    if (p.dependents < 0 || p.dependents > 50 || (p.monthlyInsurance ?? 0) < 0 || p.monthlyCharity < 0) {
+      throw const LedgerException('amountPositive');
+    }
+    _saveAccountRecord(TaxProfile.recordId, RecordTypes.taxProfile, p.toValues());
+    return p;
+  }
 }
 
 extension on Txn {
@@ -768,5 +934,7 @@ extension on Txn {
     pending: pending,
     excludeFromReports: excludeFromReports,
     attachmentIds: attachmentIds,
+    incomePlanId: incomePlanId,
+    taxWithheld: taxWithheld,
   );
 }

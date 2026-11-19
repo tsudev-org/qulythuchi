@@ -36,6 +36,7 @@ web (`https://qulythuchi.tsudev.com`), đồng bộ giữa các thiết bị cù
 | P6 | Đồng bộ trong app | Đăng nhập, thiết lập mật khẩu mã hóa + khóa khôi phục 24 từ, đồng bộ nền, quản lý/thu hồi thiết bị, ghim chứng chỉ |
 | P7 | Tự nhập + thông minh | Bộ đọc thông báo ngân hàng VN, bộ phân tích sao kê, OCR trên máy, giọng nói tiếng Việt, email chuyển tiếp niêm phong, tự xếp danh mục, widget |
 | P8 | Web + site | Flutter web (PWA) tại `/app`, trang giới thiệu Astro, tải về, chính sách riêng tư; thẻ ở tsudev.com/apps |
+| P9a | Tiện ích tài chính cá nhân (yêu cầu 19/11/2026) | Số dư theo kỳ + chuyển số dư, khoản thu nhiều đợt + cộng thu, thuế TNCN (ước tính, gross/net, hạn, nhắc), QR thanh toán VietQR/EMVCo (quét, mở app ngân hàng, tạo mã nhận), đủ tiền tệ ISO 4217, nhập theo tệp mẫu, ba lối đăng nhập + chế độ khách (ADR-0014) |
 | P9 | Ví chung gia đình | Khóa danh tính X25519, mời/nhận thành viên, phân quyền xem/ghi, thu hồi + xoay khóa ví |
 | P10 | Phát hành + kiểm định | Release ký, SBOM, chứng thực nguồn gốc; APK, MSIX/zip, dmg, deb/rpm/AppImage; Scoop/brew/APT/winget; rà soát mối đe dọa, quét DAST (ZAP), kiểm thử khôi phục |
 

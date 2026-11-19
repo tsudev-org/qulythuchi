@@ -10,6 +10,24 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- Tiện ích tài chính cá nhân (P9a, ADR-0014):
+  - Thẻ "Số dư theo tháng" ở Tổng quan: số dư đầu tháng chuyển từ tháng trước + thu - chi = số dư cuối tháng chuyển
+    sang tháng sau, xem lùi/tới từng tháng, tỉ lệ để dành; tắt "Chuyển số dư sang tháng sau" để chỉ xem thu/chi.
+  - Màn "Khoản thu": cộng thu theo tháng/năm, gộp theo người trả, danh mục hoặc khoản thu; khoản thu nhiều đợt cho job
+    freelance/hợp đồng (tổng thỏa thuận, các đợt dự kiến, đã nhận, còn lại, đợt kế tiếp, quá hạn); ghi lần nhận tiền tự
+    tính thuế 10% bên trả khấu trừ. Giao dịch thu có trường "Thuế TNCN bị khấu trừ" và "Thuộc khoản thu".
+  - Màn "Thuế thu nhập cá nhân": ước tính quyết toán năm từ sổ (biểu 5 bậc, giảm trừ 15,5 triệu/6,2 triệu từ 2026;
+    biểu cũ cho năm trước), tính lương gross/net, hạn quyết toán và khai quý, phân loại thuế cho danh mục thu, bộ danh
+    mục thu chuẩn; nhắc hạn bằng thông báo (tự bật).
+  - "QR thanh toán": quét mã VietQR/EMVCo (camera trên Android/iOS/macOS, dán nội dung ở web/máy tính), kiểm CRC chống
+    mã bị sửa, xem ngân hàng/số tài khoản/số tiền/nội dung, mở app ngân hàng điền sẵn (qua VietQR.io, hỏi đồng ý một
+    lần), ghi khoản chi; tạo mã VietQR nhận tiền. Đọc được PromptPay, PayNow, DuitNow, QRIS, QR Ph, KHQR, UPI.
+  - Chọn được mọi tiền tệ ISO 4217 (157 mã) bằng ô tìm kiếm có tên tiếng Việt.
+  - Nhập dữ liệu từ app khác: tải tệp mẫu CSV/Excel, điền rồi nhập - tự tạo ví, danh mục, nhận chuyển ví, điều chỉnh,
+    thuế khấu trừ, bỏ dòng trùng.
+  - Đăng nhập: ba lối đúng chuẩn (Tiếp tục với Google, Tiếp tục với GitHub, Tài khoản tsudev) có nhãn "Lần trước bạn dùng
+    cách này"; lối "Dùng ngay, không cần tài khoản" (chế độ khách). Máy chủ chuyển gợi ý lối tới tsudev.com
+    (`idp_hint`). Apple ID chờ đề xuất chuẩn.
 - Web + site (P8, ADR-0013): `qulythuchi.tsudev.com` có trang giới thiệu, Tính năng, Bảo mật và quyền riêng tư (máy
   chủ thấy gì, ngoại lệ email, quyền thông báo/máy ảnh/micro, ML Kit), Tải về; bản web của app ở `/app/` (PWA, cài
   lên màn hình chính, cũng là cách dùng trên iPhone). Một Worker phục vụ cả tệp tĩnh lẫn API; web app tự phục vụ mọi

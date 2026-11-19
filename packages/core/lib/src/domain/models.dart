@@ -16,6 +16,12 @@ abstract final class RecordTypes {
   static const goal = 'goal';
   static const event = 'event';
   static const jarPlan = 'jar_plan';
+
+  /// Khoản thu dự kiến nhận nhiều đợt (dự án freelance, hợp đồng) - [IncomePlan].
+  static const incomePlan = 'income_plan';
+
+  /// Hồ sơ thuế thu nhập cá nhân (một bản ghi id [TaxProfile.recordId]).
+  static const taxProfile = 'tax_profile';
 }
 
 T _enum<T extends Enum>(List<T> values, Object? raw, T fallback) {
@@ -57,7 +63,7 @@ Currency _currency(Map<String, Object?> v) {
 
 Map<String, Object?> _currencyFields(Currency c) => {
   'currency': c.code,
-  if (!Currency.known.contains(c)) 'currencyDigits': c.minorDigits,
+  if (!Currency.isIso(c.code)) 'currencyDigits': c.minorDigits,
 };
 
 // ---------------------------------------------------------------- Ví
@@ -139,6 +145,27 @@ final class Wallet {
 
 enum CategoryKind { expense, income }
 
+/// Phân loại thuế TNCN của danh mục THU (Việt Nam), để ước tính thuế và nhắc hạn.
+enum IncomeTaxType {
+  /// Chưa phân loại.
+  unknown,
+
+  /// Tiền lương, tiền công (có hợp đồng lao động từ 3 tháng).
+  salary,
+
+  /// Thu nhập vãng lai/freelance (không hợp đồng hoặc dưới 3 tháng) - bên trả khấu trừ 10% khi đạt ngưỡng.
+  casual,
+
+  /// Kinh doanh (hộ, cá nhân kinh doanh, bán hàng online).
+  business,
+
+  /// Đầu tư vốn (cổ tức, lãi trái phiếu...) - thuế suất riêng.
+  investment,
+
+  /// Không chịu/miễn thuế (lãi tiền gửi ngân hàng, quà tặng trong gia đình, hoàn tiền...).
+  exempt,
+}
+
 @immutable
 final class Category {
   const Category({
@@ -149,11 +176,15 @@ final class Category {
     this.icon,
     this.color,
     this.archived = false,
+    this.taxType = IncomeTaxType.unknown,
   });
 
   final String id;
   final String name;
   final CategoryKind kind;
+
+  /// Chỉ có nghĩa với danh mục thu.
+  final IncomeTaxType taxType;
   final String? parentId;
   final String? icon;
   final String? color;
@@ -166,6 +197,7 @@ final class Category {
     'icon': icon,
     'color': color,
     'archived': archived,
+    if (taxType != IncomeTaxType.unknown) 'taxType': taxType.name,
   };
 
   static Category fromRecord(SyncRecord r) {
@@ -178,6 +210,7 @@ final class Category {
       icon: _strOrNull(v, 'icon'),
       color: _strOrNull(v, 'color'),
       archived: _bool(v, 'archived'),
+      taxType: _enum(IncomeTaxType.values, v['taxType'], IncomeTaxType.unknown),
     );
   }
 }
@@ -215,6 +248,8 @@ final class Txn {
     this.pending = false,
     this.excludeFromReports = false,
     this.attachmentIds = const [],
+    this.incomePlanId,
+    this.taxWithheld = 0,
   });
 
   final String id;
@@ -241,6 +276,16 @@ final class Txn {
   final bool pending;
   final bool excludeFromReports;
   final List<String> attachmentIds;
+
+  /// Khoản thu ([IncomePlan]) mà lần nhận tiền này thuộc về.
+  final String? incomePlanId;
+
+  /// Thuế TNCN bên trả đã khấu trừ tại nguồn (chỉ khoản thu). [amount] là số THỰC NHẬN; tổng thu nhập =
+  /// [amount] + [taxWithheld]. Không ảnh hưởng số dư.
+  final int taxWithheld;
+
+  /// Thu nhập trước thuế khấu trừ (chỉ có nghĩa với khoản thu).
+  int get grossAmount => amount + taxWithheld;
 
   /// Ảnh hưởng tới số dư ví (đơn vị nhỏ nhất).
   int get balanceEffect {
@@ -272,6 +317,8 @@ final class Txn {
     'pending': pending,
     'excludeFromReports': excludeFromReports,
     'attachmentIds': attachmentIds,
+    if (incomePlanId != null) 'incomePlanId': incomePlanId,
+    if (taxWithheld != 0) 'taxWithheld': taxWithheld,
   };
 
   static Txn fromRecord(SyncRecord r) {
@@ -297,8 +344,47 @@ final class Txn {
       pending: _bool(v, 'pending'),
       excludeFromReports: _bool(v, 'excludeFromReports'),
       attachmentIds: _strList(v, 'attachmentIds'),
+      incomePlanId: _strOrNull(v, 'incomePlanId'),
+      taxWithheld: _int(v, 'taxWithheld'),
     );
   }
+
+  /// Bản sao đổi một số trường (giữ nguyên các trường còn lại).
+  Txn copyWith({
+    String? walletId,
+    TxnKind? kind,
+    int? amount,
+    CivilDate? date,
+    String? categoryId,
+    String? note,
+    String? payee,
+    String? incomePlanId,
+    int? taxWithheld,
+    bool? pending,
+  }) => Txn(
+    id: id,
+    walletId: walletId ?? this.walletId,
+    kind: kind ?? this.kind,
+    amount: amount ?? this.amount,
+    date: date ?? this.date,
+    categoryId: categoryId ?? this.categoryId,
+    note: note ?? this.note,
+    payee: payee ?? this.payee,
+    tags: tags,
+    transferId: transferId,
+    counterWalletId: counterWalletId,
+    fee: fee,
+    eventId: eventId,
+    debtId: debtId,
+    goalId: goalId,
+    recurringId: recurringId,
+    source: source,
+    pending: pending ?? this.pending,
+    excludeFromReports: excludeFromReports,
+    attachmentIds: attachmentIds,
+    incomePlanId: incomePlanId ?? this.incomePlanId,
+    taxWithheld: taxWithheld ?? this.taxWithheld,
+  );
 }
 
 // ---------------------------------------------------------------- Ngân sách
@@ -565,5 +651,166 @@ final class JarPlan {
   Map<String, Money> allocate(Money income) {
     final parts = income.allocate([for (final j in jars) j.basisPoints]);
     return {for (var i = 0; i < jars.length; i++) jars[i].key: parts[i]};
+  }
+}
+
+// ---------------------------------------------------------------- Khoản thu nhiều đợt
+
+enum IncomePlanStatus { active, completed, cancelled }
+
+/// Một đợt thu dự kiến (mốc thanh toán của hợp đồng: đặt cọc, nghiệm thu...).
+@immutable
+final class PlannedInstallment {
+  const PlannedInstallment({required this.date, required this.amount, this.label});
+  final CivilDate date;
+
+  /// Số tiền dự kiến (trước thuế khấu trừ), đơn vị nhỏ nhất.
+  final int amount;
+  final String? label;
+
+  Map<String, Object?> toJson() => {'date': date.toString(), 'amount': amount, if (label != null) 'label': label};
+
+  static PlannedInstallment? fromJson(Object? raw) {
+    if (raw is! Map) return null;
+    final m = raw.cast<String, Object?>();
+    final d = _date(m, 'date');
+    if (d == null) return null;
+    return PlannedInstallment(date: d, amount: _int(m, 'amount'), label: _strOrNull(m, 'label'));
+  }
+}
+
+/// Khoản thu dự kiến nhận nhiều đợt: một job/dự án freelance, hợp đồng dịch vụ, tiền cho thuê... Mỗi lần nhận tiền là
+/// một giao dịch thu có `incomePlanId`; tiến độ luôn TÍNH từ giao dịch (không lưu số đã nhận).
+@immutable
+final class IncomePlan {
+  const IncomePlan({
+    required this.id,
+    required this.name,
+    required this.currency,
+    this.payer,
+    this.total = 0,
+    this.defaultWalletId,
+    this.categoryId,
+    this.startDate,
+    this.dueDate,
+    this.installments = const [],
+    this.status = IncomePlanStatus.active,
+    this.withholdingBp = 0,
+    this.note,
+  });
+
+  final String id;
+
+  /// Tên job/dự án, ví dụ "Thiết kế logo cho quán A".
+  final String name;
+
+  /// Người/đơn vị trả tiền (khách hàng).
+  final String? payer;
+  final Currency currency;
+
+  /// Tổng giá trị thỏa thuận (trước thuế khấu trừ). 0 = chưa chốt/không cố định.
+  final int total;
+  final String? defaultWalletId;
+  final String? categoryId;
+  final CivilDate? startDate;
+  final CivilDate? dueDate;
+  final List<PlannedInstallment> installments;
+  final IncomePlanStatus status;
+
+  /// Tỉ lệ bên trả dự kiến khấu trừ thuế, phần vạn (1000 = 10%) - gợi ý khi ghi một lần nhận tiền.
+  final int withholdingBp;
+  final String? note;
+
+  Map<String, Object?> toValues() => {
+    'name': name,
+    'payer': payer,
+    ..._currencyFields(currency),
+    'total': total,
+    'defaultWalletId': defaultWalletId,
+    'categoryId': categoryId,
+    'startDate': startDate?.toString(),
+    'dueDate': dueDate?.toString(),
+    'installments': [for (final i in installments) i.toJson()],
+    'status': status.name,
+    'withholdingBp': withholdingBp,
+    'note': note,
+  };
+
+  static IncomePlan fromRecord(SyncRecord r) {
+    final v = r.values;
+    final raw = v['installments'];
+    return IncomePlan(
+      id: r.id,
+      name: _str(v, 'name'),
+      payer: _strOrNull(v, 'payer'),
+      currency: _currency(v),
+      total: _int(v, 'total'),
+      defaultWalletId: _strOrNull(v, 'defaultWalletId'),
+      categoryId: _strOrNull(v, 'categoryId'),
+      startDate: _date(v, 'startDate'),
+      dueDate: _date(v, 'dueDate'),
+      installments: [
+        if (raw is List)
+          for (final e in raw) ?PlannedInstallment.fromJson(e),
+      ]..sort((a, b) => a.date.compareTo(b.date)),
+      status: _enum(IncomePlanStatus.values, v['status'], IncomePlanStatus.active),
+      withholdingBp: _int(v, 'withholdingBp'),
+      note: _strOrNull(v, 'note'),
+    );
+  }
+}
+
+// ---------------------------------------------------------------- Hồ sơ thuế
+
+enum TaxResidency { resident, nonResident }
+
+/// Thông tin để ước tính thuế TNCN (Việt Nam). Được mã hóa đầu-cuối như mọi bản ghi khác.
+@immutable
+final class TaxProfile {
+  const TaxProfile({
+    this.dependents = 0,
+    this.residency = TaxResidency.resident,
+    this.monthlyInsurance,
+    this.monthlyCharity = 0,
+    this.remindersEnabled = true,
+    this.businessHousehold = false,
+  });
+
+  /// UUID cố định của bản ghi hồ sơ thuế (mỗi tài khoản một bản).
+  static const recordId = '7a000000-0000-4000-8000-000000000001';
+
+  /// Số người phụ thuộc đã đăng ký giảm trừ.
+  final int dependents;
+  final TaxResidency residency;
+
+  /// Bảo hiểm bắt buộc người lao động đóng mỗi tháng (VND). Null ⇒ ước tính 10,5% lương trong hạn mức.
+  final int? monthlyInsurance;
+
+  /// Đóng góp từ thiện/nhân đạo được trừ mỗi tháng (bình quân).
+  final int monthlyCharity;
+  final bool remindersEnabled;
+
+  /// Có hoạt động kinh doanh (hộ/cá nhân kinh doanh) - bật nhắc ngưỡng doanh thu.
+  final bool businessHousehold;
+
+  Map<String, Object?> toValues() => {
+    'dependents': dependents,
+    'residency': residency.name,
+    'monthlyInsurance': monthlyInsurance,
+    'monthlyCharity': monthlyCharity,
+    'remindersEnabled': remindersEnabled,
+    'businessHousehold': businessHousehold,
+  };
+
+  static TaxProfile fromRecord(SyncRecord r) {
+    final v = r.values;
+    return TaxProfile(
+      dependents: _int(v, 'dependents').clamp(0, 50),
+      residency: _enum(TaxResidency.values, v['residency'], TaxResidency.resident),
+      monthlyInsurance: _intOrNull(v, 'monthlyInsurance'),
+      monthlyCharity: _int(v, 'monthlyCharity'),
+      remindersEnabled: v['remindersEnabled'] != false,
+      businessHousehold: _bool(v, 'businessHousehold'),
+    );
   }
 }

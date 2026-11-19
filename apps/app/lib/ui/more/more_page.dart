@@ -11,6 +11,9 @@ class MorePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final items = [
+      (Icons.payments_outlined, l.incomeTitle, '/more/income'),
+      (Icons.qr_code_scanner, l.qrTitle, '/more/qr'),
+      (Icons.account_balance_outlined, l.taxTitle, '/more/tax'),
       (Icons.insights_outlined, l.navReports, '/more/reports'),
       (Icons.event_repeat_outlined, l.moreRecurring, '/more/recurring'),
       (Icons.handshake_outlined, l.moreDebts, '/more/debts'),

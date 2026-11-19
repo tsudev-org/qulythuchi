@@ -137,6 +137,29 @@ describe('đăng nhập app (PKCE + mã một lần)', () => {
     expect(bad.status).toBe(400);
   });
 
+  it('gợi ý lối Google/GitHub chuyển thành idp_hint; giá trị lạ bị chặn/bỏ', async () => {
+    const q = async (provider: string) =>
+      call(
+        `/auth/app/start?${new URLSearchParams({
+          redirect_uri: 'com.tsudev.qulythuchi:/auth/callback',
+          state: randomToken(20),
+          code_challenge: await pkceChallenge(randomToken(48)),
+          code_challenge_method: 'S256',
+          provider,
+        }).toString()}`,
+      );
+    const g = await q('google');
+    expect(g.status).toBe(302);
+    expect(new URL(g.headers.get('Location')!).searchParams.get('idp_hint')).toBe('google');
+    const apple = await q('apple');
+    expect(apple.status).toBe(400);
+    const web = await call('/auth/web/start?return_to=/app/&provider=evil');
+    expect(web.status).toBe(302);
+    expect(new URL(web.headers.get('Location')!).searchParams.has('idp_hint')).toBe(false);
+    const gh = await call('/auth/web/start?return_to=/app/&provider=github');
+    expect(new URL(gh.headers.get('Location')!).searchParams.get('idp_hint')).toBe('github');
+  });
+
   it('refresh xoay vòng; dùng lại token cũ ⇒ thu hồi cả thiết bị', async () => {
     const { body, auth } = await login();
     const first = await call('/api/v1/auth/token', json({ grant_type: 'refresh_token', refresh_token: body.refresh_token }));

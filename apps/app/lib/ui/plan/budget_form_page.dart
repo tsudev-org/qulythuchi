@@ -131,7 +131,7 @@ class _BudgetFormPageState extends ConsumerState<BudgetFormPage> {
           initialValue: _currency,
           isExpanded: true,
           decoration: InputDecoration(labelText: l.walletCurrency),
-          items: [for (final c in Currency.known) DropdownMenuItem(value: c, child: Text('${c.code} (${c.symbol})'))],
+          items: [for (final c in Currency.all) DropdownMenuItem(value: c, child: Text('${c.code} (${c.symbol})'))],
           onChanged: (v) => setState(() {
             _currency = v ?? _currency;
             _wallets = [];

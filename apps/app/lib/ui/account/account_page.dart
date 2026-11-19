@@ -10,6 +10,7 @@ import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import '../data/data_page.dart' show saveBytes;
 import '../widgets/common.dart';
+import '../widgets/sign_in_buttons.dart';
 
 /// Thông điệp cho mã lỗi đồng bộ/đăng nhập. KHÔNG in chi tiết lỗi (có thể chứa dữ liệu).
 String syncErrorText(AppLocalizations l, String? code) => switch (code) {
@@ -85,8 +86,8 @@ class _AccountPageState extends ConsumerState<AccountPage> {
     }
   }
 
-  Future<void> _signIn() => _guard(() async {
-    final err = await ref.read(syncProvider.notifier).signIn();
+  Future<void> _signIn([String? provider]) => _guard(() async {
+    final err = await ref.read(syncProvider.notifier).signIn(provider: provider);
     if (!mounted) return;
     if (err != null) {
       context.toast(syncErrorText(context.l10n, err));
@@ -166,12 +167,9 @@ class _AccountPageState extends ConsumerState<AccountPage> {
       if (s.error != null) ListTile(leading: const Icon(Icons.info_outline), title: Text(syncErrorText(l, s.error))),
       Padding(
         padding: const EdgeInsets.all(QtSpace.s4),
-        child: FilledButton.icon(
-          onPressed: _busy ? null : _signIn,
-          icon: const Icon(Icons.login),
-          label: Text(_busy ? l.syncWaitingBrowser : l.syncSignIn),
-        ),
+        child: SignInButtons(busy: _busy, onSignIn: _signIn),
       ),
+      ListTile(leading: const Icon(Icons.person_outline), title: Text(l.guestModeNote)),
       ListTile(leading: const Icon(Icons.shield_outlined), title: Text(l.syncE2eeNote)),
     ];
   }
