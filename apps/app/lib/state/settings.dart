@@ -8,7 +8,7 @@ import '../theme/app_theme.dart';
 @immutable
 final class AppSettings {
   const AppSettings({
-    this.theme = ThemeChoice.dark,
+    this.theme = ThemeChoice.system,
     this.localeCode,
     this.hideBalances = false,
     this.baseCurrency = 'VND',
@@ -16,7 +16,7 @@ final class AppSettings {
   });
   final ThemeChoice theme;
 
-  /// null = theo hệ thống (mặc định tiếng Việt nếu hệ thống không phải vi/en).
+  /// null = theo hệ thống (ngôn ngữ chưa hỗ trợ ⇒ tiếng Anh, [resolveAppLocale]).
   final String? localeCode;
   final bool hideBalances;
 
@@ -42,6 +42,33 @@ final class AppSettings {
     baseCurrency: baseCurrency ?? this.baseCurrency,
     billReminders: billReminders ?? this.billReminders,
   );
+}
+
+/// Ngôn ngữ hiển thị khi chưa chọn: ngôn ngữ ưu tiên đầu của hệ thống nếu là vi/en, còn lại tiếng Anh
+/// (PRODUCT_POLICY mục 1.1).
+Locale resolveAppLocale(Locale? device) =>
+    (device != null && (device.languageCode == 'vi' || device.languageCode == 'en'))
+    ? Locale(device.languageCode)
+    : const Locale('en');
+
+const kDefaultsV2 = 'defaults.v2';
+
+/// Di trú một lần cho máy đã cài trước khi đổi mặc định sang "theo hệ thống" (PRODUCT_POLICY mục 1.2):
+/// máy cũ chưa từng lưu lựa chọn thì đang dùng ngầm Tối + (ngôn ngữ chưa hỗ trợ ⇒ vi) ⇒ ghi lại đúng như cũ
+/// để giao diện không đổi đột ngột. Máy mới (chưa có CSDL/tùy chọn) dùng thẳng mặc định mới.
+Future<void> migrateFirstRunDefaults(
+  SharedPreferences prefs, {
+  required bool installedBefore,
+  required Locale device,
+}) async {
+  if (prefs.getBool(kDefaultsV2) ?? false) return;
+  if (installedBefore) {
+    if (!prefs.containsKey('theme')) await prefs.setString('theme', ThemeChoice.dark.name);
+    if (!prefs.containsKey('locale') && device.languageCode != 'vi' && device.languageCode != 'en') {
+      await prefs.setString('locale', 'vi');
+    }
+  }
+  await prefs.setBool(kDefaultsV2, true);
 }
 
 /// Ghi đè trong `main()`/test bằng `sharedPreferencesProvider.overrideWithValue(...)`.

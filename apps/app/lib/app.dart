@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' show PlatformDispatcher;
 
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
@@ -248,7 +249,7 @@ class _QulyAppState extends ConsumerState<QulyApp> {
     final times = reminderTimes(ref.read(ledgerProvider), DateTime.now());
     if (listEquals(times, _lastReminders)) return;
     _lastReminders = times;
-    final l = lookupAppLocalizations(settings.locale ?? const Locale('vi'));
+    final l = lookupAppLocalizations(settings.locale ?? resolveAppLocale(PlatformDispatcher.instance.locale));
     await scheduler.replaceAll(times, title: l.notifBillTitle, body: l.notifBillBody);
   }
 
@@ -276,12 +277,7 @@ class _QulyAppState extends ConsumerState<QulyApp> {
       darkTheme: buildTheme(Brightness.dark),
       themeMode: settings.theme.mode,
       locale: settings.locale,
-      localeResolutionCallback: (device, supported) {
-        if (device != null && supported.any((l) => l.languageCode == device.languageCode)) {
-          return Locale(device.languageCode);
-        }
-        return const Locale('vi');
-      },
+      localeResolutionCallback: (device, _) => resolveAppLocale(device),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
