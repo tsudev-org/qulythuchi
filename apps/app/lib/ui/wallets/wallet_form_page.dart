@@ -7,6 +7,7 @@ import '../../state/providers.dart';
 import '../../theme/tokens.g.dart';
 import '../widgets/amount_field.dart';
 import '../widgets/common.dart';
+import '../widgets/currency_field.dart';
 import 'wallets_page.dart';
 
 class WalletFormPage extends ConsumerStatefulWidget {
@@ -173,18 +174,11 @@ class _WalletFormPageState extends ConsumerState<WalletFormPage> {
                 onChanged: (v) => setState(() => _type = v ?? _type),
               ),
               const SizedBox(height: QtSpace.s4),
-              DropdownButtonFormField<Currency>(
-                initialValue: _currency,
-                isExpanded: true,
-                decoration: InputDecoration(
-                  labelText: l.walletCurrency,
-                  helperText: hasTxns ? l.errCurrencyLocked : null,
-                ),
-                items: [
-                  for (final c in selectableCurrencies)
-                    DropdownMenuItem(value: c, child: Text('${c.code} (${c.symbol})')),
-                ],
-                onChanged: hasTxns ? null : (v) => setState(() => _currency = v ?? _currency),
+              CurrencyField(
+                value: _currency,
+                label: l.walletCurrency,
+                helperText: hasTxns ? l.errCurrencyLocked : null,
+                onChanged: hasTxns ? null : (v) => setState(() => _currency = v),
               ),
               const SizedBox(height: QtSpace.s4),
               AmountField(

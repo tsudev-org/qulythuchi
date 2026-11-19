@@ -58,6 +58,8 @@ dependencies:
   google_mlkit_text_recognition: ^1.0.3
   image_picker: ^1.2.4
   speech_to_text: ^7.5.0
+  mobile_scanner: ^7.5.0
+  qr: ^3.0.2
 
 dev_dependencies:
   flutter_test:

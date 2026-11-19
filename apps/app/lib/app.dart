@@ -89,6 +89,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                     builder: (_, s) => TxnFormPage(
                       initialKind: s.uri.queryParameters['kind'],
                       initialGoalId: s.uri.queryParameters['goal'],
+                      initialAmount: int.tryParse(s.uri.queryParameters['amount'] ?? ''),
+                      initialNote: s.uri.queryParameters['note'],
+                      initialPayee: s.uri.queryParameters['payee'],
+                      initialIncomePlanId: s.uri.queryParameters['plan'],
                     ),
                   ),
                   GoRoute(
@@ -238,7 +242,7 @@ class _QulyAppState extends ConsumerState<QulyApp> {
     final settings = ref.read(settingsProvider);
     final scheduler = ref.read(reminderSchedulerProvider);
     if (!scheduler.supported) return;
-    if (!settings.billReminders) {
+    if (!settings.billReminders && !settings.taxReminders) {
       if (_lastReminders.isNotEmpty) {
         _lastReminders = const [];
         await scheduler.cancelAll();
@@ -246,7 +250,12 @@ class _QulyAppState extends ConsumerState<QulyApp> {
       return;
     }
     if (ref.read(sessionProvider) != SessionStatus.unlocked) return;
-    final times = reminderTimes(ref.read(ledgerProvider), DateTime.now());
+    final times = reminderTimes(
+      ref.read(ledgerProvider),
+      DateTime.now(),
+      bills: settings.billReminders,
+      tax: settings.taxReminders,
+    );
     if (listEquals(times, _lastReminders)) return;
     _lastReminders = times;
     final l = lookupAppLocalizations(settings.locale ?? resolveAppLocale(PlatformDispatcher.instance.locale));
@@ -270,6 +279,7 @@ class _QulyAppState extends ConsumerState<QulyApp> {
     // Bộ tự nhập (thông báo ngân hàng) tự lấy hàng chờ khi mở khóa.
     ref.listen(autoImportProvider, (_, _) {});
     ref.listen(settingsProvider.select((s) => s.billReminders), (_, _) => _syncReminders());
+    ref.listen(settingsProvider.select((s) => s.taxReminders), (_, _) => _syncReminders());
     return MaterialApp.router(
       onGenerateTitle: (c) => AppLocalizations.of(c).appTitle,
       debugShowCheckedModeBanner: false,

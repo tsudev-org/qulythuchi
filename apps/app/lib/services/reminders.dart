@@ -13,10 +13,31 @@ const maxReminders = 30;
 
 /// Thời điểm cần nhắc hóa đơn và hạn trả nợ trong [reminderHorizonDays] ngày tới (đã sắp, bỏ thời điểm đã qua, không trùng).
 /// Hàm thuần - test được không cần nền tảng.
-List<DateTime> reminderTimes(LedgerData data, DateTime now) {
+/// [tax]: thêm hạn thuế TNCN (trước 7 ngày và trước 1 ngày) và đợt thu dự kiến của khoản thu (đúng ngày).
+List<DateTime> reminderTimes(LedgerData data, DateTime now, {bool bills = true, bool tax = false}) {
   final today = CivilDate.fromDateTime(now);
   final horizon = today.addDays(reminderHorizonDays);
   final out = <DateTime>{};
+  void at(CivilDate day) {
+    final t = DateTime(day.year, day.month, day.day, reminderHour);
+    if (t.isAfter(now)) out.add(t);
+  }
+
+  if (tax) {
+    for (final d in VnTaxCalendar.upcoming(today, days: reminderHorizonDays, business: data.taxProfile.businessHousehold)) {
+      at(d.date.addDays(-7));
+      at(d.date.addDays(-1));
+    }
+    for (final p in data.incomePlans) {
+      if (p.status != IncomePlanStatus.active) continue;
+      final next = Ledger.incomePlanProgress(p, data.txns, today).nextInstallment;
+      if (next != null && next.date >= today && next.date <= horizon) at(next.date);
+    }
+  }
+  if (!bills) {
+    final list = out.toList()..sort();
+    return list.length > maxReminders ? list.sublist(0, maxReminders) : list;
+  }
   for (final r in data.recurrings) {
     if (!r.isBill || r.paused) continue;
     final from = r.generatedThrough?.addDays(1) ?? r.rule.start;

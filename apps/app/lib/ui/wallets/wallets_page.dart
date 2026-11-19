@@ -92,4 +92,4 @@ class _WalletsPageState extends ConsumerState<WalletsPage> {
 }
 
 /// Dùng chung: tiền tệ cho phép chọn khi tạo ví.
-List<Currency> get selectableCurrencies => Currency.known;
+List<Currency> get selectableCurrencies => Currency.all;

@@ -3,7 +3,14 @@ import 'package:qulythuchi_core/qulythuchi_core.dart';
 enum DefaultCategoryLocale { vi, en }
 
 final class DefaultCategory {
-  const DefaultCategory(this.vi, this.en, this.icon, {this.kind = CategoryKind.expense, this.children = const []});
+  const DefaultCategory(
+    this.vi,
+    this.en,
+    this.icon, {
+    this.kind = CategoryKind.expense,
+    this.children = const [],
+    this.taxType = IncomeTaxType.unknown,
+  });
   final String vi;
   final String en;
 
@@ -12,10 +19,13 @@ final class DefaultCategory {
   final CategoryKind kind;
   final List<DefaultCategory> children;
 
+  /// Phân loại thuế TNCN (chỉ danh mục thu).
+  final IncomeTaxType taxType;
+
   String name(DefaultCategoryLocale l) => l == DefaultCategoryLocale.vi ? vi : en;
 }
 
-/// Bộ danh mục mặc định cho người dùng Việt Nam: 8 nhóm chi + 3 nhóm thu, tổng 28 mục.
+/// Bộ danh mục mặc định cho người dùng Việt Nam: 8 nhóm chi + 7 nhóm thu chuẩn (có phân loại thuế TNCN).
 const defaultCategories = <DefaultCategory>[
   DefaultCategory(
     'Ăn uống',
@@ -69,16 +79,60 @@ const defaultCategories = <DefaultCategory>[
   DefaultCategory('Giáo dục', 'Education', 'school'),
   DefaultCategory('Giải trí', 'Entertainment', 'movie', children: [DefaultCategory('Du lịch', 'Travel', 'flight')]),
   DefaultCategory('Hiếu hỷ, quà tặng', 'Gifts & donations', 'card_giftcard'),
-  DefaultCategory('Lương', 'Salary', 'payments', kind: CategoryKind.income),
-  DefaultCategory('Thưởng', 'Bonus', 'emoji_events', kind: CategoryKind.income),
+  ...standardIncomeCategories,
+];
+
+/// Bộ danh mục THU chuẩn: phân loại theo thuế TNCN Việt Nam để ước tính quyết toán (lương, vãng lai/freelance, kinh
+/// doanh, đầu tư, miễn thuế). Người dùng cũ bổ sung bằng "Bổ sung danh mục thu chuẩn".
+const standardIncomeCategories = <DefaultCategory>[
+  DefaultCategory(
+    'Lương',
+    'Salary',
+    'payments',
+    kind: CategoryKind.income,
+    taxType: IncomeTaxType.salary,
+    children: [
+      DefaultCategory('Phụ cấp', 'Allowance', 'payments', kind: CategoryKind.income, taxType: IncomeTaxType.salary),
+    ],
+  ),
+  DefaultCategory('Thưởng', 'Bonus', 'emoji_events', kind: CategoryKind.income, taxType: IncomeTaxType.salary),
+  DefaultCategory(
+    'Freelance, dịch vụ',
+    'Freelance & services',
+    'work',
+    kind: CategoryKind.income,
+    taxType: IncomeTaxType.casual,
+  ),
+  DefaultCategory(
+    'Kinh doanh, bán hàng',
+    'Business & sales',
+    'storefront',
+    kind: CategoryKind.income,
+    taxType: IncomeTaxType.business,
+    children: [
+      DefaultCategory('Cho thuê', 'Rental', 'house', kind: CategoryKind.income, taxType: IncomeTaxType.business),
+    ],
+  ),
+  DefaultCategory(
+    'Đầu tư',
+    'Investment',
+    'trending_up',
+    kind: CategoryKind.income,
+    taxType: IncomeTaxType.investment,
+    children: [
+      DefaultCategory('Lãi tiết kiệm', 'Interest', 'percent', kind: CategoryKind.income, taxType: IncomeTaxType.exempt),
+      DefaultCategory('Cổ tức', 'Dividends', 'pie_chart', kind: CategoryKind.income, taxType: IncomeTaxType.investment),
+    ],
+  ),
   DefaultCategory(
     'Thu nhập khác',
     'Other income',
     'savings',
     kind: CategoryKind.income,
     children: [
-      DefaultCategory('Lãi tiết kiệm', 'Interest', 'percent', kind: CategoryKind.income),
       DefaultCategory('Bán đồ', 'Sales', 'sell', kind: CategoryKind.income),
+      DefaultCategory('Được tặng', 'Gifts received', 'redeem', kind: CategoryKind.income, taxType: IncomeTaxType.exempt),
+      DefaultCategory('Hoàn tiền', 'Refunds', 'undo', kind: CategoryKind.income, taxType: IncomeTaxType.exempt),
     ],
   ),
 ];

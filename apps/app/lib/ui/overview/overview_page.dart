@@ -14,6 +14,7 @@ import '../quick_entry/quick_entry_sheet.dart';
 import '../recurring/recurring_page.dart';
 import '../transactions/txn_tile.dart';
 import '../widgets/common.dart';
+import 'period_card.dart';
 
 class OverviewPage extends ConsumerWidget {
   const OverviewPage({super.key});
@@ -144,6 +145,8 @@ class OverviewPage extends ConsumerWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: QtSpace.s4),
+                  const PeriodBalanceCard(),
                   const SizedBox(height: QtSpace.s4),
                   _SafeToSpendCard(safe: safe),
                   if (pending.isNotEmpty) ...[

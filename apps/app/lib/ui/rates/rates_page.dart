@@ -8,6 +8,7 @@ import '../../state/settings.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import '../widgets/common.dart';
+import '../widgets/currency_field.dart';
 import '../widgets/form_fields.dart';
 
 /// Tiền tệ quy đổi + tỉ giá nhập tay (tự cập nhật qua máy chủ riêng ở P5/P6).
@@ -41,7 +42,7 @@ class RatesPage extends ConsumerWidget {
                       isExpanded: true,
                       decoration: InputDecoration(labelText: l.ratesFrom),
                       items: [
-                        for (final cur in Currency.known.where((x) => x != base))
+                        for (final cur in Currency.all.where((x) => x != base))
                           DropdownMenuItem(value: cur, child: Text('${cur.code} (${cur.symbol})')),
                       ],
                       onChanged: (v) => setLocal(() => from = v ?? from),
@@ -103,16 +104,10 @@ class RatesPage extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(QtSpace.s4, QtSpace.s4, QtSpace.s4, 96),
           children: [
-            DropdownButtonFormField<Currency>(
-              initialValue: base,
-              isExpanded: true,
-              decoration: InputDecoration(labelText: l.ratesBase),
-              items: [
-                for (final c in Currency.known) DropdownMenuItem(value: c, child: Text('${c.code} (${c.symbol})')),
-              ],
-              onChanged: (v) {
-                if (v != null) ref.read(settingsProvider.notifier).setBaseCurrency(v.code);
-              },
+            CurrencyField(
+              value: base,
+              label: l.ratesBase,
+              onChanged: (v) => ref.read(settingsProvider.notifier).setBaseCurrency(v.code),
             ),
             const SizedBox(height: QtSpace.s3),
             Text(l.ratesNote, style: TextStyle(color: p.textSecondary)),

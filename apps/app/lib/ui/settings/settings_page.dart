@@ -231,6 +231,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 onChanged: notifier.setLocale,
               ),
             ),
+            SwitchListTile(
+              key: const Key('settings.carry'),
+              value: settings.carryOverBalance,
+              onChanged: notifier.setCarryOverBalance,
+              title: Text(l.settingsCarryOver),
+              subtitle: Text(l.settingsCarryOverSub),
+              secondary: const Icon(Icons.redo),
+            ),
             _section(l.settingsPrivacy),
             SwitchListTile(
               value: settings.hideBalances,
@@ -276,6 +284,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 title: Text(l.settingsNotifications),
                 subtitle: Text(l.settingsNotificationsSub),
                 secondary: const Icon(Icons.notifications_outlined),
+              ),
+            if (ref.read(reminderSchedulerProvider).supported)
+              SwitchListTile(
+                value: settings.taxReminders,
+                onChanged: (v) async {
+                  if (v && !await ref.read(reminderSchedulerProvider).requestPermission()) return;
+                  await notifier.setTaxReminders(v);
+                },
+                title: Text(l.settingsTaxReminders),
+                subtitle: Text(l.settingsTaxRemindersSub),
+                secondary: const Icon(Icons.event_note_outlined),
               ),
             ListTile(leading: const Icon(Icons.timer_outlined), title: Text(l.settingsAutoLock)),
             ListTile(
