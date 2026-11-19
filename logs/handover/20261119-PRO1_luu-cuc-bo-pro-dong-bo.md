@@ -29,3 +29,17 @@ Xem phiếu gốc mục 8 (giá Pro, ân hạn, nơi đặt dịch vụ đồng 
 ## 4. Kết quả xử lý (phiên nhận điền)
 
 -
+
+## 5. Đã chốt (19/11/2026, bổ sung sau khi mở phiếu)
+
+Chủ dự án giao agent chốt mọi câu hỏi mở và xác nhận **chưa có người dùng thật** ⇒ phiếu gốc mục 8 ĐÃ CHỐT, mục 9
+là **HỢP ĐỒNG CHUNG** (mọi repo dùng đúng định danh, không tự đặt khác): gói chung **TsuDEV Pro 49.000 ₫/tháng,
+490.000 ₫/năm**; Ủng hộ 20/50/100/200 nghìn; Play `tsudev_pro` (`thang`/`nam`) + `ung_ho_20k`…`ung_ho_200k`; JWS
+quyền lợi (ES256, `exp` ≤ 7 ngày, `badge`, `devices_30d`); HTTP 402 `pro_required`; mã cài đặt `X-Tsu-Installation`;
+dịch vụ đồng bộ dùng chung ở repo mới `tsudev-org/tsusync`; huy hiệu `TsuBadge`; nội dung thông báo vi/en nguyên văn.
+Pro hết hạn: chặn đẩy, kéo/xuất 90 ngày, báo trước 30 và 7 ngày, dữ liệu trên thiết bị không bao giờ bị xoá.
+
+Làm được NGAY (không phụ thuộc PRO-B/PRO-D): kiểm kê, ADR, màn Pro/Ủng hộ, thông báo nhiều thiết bị (nguồn quyền lợi giả
+trong test), tắt mọi đường gửi dữ liệu người dùng lên mạng ở bản miễn phí. Thứ tự toàn hệ: phiếu gốc mục 9.5.
+
+Q5 ĐÃ CHỐT: tham gia ví chung được mời = miễn phí. Q2: chưa có người dùng thật ⇒ tắt đồng bộ miễn phí thẳng, không cần ân hạn chuyển tiếp; xoá dữ liệu thử nghiệm trên D1/R2 khi bật gate (báo 👤 trước khi xoá production). Hạn mức Pro: 200 MiB bản ghi + 1 GiB tệp. ADR-0016 cập nhật theo.
