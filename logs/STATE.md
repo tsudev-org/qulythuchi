@@ -15,9 +15,9 @@
 - [ ] 👤 Nghiệm thu P7b trên production: gắn ảnh hóa đơn trên điện thoại, mở ở máy thứ hai/`/app/`, xem trong ví chung
   (phiếu `logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
-- [ ] ⏸ T7/PRO1 phần APP (Pro + Ủng hộ + huy hiệu + thông báo 30 ngày): máy chủ XONG 20/11/2026 (PR #27). Chờ gói
-  Flutter `tsudev_ui` (PRO-C2, `tsudev-org/tsudev-ui-flutter`) + trang `tsudev.com/pro` (B3). Đọc phiếu
-  `logs/handover/20261120-01_t7-may-chu-xong.md` + ADR-0016 mục 4.
+- [ ] T7/PRO1 + PRO2 phần APP: màn Pro chỉ gói 1 năm (`nam`, điều khoản nguyên văn 7.5), Ủng hộ, huy hiệu, nhắc gia
+  hạn 7 ngày + báo hết kỳ (7.6, `ProRenewalController`/`maybeShowProRenewal`). `tsudev_ui` **v0.2.0 ĐÃ PHÁT HÀNH**
+  (20/11/2026). Đọc phiếu `logs/handover/20261120-04_pro2-may-chu-xong.md`, phiếu PRO2 mục 2.1-2.2, ADR-0016/0018.
 - [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); sinh icon app gốc từ dây chuyền thương hiệu (hiện chỉ web)
@@ -26,9 +26,14 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| PRO2 máy chủ: xoá vì hết Pro có xác minh qua kênh trạng thái tsudev.com (`feat/pro2-may-chu`) | agent-qulythuchi | 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 20/11/2026 - PRO2 máy chủ (agent-qulythuchi, ADR-0018, phiếu rà soát `20261120-pro2-may-chu`): đồng bộ chuẩn
+  v4.0.0 (Pro kỳ 1 năm không tự gia hạn); `purgeLapsedPro` chỉ chọn ứng viên theo đệm rồi hỏi `POST
+  /api/rp/entitlements/status` ngay trước khi xoá (đã gia hạn ⇒ giữ + cập nhật hạn; ok quá 90 ngày/deleted ⇒ xoá;
+  lỗi/unknown ⇒ hoãn 24 giờ; bỏ luật xoá theo 404 kênh RP); migration 0006 `pro_purge_checks`; máy chủ 76 test. PR #34
+  gộp `f772b67`; LÊN PRODUCTION (Worker `434b4cc5`, 0006 áp D1 remote): `/`, `/app/`, health 200; đường Pro 401.
 
 - 20/11/2026 - P7b Tệp đính kèm ảnh hóa đơn E2EE (agent-qulythuchi, ADR-0017, phiếu rà soát
   `20261120-p7b-tep-dinh-kem`): lõi `Attachment` + `AttachmentCipher` (khóa tệp riêng trong bản ghi `attachment` bọc bởi

@@ -77,3 +77,4 @@
 
 ## 5. Kết quả xử lý (mỗi phiên ghi một dòng)
 
+- 20/11/2026 agent-qulythuchi: mục 2.3 (máy chủ) XONG - chuẩn v4.0.0, `purgeLapsedPro` hỏi kênh trạng thái ngay trước khi xoá (ADR-0018, migration 0006, 6 test), PR #34 gộp `f772b67`, Worker `434b4cc5` lên production (`PRO_ENFORCE=off`; kênh trạng thái tsudev.com còn trả 405 ⇒ hoãn). Mục 2.1/2.2 (app) CHƯA - gộp với app T7, `tsudev_ui` v0.2.0 đã phát hành.
