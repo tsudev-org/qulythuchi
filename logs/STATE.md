@@ -36,7 +36,7 @@
   1 GiB; cờ `PRO_ENFORCE` (production `off`). Máy chủ 68 test đạt; PR #27 CI xanh, gộp `adc5e8c`. LÊN PRODUCTION
   (Worker version `cdc9a0d7`, migration 0004 áp D1 remote): `/`, `/app/`, health 200, `/api/v1/me/entitlements` 401
   khi chưa đăng nhập. 👤 đã đặt secret `RP_PRIVATE_JWK` + đăng ký khoá công khai (`kid` `qulythuchi-rp-c5128cae`) ở
-  Neon tsudev; agent thử kênh RP thật: assertion đúng ⇒ `404 unknown_subject` cho sub giả, không token ⇒ 401.
+  Neon tsudev; agent thử kênh RP thật: assertion đúng ⇒ `404 unknown_subject` cho sub giả, không token ⇒ 401. 👤 thử tài khoản thật: `/me/entitlements` ⇒ `status: ok` + JWS thật (nghiệm thu kênh RP).
 
 - 19/11/2026 - T7 dừng trước khi viết mã (agent-qulythuchi, phiên qulythuchi-b2): T5/T6 ở tsudev chưa có mã, và tsudev
   ADR-0002 bác phương án app tự xác minh Play ⇒ 👤 chọn "phiếu trước, chờ T5". 👤 chốt thêm cho toàn hệ: miễn phí chỉ lưu
