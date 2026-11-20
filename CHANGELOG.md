@@ -10,6 +10,10 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- Ảnh hóa đơn đính kèm giao dịch (P7b, ADR-0017): chụp hoặc chọn ảnh trong màn giao dịch (tối đa 5 ảnh), xem phóng to,
+  xóa. Ảnh được thu nhỏ, xóa vị trí GPS và thông tin máy chụp, rồi mã hóa trên máy bằng khóa riêng từng ảnh trước khi
+  đồng bộ - máy chủ chỉ giữ bản mã. Người cùng ví chung xem được ảnh (người xem không thêm/xóa được). Khi đồng bộ bị
+  chặn vì chưa có TsuDEV Pro, ảnh vẫn lưu đầy đủ trên máy và tự tải lên khi có Pro.
 - Dựng thử iOS + macOS trên CI (AP1, `apple.yml`): bản iOS không ký (`.ipa` chỉ để chủ dự án tự ký cho máy mình),
   chạy thử trên iPhone + iPad 13" giả lập tiếng Việt kèm ảnh chụp, bản macOS sandbox thật chạy thử; kê khai quyền
   riêng tư iOS `PrivacyInfo.xcprivacy`. Chưa phát hành lên App Store (cần tài khoản Apple Developer).

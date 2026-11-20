@@ -11,8 +11,9 @@
 
 - [ ] 👤 Nghiệm thu P9 trên production bằng HAI tài khoản tsudev thật (phiếu `logs/handover/20261119-03_p9-xong.md` mục 2b);
   thử đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
-- [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
-  desktop (Tesseract), widget/lối tắt iOS.
+- [ ] Dời từ P7 (chưa giao phase): sao kê PDF, OCR desktop (Tesseract), widget/lối tắt iOS. (Tệp đính kèm XONG P7b.)
+- [ ] 👤 Nghiệm thu P7b trên production: gắn ảnh hóa đơn trên điện thoại, mở ở máy thứ hai/`/app/`, xem trong ví chung
+  (phiếu `logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
 - [ ] ⏸ T7/PRO1 phần APP (Pro + Ủng hộ + huy hiệu + thông báo 30 ngày): máy chủ XONG 20/11/2026 (PR #27). Chờ gói
   Flutter `tsudev_ui` (PRO-C2, `tsudev-org/tsudev-ui-flutter`) + trang `tsudev.com/pro` (B3). Đọc phiếu
@@ -25,9 +26,17 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| P7b tệp đính kèm ảnh hóa đơn E2EE (nhánh `feat/p7b-tep-dinh-kem`) | agent-qulythuchi | 10:28 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 20/11/2026 - P7b Tệp đính kèm ảnh hóa đơn E2EE (agent-qulythuchi, ADR-0017, phiếu rà soát
+  `20261120-p7b-tep-dinh-kem`): lõi `Attachment` + `AttachmentCipher` (khóa tệp riêng trong bản ghi `attachment` bọc bởi
+  khóa ví, ngữ cảnh `attf|ví|giao dịch|tệp`, đệm 64 KiB) + `ImageSanitizer` (bỏ EXIF/GPS/ICC, JPEG ≤ 2000 px ≤ 2 MiB,
+  trần 25 MiB/50 triệu điểm ảnh), vector `attachment-file`; máy chủ migration 0005 `wallet_files` + `/wallets/:wid/files/:id`
+  (quyền thành viên, Pro chủ ví, hạn mức chung, dọn R2 ví chung); app schema v3 `blobs`, `FileSync`, 402 giữ ảnh cục bộ,
+  mục "Ảnh hóa đơn" vi+en, đổi ví mã hóa lại ảnh. Lõi 101, máy chủ 71, app đủ test đạt; PR #32 CI xanh (cả iOS/macOS,
+  ảnh chụp đã xem), gộp `aa7fff2`. LÊN PRODUCTION (Worker `f4291be8`, migration 0005 áp D1 remote): `/`, `/app/`, health
+  200; đường tệp 401 khi chưa đăng nhập. CHƯA nghiệm thu bằng tài khoản thật (👤).
 
 - 20/11/2026 - AP1 Apple CI (agent-qulythuchi): `.github/workflows/apple.yml` + `scripts/apple-simulator-run.sh` theo mẫu
   lotus-share#80 - iOS release `--no-codesign` ⇒ `.ipa` không ký (artifact 14 ngày), iPhone + iPad 13" giả lập `vi` (còn
