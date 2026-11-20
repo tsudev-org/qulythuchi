@@ -20,4 +20,8 @@ updates:
     schedule: { interval: monthly, timezone: Asia/Ho_Chi_Minh }
     open-pull-requests-limit: 2
     groups: { npm-sync-api: { patterns: ['*'] } }
+    ignore:
+      # vitest major phải đi cùng @cloudflare/vitest-pool-workers hỗ trợ nó (0.23 khai peer vitest 4) - xem PR #10.
+      - dependency-name: vitest
+        update-types: ['version-update:semver-major']
 # Thêm npm cho apps/site ở P8.
