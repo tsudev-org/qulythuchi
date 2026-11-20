@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Quly Thu Chi: tệp kê khai quyền riêng tư cấp ứng dụng (Apple bắt buộc từ 05/2024).
+  - Không theo dõi, không quảng cáo, không analytics.
+  - Dữ liệu thu thập (rời máy và nhà phát triển đọc được): định danh tài khoản tsudev.com (`oidc_sub`) và email đăng
+    nhập, lưu ở máy chủ đồng bộ để phục vụ chức năng (services/sync-api/migrations/0001_init.sql). Gắn với danh tính,
+    không dùng để theo dõi.
+  - Dữ liệu tài chính KHÔNG khai là "thu thập": chỉ rời máy dưới dạng bản mã hóa đầu-cuối (libsodium, ADR-0002) mà
+    máy chủ không giải mã được.
+  - API "required reason" mà mã của chính ứng dụng gọi; plugin tự kê khai trong gói của mình.
+    UserDefaults CA92.1: cài đặt của ứng dụng (shared_preferences).
+    FileTimestamp C617.1: sqlite3 và path_provider đọc thông tin tệp trong vùng chứa của ứng dụng.
+    SystemBootTime 35F9.1: đồng hồ đơn điệu (Stopwatch của Dart) để đo thời gian trôi qua.
+  Đổi mã dùng thêm API trong danh sách của Apple hoặc gửi thêm dữ liệu đọc được lên máy chủ => sửa tệp này cùng PR
+  (CI apple.yml kiểm tệp có trong gói .app).
+-->
+<plist version="1.0">
+<dict>
+	<key>NSPrivacyTracking</key>
+	<false/>
+	<key>NSPrivacyTrackingDomains</key>
+	<array/>
+	<key>NSPrivacyCollectedDataTypes</key>
+	<array>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string>NSPrivacyCollectedDataTypeUserID</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<true/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string>NSPrivacyCollectedDataTypeEmailAddress</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<true/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+			</array>
+		</dict>
+	</array>
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>CA92.1</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>C617.1</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>35F9.1</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
