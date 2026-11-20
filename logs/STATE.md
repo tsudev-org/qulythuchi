@@ -15,9 +15,11 @@
 - [ ] 👤 Nghiệm thu P7b trên production: gắn ảnh hóa đơn trên điện thoại, mở ở máy thứ hai/`/app/`, xem trong ví chung
   (phiếu `logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
-- [ ] T7/PRO1 + PRO2 phần APP: màn Pro chỉ gói 1 năm (`nam`, điều khoản nguyên văn 7.5), Ủng hộ, huy hiệu, nhắc gia
-  hạn 7 ngày + báo hết kỳ (7.6, `ProRenewalController`/`maybeShowProRenewal`). `tsudev_ui` **v0.2.0 ĐÃ PHÁT HÀNH**
-  (20/11/2026). Đọc phiếu `logs/handover/20261120-04_pro2-may-chu-xong.md`, phiếu PRO2 mục 2.1-2.2, ADR-0016/0018.
+- [ ] Logo riêng Quly Thu Chi (phiếu `logs/handover/20261120-LG1_logo-rieng-quly-thu-chi.md`, chủ dự án giao 20/11/2026):
+  chuyển `logo-qulythuchi.png` (gốc repo) vào `assets/brand/source/`, `brand.json` mode `no-white`, sinh favicon/icon
+  site + app, báo URL `/brand/logo-qulythuchi.png` cho phiên tsudev.
+- [ ] Chờ tsudev B2 (`POST /api/rp/entitlements/play`, phiếu tsudev `20261120-QT5`): xác nhận thân yêu cầu ⇒ thử mua
+  Play đầu-cuối (cần sản phẩm Play thật).
 - [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); sinh icon app gốc từ dây chuyền thương hiệu (hiện chỉ web)
@@ -26,9 +28,16 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| T7 app + PRO2 phần app: màn Pro 1 năm, Ủng hộ, huy hiệu, 402 reason, nhắc gia hạn 7.6 (nhánh `feat/t7-app-pro`) | agent-qulythuchi | 14:14 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 20/11/2026 - T7 app + PRO2 phần app (agent-qulythuchi, ADR-0019, phiếu rà soát `20261120-t7-app-pro`): `tsudev_ui`
+  v0.2.0 ghim tag; quyền lợi qua `/me/entitlements` kiểm ES256 + JWKS, đệm ≤ 7 ngày; `X-Tsu-Installation`/`X-Tsu-Platform`;
+  màn Pro 1 năm + điều khoản 7.5 nguyên văn; kênh `TSU_CHANNEL` (Android mặc định Play, không liên kết web); Play
+  Billing `tsudev_pro`/`nam` + `ung_ho_*`; máy chủ `POST /api/v1/me/purchases/play` + `badge` thành viên; 402 theo
+  `reason`; nhắc 7.6 (`maybeShowProRenewal`), mốc xoá 30/7 ngày, 7.3; THREAT_MODEL T30-T31. App đủ test (t7 25 ca, gồm
+  6 ca 7.6), máy chủ 81 test; PR #36 CI xanh (cả iOS/macOS, ảnh đã xem), gộp `30c08fe`. LÊN PRODUCTION (Worker
+  `6f4de037`): `/`, `/app/`, health 200; `purchases/play` 401 khi chưa đăng nhập.
 
 - 20/11/2026 - PRO2 máy chủ (agent-qulythuchi, ADR-0018, phiếu rà soát `20261120-pro2-may-chu`): đồng bộ chuẩn
   v4.0.0 (Pro kỳ 1 năm không tự gia hạn); `purgeLapsedPro` chỉ chọn ứng viên theo đệm rồi hỏi `POST

@@ -13,6 +13,13 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- TsuDEV Pro trong app (T7 + PRO2, ADR-0019): màn "TsuDEV Pro và Ủng hộ" (Thêm → TsuDEV Pro) chỉ có gói 1 năm,
+  KHÔNG tự gia hạn, điều khoản hiện trước nút mua; bản Google Play mua và ủng hộ qua Play Billing, bản web/desktop mở
+  tsudev.com. Nhắc gia hạn mỗi lần mở app trong 7 ngày cuối, báo một lần khi hết kỳ kèm ngày xoá bản sao đám mây, báo
+  trước 30 và 7 ngày khi bản sao sắp bị xoá; thông báo khi dùng trên nhiều thiết bị mà chưa có Pro. Huy hiệu Pro/Ủng
+  hộ cạnh tên ở màn Tài khoản và danh sách thành viên ví chung. Khi máy chủ cần Pro, app báo đúng lý do (cần Pro, cần
+  đăng nhập lại, chủ ví chung chưa có Pro) và giữ dữ liệu chờ trên máy. Mua qua Google Play cần tsudev.com hoàn thiện
+  bước xác minh biên nhận (chưa có).
 - Ảnh hóa đơn đính kèm giao dịch (P7b, ADR-0017): chụp hoặc chọn ảnh trong màn giao dịch (tối đa 5 ảnh), xem phóng to,
   xóa. Ảnh được thu nhỏ, xóa vị trí GPS và thông tin máy chụp, rồi mã hóa trên máy bằng khóa riêng từng ảnh trước khi
   đồng bộ - máy chủ chỉ giữ bản mã. Người cùng ví chung xem được ảnh (người xem không thêm/xóa được). Khi đồng bộ bị

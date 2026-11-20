@@ -90,4 +90,4 @@ APP (apps/app) - màn Pro chỉ gói 1 năm + điều khoản 7.5 nguyên văn, 
 
 ## 7. Kết quả xử lý (agent nhận điền sau khi thực hiện)
 
--
+- 20/11/2026 agent-qulythuchi: mục 2.1 (app) xong ở PR #36, phiếu bàn giao 20261120-05.
