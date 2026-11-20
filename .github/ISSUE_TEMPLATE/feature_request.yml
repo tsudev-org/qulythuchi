@@ -1,0 +1,19 @@
+name: Feature request - Đề xuất tính năng
+description: Suggest an improvement for Quly Thu Chi. Đề xuất cải tiến.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: English or Vietnamese is fine. Viết tiếng Việt hay tiếng Anh đều được.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem - Vấn đề bạn gặp
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Proposed solution - Cách bạn đề xuất
+    validations:
+      required: true

@@ -1,0 +1,45 @@
+name: Bug report - Báo lỗi
+description: Something in the Quly Thu Chi app, web app or sync server does not work. Có gì đó không chạy đúng.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English or Vietnamese is fine. Viết tiếng Việt hay tiếng Anh đều được.
+        Security vulnerabilities: do NOT use this form - see SECURITY.md.
+        Never paste your financial data, recovery words or passwords. Đừng dán dữ liệu thu chi, 24 từ khôi phục hay mật khẩu.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component - Thành phần
+      options:
+        - Android app
+        - iOS / iPadOS
+        - Windows / macOS / Linux app
+        - Web app (qulythuchi.tsudev.com/app)
+        - Website (qulythuchi.tsudev.com)
+        - Sync server / Máy chủ đồng bộ
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version - Phiên bản (More → Settings → About)
+      placeholder: 26.11.1701
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce - Các bước tái hiện
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual result - Mong đợi và thực tế
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Device and OS - Thiết bị và hệ điều hành
+      placeholder: Pixel 8, Android 16

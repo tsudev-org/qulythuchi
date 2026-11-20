@@ -16,6 +16,7 @@
     "migrate:local": "wrangler d1 migrations apply qulythuchi --local",
     "migrate:remote": "wrangler d1 migrations apply qulythuchi --remote",
     "deploy": "node scripts/kiem-tinh.mjs && wrangler d1 migrations apply qulythuchi --remote && wrangler deploy",
+    "postdeploy": "node ../../scripts/release-tag.mjs --from-deploy",
     "audit": "node scripts/audit.mjs"
   },
   "dependencies": {
