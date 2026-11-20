@@ -18,8 +18,24 @@ nghiêm trọng trong 30 ngày. Quy trình chung: [`.standards/SECURITY.md`](.st
 
 ## Kiểm chứng bản tải về
 
-Mỗi bản phát hành kèm `SHA256SUMS` và chứng thực nguồn gốc bản build:
+Chưa có bản cài đặt nào được phát hành (app đang phát triển, xem `docs/PLAN.md`). Khi phát hành, mỗi bản kèm
+`SHA256SUMS` và chứng thực nguồn gốc bản build:
 
 ```bash
 gh attestation verify <tệp> --repo tsudev-org/qulythuchi
 ```
+
+## English summary
+
+**Reporting a vulnerability**: do not open a public issue. Use GitHub's
+[private vulnerability reporting](https://github.com/tsudev-org/qulythuchi/security/advisories/new) and include the
+component (app / web / sync server), version, steps to reproduce and impact. We reply within 7 days and ship a fix for
+serious issues within 30 days. Fixed vulnerabilities are published as GitHub Security Advisories and listed in
+`CHANGELOG.md`.
+
+**Security design** (financial data, class D3): end-to-end encryption - the server only stores ciphertext and the keys
+derived from your encryption password never leave your device (libsodium: Argon2id, XChaCha20-Poly1305, X25519, X-Wing
+for shared wallets); local database encrypted (SQLite3MultipleCiphers) with the key in the OS secret store; sign-in via tsudev.com OIDC + PKCE with rotating refresh
+tokens; TLS with certificate pinning in the apps, HSTS and a strict CSP on the web. The only opt-in exception is email
+forwarding for auto-import (off by default). No installable release has been published yet; once released, every
+release ships `SHA256SUMS` and build provenance (`gh attestation verify <file> --repo tsudev-org/qulythuchi`).

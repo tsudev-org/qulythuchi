@@ -1,0 +1,276 @@
+{
+ "fields": {
+  "name": "Quly Thu Chi",
+  "homepage_url": "https://qulythuchi.tsudev.com"
+ },
+ "criteria": {
+  "description_good": [
+   "Met",
+   "README.md describes what the software does (end-to-end encrypted, offline-first personal and family finance tracker with multi-device sync), with an English summary: https://github.com/tsudev-org/qulythuchi/blob/main/README.md"
+  ],
+  "interact": [
+   "Met",
+   "README.md, CONTRIBUTING.md and the issue forms explain how to obtain the source, build and test it, report bugs, request features and contribute: https://github.com/tsudev-org/qulythuchi/blob/main/CONTRIBUTING.md"
+  ],
+  "contribution": [
+   "Met",
+   "CONTRIBUTING.md explains the pull request process (squash-merged pull requests into main): https://github.com/tsudev-org/qulythuchi/blob/main/CONTRIBUTING.md"
+  ],
+  "contribution_requirements": [
+   "Met",
+   "CONTRIBUTING.md lists the requirements: Conventional Commits, tests with every behaviour change, integer money, libsodium-only cryptography with versioned envelopes, security review for crypto/sync/sign-in changes, and every CI check green: https://github.com/tsudev-org/qulythuchi/blob/main/CONTRIBUTING.md"
+  ],
+  "floss_license": [
+   "Met",
+   "GNU AGPL-3.0-only: https://github.com/tsudev-org/qulythuchi/blob/main/LICENSE (reason: docs/adr/0005)"
+  ],
+  "floss_license_osi": [
+   "Met",
+   "AGPL-3.0 is OSI approved; GitHub detects the license as AGPL-3.0."
+  ],
+  "license_location": [
+   "Met",
+   "The license is in the standard location LICENSE at the repository root: https://github.com/tsudev-org/qulythuchi/blob/main/LICENSE"
+  ],
+  "documentation_basics": [
+   "Met",
+   "README.md (overview, status), CONTRIBUTING.md (how to build and run the tests), docs/ARCHITECTURE.md (components and data flow), docs/FEATURES.md and the architecture decision records in docs/adr/: https://github.com/tsudev-org/qulythuchi/blob/main/docs/ARCHITECTURE.md"
+  ],
+  "documentation_interface": [
+   "Met",
+   "The external interfaces are documented: the sync server HTTP API (/api/v1/...) and its error codes in docs/adr/0010-may-chu-dong-bo-p5.md and later ADRs (0015 shared wallets, 0016/0018/0019 TsuDEV Pro, 0017 attachments), and the encrypted envelope format with machine-checkable vectors in conformance/envelope-v1.json: https://github.com/tsudev-org/qulythuchi/blob/main/docs/adr/0010-may-chu-dong-bo-p5.md"
+  ],
+  "sites_https": [
+   "Met",
+   "The project website https://qulythuchi.tsudev.com (including the web app and the sync API) and the repository are HTTPS only, with HSTS max-age=63072000; includeSubDomains; preload."
+  ],
+  "discussion": [
+   "Met",
+   "GitHub Issues and pull requests are public, searchable, URL-addressable and open to anyone with a GitHub account: https://github.com/tsudev-org/qulythuchi/issues"
+  ],
+  "english": [
+   "Met",
+   "README.md and SECURITY.md have English summaries, CONTRIBUTING.md is in English, and the issue forms accept reports in English or Vietnamese: https://github.com/tsudev-org/qulythuchi/blob/main/CONTRIBUTING.md"
+  ],
+  "maintained": [
+   "Met",
+   "Actively maintained: dozens of pull requests merged in the last month: https://github.com/tsudev-org/qulythuchi/pulls?q=is%3Apr+is%3Amerged"
+  ],
+  "repo_public": [
+   "Met",
+   "Public git repository on GitHub: https://github.com/tsudev-org/qulythuchi"
+  ],
+  "repo_track": [
+   "Met",
+   "git records who changed what and when; every change is a reviewed pull request with a description: https://github.com/tsudev-org/qulythuchi/commits/main"
+  ],
+  "repo_interim": [
+   "Met",
+   "Every change, including work in progress, is pushed to branches and merged into main through pull requests in the public repository: https://github.com/tsudev-org/qulythuchi/pulls?q=is%3Apr"
+  ],
+  "repo_distributed": [
+   "Met",
+   "git (a distributed version control system) on GitHub."
+  ],
+  "version_unique": [
+   "Met",
+   "The web app and sync server are deployed continuously; every production deployment of main gets a unique tag deploy-YYYY.MM.DD.N, created automatically after the deploy by scripts/release-tag.mjs: https://github.com/tsudev-org/qulythuchi/tags . Installable app releases (not published yet) will use the ecosystem version YY.M.DDNN (e.g. 26.11.1701, shown in Settings > About)."
+  ],
+  "version_semver": [
+   "Met",
+   "Deployments use Calendar Versioning YYYY.MM.DD with a counter .N for several deployments on the same day (e.g. deploy-2026.11.20.1); app versions use the ecosystem CalVer YY.M.DDNN. The deploy- prefix keeps web deployments apart from app release tags (vYY.M.DDNN)."
+  ],
+  "version_tags": [
+   "Met",
+   "Each production deployment is an annotated git tag on the deployed main commit: https://github.com/tsudev-org/qulythuchi/tags (script: https://github.com/tsudev-org/qulythuchi/blob/main/scripts/release-tag.mjs, run by the postdeploy step of services/sync-api)"
+  ],
+  "release_notes": [
+   "Met",
+   "Each version has human-readable release notes: the annotated tag message lists every change merged since the previous deployment (shown at https://github.com/tsudev-org/qulythuchi/tags), and CHANGELOG.md summarises the changes in plain language: https://github.com/tsudev-org/qulythuchi/blob/main/CHANGELOG.md"
+  ],
+  "release_notes_vulns": [
+   "N/A",
+   "No vulnerability with a CVE or similar public identifier has been fixed in this project. Such fixes would be named in the release notes and CHANGELOG.md and published as a GitHub Security Advisory (SECURITY.md)."
+  ],
+  "report_process": [
+   "Met",
+   "Bug reports go to GitHub Issues using the bug report form: https://github.com/tsudev-org/qulythuchi/issues/new/choose"
+  ],
+  "report_tracker": [
+   "Met",
+   "GitHub Issues with bug report and feature request forms: https://github.com/tsudev-org/qulythuchi/issues"
+  ],
+  "report_responses": [
+   "Met",
+   "No external bug report has been filed so far (young project); the maintainer reads every issue and acknowledges reports within days."
+  ],
+  "enhancement_responses": [
+   "Met",
+   "No external enhancement request has been filed so far; the feature request form routes them to the maintainer, who answers each one."
+  ],
+  "report_archive": [
+   "Met",
+   "GitHub Issues are public and searchable: https://github.com/tsudev-org/qulythuchi/issues?q=is%3Aissue"
+  ],
+  "vulnerability_report_process": [
+   "Met",
+   "SECURITY.md describes how to report vulnerabilities (English section included): https://github.com/tsudev-org/qulythuchi/blob/main/SECURITY.md"
+  ],
+  "vulnerability_report_private": [
+   "Met",
+   "GitHub private vulnerability reporting is enabled: https://github.com/tsudev-org/qulythuchi/security/advisories/new"
+  ],
+  "vulnerability_report_response": [
+   "Met",
+   "No vulnerability report was received in the last 6 months. SECURITY.md commits to a reply within 7 days and a fix for serious issues within 30 days."
+  ],
+  "build": [
+   "Met",
+   "Standard builds: flutter build (Android, iOS, macOS, Windows, Linux, web), dart pub for the core package, npm ci + wrangler for the sync server, Astro for the website; scripts/build-web.sh builds the full site. CI builds Linux, web, iOS and macOS on every pull request: https://github.com/tsudev-org/qulythuchi/blob/main/.github/workflows/ci.yml"
+  ],
+  "build_common_tools": [
+   "Met",
+   "Standard tools: Flutter/Dart, npm, the TypeScript compiler, wrangler (Cloudflare Workers), Astro, Xcode for Apple targets."
+  ],
+  "build_floss_tools": [
+   "Met",
+   "Flutter, Dart, Node.js, npm, TypeScript, wrangler/workerd and Astro are FLOSS. (Building for iOS/macOS additionally needs Xcode, which is only required for those targets.)"
+  ],
+  "test": [
+   "Met",
+   "Automated test suites: packages/core (dart test: money, crypto envelopes, recovery phrase, sharing, sync records), apps/app (flutter test: about 130 unit and widget tests, two screen sizes), services/sync-api (vitest running the Worker in workerd with D1/R2: 81 tests), plus cross-implementation crypto vectors checked against an independent libsodium: https://github.com/tsudev-org/qulythuchi/blob/main/CONTRIBUTING.md"
+  ],
+  "test_invocation": [
+   "Met",
+   "Standard invocations: dart test, flutter test, npm test (documented in CONTRIBUTING.md): https://github.com/tsudev-org/qulythuchi/blob/main/CONTRIBUTING.md"
+  ],
+  "test_most": [
+   "Met",
+   "Tests cover the encryption envelopes and key hierarchy (tamper, wrong key/context, nonce uniqueness, BIP39 vectors), money arithmetic, sync conflicts and rollback/identity-change detection, shared wallet key sharing, the server authorization and Pro gate, the attachment pipeline and the main user flows."
+  ],
+  "test_continuous_integration": [
+   "Met",
+   "GitHub Actions runs every test suite, format/lint/analyze, the conformance check, Linux and web builds on every pull request and push to main, and iOS/macOS builds with simulator runs: https://github.com/tsudev-org/qulythuchi/blob/main/.github/workflows/ci.yml"
+  ],
+  "test_policy": [
+   "Met",
+   "CONTRIBUTING.md: every change in behaviour comes with tests in the same pull request; a bug fix comes with a regression test that fails without the fix: https://github.com/tsudev-org/qulythuchi/blob/main/CONTRIBUTING.md"
+  ],
+  "tests_are_added": [
+   "Met",
+   "Recent changes add tests with the code, e.g. #36 (TsuDEV Pro in the app: 25 tests + server tests), #32 (encrypted receipt attachments), #34 (verified purge): https://github.com/tsudev-org/qulythuchi/pull/36"
+  ],
+  "tests_documented_added": [
+   "Met",
+   "The test requirement is written in CONTRIBUTING.md (Pull request requirements, point 2): https://github.com/tsudev-org/qulythuchi/blob/main/CONTRIBUTING.md"
+  ],
+  "warnings": [
+   "Met",
+   "Dart/Flutter analyzer with flutter_lints and strict-casts/strict-inference/strict-raw-types (apps/app/analysis_options.yaml); TypeScript strict mode and typescript-eslint strictTypeChecked for the server: https://github.com/tsudev-org/qulythuchi/blob/main/apps/app/analysis_options.yaml"
+  ],
+  "warnings_fixed": [
+   "Met",
+   "CI runs dart analyze / flutter analyze with --fatal-infos and ESLint + tsc for the server, so every warning (even info level) fails the build and is fixed before merge."
+  ],
+  "warnings_strict": [
+   "Met",
+   "Analyzer strict modes are enabled and --fatal-infos treats even informational lints as errors; TypeScript strict + strictTypeChecked ESLint rules."
+  ],
+  "know_secure_design": [
+   "Met",
+   "The maintainer documented the design and threat model: assets, trust boundaries and threats T1-T31 with mitigations (end-to-end encryption, server never trusted with plaintext, fail-closed authorization, least privilege): https://github.com/tsudev-org/qulythuchi/blob/main/docs/THREAT_MODEL.md"
+  ],
+  "know_common_errors": [
+   "Met",
+   "docs/THREAT_MODEL.md and the per-change security reviews in docs/security-reviews/ (OWASP Top 10 checklist) cover common errors and their mitigations: injection (parameterised SQL), XSS (strict CSP, no HTML rendering of user data), CSRF (SameSite cookies + header check), SSRF, broken access control, insecure randomness and secrets in logs: https://github.com/tsudev-org/qulythuchi/blob/main/docs/security-reviews/20261120-t7-app-pro.md"
+  ],
+  "crypto_published": [
+   "Met",
+   "Only published algorithms: Argon2id, XChaCha20-Poly1305, X25519, X-Wing (ML-KEM-768 + X25519), BLAKE2b, SHA-256, ECDSA P-256 (ES256) for tokens, and TLS."
+  ],
+  "crypto_call": [
+   "Met",
+   "No primitives are implemented in the project: the app calls libsodium (sodium package), the server uses WebCrypto and jose. ADR-0002 forbids custom cryptography: https://github.com/tsudev-org/qulythuchi/blob/main/docs/adr/0002-ma-hoa-dau-cuoi-phan-cap-khoa.md"
+  ],
+  "crypto_floss": [
+   "Met",
+   "All cryptographic libraries (libsodium via the sodium Dart package and libsodium.js on the web, SQLite3MultipleCiphers for the encrypted local database, jose, workerd WebCrypto/BoringSSL) are FLOSS."
+  ],
+  "crypto_keylength": [
+   "Met",
+   "256-bit symmetric keys (XChaCha20-Poly1305), X25519 and ML-KEM-768 (hybrid X-Wing), ECDSA P-256, Argon2id with 64 MiB / 3 passes by default (unlock refuses parameters below the OWASP floor of 19 MiB / 2 passes); TLS is terminated by Cloudflare with modern key lengths."
+  ],
+  "crypto_working": [
+   "Met",
+   "No broken or weak algorithms (MD5, SHA-1, DES, RC4, ECB) are used anywhere for security."
+  ],
+  "crypto_weaknesses": [
+   "Met",
+   "No default security mechanism depends on an algorithm with known serious weaknesses."
+  ],
+  "crypto_pfs": [
+   "Met",
+   "HTTPS is terminated by Cloudflare with TLS 1.3/1.2 ECDHE key exchange only, which provides perfect forward secrecy; the apps pin the TLS roots."
+  ],
+  "crypto_password_storage": [
+   "N/A",
+   "The project does not store passwords for authenticating users: sign-in is delegated to tsudev.com via OIDC. The local encryption password is never stored; it only derives keys with Argon2id and a per-account random salt."
+  ],
+  "crypto_random": [
+   "Met",
+   "Keys, nonces, salts, tokens and installation ids use a CSPRNG: libsodium randombytes in the app, crypto.getRandomValues in the server (https://github.com/tsudev-org/qulythuchi/blob/main/services/sync-api/src/lib/crypto.ts). Math.random is only used to sample when to run housekeeping, never for security."
+  ],
+  "delivery_mitm": [
+   "Met",
+   "The website, web app and API are served over HTTPS only with HSTS preload, a strict CSP and Subresource-free self-hosted assets; the apps pin TLS roots. Source is delivered by GitHub over HTTPS/SSH."
+  ],
+  "delivery_unsigned": [
+   "Met",
+   "Hashes are never retrieved over plain HTTP. Web assets fetched at build time (sodium.js, sqlite3.wasm) are verified against SHA-256 checksums pinned in the repository (apps/app/tool/fetch_web_assets.sh)."
+  ],
+  "vulnerabilities_fixed_60_days": [
+   "Met",
+   "No unpatched vulnerability of medium or higher severity: 0 open Dependabot alerts and 0 open CodeQL alerts; npm audit runs in CI. (Open code-scanning entries are only OpenSSF Scorecard posture findings, not vulnerabilities.)"
+  ],
+  "vulnerabilities_critical_fixed": [
+   "Met",
+   "No critical vulnerability has been reported or is open."
+  ],
+  "no_leaked_credentials": [
+   "Met",
+   "No valid credentials in the repository: gitleaks scans every push and pull request, GitHub secret scanning with push protection is enabled, and secrets live only in Cloudflare secrets / local files outside git."
+  ],
+  "static_analysis": [
+   "Met",
+   "CodeQL (GitHub default setup) on every push and pull request, OpenSSF Scorecard, the Dart analyzer with strict modes and ESLint strictTypeChecked: https://github.com/tsudev-org/qulythuchi/security/code-scanning"
+  ],
+  "static_analysis_common_vulnerabilities": [
+   "Met",
+   "CodeQL security queries for JavaScript/TypeScript look for injection, XSS, SSRF, insecure randomness, regex DoS and similar vulnerabilities (e.g. a CodeQL finding about double-decoding HTML entities in the email importer was fixed, CHANGELOG.md)."
+  ],
+  "static_analysis_fixed": [
+   "Met",
+   "0 open CodeQL alerts; findings are fixed before release (e.g. HTML entities in forwarded email are now decoded in a single pass)."
+  ],
+  "static_analysis_often": [
+   "Met",
+   "CodeQL runs on every push and pull request; the analyzers run in CI on every pull request."
+  ],
+  "dynamic_analysis": [
+   "Unmet",
+   "No dedicated dynamic analysis tool (fuzzer or web scanner) is used yet. The test suites do exercise the running server in workerd and tampered/random inputs for the crypto envelopes, but we do not claim that as dynamic analysis."
+  ],
+  "dynamic_analysis_unsafe": [
+   "N/A",
+   "No memory-unsafe language is part of the project code: Dart and TypeScript only (libsodium and SQLCipher are upstream libraries)."
+  ],
+  "dynamic_analysis_enable_assertions": [
+   "Met",
+   "Tests run with assertions enabled (dart test and flutter test enable assert by default; vitest expectations), and runtime checks such as the money overflow guard stay on in production."
+  ],
+  "dynamic_analysis_fixed": [
+   "N/A",
+   "No dynamic analysis tool is used yet (see dynamic_analysis), so no vulnerability has been found by one."
+  ]
+ }
+}
