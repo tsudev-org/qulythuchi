@@ -17,6 +17,7 @@ import '../security/vault.dart';
 import '../sync/api_client.dart';
 import '../sync/http_client.dart';
 import '../sync/login_launcher.dart';
+import '../sync/pkce.dart' show fallbackLoginProviders, parseLoginProviders;
 import '../sync/shared_wallets.dart';
 import '../sync/sync_engine.dart';
 import 'providers.dart';
@@ -163,6 +164,17 @@ final class RemoteAccount {
 
 final syncProvider = NotifierProvider<SyncController, SyncState>(SyncController.new);
 
+/// Lối liên kết IdP tsudev.com đang bật, qua máy chủ của ta (AUTH_AND_ACCOUNT mục 3.2: không gõ cứng, không nút chết).
+/// Lỗi mạng/thân hỏng ⇒ [fallbackLoginProviders] (không bao giờ có Apple).
+final loginProvidersProvider = FutureProvider<List<String>>((ref) async {
+  final api = ref.watch(syncProvider.notifier).api;
+  try {
+    return parseLoginProviders(await api.getJsonPublic('/api/v1/auth/providers')) ?? fallbackLoginProviders;
+  } on Object {
+    return fallbackLoginProviders;
+  }
+});
+
 /// Điều phối đăng nhập + đồng bộ nền (P6, ADR-0011). Chỉ đồng bộ khi kho khóa đang mở.
 final class SyncController extends Notifier<SyncState> {
   late ApiClient _api;
@@ -269,7 +281,7 @@ final class SyncController extends Notifier<SyncState> {
   // ------------------------------------------------------------------ Đăng nhập / đăng xuất
 
   /// Đăng nhập bằng trình duyệt hệ thống. Trả null nếu thành công, ngược lại mã lỗi để dịch.
-  /// [provider]: `google`/`github` ⇒ gợi ý tsudev.com mở thẳng lối đó; null ⇒ tài khoản tsudev (email).
+  /// [provider]: `google`/`apple`/`github` ⇒ gợi ý tsudev.com mở thẳng lối đó; null ⇒ tài khoản tsudev (email).
   Future<String?> signIn({String? provider}) async {
     final config = ref.read(syncConfigProvider);
     final base = config.server ?? defaultServer;

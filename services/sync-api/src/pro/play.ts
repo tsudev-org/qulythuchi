@@ -30,8 +30,10 @@ export function validPlayReceipt(productId: unknown, token: unknown): productId 
 /**
  * Gửi `{sub, packageName, productId, purchaseToken}` tới `POST <ENTITLEMENTS_URL>/play`.
  * - 200 ⇒ tsudev.com đã xác minh + acknowledge ⇒ app mới được hoàn tất giao dịch.
- * - 400/409/422 ⇒ `purchase_invalid` (app KHÔNG hoàn tất - Play tự hoàn tiền giao dịch không được xác nhận).
- * - Còn lại (chưa có kênh, 401/404/405/429/5xx, mạng, hết giờ) ⇒ `purchase_unavailable` - app giữ giao dịch, thử lại.
+ * - 400/422 ⇒ `purchase_invalid` (app KHÔNG hoàn tất - Play tự hoàn tiền giao dịch không được xác nhận).
+ * - Còn lại ⇒ `purchase_unavailable` - app giữ giao dịch, thử lại: 409 `purchase_pending` (đang chờ thanh toán, tsudev
+ *   ADR-0002 mục 2), 503 `play_unavailable` (gửi lại an toàn, sổ cái idempotent ⇒ 200 `already_recorded`),
+ *   401/403/404/405/429/5xx, mạng, hết giờ.
  */
 export async function forwardPlayReceipt(env: Env, sub: string, productId: string, purchaseToken: string): Promise<void> {
   const url = playReceiptUrl(env);
@@ -53,7 +55,7 @@ export async function forwardPlayReceipt(env: Env, sub: string, productId: strin
     throw purchaseUnavailable();
   }
   if (res.ok) return;
-  if (res.status === 400 || res.status === 409 || res.status === 422) throw purchaseInvalid();
+  if (res.status === 400 || res.status === 422) throw purchaseInvalid();
   console.error('play_receipt', res.status);
   throw purchaseUnavailable();
 }

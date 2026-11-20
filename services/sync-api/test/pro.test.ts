@@ -343,11 +343,12 @@ describe('TsuDEV Pro - biên nhận Google Play (ADR-0019)', () => {
     expect(playState.calls.length).toBe(n);
   });
 
-  it('tsudev.com từ chối biên nhận ⇒ 400 purchase_invalid; kênh chưa có/sập ⇒ 503 purchase_unavailable', async () => {
+  it('tsudev.com từ chối biên nhận ⇒ 400 purchase_invalid; chờ thanh toán/kênh chưa có/sập ⇒ 503 purchase_unavailable', async () => {
     const u = await account({});
     playState.mode = 422;
     expect((await req('/api/v1/me/purchases/play', u.auth, { product_id: 'ung_ho_50k', purchase_token: token })).body.code).toBe('purchase_invalid');
-    for (const mode of [405, 404, 500]) {
+    // 409 = purchase_pending (đang chờ thanh toán) - KHÔNG phải biên nhận hỏng: giữ giao dịch, thử lại sau.
+    for (const mode of [409, 403, 405, 404, 500, 503]) {
       playState.mode = mode;
       const r = await req('/api/v1/me/purchases/play', u.auth, { product_id: 'tsudev_pro', purchase_token: token });
       expect(r.status).toBe(503);

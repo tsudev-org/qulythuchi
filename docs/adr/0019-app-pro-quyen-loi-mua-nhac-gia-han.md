@@ -67,3 +67,10 @@ xuống app. App chưa có: lớp quyền lợi, màn Pro/Ủng hộ, huy hiệu
 `apps/app/test/t7_pro_test.dart` (7.5 nguyên văn vi/en; 6 ca 7.6; Play "Gia hạn" ⇒ IAP không ra web; 7.3; mốc 30/7;
 kênh mặc định; `obfuscatedAccountId`; 402 `no_pro`/`reauth`/`owner_no_pro`; `can_sync=false` không đẩy; mã cài đặt) +
 `services/sync-api/test/pro.test.ts` khối "biên nhận Google Play" và "Huy hiệu thành viên ví chung".
+
+## Bổ sung 21/11/2026 - mã 409 của kênh Play
+
+Hợp đồng B2 cuối cùng của tsudev.com (tsudev ADR-0002 mục 2, phiếu tsudev QT5 mục 4) dùng 409 cho `purchase_pending`
+(đang chờ thanh toán), không phải biên nhận hỏng. Mục 4 ở trên sửa thành: chỉ 400/422 ⇒ `purchase_invalid`; 409 (và
+403, 503 `play_unavailable`) ⇒ `purchase_unavailable`, app giữ giao dịch và gửi lại sau - gửi lại an toàn vì sổ cái
+tsudev.com idempotent (200 `already_recorded`). Mã: `services/sync-api/src/pro/play.ts`, test `pro.test.ts`.

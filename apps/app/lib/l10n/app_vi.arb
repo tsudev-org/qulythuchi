@@ -1038,6 +1038,7 @@
   "welcomeGuestNote": "Chế độ khách: dữ liệu chỉ lưu trên máy này. Có thể đăng nhập để đồng bộ bất cứ lúc nào.",
   "signInGoogle": "Tiếp tục với Google",
   "signInGithub": "Tiếp tục với GitHub",
+  "signInApple": "Tiếp tục với Apple",
   "signInTsudev": "Tài khoản tsudev (email)",
   "signInLastUsed": "Lần trước bạn dùng cách này",
   "signInOr": "hoặc",

@@ -30,6 +30,12 @@ export const entState = {
   bySub: new Map<string, FakeEnt>(),
   calls: [] as { sub: string; installation: string | null; platform: string | null }[],
 };
+/** `GET https://idp.test/api/v1/auth/providers` của IdP giả: thân trả về, hoặc mã HTTP lỗi. */
+export const providersState = {
+  body: { providers: [{ id: 'google', name: 'Google', idp_hint: 'google' }, { id: 'github', name: 'GitHub', idp_hint: 'github' }] } as unknown,
+  status: 200,
+  calls: 0,
+};
 export function entitlementFor(sub: string, e: FakeEnt) {
   entState.bySub.set(sub, e);
 }
@@ -74,6 +80,10 @@ export async function fakeIdp(opts: { sub?: string; tamperNonce?: boolean; wrong
   const rp = await ensureRpKey();
   setOidcFetcher(async (url, init) => {
     const json = (v: unknown, status = 200) => new Response(JSON.stringify(v), { status, headers: { 'content-type': 'application/json' } });
+    if (url === 'https://idp.test/api/v1/auth/providers') {
+      providersState.calls++;
+      return json(providersState.body, providersState.status);
+    }
     if (url === RP_STATUS_AUD) {
       const auth = new Headers(init?.headers).get('Authorization') ?? '';
       const body = JSON.parse(typeof init?.body === 'string' ? init.body : '{}') as { client_id?: unknown; subs?: string[] };

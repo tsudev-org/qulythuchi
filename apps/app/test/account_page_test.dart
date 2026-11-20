@@ -11,6 +11,7 @@ import 'package:qulythuchi/state/capture_providers.dart';
 import 'package:qulythuchi/state/providers.dart';
 import 'package:qulythuchi/state/settings.dart';
 import 'package:qulythuchi/state/sync_controller.dart';
+import 'package:qulythuchi/sync/pkce.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_sync_server.dart';
@@ -87,4 +88,64 @@ void main() {
     expect(find.text('Đăng nhập để lấy dữ liệu đã đồng bộ'), findsOneWidget);
     expect(DefaultCategoryLocale.values, isNotEmpty);
   });
+
+  test('parseLoginProviders: giữ lối đã biết theo thứ tự Google/Apple/GitHub; thân hỏng ⇒ null', () {
+    expect(
+      parseLoginProviders({
+        'providers': [
+          {'id': 'github'},
+          {'id': 'facebook'},
+          {'id': 'apple'},
+          {'id': 'google'},
+        ],
+      }),
+      ['google', 'apple', 'github'],
+    );
+    expect(parseLoginProviders({'providers': <Object>[]}), isEmpty);
+    expect(parseLoginProviders({'providers': 'apple'}), isNull);
+    expect(parseLoginProviders(null), isNull);
+    expect(fallbackLoginProviders, isNot(contains('apple')));
+  });
+
+  for (final (name, list, expected) in [
+    ('IdP bật Apple ⇒ Google, Apple, GitHub', ['github', 'apple', 'google'], ['google', 'apple', 'github']),
+    ('IdP chỉ bật Google ⇒ chỉ nút Google', ['google'], ['google']),
+    ('máy chủ cũ (404) ⇒ dự phòng Google + GitHub, không Apple', null, ['google', 'github']),
+  ]) {
+    testWidgets('nút đăng nhập dựng từ danh sách IdP: $name', (tester) async {
+      await setSurface(tester, const Size(390, 844));
+      final server = FakeSyncServer()..idpProviders = list;
+      final services = makeServices((await tester.runAsync(testSodium))!);
+      services.vault.createAccount(testPassword);
+      SharedPreferences.setMockInitialValues({'locale': 'vi'});
+      final sp = await SharedPreferences.getInstance();
+      final container = ProviderContainer(
+        overrides: [
+          servicesProvider.overrideWithValue(services),
+          sharedPreferencesProvider.overrideWithValue(sp),
+          reminderSchedulerProvider.overrideWithValue(NoopReminderScheduler()),
+          notificationBridgeProvider.overrideWithValue(const NoopNotificationBridge()),
+          quickLinksListenerProvider.overrideWithValue((_) => null),
+          syncConfigProvider.overrideWithValue(
+            SyncConfig(httpClient: server.client, login: fakeLogin('u1'), autoSync: false),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      await tester.pumpWidget(UncontrolledProviderScope(container: container, child: const QulyApp()));
+      await settle(tester);
+      container.read(sessionProvider.notifier).finishOnboarding();
+      container.read(routerProvider).go('/more/account');
+      await realSettle(tester);
+      for (final id in knownLoginProviders) {
+        expect(find.byKey(Key('signin.$id')), expected.contains(id) ? findsOneWidget : findsNothing, reason: id);
+      }
+      expect(find.byKey(const Key('signin.tsudev')), findsOneWidget);
+      if (expected.contains('apple')) {
+        expect(find.text('Tiếp tục với Apple'), findsOneWidget);
+        final ys = [for (final id in expected) tester.getTopLeft(find.byKey(Key('signin.$id'))).dy];
+        expect(ys, [...ys]..sort());
+      }
+    });
+  }
 }

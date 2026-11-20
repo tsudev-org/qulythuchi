@@ -3440,6 +3440,12 @@ abstract class AppLocalizations {
   /// **'Tiếp tục với GitHub'**
   String get signInGithub;
 
+  /// No description provided for @signInApple.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục với Apple'**
+  String get signInApple;
+
   /// No description provided for @signInTsudev.
   ///
   /// In vi, this message translates to:

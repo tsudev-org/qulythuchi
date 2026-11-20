@@ -210,7 +210,7 @@
   ],
   "crypto_pfs": [
    "Met",
-   "HTTPS is terminated by Cloudflare with TLS 1.3/1.2 ECDHE key exchange only, which provides perfect forward secrecy; the apps pin the TLS roots."
+   "HTTPS is terminated by Cloudflare: modern clients (including our apps, which pin the TLS roots) negotiate TLS 1.3, whose key exchange is always ephemeral (ECDHE), so they get perfect forward secrecy. The edge still accepts some legacy TLS 1.2 RSA-key-exchange cipher suites for old clients (Cloudflare free plan default), which do not provide PFS."
   ],
   "crypto_password_storage": [
    "N/A",

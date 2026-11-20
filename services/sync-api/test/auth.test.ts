@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import { isAllowedAppRedirect, safeReturnTo } from '../src/auth/redirects';
 import { pkceChallenge, randomToken } from '../src/lib/crypto';
-import { appLogin, call, cookieValue, fakeIdp, json, login } from './helpers';
+import { appLogin, call, cookieValue, fakeIdp, json, login, providersState } from './helpers';
 
 describe('đích quay về', () => {
   it('chỉ nhận scheme app và vòng lặp 127.0.0.1 khớp tuyệt đối', () => {
@@ -137,7 +137,7 @@ describe('đăng nhập app (PKCE + mã một lần)', () => {
     expect(bad.status).toBe(400);
   });
 
-  it('gợi ý lối Google/GitHub chuyển thành idp_hint; giá trị lạ bị chặn/bỏ', async () => {
+  it('gợi ý lối Google/Apple/GitHub chuyển thành idp_hint; giá trị lạ bị chặn/bỏ', async () => {
     const q = async (provider: string) =>
       call(
         `/auth/app/start?${new URLSearchParams({
@@ -152,7 +152,10 @@ describe('đăng nhập app (PKCE + mã một lần)', () => {
     expect(g.status).toBe(302);
     expect(new URL(g.headers.get('Location')!).searchParams.get('idp_hint')).toBe('google');
     const apple = await q('apple');
-    expect(apple.status).toBe(400);
+    expect(apple.status).toBe(302);
+    expect(new URL(apple.headers.get('Location')!).searchParams.get('idp_hint')).toBe('apple');
+    const fb = await q('facebook');
+    expect(fb.status).toBe(400);
     const web = await call('/auth/web/start?return_to=/app/&provider=evil');
     expect(web.status).toBe(302);
     expect(new URL(web.headers.get('Location')!).searchParams.has('idp_hint')).toBe(false);
@@ -251,5 +254,70 @@ describe('giới hạn tần suất', () => {
       last = (await call('/auth/web/start', { headers: { 'CF-Connecting-IP': '203.0.113.9' } })).status;
     }
     expect(last).toBe(429);
+  });
+});
+
+describe('GET /api/v1/auth/providers (AUTH_AND_ACCOUNT mục 3.2)', () => {
+  type Body = { providers: { id: string; name: string }[]; source: string };
+  const get = async () => {
+    const res = await call('/api/v1/auth/providers');
+    expect(res.status).toBe(200);
+    return res.json<Body>();
+  };
+
+  it('lấy từ IdP, giữ thứ tự Google/Apple/GitHub, bỏ lối lạ, đệm 5 phút', async () => {
+    await fakeIdp();
+    providersState.status = 200;
+    providersState.calls = 0;
+    providersState.body = {
+      providers: [
+        { id: 'github', name: 'GitHub', idp_hint: 'github' },
+        { id: 'facebook', name: 'Facebook', idp_hint: 'facebook' },
+        { id: 'apple', name: 'Apple', idp_hint: 'apple' },
+        { id: 'google', name: 'Google', idp_hint: 'google' },
+      ],
+    };
+    const res = await call('/api/v1/auth/providers');
+    expect(res.headers.get('Cache-Control')).toContain('max-age=300');
+    const body = await res.json<Body>();
+    expect(body).toEqual({
+      providers: [
+        { id: 'google', name: 'Google' },
+        { id: 'apple', name: 'Apple' },
+        { id: 'github', name: 'GitHub' },
+      ],
+      source: 'idp',
+    });
+    await get();
+    expect(providersState.calls).toBe(1);
+  });
+
+  it('IdP chưa bật Apple ⇒ không có Apple; IdP tắt hết lối liên kết ⇒ danh sách rỗng', async () => {
+    await fakeIdp();
+    providersState.status = 200;
+    providersState.body = { providers: [{ id: 'google', name: 'Google', idp_hint: 'google' }] };
+    expect((await get()).providers.map((p) => p.id)).toEqual(['google']);
+    await fakeIdp();
+    providersState.body = { providers: [] };
+    expect(await get()).toEqual({ providers: [], source: 'idp' });
+  });
+
+  it('IdP lỗi/chưa có endpoint ⇒ dự phòng Google + GitHub, KHÔNG BAO GIỜ Apple', async () => {
+    for (const [status, body] of [
+      [404, { error: 'not_found' }],
+      [200, { providers: 'apple' }],
+    ] as const) {
+      await fakeIdp();
+      providersState.status = status;
+      providersState.body = body;
+      expect(await get()).toEqual({
+        providers: [
+          { id: 'google', name: 'Google' },
+          { id: 'github', name: 'GitHub' },
+        ],
+        source: 'fallback',
+      });
+    }
+    providersState.status = 200;
   });
 });

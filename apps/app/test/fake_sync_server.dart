@@ -29,6 +29,9 @@ final class FakeSyncServer {
   final r2 = <String, List<int>>{};
   var proBlocked = false;
 
+  /// `GET /api/v1/auth/providers` (lối liên kết IdP đang bật); null ⇒ 404 như máy chủ cũ chưa có đường này.
+  List<String>? idpProviders;
+
   /// T7 (ADR-0019): `reason` của 402 khi đẩy bản ghi cá nhân (null = cho đẩy); thân `GET /api/v1/me/entitlements`.
   String? pushProReason;
   Map<String, Object?> entitlements = {
@@ -97,6 +100,18 @@ final class FakeSyncServer {
   Future<http.Response> _route(http.Request req) async {
     final path = req.url.path;
     final m = req.method;
+    if (m == 'GET' && path == '/api/v1/auth/providers' && idpProviders != null) {
+      return http.Response(
+        jsonEncode({
+          'providers': [
+            for (final id in idpProviders!) {'id': id, 'name': id},
+          ],
+          'source': 'idp',
+        }),
+        200,
+        headers: {'content-type': 'application/json'},
+      );
+    }
     if (m == 'POST' && path == '/api/v1/auth/token') {
       final b = _body(req);
       if (b['grant_type'] == 'authorization_code') {

@@ -19,11 +19,16 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
   gốc qua `npm --prefix apps/site run brand`.
 
 ### Thêm
+- Nút "Tiếp tục với ..." dựng từ danh sách nhà cung cấp IdP tsudev.com đang bật (`GET /api/v1/auth/providers`) thay vì
+  gõ cứng; có "Tiếp tục với Apple" ngay khi tsudev.com bật Apple, chưa bật thì không hiện nút (quy ước v4.3.0,
+  AUTH_AND_ACCOUNT mục 3.2).
 - Hồ sơ Google Play (GP1): `docs/store/IDENTITY.md` + `docs/store/google-play.md`; biểu tượng 512 và ảnh nổi bật
   1024x500 sinh từ dây chuyền thương hiệu, ảnh chụp điện thoại ở `assets/store/`.
 - Trang Bảo mật và quyền riêng tư: mục "Xóa tài khoản và dữ liệu" (`#xoa-tai-khoan`, `#xoa-du-lieu`).
 
 ### Sửa
+- Máy chủ: tsudev.com trả 409 `purchase_pending` (giao dịch Google Play đang chờ thanh toán) giờ được coi là "thử lại
+  sau" thay vì "giao dịch không hợp lệ" - app giữ giao dịch, không báo lỗi nhầm (ADR-0019 bổ sung 21/11/2026).
 - Trang Bảo mật và quyền riêng tư nêu đủ thông tin tài khoản máy chủ đồng bộ lưu (email, tên hiển thị, ảnh đại diện,
   mã cài đặt) và lịch sử mua Pro ở tsudev.com - trước đây chỉ ghi "mã tài khoản".
 - Máy chủ (PRO2, ADR-0018): trước khi xoá bản sao đám mây vì TsuDEV Pro hết hạn quá 90 ngày, máy chủ luôn hỏi lại
