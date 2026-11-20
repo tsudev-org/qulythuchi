@@ -10,6 +10,9 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- Dựng thử iOS + macOS trên CI (AP1, `apple.yml`): bản iOS không ký (`.ipa` chỉ để chủ dự án tự ký cho máy mình),
+  chạy thử trên iPhone + iPad 13" giả lập tiếng Việt kèm ảnh chụp, bản macOS sandbox thật chạy thử; kê khai quyền
+  riêng tư iOS `PrivacyInfo.xcprivacy`. Chưa phát hành lên App Store (cần tài khoản Apple Developer).
 - TsuDEV Pro - phần máy chủ (T7, ADR-0016): máy chủ đọc quyền lợi Pro do tsudev.com ký (kênh RP, đệm ≤ 24 giờ) và
   chặn đẩy dữ liệu, tải tệp, tạo/mời ví chung, bật email chuyển tiếp khi không có Pro (`402 pro_required`); kéo và xuất
   dữ liệu luôn mở; ví chung chạy bằng Pro của chủ ví; dọn bản mã trên máy chủ khi Pro hết quá 90 ngày; hạn mức 200 MiB
