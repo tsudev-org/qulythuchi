@@ -2,6 +2,13 @@
 
 Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo `.standards/docs/VERSIONING.md`.
 
+## Bản triển khai (web app + máy chủ, `deploy-YYYY.MM.DD.N`)
+
+Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-org/qulythuchi/tags>.
+
+- deploy-2026.11.20.1 - 20/11/2026 - thẻ đầu tiên: TsuDEV Pro trong app (T7), xoá có xác minh (PRO2), ảnh hóa đơn
+  (P7b), Scorecard, hồ sơ OpenSSF Best Practices.
+
 ## [Chưa phát hành]
 
 ### Sửa
@@ -13,6 +20,9 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- Hồ sơ OpenSSF Best Practices đạt mức passing (dự án 16946), workflow OpenSSF Scorecard; `CONTRIBUTING.md`, form
+  báo lỗi/đề xuất, phần tiếng Anh trong README và SECURITY.md; mỗi lần triển khai production gắn thẻ
+  `deploy-YYYY.MM.DD.N` kèm ghi chú thay đổi.
 - TsuDEV Pro trong app (T7 + PRO2, ADR-0019): màn "TsuDEV Pro và Ủng hộ" (Thêm → TsuDEV Pro) chỉ có gói 1 năm,
   KHÔNG tự gia hạn, điều khoản hiện trước nút mua; bản Google Play mua và ủng hộ qua Play Billing, bản web/desktop mở
   tsudev.com. Nhắc gia hạn mỗi lần mở app trong 7 ngày cuối, báo một lần khi hết kỳ kèm ngày xoá bản sao đám mây, báo
