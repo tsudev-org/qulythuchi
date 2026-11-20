@@ -18,7 +18,14 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
   TsuDEV" dẫn tsudev.com). Tệp PDF xuất có logo ở đầu trang và chân trang TsuDEV · tsudev.com. Mọi bản sinh từ một ảnh
   gốc qua `npm --prefix apps/site run brand`.
 
+### Thêm
+- Hồ sơ Google Play (GP1): `docs/store/IDENTITY.md` + `docs/store/google-play.md`; biểu tượng 512 và ảnh nổi bật
+  1024x500 sinh từ dây chuyền thương hiệu, ảnh chụp điện thoại ở `assets/store/`.
+- Trang Bảo mật và quyền riêng tư: mục "Xóa tài khoản và dữ liệu" (`#xoa-tai-khoan`, `#xoa-du-lieu`).
+
 ### Sửa
+- Trang Bảo mật và quyền riêng tư nêu đủ thông tin tài khoản máy chủ đồng bộ lưu (email, tên hiển thị, ảnh đại diện,
+  mã cài đặt) và lịch sử mua Pro ở tsudev.com - trước đây chỉ ghi "mã tài khoản".
 - Máy chủ (PRO2, ADR-0018): trước khi xoá bản sao đám mây vì TsuDEV Pro hết hạn quá 90 ngày, máy chủ luôn hỏi lại
   tsudev.com qua kênh trạng thái. Người đã gia hạn trên web mà chưa mở app sẽ không bị xoá; tsudev.com không trả lời
   được thì hoãn, không xoá. Dữ liệu trên thiết bị không bao giờ bị xoá.

@@ -256,6 +256,29 @@ async function main() {
       .toBuffer()
   );
 
+  // --- Hồ sơ Google Play (docs/store/google-play.md, phiếu GP1): biểu tượng 512x512 PNG 32-bit (Play đòi kênh alpha,
+  // tự bo góc + đổ bóng nên ô phải vuông đầy, nền đặc) và ảnh nổi bật 1024x500 (không chữ sát mép: Play có thể cắt).
+  const store = (rel) => path.join(ROOT, 'assets/store', rel);
+  emit(store('play-icon-512.png'), await sharp(await onSolid(512, 0.86, square)).ensureAlpha().png({ compressionLevel: 9 }).toBuffer());
+  const FW = 1024;
+  const FH = 500;
+  const FL = 260;
+  const feat = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${FW}" height="${FH}">
+    <defs><radialGradient id="g" cx="0.25" cy="0.5" r="0.8"><stop offset="0%" stop-color="${CFG.ogGlow}"/><stop offset="100%" stop-color="#0a0a0a"/></radialGradient></defs>
+    <rect width="${FW}" height="${FH}" fill="url(#g)"/>
+    <text x="410" y="220" font-family="DejaVu Sans, Verdana, sans-serif" font-size="56" font-weight="700" fill="#ededed">${esc(CFG.name)}</text>
+    ${CFG.ogLines.map((l, i) => `<text x="410" y="${280 + i * 38}" font-family="DejaVu Sans, Verdana, sans-serif" font-size="24" fill="#b4b4b4">${esc(l)}</text>`).join('')}
+  </svg>`);
+  emit(
+    store('play-feature-1024x500.png'),
+    await sharp(feat)
+      .composite([{ input: await at(FL), left: 110, top: Math.round((FH - FL) / 2) }])
+      .flatten({ background: '#0a0a0a' })
+      .removeAlpha()
+      .png({ compressionLevel: 9 })
+      .toBuffer()
+  );
+
   // --- Web app Flutter (/app/): favicon + icon PWA trong manifest.json của nó.
   const web = (rel) => path.join(ROOT, 'apps/app/web', rel);
   emit(web('favicon.png'), await png(32));
