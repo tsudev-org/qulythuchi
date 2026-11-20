@@ -20,6 +20,10 @@
 - [ ] 👤 Nghiệm thu P7b trên production: gắn ảnh hóa đơn trên điện thoại, mở ở máy thứ hai/`/app/`, xem trong ví chung
   (phiếu `logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
+- [ ] 👤 GP1 (Play, `docs/store/google-play.md` mục "Việc 👤"): hồ sơ thanh toán; tài khoản tsudev cho người duyệt
+  (có Pro) + điền tên/mật khẩu; khoá ký ⇒ AAB vào Thử nghiệm nội bộ ⇒ phiên sau tạo `tsudev_pro`/`nam` + `ung_ho_*`.
+  Đưa trang `/bao-mat` mới lên production TRƯỚC khi gửi duyệt (Play trỏ `#xoa-tai-khoan`, `#xoa-du-lieu`).
+- [ ] Đồng bộ `.standards` lên v4.2.0 (tin tsudev-09 21/11/2026: AGENT_PROTOCOL 6.1 + STORE_SUBMISSION 0.1).
 - [ ] Chờ tsudev B2 (`POST /api/rp/entitlements/play`, phiếu tsudev `20261120-QT5`): xác nhận thân yêu cầu ⇒ thử mua
   Play đầu-cuối (cần sản phẩm Play thật).
   Tin tsudev-8d 20/11/2026: B2 làm xong đúng hình dạng (mục 4 phiếu QT5: thêm 409 `purchase_pending`, 403
@@ -40,6 +44,12 @@
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 21/11/2026 - GP1 Play Console bước 1-3 (agent-qulythuchi, phiên `qulythuchi-dd7b`): tạo app `com.tsudev.qulythuchi`
+  (mã Play 4975262284467716976); 11/11 tờ khai Nội dung ứng dụng, danh mục Tài chính, liên hệ, trang thông tin vi+en
+  (biểu tượng, ảnh nổi bật, 3 ảnh điện thoại) - tất cả LƯU, chưa gửi. Bước 4 (sản phẩm Play) DỪNG: chưa có hồ sơ thanh
+  toán + chưa có AAB có BILLING. Hồ sơ: `docs/store/google-play.md`. Trang `/bao-mat` sửa (email/tên/ảnh đại diện,
+  mục xóa tài khoản) - CHƯA lên production.
 
 - 20/11/2026 - LG1 logo riêng Quly Thu Chi (agent-qulythuchi, PR #41, `deploy-2026.11.20.2`): ảnh gốc
   `assets/brand/source/logo-qulythuchi.png`; `no-white` + `iconTile`; dây chuyền sinh icon app 5 nền tảng + bộ đóng

@@ -25,16 +25,41 @@ import { REPO_URL } from '../lib/site';
     <p>Đồng bộ là tùy chọn. Khi bạn đăng nhập, máy chủ <code>qulythuchi.tsudev.com</code> (Cloudflare Workers, D1, R2)
       lưu:</p>
     <ul class="danh-sach-kiem">
-      <li>Mã tài khoản TsuDEV của bạn, danh sách thiết bị (tên, nền tảng, lần cuối hoạt động).</li>
+      <li>Thông tin tài khoản TsuDEV nhận khi đăng nhập: mã tài khoản, email, tên hiển thị và đường dẫn ảnh đại diện (để
+        hiện tài khoản trong app và cho thành viên ví chung nhận ra nhau); danh sách thiết bị (tên, nền tảng, mã cài đặt,
+        lần cuối hoạt động).</li>
       <li>Các bản ghi đã mã hóa cùng siêu dữ liệu tối thiểu để đồng bộ: mã ngẫu nhiên, ví chứa nó, số thứ tự, kích
         thước, thời điểm. Máy chủ không biết số tiền, danh mục, ghi chú hay tên ví.</li>
       <li>Gói khóa đã bọc (máy chủ không mở được) và băm của địa chỉ IP để chống lạm dụng, không lưu IP gốc.</li>
+      <li>Nếu bạn mua TsuDEV Pro hoặc ủng hộ: tsudev.com (máy chủ quyền lợi chung của TsuDEV) lưu lịch sử mua và thời hạn
+        Pro; thanh toán do Google Play hoặc kênh thanh toán bạn chọn xử lý, chúng tôi không nhận số thẻ.</li>
     </ul>
-    <p>Bạn xuất được toàn bộ dữ liệu máy chủ đang giữ và xóa tài khoản đồng bộ ngay trong app. Xóa tài khoản có 30 ngày
-      để đổi ý, sau đó dữ liệu bị xóa hẳn.</p>
+    <p>Bạn xuất được toàn bộ dữ liệu máy chủ đang giữ ngay trong app.</p>
+
+    <h2 id="xoa-tai-khoan">Xóa tài khoản và dữ liệu</h2>
+    <p>Áp dụng cho ứng dụng Quly Thu Chi của TsuDEV.</p>
+    <ol>
+      <li><strong>Xóa tài khoản đồng bộ Quly Thu Chi:</strong> trong app mở <em>Thêm › Tài khoản &amp; đồng bộ › Xóa tài khoản
+        đồng bộ</em>. Máy chủ xóa toàn bộ bản ghi đã mã hóa, gói khóa, tệp đính kèm, ví chung bạn làm chủ, hộp thư email
+        chuyển tiếp và danh sách thiết bị sau <strong>30 ngày</strong> (trong 30 ngày đó tài khoản chỉ đọc và bạn hủy được).
+        Dữ liệu trên thiết bị của bạn không bị xóa.</li>
+      <li><strong>Xóa tài khoản TsuDEV</strong> (dùng chung cho mọi sản phẩm TsuDEV): đăng nhập
+        <a href="https://tsudev.com/settings/security" target="_blank" rel="noopener noreferrer">tsudev.com/settings/security</a>,
+        mục "Xóa tài khoản". Chi tiết dữ liệu được xóa hoặc giữ lại (ví dụ hồ sơ giao dịch mua mà pháp luật buộc lưu) ở
+        <a href="https://tsudev.com/privacy" target="_blank" rel="noopener noreferrer">Chính sách riêng tư chung</a>.</li>
+      <li>Không đăng nhập được: gửi thư tới <a href="mailto:contact@tsudev.com">contact@tsudev.com</a> từ email của tài
+        khoản, ghi "Xóa tài khoản Quly Thu Chi".</li>
+    </ol>
+    <h3 id="xoa-du-lieu">Xóa một phần dữ liệu mà không xóa tài khoản</h3>
+    <ul class="danh-sach-kiem">
+      <li>Giao dịch, ví, ảnh hóa đơn bạn xóa trong app được xóa khỏi máy chủ ở lần đồng bộ kế tiếp (bản ghi được thay bằng
+        dấu xóa đã mã hóa, tệp ảnh bị xóa hẳn).</li>
+      <li>Thiết bị: <em>Thêm › Tài khoản &amp; đồng bộ › Thu hồi</em> từng thiết bị. Hộp thư email chuyển tiếp: tắt trong màn Tự nhập.</li>
+      <li>Đăng xuất đồng bộ trên một máy chỉ dừng đồng bộ, không xóa dữ liệu máy chủ.</li>
+    </ul>
 
     <h2>Ngoại lệ: email chuyển tiếp</h2>
-    <p>Đây là chỗ <strong>duy nhất</strong> dữ liệu đi qua máy chủ ở dạng đọc được. Tính năng tắt mặc định. Khi bạn bật,
+    <p>Đây là chỗ <strong>duy nhất</strong> nội dung tài chính đi qua máy chủ ở dạng đọc được. Tính năng tắt mặc định. Khi bạn bật,
       app tạo một địa chỉ riêng ngẫu nhiên dạng <code>…@in.qulythuchi.tsudev.com</code>. Thư gửi tới địa chỉ đó (ví dụ
       thư báo giao dịch bạn tự chuyển tiếp từ ngân hàng) phải đi qua máy chủ thư của Cloudflare ở dạng thường, như mọi
       email. Máy chủ của chúng tôi niêm phong thư bằng khóa công khai của bạn <strong>ngay khi nhận</strong>, không ghi
