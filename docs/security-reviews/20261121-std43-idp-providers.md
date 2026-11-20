@@ -35,3 +35,15 @@
 
 Không đổi phiên, token, PKCE, `state`/`nonce`. Rủi ro còn lại: không đáng kể. Chưa bật Apple ở IdP nên bẫy `form_post`
 mục 3.2 thuộc phía tsudev.com (RP vẫn nhận mã qua `GET /auth/callback` như cũ).
+
+## 5. Bổ sung 21/11/2026 - IdP chập chờn (nhánh `fix/oidc-chong-chap-chon`)
+
+Lớp Cloudflare trước tsudev.com trả 429 chập chờn cho yêu cầu từ Worker (AKB `dieu-phoi#ISS-20261120-1459-46b8`) làm
+đăng nhập 502. Sửa: GET tới IdP (discovery, JWKS, userinfo, providers) thử lại ≤ 2 lần với 429/503 (300/900 ms hoặc
+Retry-After ≤ 2 giây); discovery/JWKS lỗi ⇒ dùng bản đệm cũ ≤ 24 giờ. Đổi mã (POST, mã một lần) CHỈ thử lại với 429
+(bị chặn trước khi tới IdP); 503/5xx không thử lại và báo `idp_unavailable` thay vì `idp_rejected`.
+
+- **JWKS cũ có giữ khoá đã bị thu hồi?** Chỉ trong lúc IdP lỗi và ≤ 24 giờ; `kid` lạ vẫn ép tải lại; chữ ký, `iss`, `aud`,
+  `exp`, `nonce` vẫn kiểm đủ. Chấp nhận được (cùng mức đệm 24 giờ tsudev #353 áp phía IdP).
+- **Thử lại POST làm tiêu mã hai lần?** Không: 429 nghĩa là bị chặn ở biên, còn 503 không thử lại. Test `auth.test.ts`
+  khối "IdP chập chờn".

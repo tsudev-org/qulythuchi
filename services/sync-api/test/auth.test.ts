@@ -1,9 +1,10 @@
 import { env } from 'cloudflare:workers';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { isAllowedAppRedirect, safeReturnTo } from '../src/auth/redirects';
 import { pkceChallenge, randomToken } from '../src/lib/crypto';
-import { appLogin, call, cookieValue, fakeIdp, json, login, providersState } from './helpers';
+import { setOidcSleep } from '../src/auth/oidc';
+import { appLogin, call, cookieValue, fakeIdp, flakyIdp, idpCalls, json, login, providersState } from './helpers';
 
 describe('đích quay về', () => {
   it('chỉ nhận scheme app và vòng lặp 127.0.0.1 khớp tuyệt đối', () => {
@@ -319,5 +320,52 @@ describe('GET /api/v1/auth/providers (AUTH_AND_ACCOUNT mục 3.2)', () => {
       });
     }
     providersState.status = 200;
+  });
+});
+
+describe('IdP chập chờn (lớp Cloudflare trước tsudev trả 429/503)', () => {
+  const IDP = 'https://idp.test/oidc';
+  setOidcSleep(() => Promise.resolve());
+
+  it('discovery 429 hai lần rồi 200 ⇒ vẫn bắt đầu đăng nhập được', async () => {
+    const idp = await fakeIdp();
+    flakyIdp.set(`${IDP}/.well-known/openid-configuration`, [429, 503]);
+    const { start, body } = await appLogin(idp);
+    expect(start.status).toBe(302);
+    expect(body.access_token).toBeTruthy();
+    flakyIdp.clear();
+  });
+
+  it('discovery/JWKS hết hạn đệm mà IdP lỗi ⇒ dùng bản cũ ≤ 24 giờ; quá 24 giờ ⇒ 502', async () => {
+    const idp = await fakeIdp();
+    expect((await appLogin(idp)).body.access_token).toBeTruthy();
+    const now = Date.now();
+    const spy = vi.spyOn(Date, 'now').mockReturnValue(now + 2 * 60 * 60 * 1000);
+    try {
+      flakyIdp.set(`${IDP}/.well-known/openid-configuration`, Array<number>(30).fill(503));
+      flakyIdp.set(`${IDP}/jwks`, Array<number>(30).fill(503));
+      expect((await appLogin(idp)).body.access_token).toBeTruthy();
+      spy.mockReturnValue(now + 25 * 60 * 60 * 1000);
+      const late = await call('/auth/web/start?return_to=/app/');
+      expect(late.status).toBe(502);
+      expect((await late.json<{ code: string }>()).code).toBe('idp_unavailable');
+    } finally {
+      spy.mockRestore();
+      flakyIdp.clear();
+    }
+  });
+
+  it('đổi mã: 429 ⇒ thử lại (chưa tới IdP); 503 ⇒ KHÔNG thử lại (mã có thể đã tiêu), báo idp_unavailable', async () => {
+    let idp = await fakeIdp();
+    flakyIdp.set(`${IDP}/token`, [429]);
+    expect((await appLogin(idp)).body.access_token).toBeTruthy();
+
+    idp = await fakeIdp();
+    flakyIdp.set(`${IDP}/token`, [503]);
+    idpCalls.length = 0;
+    const r = await appLogin(idp);
+    expect(r.body.access_token).toBeUndefined();
+    expect(idpCalls.filter((u) => u === `${IDP}/token`).length).toBe(1);
+    flakyIdp.clear();
   });
 });

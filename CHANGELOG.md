@@ -29,6 +29,8 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
 - Trang Bảo mật và quyền riêng tư: mục "Xóa tài khoản và dữ liệu" (`#xoa-tai-khoan`, `#xoa-du-lieu`).
 
 ### Sửa
+- Máy chủ: đăng nhập không còn hỏng khi tsudev.com chập chờn (429/503) - thử lại có giãn cách, dùng cấu hình/khoá ký đã
+  đệm (≤ 24 giờ) khi IdP lỗi.
 - Máy chủ: tsudev.com trả 409 `purchase_pending` (giao dịch Google Play đang chờ thanh toán) giờ được coi là "thử lại
   sau" thay vì "giao dịch không hợp lệ" - app giữ giao dịch, không báo lỗi nhầm (ADR-0019 bổ sung 21/11/2026).
 - Trang Bảo mật và quyền riêng tư nêu đủ thông tin tài khoản máy chủ đồng bộ lưu (email, tên hiển thị, ảnh đại diện,
