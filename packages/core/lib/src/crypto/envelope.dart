@@ -46,9 +46,15 @@ final class EnvelopeContext {
   /// Khóa bí mật danh tính được bọc bởi khóa chủ.
   factory EnvelopeContext.identityKey(String kind) => EnvelopeContext._('ik|${_part(kind)}', 16);
 
-  /// Tệp đính kèm (ảnh hóa đơn).
-  factory EnvelopeContext.attachment({required String walletId, required String attachmentId}) =>
-      EnvelopeContext._('att|${_part(walletId)}|${_part(attachmentId)}', 4096);
+  /// Tệp đính kèm (ảnh hóa đơn) - ngữ cảnh `attf` (ADR-0017): gắn ví (hoặc `acct`) + giao dịch + tệp, khối đệm 64 KiB
+  /// để giấu cỡ ảnh. Khóa là khóa tệp riêng (không phải khóa ví). Thay ngữ cảnh `att` cũ của ADR-0007 (chưa từng dùng).
+  factory EnvelopeContext.attachmentFile({String? walletId, required String txnId, required String attachmentId}) =>
+      EnvelopeContext._(
+        'attf|${walletId == null ? 'acct' : _part(walletId)}|${_part(txnId)}|${_part(attachmentId)}',
+        attachmentPadBlock,
+      );
+
+  static const attachmentPadBlock = 64 * 1024;
 
   /// Tệp sao lưu toàn bộ dữ liệu.
   factory EnvelopeContext.backup(String backupId) => EnvelopeContext._('bak|${_part(backupId)}', 4096);

@@ -22,6 +22,9 @@ abstract final class RecordTypes {
 
   /// Hồ sơ thuế thu nhập cá nhân (một bản ghi id [TaxProfile.recordId]).
   static const taxProfile = 'tax_profile';
+
+  /// Ảnh đính kèm của giao dịch (ADR-0017): khóa tệp + siêu dữ liệu; nội dung ở tệp mã hóa riêng.
+  static const attachment = 'attachment';
 }
 
 T _enum<T extends Enum>(List<T> values, Object? raw, T fallback) {
