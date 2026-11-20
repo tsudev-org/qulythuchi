@@ -1830,6 +1830,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signInGithub => 'Tiếp tục với GitHub';
 
   @override
+  String get signInApple => 'Tiếp tục với Apple';
+
+  @override
   String get signInTsudev => 'Tài khoản tsudev (email)';
 
   @override

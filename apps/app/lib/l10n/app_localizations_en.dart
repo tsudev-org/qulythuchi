@@ -1833,6 +1833,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signInGithub => 'Continue with GitHub';
 
   @override
+  String get signInApple => 'Continue with Apple';
+
+  @override
   String get signInTsudev => 'tsudev account (email)';
 
   @override

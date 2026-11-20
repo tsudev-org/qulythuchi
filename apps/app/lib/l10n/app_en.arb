@@ -558,6 +558,7 @@
   "welcomeGuestNote": "Guest mode: data stays on this device. You can sign in to sync at any time.",
   "signInGoogle": "Continue with Google",
   "signInGithub": "Continue with GitHub",
+  "signInApple": "Continue with Apple",
   "signInTsudev": "tsudev account (email)",
   "signInLastUsed": "You used this last time",
   "signInOr": "or",

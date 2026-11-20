@@ -7,7 +7,7 @@ import { audit, clientIp } from '../lib/audit';
 import { ApiError } from '../lib/errors';
 import { pkceChallenge, randomToken, sha256Hex, timingSafeEqual } from '../lib/crypto';
 import { rateLimit } from '../lib/ratelimit';
-import { authorizationUrl, exchangeCode, LOGIN_PROVIDERS, type LoginProvider } from './oidc';
+import { authorizationUrl, exchangeCode, idpProviders, LOGIN_PROVIDERS, type LoginProvider } from './oidc';
 import { isAllowedAppRedirect, safeReturnTo } from './redirects';
 import {
   ACCESS_TTL_S,
@@ -294,6 +294,12 @@ authRoutes.post('/api/v1/auth/logout', async (c) => {
 });
 
 /** Trang web hỏi "đã đăng nhập chưa" mà không sinh lỗi 401 trong console khi là khách. */
+/** Lối liên kết để app/web dựng nút (AUTH_AND_ACCOUNT mục 3.2): lấy từ IdP, không gõ cứng ở client. Công khai. */
+authRoutes.get('/api/v1/auth/providers', async (c) => {
+  c.header('Cache-Control', 'public, max-age=300');
+  return c.json(await idpProviders(c.env));
+});
+
 authRoutes.get('/api/v1/auth/status', async (c) => {
   const cookie = getCookie(c, SESSION_COOKIE);
   if (!cookie) return c.json({ signed_in: false });

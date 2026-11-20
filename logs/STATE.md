@@ -9,11 +9,6 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] BP 16946 `crypto_pfs` (phiên điều phối projects-eb báo 20/11/2026, AKB `dieu-phoi#LES-20261120-1951-47d8`):
-  `docs/best-practices.json` ghi "TLS 1.3/1.2 ECDHE key exchange only" nhưng edge vẫn nhận bộ mã TLS 1.2 không PFS
-  (`openssl s_client -connect qulythuchi.tsudev.com:443 -tls1_2 -cipher AES128-SHA` bắt tay được). Sửa lời giải thích
-  thành "mặc định TLS 1.3 (PFS); edge vẫn nhận bộ mã TLS 1.2 cũ cho client cũ", chạy lại bp.cjs fill; xem Cloudflare
-  gói miễn phí có đặt được Minimum TLS / cipher ECDHE-only không.
 - [ ] 👤 Nghiệm thu P9 trên production bằng HAI tài khoản tsudev thật (phiếu `logs/handover/20261119-03_p9-xong.md` mục 2b);
   thử đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
 - [ ] Dời từ P7 (chưa giao phase): sao kê PDF, OCR desktop (Tesseract), widget/lối tắt iOS. (Tệp đính kèm XONG P7b.)
@@ -23,7 +18,6 @@
 - [ ] 👤 GP1 (Play, `docs/store/google-play.md` mục "Việc 👤"): hồ sơ thanh toán; tài khoản tsudev cho người duyệt
   (có Pro) + điền tên/mật khẩu; khoá ký ⇒ AAB vào Thử nghiệm nội bộ ⇒ phiên sau tạo `tsudev_pro`/`nam` + `ung_ho_*`.
   Đưa trang `/bao-mat` mới lên production TRƯỚC khi gửi duyệt (Play trỏ `#xoa-tai-khoan`, `#xoa-du-lieu`).
-- [ ] Đồng bộ `.standards` lên v4.2.0 (tin tsudev-09 21/11/2026: AGENT_PROTOCOL 6.1 + STORE_SUBMISSION 0.1).
 - [ ] Chờ tsudev B2 (`POST /api/rp/entitlements/play`, phiếu tsudev `20261120-QT5`): xác nhận thân yêu cầu ⇒ thử mua
   Play đầu-cuối (cần sản phẩm Play thật).
   Tin tsudev-8d 20/11/2026: B2 làm xong đúng hình dạng (mục 4 phiếu QT5: thêm 409 `purchase_pending`, 403
@@ -31,10 +25,11 @@
   ĐÃ lên production 20/11/2026 (tin tsudev-a7: PR tsudev #344, Render 13:56 UTC; không token ⇒ 401 `invalid_client`).
   `aud` client assertion = `https://tsudev.com/api/rp/entitlements/play`; package trong `PLAY_PACKAGES`;
   `obfuscatedExternalAccountId` = đúng `sub` tsudev. 503 `play_unavailable` = 👤 chưa đặt `PLAY_SERVICE_ACCOUNT_JSON`
-  ở Render. Việc phía ta: đối chiếu `services/sync-api/src/pro/play.ts` (aud, mã 409/403/404/503, Retry-After) + test;
+  ở Render. Đã đối chiếu `play.ts` 21/11 (aud đúng; 409 `purchase_pending` sửa thành thử lại). Còn:
   thử mua Play đầu-cuối trên máy thật; ghi kết quả vào phiếu tsudev QT5 mục 4 qua phiên tsudev (không sửa hộ).
 - [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
-- [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
+- [ ] Apple (chuẩn v4.3.0 mục 3.2): RP đã sẵn (nút theo IdP, `idp_hint=apple`). 👤 Trước khi phát hành iOS: tsudev.com
+  phải bật Apple (Apple Developer Program) - nút tự hiện, không cần phát hành lại app.
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); icon app gốc ĐÃ sinh từ dây chuyền (LG1), bộ đóng gói
   desktop ở `assets/brand/app/`
 
@@ -44,6 +39,16 @@
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 21/11/2026 - STD43 + việc dở phiên 429b (agent-qulythuchi, phiên `qulythuchi-fa79`): `.standards` v4.3.0; máy chủ
+  `GET /api/v1/auth/providers` (hỏi IdP tsudev.com, đệm 5 phút, danh sách trắng google/apple/github, IdP lỗi ⇒ Google +
+  GitHub, không bao giờ Apple), `idp_hint=apple` được nhận; app dựng nút theo danh sách + nút Apple theo HIG. Phiếu rà
+  soát `20261121-std43-idp-providers`. Lúc làm, tsudev chưa đưa endpoint lên production (404 ⇒ dự phòng, như cũ).
+  BP 16946 `crypto_pfs` sửa lời giải thích theo đo thật (TLS 1.3 mặc định có PFS; edge còn nhận bộ mã TLS 1.2 RSA
+  cũ - gói Cloudflare miễn phí không tuỳ chỉnh bộ mã; đặt Minimum TLS 1.3 là việc của cả zone tsudev.com, không
+  tự làm) - đã nộp, vẫn passing 100%. Đối chiếu hợp đồng Play B2: 409 `purchase_pending` từng bị coi là biên nhận
+  hỏng ⇒ sửa thành `purchase_unavailable` (thử lại), ADR-0019 bổ sung.
+- 21/11/2026 - Phiên `qulythuchi-429b` (bị cắt ngang): dependabot bỏ qua vitest major (#44), `.standards` v4.2.0 (#45).
 
 - 21/11/2026 - GP1 Play Console bước 1-3 (agent-qulythuchi, phiên `qulythuchi-dd7b`): tạo app `com.tsudev.qulythuchi`
   (mã Play 4975262284467716976); 11/11 tờ khai Nội dung ứng dụng, danh mục Tài chính, liên hệ, trang thông tin vi+en

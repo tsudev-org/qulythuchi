@@ -22,6 +22,7 @@ Dữ liệu mẫu THẬT của lõi: `test/fixtures/core-v1.json`, sinh lại b�
 | `GET /auth/app/start`, `GET /auth/web/start`, `GET /auth/callback` | Đăng nhập tsudev.com (OIDC + PKCE), mã một lần cho app |
 | `POST /api/v1/auth/token` | `authorization_code` (đổi mã + verifier) hoặc `refresh_token` (xoay vòng) |
 | `POST /api/v1/auth/logout`, `POST /api/v1/auth/web-logout`, `GET /api/v1/auth/status` | Đăng xuất / trạng thái web |
+| `GET /api/v1/auth/providers` | Lối liên kết IdP tsudev.com đang bật (google/apple/github) để dựng nút; đệm 5 phút, IdP lỗi ⇒ Google + GitHub |
 | `POST /api/v1/sync/push` | `{records: [{id, type, wallet_id, sealed(base64), deleted}]}` ≤ 200 ⇒ kết quả từng bản ghi |
 | `GET /api/v1/sync/pull?since=&limit=` | Bản ghi có `rev > since`, `cursor`, `has_more` |
 | `GET /api/v1/keys`, `PUT /api/v1/keys/account`, `PUT /api/v1/keys/wallets` | Gói khóa tài khoản, khóa ví đã bọc |

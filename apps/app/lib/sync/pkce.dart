@@ -21,11 +21,11 @@ final class LoginRequest {
 
   String get challenge => base64Url.encode(sha256.convert(ascii.encode(verifier)).bytes).replaceAll('=', '');
 
-  /// [server] có thể mang `provider` (google|github) - gợi ý lối đăng nhập ở tsudev.com (AUTH_AND_ACCOUNT mục 3).
+  /// [server] có thể mang `provider` (google|apple|github) - gợi ý lối đăng nhập ở tsudev.com (AUTH_AND_ACCOUNT mục 3).
   Uri startUrl(Uri server) => server.replace(
     path: '/auth/app/start',
     queryParameters: {
-      if (server.queryParameters['provider'] case final p? when loginProviders.contains(p)) 'provider': p,
+      if (server.queryParameters['provider'] case final p? when knownLoginProviders.contains(p)) 'provider': p,
       'redirect_uri': redirectUri,
       'state': state,
       'code_challenge': challenge,
@@ -55,5 +55,23 @@ final class LoginCallback {
 /// Đích quay lại của di động - khớp `APP_SCHEME_REDIRECT` ở `services/sync-api/src/auth/redirects.ts`.
 const mobileRedirectUri = 'com.tsudev.qulythuchi:/auth/callback';
 
-/// Lối vào đăng nhập liên kết qua IdP tsudev.com, đúng thứ tự bắt buộc (AUTH_AND_ACCOUNT mục 3).
-const loginProviders = ['google', 'github'];
+/// Mọi lối liên kết quy ước cho phép, ĐÚNG thứ tự hiển thị (AUTH_AND_ACCOUNT mục 3 + 3.2). Khớp `LOGIN_PROVIDERS` ở
+/// `services/sync-api/src/auth/oidc.ts`. Lối nào thực sự có nút do IdP quyết (`GET /api/v1/auth/providers`).
+const knownLoginProviders = ['google', 'apple', 'github'];
+
+/// Dùng khi chưa/không lấy được danh sách từ máy chủ. KHÔNG có Apple: nút Apple chỉ hiện khi IdP báo đã bật (mục 3.2).
+const fallbackLoginProviders = ['google', 'github'];
+
+/// Đọc thân `GET /api/v1/auth/providers`: chỉ giữ lối đã biết, theo thứ tự [knownLoginProviders]. Thân hỏng ⇒ null.
+List<String>? parseLoginProviders(Object? json) {
+  final list = json is Map ? json['providers'] : null;
+  if (list is! List) return null;
+  final ids = {
+    for (final p in list)
+      if (p is Map && p['id'] is String) p['id'] as String,
+  };
+  return [
+    for (final id in knownLoginProviders)
+      if (ids.contains(id)) id,
+  ];
+}

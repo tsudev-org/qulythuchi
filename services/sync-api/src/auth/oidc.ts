@@ -26,6 +26,7 @@ export function setOidcFetcher(f: Fetcher) {
   fetcher = f;
   discoveryCache = null;
   jwksCache = null;
+  providersCache = null;
 }
 
 let discoveryCache: { issuer: string; value: Discovery; at: number } | null = null;
@@ -63,9 +64,63 @@ export function redirectUri(env: Env) {
   return `${env.PUBLIC_ORIGIN}/auth/callback`;
 }
 
-/** Lối vào liên kết được phép gợi ý cho IdP (AUTH_AND_ACCOUNT.md mục 3 - không thêm nhà cung cấp thứ tư). */
-export const LOGIN_PROVIDERS = ['google', 'github'] as const;
+/**
+ * Mọi lối liên kết quy ước cho phép gợi ý (AUTH_AND_ACCOUNT.md mục 3 + 3.2), ĐÚNG thứ tự hiển thị: Google, Apple,
+ * GitHub. Đây chỉ là danh sách trắng cho `idp_hint`; lối nào thực sự có nút do IdP quyết ([idpProviders]).
+ */
+export const LOGIN_PROVIDERS = ['google', 'apple', 'github'] as const;
 export type LoginProvider = (typeof LOGIN_PROVIDERS)[number];
+
+const PROVIDER_NAMES: Record<LoginProvider, string> = { google: 'Google', apple: 'Apple', github: 'GitHub' };
+/**
+ * Dùng khi IdP chưa trả được danh sách (endpoint chưa có / lỗi mạng) và chưa có bản tốt trước đó: hai lối IdP đã chạy
+ * từ ngày đầu. KHÔNG BAO GIỜ có Apple - nút Apple chỉ hiện khi chính IdP báo đã bật (mục 3.2: không nút chết).
+ */
+const FALLBACK_PROVIDERS: readonly LoginProvider[] = ['google', 'github'];
+const PROVIDERS_TTL = 5 * 60 * 1000;
+const PROVIDERS_RETRY = 60 * 1000;
+
+export interface IdpProviderList {
+  providers: { id: LoginProvider; name: string }[];
+  /** `idp` = vừa lấy/đệm từ IdP; `fallback` = IdP không trả được, đang dùng danh sách dự phòng. */
+  source: 'idp' | 'fallback';
+}
+
+let providersCache: { issuer: string; value: IdpProviderList; at: number } | null = null;
+
+function listOf(ids: Iterable<LoginProvider>, source: IdpProviderList['source']): IdpProviderList {
+  const set = new Set(ids);
+  return { providers: LOGIN_PROVIDERS.filter((id) => set.has(id)).map((id) => ({ id, name: PROVIDER_NAMES[id] })), source };
+}
+
+/**
+ * Nhà cung cấp IdP tsudev.com ĐANG BẬT (`GET {gốc issuer}/api/v1/auth/providers`, AUTH_AND_ACCOUNT mục 3.2 + 15).
+ * Chỉ giữ id nằm trong [LOGIN_PROVIDERS] (IdP có thêm lối lạ ⇒ bỏ qua, không dựng nút lạ). Đệm 5 phút; lỗi ⇒ giữ
+ * bản tốt cũ (thử lại sau 1 phút), chưa từng có ⇒ dự phòng Google + GitHub.
+ */
+export async function idpProviders(env: Env): Promise<IdpProviderList> {
+  const now = Date.now();
+  const cached = providersCache?.issuer === env.OIDC_ISSUER ? providersCache : null;
+  if (cached && now - cached.at < (cached.value.source === 'idp' ? PROVIDERS_TTL : PROVIDERS_RETRY)) return cached.value;
+  let value: IdpProviderList;
+  try {
+    const body = await getJson<{ providers?: unknown }>(`${new URL(env.OIDC_ISSUER).origin}/api/v1/auth/providers`);
+    if (!Array.isArray(body.providers)) throw new Error('bad_body');
+    const ids = body.providers
+      .map((p) => (p && typeof p === 'object' ? (p as { idp_hint?: unknown; id?: unknown }).idp_hint ?? (p as { id?: unknown }).id : null))
+      .filter((id): id is LoginProvider => typeof id === 'string' && (LOGIN_PROVIDERS as readonly string[]).includes(id));
+    value = listOf(ids, 'idp');
+  } catch {
+    if (cached?.value.source === 'idp') {
+      // Giữ bản tốt cũ nhưng hỏi lại sau 1 phút thay vì dội IdP mỗi yêu cầu.
+      providersCache = { issuer: env.OIDC_ISSUER, value: cached.value, at: now - PROVIDERS_TTL + PROVIDERS_RETRY };
+      return cached.value;
+    }
+    value = listOf(FALLBACK_PROVIDERS, 'fallback');
+  }
+  providersCache = { issuer: env.OIDC_ISSUER, value, at: now };
+  return value;
+}
 
 export async function authorizationUrl(
   env: Env,
@@ -82,7 +137,7 @@ export async function authorizationUrl(
     nonce: p.nonce,
     code_challenge: p.challenge,
     code_challenge_method: 'S256',
-    // Gợi ý tsudev.com mở thẳng lối Google/GitHub; IdP chưa hỗ trợ thì bỏ qua tham số lạ (vẫn hiện đủ 3 lối).
+    // Gợi ý tsudev.com mở thẳng lối Google/Apple/GitHub; IdP chưa hỗ trợ thì bỏ qua tham số lạ (vẫn hiện đủ 3 lối).
     ...(p.provider ? { idp_hint: p.provider } : {}),
   }).toString();
   return url.toString();
