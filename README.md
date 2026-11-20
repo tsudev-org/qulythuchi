@@ -1,5 +1,8 @@
 # Quly Thu Chi
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16946/badge)](https://www.bestpractices.dev/projects/16946)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/tsudev-org/qulythuchi/badge)](https://scorecard.dev/viewer/?uri=github.com/tsudev-org/qulythuchi)
+
 Quản lý thu chi cá nhân và gia đình - **mã hóa đầu-cuối, dùng được khi mất mạng, đồng bộ mọi thiết bị** cùng tài
 khoản TsuDEV. Android, iOS, Windows, macOS, Linux và web tại <https://qulythuchi.tsudev.com>.
 
