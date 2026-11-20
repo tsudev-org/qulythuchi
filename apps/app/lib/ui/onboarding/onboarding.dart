@@ -79,8 +79,6 @@ class _Welcome extends ConsumerWidget {
       title: l.welcomeTitle,
       body: l.welcomeBody,
       children: [
-        ExcludeSemantics(child: Icon(Icons.lock_outline, size: 64, color: context.palette.primary)),
-        const SizedBox(height: 24),
         Text(l.syncWelcomeSignIn, style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center),
         const SizedBox(height: 12),
         SignInButtons(onSignIn: onSyncSignIn),

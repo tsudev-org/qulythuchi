@@ -154,6 +154,7 @@
   "settingsNewPassword": "New password",
   "settingsPasswordChanged": "Encryption password changed",
   "settingsAbout": "About",
+  "settingsMadeBy": "A TsuDEV product",
   "settingsVersion": "Version {version}",
   "settingsLicense": "Open source, AGPL-3.0",
   "settingsReset": "Erase all data on this device",

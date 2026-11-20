@@ -499,6 +499,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAbout => 'About';
 
   @override
+  String get settingsMadeBy => 'A TsuDEV product';
+
+  @override
   String settingsVersion(String version) {
     return 'Version $version';
   }

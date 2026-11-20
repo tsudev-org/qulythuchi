@@ -231,6 +231,7 @@
   "settingsNewPassword": "Mật khẩu mới",
   "settingsPasswordChanged": "Đã đổi mật khẩu mã hóa",
   "settingsAbout": "Giới thiệu",
+  "settingsMadeBy": "Một sản phẩm của TsuDEV",
   "settingsVersion": "Phiên bản {version}",
   "@settingsVersion": {
     "placeholders": {

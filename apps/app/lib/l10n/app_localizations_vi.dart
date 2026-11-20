@@ -499,6 +499,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsAbout => 'Giới thiệu';
 
   @override
+  String get settingsMadeBy => 'Một sản phẩm của TsuDEV';
+
+  @override
   String settingsVersion(String version) {
     return 'Phiên bản $version';
   }

@@ -71,7 +71,6 @@ Sinh lại mã: `flutter gen-l10n` (chuỗi trong `lib/l10n/*.arb`), `dart run t
 
 | Lệch ở đâu | Vì sao | Kế hoạch |
 | --- | --- | --- |
-| Logo: dùng logo tsudev chung | Chưa có logo riêng được duyệt (`BRAND_ASSETS.md` mục 15) | Có logo duyệt ⇒ thay `assets/brand/source/` |
 | Web không có SQLCipher | sqlite3 WASM không hỗ trợ | CSDL web chỉ chứa bản ghi còn mã hóa, giải mã trong bộ nhớ (ADR-0001 mục 4) |
 | iOS chưa phát hành | Apple Developer tốn phí, chủ dự án hoãn | Mã iOS vẫn build trên CI; iPhone dùng PWA |
 | Giấy phép AGPL-3.0 thay vì Apache-2.0 phổ biến trong hệ | Bảo đảm bản phái sinh của app tài chính E2EE luôn công khai mã | ADR-0005 |
