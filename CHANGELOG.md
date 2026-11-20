@@ -6,10 +6,17 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 
 Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-org/qulythuchi/tags>.
 
+- deploy-2026.11.20.2 - 20/11/2026 - logo riêng Quly Thu Chi trên website và web app `/app/` (LG1).
 - deploy-2026.11.20.1 - 20/11/2026 - thẻ đầu tiên: TsuDEV Pro trong app (T7), xoá có xác minh (PRO2), ảnh hóa đơn
   (P7b), Scorecard, hồ sơ OpenSSF Best Practices.
 
 ## [Chưa phát hành]
+
+### Đổi
+- Logo riêng Quly Thu Chi (LG1) thay logo tsudev chung: favicon, logo đầu trang website, ảnh chia sẻ, icon ứng dụng
+  Android/iOS/macOS/Windows/Linux, web app `/app/`, màn chào/khóa, Cài đặt > Giới thiệu (kèm dòng "Một sản phẩm của
+  TsuDEV" dẫn tsudev.com). Tệp PDF xuất có logo ở đầu trang và chân trang TsuDEV · tsudev.com. Mọi bản sinh từ một ảnh
+  gốc qua `npm --prefix apps/site run brand`.
 
 ### Sửa
 - Máy chủ (PRO2, ADR-0018): trước khi xoá bản sao đám mây vì TsuDEV Pro hết hạn quá 90 ngày, máy chủ luôn hỏi lại
