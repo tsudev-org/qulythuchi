@@ -26,6 +26,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| T7-S máy chủ Pro (migration 0004, kênh RP, gate 402) | agent-qulythuchi (qulythuchi-28) | 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 

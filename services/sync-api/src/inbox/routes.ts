@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 
 import { blockIfDeleting, requireUser } from '../auth/middleware';
+import { requirePro } from '../pro/entitlements';
 import type { AppEnv } from '../env';
 import { audit } from '../lib/audit';
 import { ApiError, badRequest } from '../lib/errors';
@@ -46,7 +47,8 @@ inboxRoutes.get('/api/v1/inbox', async (c) => {
 });
 
 /** Bật hoặc đổi địa chỉ (địa chỉ cũ hết hiệu lực ngay). Cần gói khóa có boxPk để niêm phong. */
-inboxRoutes.post('/api/v1/inbox/address', async (c) => {
+// Email chuyển tiếp là tính năng Pro (ADR-0016).
+inboxRoutes.post('/api/v1/inbox/address', requirePro, async (c) => {
   const { userId } = c.get('auth');
   await rateLimit(c.env.DB, `inbox-w:${userId}`, 10, 3_600_000);
   const bundle = await c.env.DB.prepare('SELECT bundle FROM account_bundles WHERE user_id = ?').bind(userId).first<{ bundle: string }>();

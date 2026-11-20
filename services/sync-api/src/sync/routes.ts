@@ -8,6 +8,7 @@ import { base64, fromBase64, sha256Hex } from '../lib/crypto';
 import { ApiError, badRequest } from '../lib/errors';
 import { rateLimit } from '../lib/ratelimit';
 import { RECORD_TYPE, UUID, isEnvelope } from '../lib/validate';
+import { requirePro } from '../pro/entitlements';
 
 /**
  * Đồng bộ bản mã (ADR-0004, ADR-0010). Máy chủ KHÔNG đọc được nội dung: chỉ kiểm khung phong bì, lưu, gán `rev`.
@@ -19,8 +20,8 @@ export const MAX_RECORD_BYTES = 64 * 1024;
 /** Khối đệm bản ghi 256 B (ADR-0007) ⇒ phong bì bản ghi ngắn nhất = 44 + 256 byte. */
 const RECORD_MIN_PADDED = 256;
 export const MAX_BATCH = 200;
-/** Hạn mức dung lượng bản ghi mỗi tài khoản (gói 0 đồng: D1 5 GB chia nhiều người dùng). */
-export const ACCOUNT_RECORD_QUOTA = 50 * 1024 * 1024;
+/** Hạn mức bản ghi mỗi tài khoản Pro (ADR-0016: 200 MiB - lịch sử giao dịch nhiều năm). */
+export const ACCOUNT_RECORD_QUOTA = 200 * 1024 * 1024;
 const PUSH_BODY_LIMIT = 4 * 1024 * 1024;
 
 const recordIn = z.object({
@@ -60,7 +61,8 @@ export const syncRoutes = new Hono<AppEnv>();
 
 syncRoutes.use('/api/v1/sync/*', requireUser, blockIfDeleting);
 
-syncRoutes.post('/api/v1/sync/push', bodyLimit({ maxSize: PUSH_BODY_LIMIT }), async (c) => {
+// Đẩy cần TsuDEV Pro (ADR-0016); kéo luôn mở để Pro hết hạn vẫn lấy lại được dữ liệu trong 90 ngày.
+syncRoutes.post('/api/v1/sync/push', bodyLimit({ maxSize: PUSH_BODY_LIMIT }), requirePro, async (c) => {
   const { userId, deviceId } = c.get('auth');
   await rateLimit(c.env.DB, `push:${userId}`, 120, 60_000);
   const parsed = pushBody.safeParse(await c.req.json().catch(() => null));

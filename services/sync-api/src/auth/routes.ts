@@ -175,6 +175,8 @@ authRoutes.get('/auth/callback', async (c) => {
   if (!user) throw new ApiError(500, 'internal', 'Máy chủ gặp lỗi. Hãy thử lại sau.');
   const userId = user.id;
   await audit(c, userId, 'login', req.client_kind);
+  // Đăng nhập lại cấp Grant OIDC mới ⇒ bỏ đệm quyền lợi (nhất là `unknown_subject`) để lượt sau hỏi lại tsudev.com.
+  await c.env.DB.prepare('UPDATE entitlements SET fetched_at = 0 WHERE user_id = ?').bind(userId).run();
 
   if (req.client_kind === 'app') {
     const appCode = randomToken(32);

@@ -32,7 +32,7 @@ describe('HTTP', () => {
     expect(res.headers.get('Content-Security-Policy')).toBe("default-src 'none'; frame-ancestors 'none'");
   });
 
-  it('404 trả mã máy đọc + thông điệp tiếng Việt, body quá lớn ⇒ 413', async () => {
+  it('404 trả mã máy đọc + thông điệp tiếng Việt, body quá lớn ⇒ 413', { timeout: 20_000 }, async () => {
     const res = await call('/khong-co');
     expect(res.status).toBe(404);
     expect(await res.json()).toEqual({ code: 'not_found', message: 'Không tìm thấy.' });

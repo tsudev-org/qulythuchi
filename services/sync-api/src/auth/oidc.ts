@@ -155,6 +155,37 @@ export async function exchangeCode(env: Env, code: string, verifier: string, non
   };
 }
 
+/** Gọi tsudev.com qua cùng bộ fetch với OIDC (test thay bằng IdP giả qua `setOidcFetcher`). */
+export function idpFetch(input: string, init?: RequestInit): Promise<Response> {
+  return fetcher(input, { ...init, signal: init?.signal ?? AbortSignal.timeout(10_000) });
+}
+
+/**
+ * Kiểm một JWS do tsudev.com ký bằng khoá OIDC (JWKS lấy từ discovery, chọn theo `kid`, gặp `kid` lạ thì tải lại).
+ * Chỉ nhận ES256, đúng `iss` = issuer, `aud` = client của mình. Sai bất kỳ điểm nào ⇒ ném lỗi của jose.
+ */
+export async function verifyIdpJws(env: Env, token: string, opts: { typ?: string; maxTokenAge?: string }): Promise<JWTPayload> {
+  const d = await discovery(env);
+  const verify = async (force: boolean) =>
+    (
+      await jwtVerify(token, createLocalJWKSet(await jwks(d.jwks_uri, force)), {
+        issuer: env.OIDC_ISSUER,
+        audience: env.OIDC_CLIENT_ID,
+        algorithms: ['ES256'],
+        requiredClaims: ['exp', 'iat', 'sub'],
+        clockTolerance: 30,
+        ...(opts.typ ? { typ: opts.typ } : {}),
+        ...(opts.maxTokenAge ? { maxTokenAge: opts.maxTokenAge } : {}),
+      })
+    ).payload;
+  try {
+    return await verify(false);
+  } catch (e) {
+    if ((e as { code?: string }).code !== 'ERR_JWKS_NO_MATCHING_KEY') throw e;
+    return verify(true);
+  }
+}
+
 function invalidToken() {
   return new ApiError(401, 'invalid_id_token', 'Không xác minh được danh tính trả về từ tsudev.com.');
 }

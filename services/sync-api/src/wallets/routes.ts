@@ -3,6 +3,7 @@ import { bodyLimit } from 'hono/body-limit';
 import { z } from 'zod';
 
 import { blockIfDeleting, requireUser } from '../auth/middleware';
+import { assertPro, requirePro } from '../pro/entitlements';
 import type { AppEnv } from '../env';
 import { audit } from '../lib/audit';
 import { base64, fromBase64, sha256Hex } from '../lib/crypto';
@@ -100,7 +101,9 @@ walletRoutes.use('/api/v1/invites/*', requireUser, blockIfDeleting);
  * Biến một ví riêng thành ví chung. Khóa ví hiện tại thành phiên bản 1 (không phải mã hóa lại); mọi bản ghi của ví đang
  * nằm trong không gian tài khoản được CHUYỂN sang không gian ví trong cùng một giao tác (rev ví đánh lại từ 1).
  */
-walletRoutes.post('/api/v1/wallets', bodyLimit({ maxSize: 16 * 1024 }), async (c) => {
+// Pro (ADR-0016): tạo ví chung / mời / chia khóa cho người mới cần chủ ví có Pro; tham gia và rời ví luôn miễn phí;
+// xoay khóa không chặn (thu hồi quyền đọc của người đã rời quan trọng hơn gói).
+walletRoutes.post('/api/v1/wallets', bodyLimit({ maxSize: 16 * 1024 }), requirePro, async (c) => {
   const { userId, deviceId } = c.get('auth');
   await rateLimit(c.env.DB, `wallets-w:${userId}`, 30, 60_000);
   const body = await json(c, z.object({ wallet_id: z.string().regex(UUID), wrapped: wrappedKey }).strict());
@@ -252,6 +255,7 @@ walletRoutes.post('/api/v1/wallets/:wid/invites', bodyLimit({ maxSize: 4096 }), 
   await rateLimit(c.env.DB, `wallets-w:${userId}`, 30, 60_000);
   const wid = c.req.param('wid');
   await ownerOnly(c, wid);
+  await assertPro(c, userId);
   const body = await json(c, z.object({ invite_id: z.string().regex(UUID), role: z.enum(['editor', 'viewer']) }).strict());
   const db = c.env.DB;
   const t = Date.now();
@@ -360,6 +364,7 @@ walletRoutes.post('/api/v1/wallets/:wid/members', bodyLimit({ maxSize: 16 * 1024
   await rateLimit(c.env.DB, `wallets-w:${userId}`, 30, 60_000);
   const wid = c.req.param('wid');
   const m = await ownerOnly(c, wid);
+  await assertPro(c, userId);
   const body = await json(c, z.object({ invite_id: z.string().regex(UUID), key_ver: z.number().int(), wrapped: wrappedKey }).strict());
   if (body.key_ver !== m.key_ver) throw staleKey();
   const wrapped = parseWrapped(body.wrapped, 'share');
@@ -511,6 +516,8 @@ walletRoutes.post('/api/v1/wallets/:wid/push', bodyLimit({ maxSize: 4 * 1024 * 1
   const wid = c.req.param('wid');
   const m = await membership(c, wid);
   if (m.role === 'viewer') throw new ApiError(403, 'read_only', 'Bạn chỉ có quyền xem ví này.');
+  // Ví chung chạy bằng Pro của CHỦ ví (một người Pro dùng được cho cả nhà - ADR-0016 Q5).
+  await assertPro(c, m.owner_id, 'owner_no_pro');
   const body = await json(c, pushBody, 'Gói đồng bộ không hợp lệ.');
   if (body.key_ver !== m.key_ver) throw staleKey();
   const db = c.env.DB;

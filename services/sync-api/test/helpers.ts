@@ -1,6 +1,6 @@
 import { createExecutionContext, waitOnExecutionContext } from 'cloudflare:test';
 import { env } from 'cloudflare:workers';
-import { SignJWT, exportJWK, generateKeyPair } from 'jose';
+import { SignJWT, exportJWK, generateKeyPair, jwtVerify, type CryptoKey } from 'jose';
 
 import { setOidcFetcher } from '../src/auth/oidc';
 import { pkceChallenge, randomToken } from '../src/lib/crypto';
@@ -12,13 +12,77 @@ export { fixture };
 export const ISSUER = 'https://idp.test/oidc';
 export const ORIGIN = 'https://qulythuchi.tsudev.com';
 
+/**
+ * Máy chủ quyền lợi giả (kênh RP tsudev.com, PRODUCT_POLICY 7.4). Mặc định MỌI tài khoản có Pro còn hạn để các test
+ * đồng bộ cũ chạy nguyên; test Pro đặt riêng theo `sub` qua `entitlementFor`.
+ */
+export interface FakeEnt {
+  /** giây Unix; 0 = chưa từng có Pro. */
+  proUntil?: number;
+  badge?: 'pro' | 'donor' | 'both' | 'none';
+  devices?: number;
+  /** Trả mã HTTP này thay vì JWS (404 = unknown_subject, 500 = sập). */
+  httpStatus?: number;
+  /** Làm hỏng JWS: ký bằng khoá lạ / sai aud / sai typ / sai sub. */
+  tamper?: 'key' | 'aud' | 'typ' | 'sub';
+}
+export const entState = {
+  bySub: new Map<string, FakeEnt>(),
+  calls: [] as { sub: string; installation: string | null; platform: string | null }[],
+};
+export function entitlementFor(sub: string, e: FakeEnt) {
+  entState.bySub.set(sub, e);
+}
+export const RP_AUD = 'https://idp.test/api/rp/entitlements';
+
+let rpKey: { publicKey: CryptoKey } | null = null;
+async function ensureRpKey() {
+  if (rpKey) return rpKey;
+  const { privateKey, publicKey } = await generateKeyPair('ES256', { extractable: true });
+  (env as { RP_PRIVATE_JWK?: string }).RP_PRIVATE_JWK = JSON.stringify({ ...(await exportJWK(privateKey)), kid: 'rp1' });
+  rpKey = { publicKey };
+  return rpKey;
+}
+
 /** IdP giả: ghi lại nonce của lần authorize gần nhất, ký id_token ES256. */
 export async function fakeIdp(opts: { sub?: string; tamperNonce?: boolean; wrongAud?: boolean } = {}) {
   const { privateKey, publicKey } = await generateKeyPair('ES256');
   const jwk = { ...(await exportJWK(publicKey)), kid: 'k1', alg: 'ES256', use: 'sig' };
   const state = { nonce: '', sub: opts.sub ?? 'tsudev-user-1' };
+  const rp = await ensureRpKey();
   setOidcFetcher(async (url, init) => {
     const json = (v: unknown, status = 200) => new Response(JSON.stringify(v), { status, headers: { 'content-type': 'application/json' } });
+    if (url.startsWith(`${RP_AUD}/`)) {
+      const h = new Headers(init?.headers);
+      const auth = h.get('Authorization') ?? '';
+      try {
+        const { payload } = await jwtVerify(auth.slice(7), rp.publicKey, { audience: RP_AUD, issuer: 'qulythuchi', subject: 'qulythuchi', algorithms: ['ES256'] });
+        if (!payload.jti || !payload.exp || payload.exp - Math.floor(Date.now() / 1000) > 300) return json({ error: 'invalid_client' }, 401);
+      } catch {
+        return json({ error: 'invalid_client' }, 401);
+      }
+      const sub = decodeURIComponent(url.slice(RP_AUD.length + 1));
+      entState.calls.push({ sub, installation: h.get('X-Tsu-Installation'), platform: h.get('X-Tsu-Platform') });
+      const e = entState.bySub.get(sub) ?? {};
+      if (e.httpStatus) return json({ error: e.httpStatus === 404 ? 'unknown_subject' : 'boom' }, e.httpStatus);
+      const now = Math.floor(Date.now() / 1000);
+      const signer = e.tamper === 'key' ? (await generateKeyPair('ES256')).privateKey : privateKey;
+      const jws = await new SignJWT({
+        pro_until: e.proUntil ?? now + 30 * 86400,
+        pro_source: 'web',
+        donor: false,
+        badge: e.badge ?? 'pro',
+        devices_30d: e.devices ?? 1,
+      })
+        .setProtectedHeader({ alg: 'ES256', kid: 'k1', typ: e.tamper === 'typ' ? 'JWT' : 'tsu-ent+jwt' })
+        .setIssuer(ISSUER)
+        .setAudience(e.tamper === 'aud' ? 'app-khac' : 'qulythuchi')
+        .setSubject(e.tamper === 'sub' ? 'nguoi-khac' : sub)
+        .setIssuedAt(now)
+        .setExpirationTime(now + 7 * 86400)
+        .sign(signer);
+      return json({ jws });
+    }
     if (url === `${ISSUER}/.well-known/openid-configuration`) {
       return json({
         issuer: ISSUER,

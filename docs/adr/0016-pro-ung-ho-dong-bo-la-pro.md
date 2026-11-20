@@ -1,7 +1,7 @@
 # ADR-0016: Pro + Ủng hộ - đồng bộ/sao lưu đám mây là Pro, quyền lợi kiểm ở máy chủ theo tsudev.com
 
-- **Trạng thái**: ĐỀ XUẤT - nội dung ĐÃ CHỐT (19/11/2026, phiếu PRO1 mục 8-9). Chuyển ĐÃ CHẤP NHẬN khi tsudev-standards
-  v3.9.0 (PRO-A) phát hành; phần dùng máy chủ quyền lợi chờ PRO-B.
+- **Trạng thái**: ĐÃ CHẤP NHẬN (20/11/2026) - tsudev-standards v3.9.0/v3.9.1 (PRO-A) đã phát hành, tsudev PRO-B bước
+  B1 đã gộp. Phần máy chủ đã làm (mục 4); phần app chờ gói Flutter dùng chung `tsudev_ui` (PRO-C2).
 - **Ngày**: 19/11/2026
 - **Người quyết định**: chủ dự án (phạm vi Pro, 19/11/2026); agent-qulythuchi (cách làm)
 - **Liên quan**: `.standards/docs/PRODUCT_POLICY.md` mục 3-4; phiếu toàn hệ
@@ -65,3 +65,23 @@ Phiếu T7 yêu cầu Pro tháng/năm + Ủng hộ + huy hiệu. Khi khởi đ�
 - Làm được trước PRO-B: màn Pro/Ủng hộ, thông báo nhiều thiết bị (nguồn quyền lợi giả trong test), lớp `Entitlements`
   kiểm JWS bằng JWKS (test với khoá thử), gate ở máy chủ với nguồn quyền lợi tiêm vào được.
 - Lõi `packages/core` không đổi (quyền lợi không phải dữ liệu D3, không đụng phong bì).
+
+## 4. Hiện thực phần máy chủ (20/11/2026, nhánh `feat/t7-may-chu-pro`)
+
+- Migration `0004_pro_entitlements.sql`: `entitlements` (đệm ≤ 24 giờ, `status` = `ok` | `unknown_subject`) +
+  `installations_seen` (SHA-256 mã cài đặt, báo lại tsudev.com ≤ 1 lần/24 giờ mỗi mã).
+- `src/pro/entitlements.ts`: client assertion ES256 (`iss` = `sub` = `qulythuchi`, `aud` = `ENTITLEMENTS_URL`, 120 giây,
+  `jti`), kiểm JWS qua JWKS của discovery. tsudev.com lỗi ⇒ dùng đệm còn hạn, không thì `503 entitlements_unavailable`.
+- Gate 402 (`{"error":"pro_required", code, message, reason}`; `reason` = `no_pro` | `reauth` | `owner_no_pro`):
+  `POST /sync/push`, `PUT /files/:id`, `POST /wallets`, mời + chia khóa ví chung, `POST /inbox/address`; đẩy vào ví
+  chung theo Pro của CHỦ ví; thư đến bị từ chối khi đệm cho thấy hết Pro. Không chặn: kéo, xuất, tải về, `PUT /keys/*`
+  (cần để tham gia ví chung miễn phí), nhận lời mời, rời ví, xoay khóa.
+- `GET /api/v1/me/entitlements` (`enforce`, `status`, `pro`, `can_sync`, `pro_until`, `server_data_until`, `badge`,
+  `devices_30d`, `jws`); `?refresh=1` ≤ 10 lần/giờ.
+- Dọn: Pro hết quá 90 ngày ⇒ xoá bản ghi, tệp R2, ví chung mình làm chủ, hộp thư (`purgeLapsedPro`, hỏi lại tsudev.com
+  trước khi xoá). Giữ tài khoản, thiết bị, gói khóa.
+- Hạn mức: 200 MiB bản ghi + 1 GiB tệp.
+- Cờ `PRO_ENFORCE` (production `off`): bật `on` khi khoá RP đã đăng ký ở tsudev (`scripts/rp-key.mjs` in câu SQL cho
+  OWNER), secret `RP_PRIVATE_JWK` đã đặt và chủ dự án đồng ý xoá dữ liệu thử nghiệm.
+- Rủi ro đã biết: Grant OIDC của tsudev.com sống 30 ngày ⇒ người Pro lâu không đăng nhập lại nhận 402 `reason=reauth`;
+  app phải mời đăng nhập lại thay vì hiện màn Pro.
