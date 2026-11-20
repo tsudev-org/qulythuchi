@@ -9,29 +9,41 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
+- [ ] BP 16946 `crypto_pfs` (phiên điều phối projects-eb báo 20/11/2026, AKB `dieu-phoi#LES-20261120-1951-47d8`):
+  `docs/best-practices.json` ghi "TLS 1.3/1.2 ECDHE key exchange only" nhưng edge vẫn nhận bộ mã TLS 1.2 không PFS
+  (`openssl s_client -connect qulythuchi.tsudev.com:443 -tls1_2 -cipher AES128-SHA` bắt tay được). Sửa lời giải thích
+  thành "mặc định TLS 1.3 (PFS); edge vẫn nhận bộ mã TLS 1.2 cũ cho client cũ", chạy lại bp.cjs fill; xem Cloudflare
+  gói miễn phí có đặt được Minimum TLS / cipher ECDHE-only không.
 - [ ] 👤 Nghiệm thu P9 trên production bằng HAI tài khoản tsudev thật (phiếu `logs/handover/20261119-03_p9-xong.md` mục 2b);
   thử đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
 - [ ] Dời từ P7 (chưa giao phase): sao kê PDF, OCR desktop (Tesseract), widget/lối tắt iOS. (Tệp đính kèm XONG P7b.)
 - [ ] 👤 Nghiệm thu P7b trên production: gắn ảnh hóa đơn trên điện thoại, mở ở máy thứ hai/`/app/`, xem trong ví chung
   (phiếu `logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
-- [ ] Logo riêng Quly Thu Chi (phiếu `logs/handover/20261120-LG1_logo-rieng-quly-thu-chi.md`, chủ dự án giao 20/11/2026):
-  chuyển `logo-qulythuchi.png` (gốc repo) vào `assets/brand/source/`, `brand.json` mode `no-white`, sinh favicon/icon
-  site + app, báo URL `/brand/logo-qulythuchi.png` cho phiên tsudev.
 - [ ] Chờ tsudev B2 (`POST /api/rp/entitlements/play`, phiếu tsudev `20261120-QT5`): xác nhận thân yêu cầu ⇒ thử mua
   Play đầu-cuối (cần sản phẩm Play thật).
+  Tin tsudev-8d 20/11/2026: B2 làm xong đúng hình dạng (mục 4 phiếu QT5: thêm 409 `purchase_pending`, 403
+  `forbidden_package`, 404 `unknown_subject`, 503 `play_unavailable` + Retry-After; gửi lại trả 200 `already_recorded`),
+  ĐÃ lên production 20/11/2026 (tin tsudev-a7: PR tsudev #344, Render 13:56 UTC; không token ⇒ 401 `invalid_client`).
+  `aud` client assertion = `https://tsudev.com/api/rp/entitlements/play`; package trong `PLAY_PACKAGES`;
+  `obfuscatedExternalAccountId` = đúng `sub` tsudev. 503 `play_unavailable` = 👤 chưa đặt `PLAY_SERVICE_ACCOUNT_JSON`
+  ở Render. Việc phía ta: đối chiếu `services/sync-api/src/pro/play.ts` (aud, mã 409/403/404/503, Retry-After) + test;
+  thử mua Play đầu-cuối trên máy thật; ghi kết quả vào phiếu tsudev QT5 mục 4 qua phiên tsudev (không sửa hộ).
 - [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
-- [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); sinh icon app gốc từ dây chuyền thương hiệu (hiện chỉ web)
+- [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); icon app gốc ĐÃ sinh từ dây chuyền (LG1), bộ đóng gói
+  desktop ở `assets/brand/app/`
 
 ## Đang thực hiện
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| LG1 logo riêng Quly Thu Chi (site + app + tệp xuất), nhánh `feat/lg1-logo` | agent-qulythuchi | 19:35 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 20/11/2026 - LG1 logo riêng Quly Thu Chi (agent-qulythuchi, PR #41, `deploy-2026.11.20.2`): ảnh gốc
+  `assets/brand/source/logo-qulythuchi.png`; `no-white` + `iconTile`; dây chuyền sinh icon app 5 nền tảng + bộ đóng
+  gói desktop; logo trong app, khối nhà làm TsuDEV, PDF xuất mang logo + chân trang tsudev; đã báo URL logo cho tsudev.
 - 20/11/2026 - T7 app + PRO2 phần app (agent-qulythuchi, ADR-0019, phiếu rà soát `20261120-t7-app-pro`): `tsudev_ui`
   v0.2.0 ghim tag; quyền lợi qua `/me/entitlements` kiểm ES256 + JWKS, đệm ≤ 7 ngày; `X-Tsu-Installation`/`X-Tsu-Platform`;
   màn Pro 1 năm + điều khoản 7.5 nguyên văn; kênh `TSU_CHANNEL` (Android mặc định Play, không liên kết web); Play

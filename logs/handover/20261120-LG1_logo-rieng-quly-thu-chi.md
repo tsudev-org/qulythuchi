@@ -1,7 +1,7 @@
 # 20261120-LG1 - qulythuchi: logo riêng Quly Thu Chi cho website, app và mọi tệp xuất
 
 - **Người lập**: phiên `tsuswico-57`, 20/11/2026, theo yêu cầu trực tiếp của chủ dự án.
-- **Người làm**: phiên qulythuchi. **Trạng thái**: MỞ.
+- **Người làm**: phiên qulythuchi. **Trạng thái**: ĐÓNG (20/11/2026, phiên `qulythuchi-14`, PR #41).
 - **Chuẩn**: `.standards/docs/BRAND_ASSETS.md` mục 12, **15** (logo sản phẩm riêng - chủ dự án duyệt), 15.5 (khối nhà
   làm giữ logo tsudev), `ECOSYSTEM_IDENTITY.md`.
 - **Phiếu liên quan**: tsudev `20261120-LG1` (danh bạ tsudev.com/apps lấy logo từ website của bạn - mục 2 bước 6).
@@ -34,4 +34,19 @@
 
 ## 3. Kết quả
 
-(phiên qulythuchi điền, rồi đổi trạng thái ĐÓNG)
+- PR [#41](https://github.com/tsudev-org/qulythuchi/pull/41) gộp `c7b6b57`; production thẻ `deploy-2026.11.20.2`.
+- Ảnh gốc ở `assets/brand/source/logo-qulythuchi.png`, SHA-256 khớp `164b08a7…f0d2`, ghi trong `assets/brand/README.md`.
+- `brand.json`: `mode: "no-white"` + **`iconTile: true`** - navy `#122545` của logo gần như chìm trên nền Tối khi để
+  trong suốt, nên mọi bản icon (favicon, logo header, .ico, PNG Linux, logo trong app, OG) đặt trên ô trắng bo góc.
+  Bản nền đặc (apple-touch, maskable, iOS, macOS, Android adaptive) dùng ảnh trong suốt + `solidBg` trắng.
+- Dây chuyền sinh thêm icon app gốc: Android mipmap cũ + adaptive + monochrome, iOS AppIcon (không alpha), macOS AppIcon
+  (lưới Big Sur), Windows `app_icon.ico`, bộ đóng gói `assets/brand/app/` (.ico, .icns, PNG Linux), apple-touch `/app/`.
+  `--check` canh 82 tệp, CI xanh.
+- App: logo trên mọi màn xác thực + lớp che đa nhiệm; Cài đặt > Giới thiệu có logo + khối nhà làm TsuDEV (tsudev.com);
+  icon cửa sổ Linux. PDF xuất: logo sản phẩm đầu trang, logo tsudev + tsudev.com chân trang (test `export_pdf_test`).
+  CSV/XLSX là dữ liệu thô, không gắn logo.
+- Website: header logo + tên, footer giữ khối nhà làm tsudev. `AGENTS.md` B.4 bỏ dòng lệch logo.
+- Kiểm: flutter analyze sạch, flutter test 133 đạt, check-standards, brand --check, CI 13/13 xanh gồm iOS + macOS (ảnh
+  chụp màn chào có logo, Dock macOS hiện icon mới); ảnh Sáng/Tối ở `docs/screenshots/lg1-logo/`.
+- Production: `/`, `/app/`, `/api/v1/health`, `/brand/logo-qulythuchi.png` đều 200; logo phục vụ khớp byte tệp sinh ra.
+- Mục 6: đã nhắn phiên `tsudev-8d` URL `https://qulythuchi.tsudev.com/brand/logo-qulythuchi.png` (20:28 20/11/2026).
