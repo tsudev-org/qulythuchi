@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 
+import '../attachments/file_sync.dart';
 import '../data/record_store.dart';
 import '../security/vault.dart';
 import 'api_client.dart';
@@ -43,6 +44,7 @@ final class SyncReport {
     this.quotaFull = false,
     this.shared,
     this.badInvites = 0,
+    this.files = const FileSyncReport(),
   });
   final int pulled;
   final int pushed;
@@ -55,6 +57,9 @@ final class SyncReport {
 
   /// Lời mời có bằng chứng sai (ai đó không cầm mã thật nhận lời mời) - đã hủy.
   final int badInvites;
+
+  /// Ảnh đính kèm (P7b).
+  final FileSyncReport files;
 }
 
 /// Một lượt đồng bộ: khóa ⇒ kéo (hợp nhất theo trường) ⇒ đẩy (ADR-0004, ADR-0010 mục 3, ADR-0011).
@@ -128,7 +133,9 @@ final class SyncEngine {
           pushed = (pushed.$1 + q.$1, pushed.$2 + q.$2, pushed.$3 || q.$3);
         }
       }
+      final files = await FileSync(api: api, store: store).run();
       return SyncReport(
+        files: files,
         pulled: pulled.$1,
         skipped: pulled.$2,
         pushed: pushed.$1,

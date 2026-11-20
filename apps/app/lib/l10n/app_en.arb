@@ -811,5 +811,48 @@
   "shareErrMissingSecret": "This device lacks a member's sharing secret. Sync, or try on the device that created the invitation.",
   "shareErrForbidden": "Only the owner can do this.",
   "errReadOnly": "You can only view this shared wallet.",
-  "errOwnerOnly": "Only the owner can edit shared wallet details."
+  "errOwnerOnly": "Only the owner can edit shared wallet details.",
+  "attTitle": "Receipt photos",
+  "attAdd": "Add photo",
+  "attCamera": "Take photo",
+  "attGallery": "Choose from gallery",
+  "attFile": "Choose image file",
+  "attLimit": "Up to {count} photos per transaction",
+  "@attLimit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "attPrivacy": "Photos are resized, stripped of GPS location and camera details, then encrypted on this device before syncing.",
+  "attNewHint": "Photos will be attached when you save the transaction.",
+  "attProcessing": "Processing photo…",
+  "attPending": "Not synced yet - the photo is stored safely on this device",
+  "attProBlocked": "Syncing photos requires TsuDEV Pro. Photos stay fully stored on this device.",
+  "attFilesPending": "{count} photos waiting to sync (stored on this device)",
+  "@attFilesPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "attNotAvailable": "This photo isn't on this device yet. Sign in to sync to download it.",
+  "attOpenFailed": "Couldn't open the photo (damaged or not from this transaction).",
+  "attDelete": "Delete photo",
+  "attDeleteConfirm": "Delete this photo from the transaction on all devices?",
+  "attView": "View photo {index}",
+  "@attView": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "attRejectTooLarge": "The image is too large (max 25 MB).",
+  "attRejectPixels": "The image resolution is too high.",
+  "attRejectUnsupported": "This image can't be read. Please choose a JPEG or PNG image.",
+  "errTooManyAttachments": "This transaction already has the maximum number of photos.",
+  "errAttachmentsNotLocal": "This transaction's photos aren't downloaded yet. Open them first, then change the wallet."
 }

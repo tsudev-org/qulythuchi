@@ -43,6 +43,11 @@ chung không đọc được ảnh do người khác tải lên. ADR-0007 mục 
    `pro_required` ⇒ GIỮ ảnh cục bộ ở trạng thái chờ, không xóa, thử lại lượt sau; tải về khi mở xem rồi đệm cục bộ. Xóa
    ảnh/giao dịch ⇒ bia mộ bản ghi + hàng đợi `DELETE` tệp. Người xem ví chung chỉ xem được.
 
+8. **Đổi ví của giao dịch** (bản ghi mới, id mới - ADR-0004): app mã hóa lại từng ảnh sang ví/giao dịch mới (khóa tệp
+   mới) và xóa ảnh cũ trong cùng giao tác; ảnh chưa tải về máy ⇒ từ chối đổi ví (`attachmentsNotLocal`).
+9. Trường `attachmentIds` của `Txn` (có từ P3, chưa dùng) KHÔNG được dùng: danh sách trong một trường sẽ mất ảnh khi hai
+   thiết bị cùng thêm (ghi sau thắng theo trường). Liên kết đi theo `txnId` trong từng bản ghi đính kèm.
+
 ## 3. Hệ quả
 
 - Máy chủ thấy thêm: số tệp, cỡ đã đệm (bội 64 KiB), thời điểm, ví nào, ai tải lên. Không thấy ảnh, loại ảnh, giao

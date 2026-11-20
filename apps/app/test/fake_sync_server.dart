@@ -25,6 +25,10 @@ final class FakeSyncServer {
   final wallets = <String, FakeWallet>{};
   final invites = <String, Map<String, Object?>>{};
 
+  /// Tệp đính kèm (P7b): `u/<user>/<id>` và `w/<ví>/<id>` như R2. [proBlocked] ⇒ PUT trả 402 pro_required.
+  final r2 = <String, List<int>>{};
+  var proBlocked = false;
+
   /// Móc giả lập máy chủ độc: sửa lời mời đã nhận trước khi trả cho chủ ví.
   void Function(Map<String, Object?> invite)? tamperAccepted;
 
@@ -193,6 +197,12 @@ final class FakeSyncServer {
         u.deleting = false;
         return _json({'status': 'active'});
     }
+    if (path.startsWith('/api/v1/files/')) return _file(req, 'u/$uid/${path.split('/').last}', canWrite: true);
+    if (path.startsWith('/api/v1/wallets/') && req.url.pathSegments.length == 6 && req.url.pathSegments[4] == 'files') {
+      final wid = req.url.pathSegments[3];
+      final w = _member(wid, uid);
+      return _file(req, 'w/$wid/${req.url.pathSegments[5]}', canWrite: w.members[uid] != 'viewer');
+    }
     if (path.startsWith('/api/v1/wallets') || path.startsWith('/api/v1/invites/')) return _wallets(req, uid, device);
     if (m == 'DELETE' && path.startsWith('/api/v1/me/devices/')) {
       final id = path.split('/').last;
@@ -205,6 +215,30 @@ final class FakeSyncServer {
 }
 
 extension on FakeSyncServer {
+  http.Response _file(http.Request req, String key, {required bool canWrite}) {
+    switch (req.method) {
+      case 'PUT':
+        if (!canWrite) throw const _Err(403, 'read_only');
+        if (proBlocked) return _json({'code': 'pro_required', 'reason': 'no_pro'}, 402);
+        final b = req.bodyBytes;
+        if (b.length < 4 || b[0] != 0x51 || b[1] != 0x54) throw const _Err(400, 'bad_request');
+        final qw = req.url.queryParameters['wallet_id'];
+        if (key.startsWith('u/') && qw != null && wallets.containsKey(qw)) throw const _Err(409, 'shared_wallet');
+        final existed = r2.containsKey(key);
+        r2.putIfAbsent(key, () => List.of(b));
+        return _json({'status': existed ? 'unchanged' : 'stored'}, existed ? 200 : 201);
+      case 'GET':
+        final b = r2[key];
+        if (b == null) throw const _Err(404, 'not_found');
+        return http.Response.bytes(b, 200, headers: {'content-type': 'application/octet-stream'});
+      case 'DELETE':
+        if (!canWrite) throw const _Err(403, 'read_only');
+        r2.remove(key);
+        return http.Response('', 204);
+    }
+    throw const _Err(404, 'not_found');
+  }
+
   FakeWallet _member(String wid, String uid) {
     final w = wallets[wid];
     if (w == null || !w.members.containsKey(uid)) throw const _Err(404, 'not_found');

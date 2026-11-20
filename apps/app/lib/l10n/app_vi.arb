@@ -1680,5 +1680,48 @@
   "shareErrMissingSecret": "Máy này chưa có đủ thông tin của một thành viên. Hãy đồng bộ hoặc thử trên máy đã tạo lời mời.",
   "shareErrForbidden": "Chỉ chủ ví được làm việc này.",
   "errReadOnly": "Bạn chỉ có quyền xem ví chung này.",
-  "errOwnerOnly": "Chỉ chủ ví được sửa thông tin ví chung."
+  "errOwnerOnly": "Chỉ chủ ví được sửa thông tin ví chung.",
+  "attTitle": "Ảnh hóa đơn",
+  "attAdd": "Thêm ảnh",
+  "attCamera": "Chụp ảnh",
+  "attGallery": "Chọn từ thư viện",
+  "attFile": "Chọn tệp ảnh",
+  "attLimit": "Tối đa {count} ảnh mỗi giao dịch",
+  "@attLimit": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "attPrivacy": "Ảnh được thu nhỏ, xóa vị trí GPS và thông tin máy chụp, rồi mã hóa trên máy trước khi đồng bộ.",
+  "attNewHint": "Ảnh sẽ được gắn khi bạn lưu giao dịch.",
+  "attProcessing": "Đang xử lý ảnh…",
+  "attPending": "Chưa đồng bộ - ảnh đang lưu an toàn trên máy này",
+  "attProBlocked": "Đồng bộ ảnh cần TsuDEV Pro. Ảnh vẫn lưu đầy đủ trên máy này.",
+  "attFilesPending": "{count} ảnh chờ đồng bộ (đang lưu trên máy)",
+  "@attFilesPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "attNotAvailable": "Ảnh chưa có trên máy này. Đăng nhập đồng bộ để tải về.",
+  "attOpenFailed": "Không mở được ảnh (tệp hỏng hoặc không đúng giao dịch).",
+  "attDelete": "Xóa ảnh",
+  "attDeleteConfirm": "Xóa ảnh này khỏi giao dịch trên mọi thiết bị?",
+  "attView": "Xem ảnh {index}",
+  "@attView": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "attRejectTooLarge": "Ảnh quá lớn (tối đa 25 MB).",
+  "attRejectPixels": "Ảnh có độ phân giải quá lớn.",
+  "attRejectUnsupported": "Không đọc được ảnh này. Hãy chọn ảnh JPEG hoặc PNG.",
+  "errTooManyAttachments": "Đã đủ số ảnh tối đa cho giao dịch này.",
+  "errAttachmentsNotLocal": "Ảnh đính kèm của giao dịch này chưa tải về máy. Hãy mở xem các ảnh (để tải về) rồi đổi ví."
 }

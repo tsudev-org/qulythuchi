@@ -2711,4 +2711,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errOwnerOnly => 'Only the owner can edit shared wallet details.';
+
+  @override
+  String get attTitle => 'Receipt photos';
+
+  @override
+  String get attAdd => 'Add photo';
+
+  @override
+  String get attCamera => 'Take photo';
+
+  @override
+  String get attGallery => 'Choose from gallery';
+
+  @override
+  String get attFile => 'Choose image file';
+
+  @override
+  String attLimit(int count) {
+    return 'Up to $count photos per transaction';
+  }
+
+  @override
+  String get attPrivacy =>
+      'Photos are resized, stripped of GPS location and camera details, then encrypted on this device before syncing.';
+
+  @override
+  String get attNewHint => 'Photos will be attached when you save the transaction.';
+
+  @override
+  String get attProcessing => 'Processing photo…';
+
+  @override
+  String get attPending => 'Not synced yet - the photo is stored safely on this device';
+
+  @override
+  String get attProBlocked => 'Syncing photos requires TsuDEV Pro. Photos stay fully stored on this device.';
+
+  @override
+  String attFilesPending(int count) {
+    return '$count photos waiting to sync (stored on this device)';
+  }
+
+  @override
+  String get attNotAvailable => 'This photo isn\'t on this device yet. Sign in to sync to download it.';
+
+  @override
+  String get attOpenFailed => 'Couldn\'t open the photo (damaged or not from this transaction).';
+
+  @override
+  String get attDelete => 'Delete photo';
+
+  @override
+  String get attDeleteConfirm => 'Delete this photo from the transaction on all devices?';
+
+  @override
+  String attView(int index) {
+    return 'View photo $index';
+  }
+
+  @override
+  String get attRejectTooLarge => 'The image is too large (max 25 MB).';
+
+  @override
+  String get attRejectPixels => 'The image resolution is too high.';
+
+  @override
+  String get attRejectUnsupported => 'This image can\'t be read. Please choose a JPEG or PNG image.';
+
+  @override
+  String get errTooManyAttachments => 'This transaction already has the maximum number of photos.';
+
+  @override
+  String get errAttachmentsNotLocal =>
+      'This transaction\'s photos aren\'t downloaded yet. Open them first, then change the wallet.';
 }

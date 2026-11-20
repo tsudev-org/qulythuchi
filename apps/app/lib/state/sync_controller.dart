@@ -5,8 +5,9 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:qulythuchi_core/qulythuchi_core.dart' show InviteCode, WalletRole;
+import 'package:qulythuchi_core/qulythuchi_core.dart' show Attachment, InviteCode, WalletRole;
 
+import '../attachments/file_sync.dart';
 import '../data/key_storage.dart';
 import '../security/vault.dart';
 import '../sync/api_client.dart';
@@ -92,6 +93,8 @@ final class SyncState {
     this.block,
     this.quotaFull = false,
     this.rejected = 0,
+    this.filesPending = 0,
+    this.filesBlocked = false,
   });
   final SyncPhase phase;
   final SyncProfile? profile;
@@ -106,6 +109,10 @@ final class SyncState {
   final bool quotaFull;
   final int rejected;
 
+  /// Ảnh đính kèm chờ tải lên (đang an toàn trên máy); [filesBlocked]: máy chủ trả 402 cần TsuDEV Pro.
+  final int filesPending;
+  final bool filesBlocked;
+
   bool get signedIn => phase != SyncPhase.signedOut;
 
   SyncState copyWith({
@@ -119,6 +126,8 @@ final class SyncState {
     bool clearBlock = false,
     bool? quotaFull,
     int? rejected,
+    int? filesPending,
+    bool? filesBlocked,
   }) => SyncState(
     phase: phase ?? this.phase,
     profile: profile ?? this.profile,
@@ -128,6 +137,8 @@ final class SyncState {
     block: clearBlock ? null : (block ?? this.block),
     quotaFull: quotaFull ?? this.quotaFull,
     rejected: rejected ?? this.rejected,
+    filesPending: filesPending ?? this.filesPending,
+    filesBlocked: filesBlocked ?? this.filesBlocked,
   );
 }
 
@@ -209,6 +220,14 @@ final class SyncController extends Notifier<SyncState> {
     services.store.deleteMeta(_mProfile);
     _periodic?.cancel();
     state = SyncState(error: 'device_revoked', pending: services.store.dirtyCount);
+  }
+
+  /// Tải bản mã ảnh [a] từ máy chủ, kiểm mở được rồi mới đệm lại. null = chưa đăng nhập hoặc máy chủ không có.
+  Future<Uint8List?> fetchAttachment(Attachment a) async {
+    if (!state.signedIn) return null;
+    final got = await FileSync(api: _api, store: ref.read(servicesProvider).store).download(a);
+    if (got == null) return null;
+    return ref.read(repositoryProvider).cacheDownloaded(a, got.$1, got.$2);
   }
 
   SyncEngine _engine() {
@@ -364,9 +383,12 @@ final class SyncController extends Notifier<SyncState> {
         lastSyncAt: DateTime.now(),
         pending: services.store.dirtyCount,
         clearBlock: true,
-        quotaFull: report.quotaFull,
+        quotaFull: report.quotaFull || report.files.quotaFull,
         rejected: report.rejected,
+        filesPending: report.files.pending,
+        filesBlocked: report.files.blocked,
       );
+      ref.read(ledgerProvider.notifier).pruneAttachmentCache();
       if (report.shared != null) ref.read(sharedWalletsProvider.notifier).set(report.shared!, report.badInvites);
     } on SyncBlockedException catch (e) {
       _periodic?.cancel();

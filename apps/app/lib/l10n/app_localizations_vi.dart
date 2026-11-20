@@ -2708,4 +2708,78 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get errOwnerOnly => 'Chỉ chủ ví được sửa thông tin ví chung.';
+
+  @override
+  String get attTitle => 'Ảnh hóa đơn';
+
+  @override
+  String get attAdd => 'Thêm ảnh';
+
+  @override
+  String get attCamera => 'Chụp ảnh';
+
+  @override
+  String get attGallery => 'Chọn từ thư viện';
+
+  @override
+  String get attFile => 'Chọn tệp ảnh';
+
+  @override
+  String attLimit(int count) {
+    return 'Tối đa $count ảnh mỗi giao dịch';
+  }
+
+  @override
+  String get attPrivacy =>
+      'Ảnh được thu nhỏ, xóa vị trí GPS và thông tin máy chụp, rồi mã hóa trên máy trước khi đồng bộ.';
+
+  @override
+  String get attNewHint => 'Ảnh sẽ được gắn khi bạn lưu giao dịch.';
+
+  @override
+  String get attProcessing => 'Đang xử lý ảnh…';
+
+  @override
+  String get attPending => 'Chưa đồng bộ - ảnh đang lưu an toàn trên máy này';
+
+  @override
+  String get attProBlocked => 'Đồng bộ ảnh cần TsuDEV Pro. Ảnh vẫn lưu đầy đủ trên máy này.';
+
+  @override
+  String attFilesPending(int count) {
+    return '$count ảnh chờ đồng bộ (đang lưu trên máy)';
+  }
+
+  @override
+  String get attNotAvailable => 'Ảnh chưa có trên máy này. Đăng nhập đồng bộ để tải về.';
+
+  @override
+  String get attOpenFailed => 'Không mở được ảnh (tệp hỏng hoặc không đúng giao dịch).';
+
+  @override
+  String get attDelete => 'Xóa ảnh';
+
+  @override
+  String get attDeleteConfirm => 'Xóa ảnh này khỏi giao dịch trên mọi thiết bị?';
+
+  @override
+  String attView(int index) {
+    return 'Xem ảnh $index';
+  }
+
+  @override
+  String get attRejectTooLarge => 'Ảnh quá lớn (tối đa 25 MB).';
+
+  @override
+  String get attRejectPixels => 'Ảnh có độ phân giải quá lớn.';
+
+  @override
+  String get attRejectUnsupported => 'Không đọc được ảnh này. Hãy chọn ảnh JPEG hoặc PNG.';
+
+  @override
+  String get errTooManyAttachments => 'Đã đủ số ảnh tối đa cho giao dịch này.';
+
+  @override
+  String get errAttachmentsNotLocal =>
+      'Ảnh đính kèm của giao dịch này chưa tải về máy. Hãy mở xem các ảnh (để tải về) rồi đổi ví.';
 }
