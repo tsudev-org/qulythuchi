@@ -24,8 +24,11 @@
   Play đầu-cuối (cần sản phẩm Play thật).
   Tin tsudev-8d 20/11/2026: B2 làm xong đúng hình dạng (mục 4 phiếu QT5: thêm 409 `purchase_pending`, 403
   `forbidden_package`, 404 `unknown_subject`, 503 `play_unavailable` + Retry-After; gửi lại trả 200 `already_recorded`),
-  CHƯA lên production (chờ 👤 gộp + tài khoản dịch vụ Play). Việc phía ta: đối chiếu `services/sync-api/src/pro/play.ts`
-  với các mã mới + test; thử đầu-cuối khi tsudev báo lên production.
+  ĐÃ lên production 20/11/2026 (tin tsudev-a7: PR tsudev #344, Render 13:56 UTC; không token ⇒ 401 `invalid_client`).
+  `aud` client assertion = `https://tsudev.com/api/rp/entitlements/play`; package trong `PLAY_PACKAGES`;
+  `obfuscatedExternalAccountId` = đúng `sub` tsudev. 503 `play_unavailable` = 👤 chưa đặt `PLAY_SERVICE_ACCOUNT_JSON`
+  ở Render. Việc phía ta: đối chiếu `services/sync-api/src/pro/play.ts` (aud, mã 409/403/404/503, Retry-After) + test;
+  thử mua Play đầu-cuối trên máy thật; ghi kết quả vào phiếu tsudev QT5 mục 4 qua phiên tsudev (không sửa hộ).
 - [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); icon app gốc ĐÃ sinh từ dây chuyền (LG1), bộ đóng gói
