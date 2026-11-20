@@ -18,7 +18,6 @@
   Flutter `tsudev_ui` (PRO-C2, `tsudev-org/tsudev-ui-flutter`) + trang `tsudev.com/pro` (B3). Đọc phiếu
   `logs/handover/20261120-01_t7-may-chu-xong.md` + ADR-0016 mục 4.
 - [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
-- [ ] AP1 toàn hệ (`~/projects/logs/handover/20261119-AP1_*`): workflow `apple.yml` iOS/macOS cho `apps/app`.
 - [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); sinh icon app gốc từ dây chuyền thương hiệu (hiện chỉ web)
 
@@ -26,9 +25,16 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| AP1 - `apple.yml` iOS/macOS cho `apps/app` (nhánh `feat/ap1-apple`) | agent-qulythuchi | 09:03 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 20/11/2026 - AP1 Apple CI (agent-qulythuchi): `.github/workflows/apple.yml` + `scripts/apple-simulator-run.sh` theo mẫu
+  lotus-share#80 - iOS release `--no-codesign` ⇒ `.ipa` không ký (artifact 14 ngày), iPhone + iPad 13" giả lập `vi` (còn
+  chạy 45 giây, không có `Khởi động thất bại: `, ảnh 2064x2752), macOS release giữ chữ ký ad-hoc của Xcode KÈM
+  entitlements (sandbox bật thật, không ký lại `--deep`), kiểm tĩnh Info.plist/entitlements/không `aps-environment`/không
+  khai `ITSAppUsesNonExemptEncryption=false`. Thêm `apps/app/ios/Runner/PrivacyInfo.xcprivacy` (UserID + email, không
+  theo dõi). Lần chạy đầu xanh cả 2 job (run 44658455602, iOS ~20 phút, macOS ~8 phút); ảnh: iPhone màn chào tiếng
+  Việt, macOS mở app (tiếng Anh vì máy chạy đặt en). PR #30 gộp `6394dab`.
 
 - 20/11/2026 - T7 máy chủ Pro (agent-qulythuchi, phiên qulythuchi-28, ADR-0016 ĐÃ CHẤP NHẬN, phiếu rà soát
   `20261120-t7-may-chu-pro`): đồng bộ chuẩn v3.9.1; migration 0004 (đệm quyền lợi ≤ 24 giờ + băm mã cài đặt); kênh RP
