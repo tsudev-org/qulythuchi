@@ -168,10 +168,18 @@ walletRoutes.get('/api/v1/wallets', async (c) => {
     ).bind(userId),
     db.prepare('SELECT wallet_id, key_ver, wrapped FROM wallet_key_shares WHERE user_id = ? ORDER BY key_ver').bind(userId),
     db.prepare(
-      `SELECT m.wallet_id, m.user_id, m.role, m.joined_at, u.display_name, u.email, ${kemPkSql} AS kem_pk, ${boxPkSql} AS box_pk
+      // Huy hiệu (PRODUCT_POLICY 4.1): giá trị SAU `badge_display` từ đệm quyền lợi còn hạn; Pro đã qua `pro_until` ⇒
+      // tắt phần Pro (Ủng hộ giữ). Không có đệm còn hạn ⇒ 'none' (không lộ gì thêm về người khác).
+      `SELECT m.wallet_id, m.user_id, m.role, m.joined_at, u.display_name, u.email, ${kemPkSql} AS kem_pk, ${boxPkSql} AS box_pk,
+         CASE WHEN e.status = 'ok' AND e.jws_exp > ?2 THEN
+           CASE WHEN e.pro_until <= ?2 AND e.badge = 'both' THEN 'donor'
+                WHEN e.pro_until <= ?2 AND e.badge = 'pro' THEN 'none'
+                ELSE e.badge END
+         ELSE 'none' END AS badge
        FROM wallet_members m JOIN users u ON u.id = m.user_id LEFT JOIN account_bundles b ON b.user_id = m.user_id
+         LEFT JOIN entitlements e ON e.user_id = m.user_id
        WHERE m.wallet_id IN (SELECT wallet_id FROM wallet_members WHERE user_id = ?1) ORDER BY m.joined_at`,
-    ).bind(userId),
+    ).bind(userId, Date.now()),
     // Lời mời: chỉ chủ ví thấy.
     db.prepare(
       `SELECT i.id, i.wallet_id, i.role, i.expires_at, i.accepted_by, i.accepted_at, i.accept_kem_pk, i.accept_proof,
@@ -217,6 +225,7 @@ walletRoutes.get('/api/v1/wallets', async (c) => {
         email: m.email ?? null,
         kem_pk: m.kem_pk ?? null,
         box_pk: m.box_pk ?? null,
+        badge: m.badge ?? 'none',
       })),
       invites:
         w.role === 'owner'

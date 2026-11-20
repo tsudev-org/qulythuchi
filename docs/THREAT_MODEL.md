@@ -49,6 +49,8 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T28 | Lộ khoá riêng RP (`RP_PRIVATE_JWK`) | I | Secret Cloudflare + tệp 600 ngoài repo; chỉ đọc được quyền lợi, không dữ liệu tài chính; xoay bằng `scripts/rp-key.mjs` | ✅ T7 |
 | T29 | Ảnh hóa đơn lộ vị trí/thiết bị (EXIF/GPS), máy chủ tráo ảnh giữa giao dịch, ảnh "bom giải nén" | I, T, D | Làm sạch + mã hóa lại JPEG trên máy trước khi mã hóa; khóa tệp riêng + AAD `attf|ví|giao dịch|tệp`; trần 25 MiB/50 triệu điểm ảnh đọc trước khi giải mã; tệp ví chung theo quyền thành viên (ADR-0017) | ✅ P7b |
 | T20 | Rò nội dung thông báo/ảnh hóa đơn/giọng nói khỏi thiết bị | I | Hàng đợi thông báo mã hóa Keystore, không sao lưu; OCR ML Kit trên máy, xóa ảnh tạm; giọng nói `onDevice`, dịch vụ HĐH chỉ khi đồng ý; widget không hiện dữ liệu | ✅ P7 |
+| T30 | App tự cấp Pro / giả JWS trong đệm cục bộ để mở nút | S, E | JWS kiểm lại mỗi lần đọc (ES256 + JWKS, `aud` = `qulythuchi`, `exp` ≤ 7 ngày); trường không ký chỉ đổi lời nhắn; máy chủ vẫn gate mọi lượt đẩy (T25) | ✅ T7 app (ADR-0019) |
+| T31 | Dùng lại biên nhận Play cho tài khoản khác / app tự tin biên nhận / bản Play dẫn ra thanh toán web | S, E | `obfuscatedAccountId` từ `sub` của JWS đã kiểm; app chỉ chuyển biên nhận (máy chủ ⇒ tsudev.com xác minh), chỉ hoàn tất giao dịch khi xác minh xong; danh sách mã cố định, không `thang`; kênh mặc định an toàn (Android ⇒ Play) | ✅ T7 app (ADR-0019) |
 
 ## 3. Phụ thuộc mật mã (SECURITY_BASELINE mục 5)
 

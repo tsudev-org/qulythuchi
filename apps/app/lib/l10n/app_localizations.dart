@@ -5095,6 +5095,234 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Ảnh đính kèm của giao dịch này chưa tải về máy. Hãy mở xem các ảnh (để tải về) rồi đổi ví.'**
   String get errAttachmentsNotLocal;
+
+  /// No description provided for @proMenu.
+  ///
+  /// In vi, this message translates to:
+  /// **'TsuDEV Pro và Ủng hộ'**
+  String get proMenu;
+
+  /// No description provided for @proMenuSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ, sao lưu đám mây, ví chung'**
+  String get proMenuSub;
+
+  /// No description provided for @proStatusActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pro còn hạn tới ngày {date}'**
+  String proStatusActive(String date);
+
+  /// No description provided for @proStatusExpired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pro đã hết hạn ngày {date}'**
+  String proStatusExpired(String date);
+
+  /// No description provided for @proStatusFree.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang dùng bản miễn phí: đủ mọi tính năng trên máy, dữ liệu chỉ lưu trên thiết bị này.'**
+  String get proStatusFree;
+
+  /// No description provided for @proFeaturesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'TsuDEV Pro gồm'**
+  String get proFeaturesTitle;
+
+  /// No description provided for @proFeatSync.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ và sao lưu đám mây mã hóa đầu-cuối giữa các thiết bị'**
+  String get proFeatSync;
+
+  /// No description provided for @proFeatShared.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo ví chung và mời người nhà (người được mời không cần Pro)'**
+  String get proFeatShared;
+
+  /// No description provided for @proFeatAttach.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ ảnh hóa đơn, hộp thư nhập tự động'**
+  String get proFeatAttach;
+
+  /// No description provided for @proFeatQuota.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn mức 200 MiB dữ liệu + 1 GiB ảnh'**
+  String get proFeatQuota;
+
+  /// No description provided for @proFeatOneAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Một gói dùng cho mọi ứng dụng TsuDEV cùng tài khoản'**
+  String get proFeatOneAccount;
+
+  /// No description provided for @proPlanYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'TsuDEV Pro - 1 năm'**
+  String get proPlanYear;
+
+  /// No description provided for @proTerms.
+  ///
+  /// In vi, this message translates to:
+  /// **'TsuDEV Pro {price} cho 1 năm, KHÔNG tự gia hạn. Gia hạn sớm được cộng thêm 1 năm vào thời hạn còn lại. Hết hạn mà chưa gia hạn, ứng dụng trở về bản miễn phí và ngừng đồng bộ lên đám mây; dữ liệu trên thiết bị vẫn giữ nguyên, bản sao trên đám mây còn tải về được 90 ngày rồi bị xoá.'**
+  String proTerms(String price);
+
+  /// No description provided for @proBuyStore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua 1 năm'**
+  String get proBuyStore;
+
+  /// No description provided for @proRenewStore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gia hạn thêm 1 năm'**
+  String get proRenewStore;
+
+  /// No description provided for @proBuyWeb.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua trên tsudev.com'**
+  String get proBuyWeb;
+
+  /// No description provided for @proCheckAgain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tôi đã thanh toán - kiểm tra lại'**
+  String get proCheckAgain;
+
+  /// No description provided for @proSignInFirst.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập tài khoản TsuDEV để mua Pro hoặc ủng hộ.'**
+  String get proSignInFirst;
+
+  /// No description provided for @proSignIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập'**
+  String get proSignIn;
+
+  /// No description provided for @proAppStoreSoon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua trong ứng dụng trên iPhone/iPad sẽ có khi ứng dụng phát hành trên App Store.'**
+  String get proAppStoreSoon;
+
+  /// No description provided for @proStoreUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cửa hàng chưa sẵn sàng. Hãy thử lại sau.'**
+  String get proStoreUnavailable;
+
+  /// No description provided for @proOutcomeVerified.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cảm ơn bạn! Giao dịch đã được xác nhận.'**
+  String get proOutcomeVerified;
+
+  /// No description provided for @proOutcomePending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao dịch đang chờ xác nhận. Ứng dụng sẽ tự kiểm tra lại.'**
+  String get proOutcomePending;
+
+  /// No description provided for @proOutcomeInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không xác nhận được giao dịch này.'**
+  String get proOutcomeInvalid;
+
+  /// No description provided for @proOutcomeError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được giao dịch. Hãy thử lại.'**
+  String get proOutcomeError;
+
+  /// No description provided for @donateTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ủng hộ TsuDEV'**
+  String get donateTitle;
+
+  /// No description provided for @donateBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự nguyện, không mở khóa tính năng nào. Lần ủng hộ đầu tiên được xác nhận sẽ có huy hiệu Ủng hộ.'**
+  String get donateBody;
+
+  /// No description provided for @donateWeb.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ủng hộ trên tsudev.com'**
+  String get donateWeb;
+
+  /// No description provided for @proServerDataUntil.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bản sao trên đám mây còn tải về được tới ngày {date}, sau đó bị xoá. Dữ liệu trên thiết bị không bị ảnh hưởng.'**
+  String proServerDataUntil(String date);
+
+  /// No description provided for @proBlockNoPro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ lên đám mây cần TsuDEV Pro. Dữ liệu vẫn lưu đầy đủ trên máy này.'**
+  String get proBlockNoPro;
+
+  /// No description provided for @proBlockReauth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần đăng nhập lại để xác nhận gói TsuDEV Pro. Dữ liệu vẫn lưu đầy đủ trên máy này.'**
+  String get proBlockReauth;
+
+  /// No description provided for @proBlockOwner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ ví chung chưa có TsuDEV Pro nên thay đổi trong ví chung chưa đồng bộ được. Thay đổi vẫn lưu trên máy này.'**
+  String get proBlockOwner;
+
+  /// No description provided for @proSeePlans.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem gói Pro'**
+  String get proSeePlans;
+
+  /// No description provided for @proSignInAgain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng nhập lại'**
+  String get proSignInAgain;
+
+  /// No description provided for @proPurgeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bản sao đám mây sắp bị xoá'**
+  String get proPurgeTitle;
+
+  /// No description provided for @proPurgeBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gói TsuDEV Pro đã hết hạn. Bản sao dữ liệu trên đám mây sẽ bị xoá sau {days} ngày (ngày {date}). Dữ liệu trên thiết bị vẫn giữ nguyên. Gia hạn để giữ bản sao, hoặc tải về trước ngày đó.'**
+  String proPurgeBody(int days, String date);
+
+  /// No description provided for @proClose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng'**
+  String get proClose;
+
+  /// No description provided for @proRenew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gia hạn'**
+  String get proRenew;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

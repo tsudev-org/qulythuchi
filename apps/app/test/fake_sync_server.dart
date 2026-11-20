@@ -29,6 +29,20 @@ final class FakeSyncServer {
   final r2 = <String, List<int>>{};
   var proBlocked = false;
 
+  /// T7 (ADR-0019): `reason` của 402 khi đẩy bản ghi cá nhân (null = cho đẩy); thân `GET /api/v1/me/entitlements`.
+  String? pushProReason;
+  Map<String, Object?> entitlements = {
+    'enforce': false,
+    'status': 'unknown',
+    'pro': false,
+    'can_sync': true,
+    'jws': null,
+  };
+
+  /// Header `X-Tsu-Installation` / `X-Tsu-Platform` của lượt gọi gần nhất.
+  String? lastInstallation;
+  String? lastPlatform;
+
   /// Móc giả lập máy chủ độc: sửa lời mời đã nhận trước khi trả cho chủ ví.
   void Function(Map<String, Object?> invite)? tamperAccepted;
 
@@ -37,6 +51,8 @@ final class FakeSyncServer {
   Future<http.Response> _handle(http.Request req) async {
     requests++;
     paths.add('${req.method} ${req.url.path}');
+    lastInstallation = req.headers['X-Tsu-Installation'];
+    lastPlatform = req.headers['X-Tsu-Platform'];
     try {
       return await _route(req);
     } on _Err catch (e) {
@@ -133,7 +149,12 @@ final class FakeSyncServer {
           u.walletKeys[k['wallet_id']! as String] = k['wrapped']! as String;
         }
         return _json({'updated_at': 1});
+      case ('GET', '/api/v1/me/entitlements'):
+        return _json(entitlements);
       case ('POST', '/api/v1/sync/push'):
+        if (pushProReason != null) {
+          return _json({'error': 'pro_required', 'code': 'pro_required', 'message': 'x', 'reason': pushProReason}, 402);
+        }
         final results = <Object?>[];
         for (final r in (_body(req)['records']! as List).cast<Map<Object?, Object?>>()) {
           final id = r['id']! as String;

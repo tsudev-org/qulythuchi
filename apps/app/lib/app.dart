@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 
 import 'domain/txn_filter.dart';
 import 'l10n/app_localizations.dart';
+import 'pro/pro_controller.dart';
 import 'services/reminders.dart';
 import 'state/auto_import_controller.dart';
 import 'state/capture_providers.dart';
@@ -34,6 +35,8 @@ import 'ui/payment/qr_pay_page.dart';
 import 'ui/plan/budget_form_page.dart';
 import 'ui/plan/goal_form_page.dart';
 import 'ui/plan/plan_page.dart';
+import 'ui/pro/pro_page.dart';
+import 'ui/pro/pro_prompts.dart';
 import 'ui/rates/rates_page.dart';
 import 'ui/recurring/recurring_form_page.dart';
 import 'ui/recurring/recurring_page.dart';
@@ -84,7 +87,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         redirect: (_, s) => Uri(path: '/wallets/join', queryParameters: {'code': s.pathParameters['code']}).toString(),
       ),
       StatefulShellRoute.indexedStack(
-        builder: (context, state, shell) => AppShell(shell: shell),
+        builder: (context, state, shell) => ProPromptHost(child: AppShell(shell: shell)),
         branches: [
           StatefulShellBranch(
             routes: [GoRoute(path: '/overview', builder: (_, _) => const OverviewPage())],
@@ -169,6 +172,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(path: 'categories', builder: (_, _) => const CategoriesPage()),
                   GoRoute(path: 'settings', builder: (_, _) => const SettingsPage()),
                   GoRoute(path: 'account', builder: (_, _) => const AccountPage()),
+                  GoRoute(path: 'pro', builder: (_, _) => const ProPage()),
                   GoRoute(path: 'rates', builder: (_, _) => const RatesPage()),
                   GoRoute(path: 'reports', builder: (_, _) => const ReportsPage()),
                   GoRoute(path: 'data', builder: (_, _) => const DataPage()),
@@ -256,6 +260,8 @@ class _QulyAppState extends ConsumerState<QulyApp> {
       onResume: () {
         _onShow();
         ref.read(syncProvider.notifier).onResume();
+        // Quay lại app: làm mới quyền lợi ⇒ màn chính hỏi nhắc gia hạn (7.6 tự lọc "lần mở mới" ≥ 30 phút).
+        unawaited(ref.read(proProvider.notifier).refresh());
         unawaited(ref.read(autoImportProvider.notifier).pull());
         setState(() => _obscured = false);
       },
@@ -311,6 +317,9 @@ class _QulyAppState extends ConsumerState<QulyApp> {
     ref.listen(ledgerProvider, (_, _) => _syncReminders());
     // Giữ bộ điều khiển đồng bộ sống suốt vòng đời app (nó tự nghe mở khóa/sửa dữ liệu).
     ref.listen(syncProvider, (_, _) {});
+    // Quyền lợi Pro + bộ điều khiển nhắc gia hạn sống suốt tiến trình (một controller, nối vòng đời app).
+    ref.listen(proProvider, (_, _) {});
+    ref.listen(proRenewalControllerProvider, (_, _) {});
     // Bộ tự nhập (thông báo ngân hàng) tự lấy hàng chờ khi mở khóa.
     ref.listen(autoImportProvider, (_, _) {});
     ref.listen(settingsProvider.select((s) => s.billReminders), (_, _) => _syncReminders());

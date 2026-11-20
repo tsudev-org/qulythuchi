@@ -26,6 +26,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| T7 app + PRO2 phần app: màn Pro 1 năm, Ủng hộ, huy hiệu, 402 reason, nhắc gia hạn 7.6 (nhánh `feat/t7-app-pro`) | agent-qulythuchi | 14:14 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 

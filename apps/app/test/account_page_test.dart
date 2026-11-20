@@ -73,7 +73,10 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 200));
     });
     await settle(tester);
+    // Danh sách giữ vị trí cuộn (đã cuộn xuống nút Đăng xuất) - cuộn lên đầu.
+    await scrollTo(tester, find.text('Chưa bật đồng bộ'));
     expect(find.text('Chưa bật đồng bộ'), findsOneWidget);
+    expect(find.byKey(const ValueKey('account-pro')), findsOneWidget);
     expect(container.read(syncProvider).signedIn, isFalse);
     expect(GoRouter.of(tester.element(find.byType(Scaffold).first)), isNotNull);
   });

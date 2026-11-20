@@ -10,10 +10,16 @@ final Uri defaultServer = Uri.parse('https://qulythuchi.tsudev.com');
 /// Lỗi gọi API. [code] máy đọc được (khớp `{code, message}` của máy chủ); [message] là câu cố định của máy chủ
 /// hoặc null - KHÔNG BAO GIỜ chứa dữ liệu người dùng, nhưng giao diện vẫn dịch theo [code] thay vì in [message].
 final class ApiException implements Exception {
-  const ApiException(this.status, this.code, [this.message]);
+  const ApiException(this.status, this.code, [this.message, this.reason]);
   final int status;
   final String code;
   final String? message;
+
+  /// `reason` của `402 pro_required` (ADR-0016 mục 4): `no_pro` | `reauth` | `owner_no_pro`.
+  final String? reason;
+
+  /// Máy chủ đòi TsuDEV Pro (PRODUCT_POLICY 7.4) ⇒ KHÔNG thử lại tự động.
+  bool get proRequired => status == 402 && code == 'pro_required';
 
   /// Mã nội bộ (không đến từ máy chủ).
   static const network = 'network';
@@ -83,6 +89,7 @@ final class ApiClient {
     Uri? base,
     this.cookieMode = false,
     this.mapTransportError,
+    this.defaultHeaders,
     DateTime Function()? now,
   }) : _http = client,
        base = base ?? defaultServer,
@@ -95,6 +102,9 @@ final class ApiClient {
   /// Web: dùng cookie phiên `__Host-qt_session` của trình duyệt (cùng gốc), gửi `X-Qt-Csrf: 1` cho mọi lượt ghi.
   final bool cookieMode;
   final TransportErrorMapper? mapTransportError;
+
+  /// Header gắn vào MỌI lượt gọi: `X-Tsu-Installation` + `X-Tsu-Platform` (AUTH_AND_ACCOUNT 14.3, ADR-0019 mục 2).
+  final Future<Map<String, String>> Function()? defaultHeaders;
   final DateTime Function() _now;
 
   String? _access;
@@ -245,6 +255,14 @@ final class ApiClient {
   }) async {
     final req = http.Request(method, resolve(path, query));
     req.headers['Accept'] = 'application/json';
+    final extra = defaultHeaders;
+    if (extra != null) {
+      try {
+        req.headers.addAll(await extra());
+      } on Object {
+        // Không đọc được mã cài đặt: vẫn gọi được (máy chủ coi như thiếu header).
+      }
+    }
     if (auth && _access != null) req.headers['Authorization'] = 'Bearer $_access';
     if (cookieMode && method != 'GET') req.headers['X-Qt-Csrf'] = '1';
     if (body is Uint8List) {
@@ -284,6 +302,7 @@ final class ApiClient {
           res.statusCode,
           j['code'] as String,
           j['message'] is String ? j['message'] as String : null,
+          j['reason'] is String ? j['reason'] as String : null,
         );
       }
     } on Object {

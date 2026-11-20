@@ -60,6 +60,14 @@ dependencies:
   speech_to_text: ^7.5.0
   mobile_scanner: ^7.5.0
   qr: ^3.0.2
+  # Huy hiệu, quyền lợi, nhắc gia hạn dùng chung của hệ TsuDEV (PRODUCT_POLICY 4.2, 7.4, 7.6) - ghim tag.
+  tsudev_ui:
+    git:
+      url: https://github.com/tsudev-org/tsudev-ui-flutter.git
+      ref: v0.2.0
+  # Google Play Billing (chỉ bản TSU_CHANNEL=play): tsudev_pro/nam + ung_ho_* - biên nhận xác minh ở tsudev.com.
+  in_app_purchase: ^3.2.3
+  in_app_purchase_android: ^0.5.5
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +79,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  # Ký JWS thử (ES256) trong test quyền lợi - đã là phụ thuộc của tsudev_ui.
+  pointycastle: ^4.0.0
 flutter:
   generate: true
 

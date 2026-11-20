@@ -6,9 +6,13 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:qulythuchi_core/qulythuchi_core.dart' show Attachment, InviteCode, WalletRole;
+import 'package:tsudev_ui/tsudev_ui.dart' show InstallationId;
 
 import '../attachments/file_sync.dart';
 import '../data/key_storage.dart';
+import '../pro/channel.dart';
+import '../pro/pro_block.dart';
+import '../pro/pro_controller.dart' show tsuStoreProvider;
 import '../security/vault.dart';
 import '../sync/api_client.dart';
 import '../sync/http_client.dart';
@@ -95,6 +99,7 @@ final class SyncState {
     this.rejected = 0,
     this.filesPending = 0,
     this.filesBlocked = false,
+    this.proBlock,
   });
   final SyncPhase phase;
   final SyncProfile? profile;
@@ -113,6 +118,9 @@ final class SyncState {
   final int filesPending;
   final bool filesBlocked;
 
+  /// Lượt gần nhất bị máy chủ trả 402 (ADR-0019 mục 5); null = đồng bộ bình thường.
+  final ProBlock? proBlock;
+
   bool get signedIn => phase != SyncPhase.signedOut;
 
   SyncState copyWith({
@@ -128,6 +136,8 @@ final class SyncState {
     int? rejected,
     int? filesPending,
     bool? filesBlocked,
+    ProBlock? proBlock,
+    bool clearProBlock = false,
   }) => SyncState(
     phase: phase ?? this.phase,
     profile: profile ?? this.profile,
@@ -139,6 +149,7 @@ final class SyncState {
     rejected: rejected ?? this.rejected,
     filesPending: filesPending ?? this.filesPending,
     filesBlocked: filesBlocked ?? this.filesBlocked,
+    proBlock: clearProBlock ? null : (proBlock ?? this.proBlock),
   );
 }
 
@@ -166,6 +177,19 @@ final class SyncController extends Notifier<SyncState> {
 
   ApiClient get api => _api;
 
+  String? _installation;
+
+  /// `can_sync` mới nhất của máy chủ (do [ProController] báo sau mỗi lần làm mới quyền lợi). false ⇒ chỉ kéo.
+  bool _canSync = true;
+  void setCanSync(bool value) => _canSync = value;
+
+  /// `X-Tsu-Installation` (128 bit ngẫu nhiên, KHÔNG phải định danh phần cứng) + `X-Tsu-Platform` - máy chủ chuyển cho
+  /// tsudev.com để đếm thiết bị (PRODUCT_POLICY 7.3, AUTH_AND_ACCOUNT 14.3).
+  Future<Map<String, String>> _tsuHeaders() async {
+    final id = _installation ??= await InstallationId.getOrCreate(ref.read(tsuStoreProvider));
+    return {InstallationId.headerName: id, 'X-Tsu-Platform': tsuPlatform()};
+  }
+
   @override
   SyncState build() {
     final services = ref.watch(servicesProvider);
@@ -176,6 +200,7 @@ final class SyncController extends Notifier<SyncState> {
       base: config.server,
       cookieMode: config.cookieMode,
       mapTransportError: mapSyncTransportError,
+      defaultHeaders: _tsuHeaders,
     )..onSessionEnded = _onSessionEnded;
     ref.onDispose(() {
       _debounce?.cancel();
@@ -376,7 +401,7 @@ final class SyncController extends Notifier<SyncState> {
       final engine = _engine();
       final profile = state.profile;
       if (profile != null) engine.bindUser(profile.userId);
-      final report = await engine.run();
+      final report = await engine.run(pushAllowed: _canSync);
       if (!state.signedIn) return;
       state = state.copyWith(
         phase: SyncPhase.idle,
@@ -387,6 +412,8 @@ final class SyncController extends Notifier<SyncState> {
         rejected: report.rejected,
         filesPending: report.files.pending,
         filesBlocked: report.files.blocked,
+        proBlock: report.proBlock,
+        clearProBlock: report.proBlock == null,
       );
       ref.read(ledgerProvider.notifier).pruneAttachmentCache();
       if (report.shared != null) ref.read(sharedWalletsProvider.notifier).set(report.shared!, report.badInvites);

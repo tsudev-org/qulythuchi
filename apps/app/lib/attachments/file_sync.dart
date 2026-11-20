@@ -3,11 +3,18 @@ import 'dart:typed_data';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 
 import '../data/record_store.dart';
+import '../pro/pro_block.dart';
 import '../sync/api_client.dart';
 
 /// Kết quả một lượt đồng bộ tệp.
 final class FileSyncReport {
-  const FileSyncReport({this.uploaded = 0, this.pending = 0, this.blocked = false, this.quotaFull = false});
+  const FileSyncReport({
+    this.uploaded = 0,
+    this.pending = 0,
+    this.blocked = false,
+    this.quotaFull = false,
+    this.proBlock,
+  });
   final int uploaded;
 
   /// Ảnh còn chờ tải lên (vẫn nằm an toàn trên máy).
@@ -15,6 +22,9 @@ final class FileSyncReport {
 
   /// Máy chủ trả 402 `pro_required` - ảnh được GIỮ cục bộ, thử lại lượt sau.
   final bool blocked;
+
+  /// `reason` của 402 (ảnh ví chung ⇒ có thể là chủ ví chưa Pro).
+  final ProBlock? proBlock;
   final bool quotaFull;
 }
 
@@ -34,6 +44,7 @@ final class FileSync {
     var uploaded = 0;
     var blocked = false;
     var quotaFull = false;
+    ProBlock? proBlock;
 
     // 1. Xóa trên máy chủ (không cần Pro).
     for (final b in store.blobsIn(BlobState.deleting, withBytes: false)) {
@@ -78,8 +89,11 @@ final class FileSync {
           await api.putBytes(accountPath(b.id), sealed, {if (b.walletId != null) 'wallet_id': b.walletId!});
         }
       } on ApiException catch (e) {
-        if (e.status == 402 && e.code == 'pro_required') {
-          blocked = true;
+        if (e.proRequired) {
+          final why = ProBlock.parse(e.reason);
+          proBlock = ProBlock.worst(proBlock, why);
+          // Chủ ví chung chưa Pro chỉ chặn ảnh của ví đó; tài khoản mình không Pro ⇒ dừng cả lượt (không thử lại).
+          if (why != ProBlock.ownerNoPro) blocked = true;
           continue;
         }
         if (e.status == 507) {
@@ -103,7 +117,13 @@ final class FileSync {
       store.setBlobState(b.id, BlobState.synced, shared != null ? BlobRemote.wallet : BlobRemote.account);
     }
     final left = store.blobsIn(BlobState.pending, withBytes: false).length;
-    return FileSyncReport(uploaded: uploaded, pending: left, blocked: blocked, quotaFull: quotaFull);
+    return FileSyncReport(
+      uploaded: uploaded,
+      pending: left,
+      blocked: blocked || proBlock != null,
+      quotaFull: quotaFull,
+      proBlock: proBlock,
+    );
   }
 
   /// Tải bản mã của [a] từ máy chủ: thử không gian đúng loại ví trước, rồi chỗ còn lại (ảnh tải lên trước khi ví được

@@ -48,6 +48,11 @@ export const statusState = {
   calls: [] as { subs: string[]; clientId: unknown; claims: Record<string, unknown>; ok: boolean }[],
   jtis: new Set<string>(),
 };
+/** Kênh biên nhận Play giả (`POST /api/rp/entitlements/play`, ADR-0019 mục 4). `mode` = mã HTTP trả về. */
+export const playState = {
+  mode: 200 as number,
+  calls: [] as { body: Record<string, unknown>; claims: Record<string, unknown> }[],
+};
 export function statusFor(sub: string, st: FakeStatus) {
   statusState.bySub.set(sub, st);
 }
@@ -97,6 +102,16 @@ export async function fakeIdp(opts: { sub?: string; tamperNonce?: boolean; wrong
         if (st.status !== 'omit') results[sub] = st;
       }
       return json({ results });
+    }
+    if (url === `${RP_AUD}/play`) {
+      const auth = new Headers(init?.headers).get('Authorization') ?? '';
+      try {
+        const v = await jwtVerify(auth.slice(7), rp.publicKey, { audience: `${RP_AUD}/play`, issuer: 'qulythuchi', subject: 'qulythuchi', algorithms: ['ES256'] });
+        playState.calls.push({ body: JSON.parse(init?.body as string) as Record<string, unknown>, claims: v.payload });
+      } catch {
+        return json({ error: 'invalid_client' }, 401);
+      }
+      return json(playState.mode === 200 ? { ok: true } : { error: 'x' }, playState.mode);
     }
     if (url.startsWith(`${RP_AUD}/`)) {
       const h = new Headers(init?.headers);
