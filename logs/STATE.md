@@ -50,7 +50,9 @@
   hỏng ⇒ sửa thành `purchase_unavailable` (thử lại), ADR-0019 bổ sung. PR #47 CI xanh (cả iOS/macOS), gộp `4606657`.
   LÊN PRODUCTION `deploy-2026.11.21.1` (Worker `d19d3ac0`): `/`, `/app/`, health, `/bao-mat/` 200;
   `/api/v1/auth/providers` = Google, GitHub (`source: idp`, endpoint tsudev #351 đã sống). Lúc đo, discovery OIDC
-  tsudev.com trả 429 ⇒ `/auth/*/start` 502 `idp_unavailable` mọi lối (lỗi phía tsudev, đã báo tsudev-10).
+  tsudev.com trả 429 ⇒ `/auth/*/start` 502 mọi lối (lớp Cloudflare trước Render; tsudev vá #353). Phía ta PR #49:
+  thử lại 429/503, discovery/JWKS đệm cũ ≤ 24 giờ, POST /token chỉ thử lại 429 - `deploy-2026.11.21.2` (Worker
+  `fd413096`); đo lại `/auth/web/start` 302, `/`, `/app/`, health, providers 200.
 - 21/11/2026 - Phiên `qulythuchi-429b` (bị cắt ngang): dependabot bỏ qua vitest major (#44), `.standards` v4.2.0 (#45).
 
 - 21/11/2026 - GP1 Play Console bước 1-3 (agent-qulythuchi, phiên `qulythuchi-dd7b`): tạo app `com.tsudev.qulythuchi`
