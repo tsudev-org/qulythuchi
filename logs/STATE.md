@@ -17,7 +17,7 @@
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
 - [ ] 👤 GP1 (Play, `docs/store/google-play.md` mục "Việc 👤"): hồ sơ thanh toán; tài khoản tsudev cho người duyệt
   (có Pro) + điền tên/mật khẩu; khoá ký ⇒ AAB vào Thử nghiệm nội bộ ⇒ phiên sau tạo `tsudev_pro`/`nam` + `ung_ho_*`.
-  Đưa trang `/bao-mat` mới lên production TRƯỚC khi gửi duyệt (Play trỏ `#xoa-tai-khoan`, `#xoa-du-lieu`).
+  Trang `/bao-mat` mới ĐÃ lên production (`deploy-2026.11.21.1`, có `#xoa-tai-khoan`, `#xoa-du-lieu`).
 - [ ] Chờ tsudev B2 (`POST /api/rp/entitlements/play`, phiếu tsudev `20261120-QT5`): xác nhận thân yêu cầu ⇒ thử mua
   Play đầu-cuối (cần sản phẩm Play thật).
   Tin tsudev-8d 20/11/2026: B2 làm xong đúng hình dạng (mục 4 phiếu QT5: thêm 409 `purchase_pending`, 403
@@ -47,7 +47,10 @@
   BP 16946 `crypto_pfs` sửa lời giải thích theo đo thật (TLS 1.3 mặc định có PFS; edge còn nhận bộ mã TLS 1.2 RSA
   cũ - gói Cloudflare miễn phí không tuỳ chỉnh bộ mã; đặt Minimum TLS 1.3 là việc của cả zone tsudev.com, không
   tự làm) - đã nộp, vẫn passing 100%. Đối chiếu hợp đồng Play B2: 409 `purchase_pending` từng bị coi là biên nhận
-  hỏng ⇒ sửa thành `purchase_unavailable` (thử lại), ADR-0019 bổ sung.
+  hỏng ⇒ sửa thành `purchase_unavailable` (thử lại), ADR-0019 bổ sung. PR #47 CI xanh (cả iOS/macOS), gộp `4606657`.
+  LÊN PRODUCTION `deploy-2026.11.21.1` (Worker `d19d3ac0`): `/`, `/app/`, health, `/bao-mat/` 200;
+  `/api/v1/auth/providers` = Google, GitHub (`source: idp`, endpoint tsudev #351 đã sống). Lúc đo, discovery OIDC
+  tsudev.com trả 429 ⇒ `/auth/*/start` 502 `idp_unavailable` mọi lối (lỗi phía tsudev, đã báo tsudev-10).
 - 21/11/2026 - Phiên `qulythuchi-429b` (bị cắt ngang): dependabot bỏ qua vitest major (#44), `.standards` v4.2.0 (#45).
 
 - 21/11/2026 - GP1 Play Console bước 1-3 (agent-qulythuchi, phiên `qulythuchi-dd7b`): tạo app `com.tsudev.qulythuchi`
