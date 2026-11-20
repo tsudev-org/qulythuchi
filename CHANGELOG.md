@@ -10,6 +10,10 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
 
 ### Thêm
+- TsuDEV Pro - phần máy chủ (T7, ADR-0016): máy chủ đọc quyền lợi Pro do tsudev.com ký (kênh RP, đệm ≤ 24 giờ) và
+  chặn đẩy dữ liệu, tải tệp, tạo/mời ví chung, bật email chuyển tiếp khi không có Pro (`402 pro_required`); kéo và xuất
+  dữ liệu luôn mở; ví chung chạy bằng Pro của chủ ví; dọn bản mã trên máy chủ khi Pro hết quá 90 ngày; hạn mức 200 MiB
+  + 1 GiB. Mới có ở máy chủ và đang TẮT (`PRO_ENFORCE=off`) - đồng bộ vẫn miễn phí như cũ tới khi bật.
 - Ví chung gia đình (P9, ADR-0015):
   - "Chia sẻ và thành viên" trong mỗi ví: chia sẻ ví, mời theo quyền Người ghi hoặc Người xem bằng mã/liên kết/QR (dùng
     một lần trong 7 ngày), đổi quyền, thu hồi, hủy lời mời, mã an toàn 12 chữ số để so với người cùng ví.
