@@ -10,6 +10,7 @@ import { UUID } from '../lib/validate';
 import { ACCOUNT_FILE_QUOTA } from '../files/routes';
 import { ACCOUNT_RECORD_QUOTA } from '../sync/routes';
 import { PRO_GRACE_MS, callerOf, enforcing, getEntitlement, isPro, type Entitlement } from '../pro/entitlements';
+import { forwardPlayReceipt, validPlayReceipt } from '../pro/play';
 
 /** Ân hạn xóa tài khoản (AUTH_AND_ACCOUNT.md mục 12). */
 export const DELETION_GRACE_MS = 30 * 24 * 60 * 60 * 1000;
@@ -89,6 +90,26 @@ meRoutes.get('/api/v1/me/entitlements', async (c) => {
     devices_30d: e?.devices30d ?? 0,
     jws: e?.status === 'ok' ? e.jws : null,
   });
+});
+
+/**
+ * Biên nhận Google Play (ADR-0016 mục 2.4, ADR-0019 mục 4): app ⇒ máy chủ này ⇒ tsudev.com xác minh. Thành công ⇒
+ * làm mới đệm quyền lợi ngay. Không phụ thuộc `PRO_ENFORCE` (mua được trước khi bật gate). Mã mua không vào log/D1.
+ */
+meRoutes.post('/api/v1/me/purchases/play', async (c) => {
+  const { userId } = c.get('auth');
+  const body = (await c.req.json().catch(() => null)) as { product_id?: unknown; purchase_token?: unknown } | null;
+  if (!body || !validPlayReceipt(body.product_id, body.purchase_token)) throw badRequest();
+  await rateLimit(c.env.DB, `play:${userId}`, 20, 3_600_000);
+  const user = await c.env.DB.prepare('SELECT oidc_sub FROM users WHERE id = ?').bind(userId).first<{ oidc_sub: string }>();
+  if (!user || user.oidc_sub.startsWith('deleted:')) throw new ApiError(401, 'unauthenticated', 'Tài khoản không còn tồn tại.');
+  await forwardPlayReceipt(c.env, user.oidc_sub, body.product_id, body.purchase_token as string);
+  try {
+    await getEntitlement(c.env, userId, callerOf(c), { force: true });
+  } catch {
+    // Đã xác minh; app tự làm mới quyền lợi sau (đệm cũ hết hạn trong ≤ 24 giờ).
+  }
+  return c.json({ verified: true });
 });
 
 meRoutes.get('/api/v1/me/usage', async (c) => {

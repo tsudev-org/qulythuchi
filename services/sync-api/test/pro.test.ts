@@ -2,7 +2,7 @@ import { env } from 'cloudflare:workers';
 import { describe, expect, it } from 'vitest';
 
 import { purgeLapsedPro } from '../src/maintenance';
-import { RP_STATUS_AUD, call, entState, entitlementFor, fakeEnvelope, fixture, json, login, statusFor, statusState } from './helpers';
+import { RP_AUD, RP_STATUS_AUD, call, entState, entitlementFor, fakeEnvelope, fixture, json, login, playState, statusFor, statusState } from './helpers';
 
 /**
  * T7 / ADR-0016 - gate TsuDEV Pro ở máy chủ (PRODUCT_POLICY 7.4 + checklist mục 8): 402 `pro_required` cho đẩy/tải
@@ -301,5 +301,72 @@ describe('TsuDEV Pro - xoá có xác minh qua kênh trạng thái', () => {
     }
     expect(statusCalls(u.sub)).toBe(0);
     expect(await records(u.id)).toBe(1);
+  });
+});
+
+describe('TsuDEV Pro - biên nhận Google Play (ADR-0019)', () => {
+  const token = 'tok_' + 'a'.repeat(40);
+  it('chuyển đúng sub + mã sản phẩm lên tsudev.com bằng client assertion aud = URL kênh; thành công ⇒ làm mới quyền lợi', async () => {
+    const u = await account({ proUntil: 0, badge: 'none' });
+    playState.mode = 200;
+    const before = callsFor(u.sub);
+    const r = await req('/api/v1/me/purchases/play', u.auth, { product_id: 'tsudev_pro', purchase_token: token });
+    expect(r.status).toBe(200);
+    expect(r.body).toEqual({ verified: true });
+    const last = playState.calls.at(-1)!;
+    expect(last.body).toEqual({ client_id: 'qulythuchi', sub: u.sub, packageName: 'com.tsudev.qulythuchi', productId: 'tsudev_pro', purchaseToken: token });
+    expect(last.claims).toMatchObject({ iss: 'qulythuchi', sub: 'qulythuchi', aud: `${RP_AUD}/play` });
+    expect(callsFor(u.sub)).toBe(before + 1);
+  });
+
+  it('mã sản phẩm lạ (kể cả gói tháng cũ) hoặc mã mua sai dạng ⇒ 400, không gọi tsudev.com', async () => {
+    const u = await account({});
+    const n = playState.calls.length;
+    for (const body of [
+      { product_id: 'thang', purchase_token: token },
+      { product_id: 'tsudev_pro_thang', purchase_token: token },
+      { product_id: 'tsudev_pro', purchase_token: 'ngắn' },
+      { product_id: 'ung_ho_20k' },
+    ]) {
+      expect((await req('/api/v1/me/purchases/play', u.auth, body)).status).toBe(400);
+    }
+    expect(playState.calls.length).toBe(n);
+  });
+
+  it('tsudev.com từ chối biên nhận ⇒ 400 purchase_invalid; kênh chưa có/sập ⇒ 503 purchase_unavailable', async () => {
+    const u = await account({});
+    playState.mode = 422;
+    expect((await req('/api/v1/me/purchases/play', u.auth, { product_id: 'ung_ho_50k', purchase_token: token })).body.code).toBe('purchase_invalid');
+    for (const mode of [405, 404, 500]) {
+      playState.mode = mode;
+      const r = await req('/api/v1/me/purchases/play', u.auth, { product_id: 'tsudev_pro', purchase_token: token });
+      expect(r.status).toBe(503);
+      expect(r.body.code).toBe('purchase_unavailable');
+    }
+    playState.mode = 200;
+  });
+
+  it('chưa đăng nhập ⇒ 401', async () => {
+    expect((await call('/api/v1/me/purchases/play', json({ product_id: 'tsudev_pro', purchase_token: token }))).status).toBe(401);
+  });
+});
+
+describe('Huy hiệu thành viên ví chung', () => {
+  it('trả badge từ đệm quyền lợi còn hạn; Pro đã hết ⇒ tắt phần Pro, giữ Ủng hộ', async () => {
+    const owner = await account({ badge: 'both' });
+    expect((await push(owner.auth)).status).toBe(200); // tạo đệm quyền lợi
+    expect((await req('/api/v1/keys/account', owner.auth, { bundle: fixture.bundle }, 'PUT')).status).toBe(200);
+    const wid = crypto.randomUUID();
+    expect((await req('/api/v1/wallets', owner.auth, { wallet_id: wid, wrapped: fakeEnvelope(48) })).status).toBe(200);
+    const list = async () => {
+      const r = await req('/api/v1/wallets', owner.auth, undefined, 'GET');
+      return r.body.wallets.find((w: any) => w.wallet_id === wid).members[0].badge;
+    };
+    expect(await list()).toBe('both');
+    const uid = await userIdOf(owner.sub);
+    await env.DB.prepare('UPDATE entitlements SET pro_until = ? WHERE user_id = ?').bind(Date.now() - 1000, uid).run();
+    expect(await list()).toBe('donor');
+    await env.DB.prepare('UPDATE entitlements SET jws_exp = 0 WHERE user_id = ?').bind(uid).run();
+    expect(await list()).toBe('none');
   });
 });

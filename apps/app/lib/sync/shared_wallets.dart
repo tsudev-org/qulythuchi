@@ -104,9 +104,13 @@ final class WalletMember {
     this.email,
     this.kemPublicKey,
     this.boxPublicKey,
+    this.badge,
   });
   final String userId;
   final WalletRole role;
+
+  /// Huy hiệu SAU `badge_display` (máy chủ đã lọc theo lựa chọn ẩn/hiện): `pro` | `donor` | `both` | `none`.
+  final String? badge;
   final String? displayName;
   final String? email;
   final Uint8List? kemPublicKey;
@@ -200,6 +204,7 @@ final class SharedOverview {
                   email: m['email'] as String?,
                   kemPublicKey: _b64(m['kem_pk']),
                   boxPublicKey: _b64(m['box_pk']),
+                  badge: m['badge'] as String?,
                 ),
           ],
           invites: [

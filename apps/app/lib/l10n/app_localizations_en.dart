@@ -2785,4 +2785,132 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errAttachmentsNotLocal =>
       'This transaction\'s photos aren\'t downloaded yet. Open them first, then change the wallet.';
+
+  @override
+  String get proMenu => 'TsuDEV Pro and Support';
+
+  @override
+  String get proMenuSub => 'Cloud sync, backup, shared wallets';
+
+  @override
+  String proStatusActive(String date) {
+    return 'Pro active until $date';
+  }
+
+  @override
+  String proStatusExpired(String date) {
+    return 'Pro expired on $date';
+  }
+
+  @override
+  String get proStatusFree =>
+      'You are on the free version: every feature works on this device, and data stays on this device only.';
+
+  @override
+  String get proFeaturesTitle => 'TsuDEV Pro includes';
+
+  @override
+  String get proFeatSync => 'End-to-end encrypted cloud sync and backup across devices';
+
+  @override
+  String get proFeatShared => 'Create shared wallets and invite family (invitees don\'t need Pro)';
+
+  @override
+  String get proFeatAttach => 'Receipt photo sync and auto-import inbox';
+
+  @override
+  String get proFeatQuota => '200 MiB of data + 1 GiB of photos';
+
+  @override
+  String get proFeatOneAccount => 'One plan for every TsuDEV app on the same account';
+
+  @override
+  String get proPlanYear => 'TsuDEV Pro - 1 year';
+
+  @override
+  String proTerms(String price) {
+    return 'TsuDEV Pro $price for 1 year, does NOT renew automatically. Renewing early adds 1 year to your remaining time. If it expires without renewal, the app returns to the free version and stops syncing to the cloud; data on your device stays intact, and your cloud copy can be downloaded for 90 days before it is deleted.';
+  }
+
+  @override
+  String get proBuyStore => 'Buy 1 year';
+
+  @override
+  String get proRenewStore => 'Add 1 more year';
+
+  @override
+  String get proBuyWeb => 'Buy on tsudev.com';
+
+  @override
+  String get proCheckAgain => 'I\'ve paid - check again';
+
+  @override
+  String get proSignInFirst => 'Sign in with your TsuDEV account to buy Pro or donate.';
+
+  @override
+  String get proSignIn => 'Sign in';
+
+  @override
+  String get proAppStoreSoon =>
+      'In-app purchase on iPhone/iPad will be available when the app launches on the App Store.';
+
+  @override
+  String get proStoreUnavailable => 'The store isn\'t available right now. Please try again later.';
+
+  @override
+  String get proOutcomeVerified => 'Thank you! Your purchase is confirmed.';
+
+  @override
+  String get proOutcomePending => 'Your purchase is waiting for confirmation. The app will check again automatically.';
+
+  @override
+  String get proOutcomeInvalid => 'This purchase couldn\'t be confirmed.';
+
+  @override
+  String get proOutcomeError => 'Couldn\'t start the purchase. Please try again.';
+
+  @override
+  String get donateTitle => 'Support TsuDEV';
+
+  @override
+  String get donateBody => 'Voluntary, unlocks no features. Your first confirmed donation earns the Supporter badge.';
+
+  @override
+  String get donateWeb => 'Support on tsudev.com';
+
+  @override
+  String proServerDataUntil(String date) {
+    return 'Your cloud copy can be downloaded until $date, then it is deleted. Data on this device is not affected.';
+  }
+
+  @override
+  String get proBlockNoPro => 'Cloud sync requires TsuDEV Pro. Your data stays fully stored on this device.';
+
+  @override
+  String get proBlockReauth =>
+      'Please sign in again to confirm your TsuDEV Pro plan. Your data stays fully stored on this device.';
+
+  @override
+  String get proBlockOwner =>
+      'The shared wallet\'s owner doesn\'t have TsuDEV Pro, so shared wallet changes can\'t sync yet. They stay saved on this device.';
+
+  @override
+  String get proSeePlans => 'See Pro plans';
+
+  @override
+  String get proSignInAgain => 'Sign in again';
+
+  @override
+  String get proPurgeTitle => 'Your cloud copy will be deleted soon';
+
+  @override
+  String proPurgeBody(int days, String date) {
+    return 'Your TsuDEV Pro has expired. Your cloud copy will be deleted in $days days (on $date). Data on this device stays intact. Renew to keep it, or download it before then.';
+  }
+
+  @override
+  String get proClose => 'Close';
+
+  @override
+  String get proRenew => 'Renew';
 }

@@ -1723,5 +1723,81 @@
   "attRejectPixels": "Ảnh có độ phân giải quá lớn.",
   "attRejectUnsupported": "Không đọc được ảnh này. Hãy chọn ảnh JPEG hoặc PNG.",
   "errTooManyAttachments": "Đã đủ số ảnh tối đa cho giao dịch này.",
-  "errAttachmentsNotLocal": "Ảnh đính kèm của giao dịch này chưa tải về máy. Hãy mở xem các ảnh (để tải về) rồi đổi ví."
+  "errAttachmentsNotLocal": "Ảnh đính kèm của giao dịch này chưa tải về máy. Hãy mở xem các ảnh (để tải về) rồi đổi ví.",
+  "proMenu": "TsuDEV Pro và Ủng hộ",
+  "proMenuSub": "Đồng bộ, sao lưu đám mây, ví chung",
+  "proStatusActive": "Pro còn hạn tới ngày {date}",
+  "@proStatusActive": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "proStatusExpired": "Pro đã hết hạn ngày {date}",
+  "@proStatusExpired": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "proStatusFree": "Bạn đang dùng bản miễn phí: đủ mọi tính năng trên máy, dữ liệu chỉ lưu trên thiết bị này.",
+  "proFeaturesTitle": "TsuDEV Pro gồm",
+  "proFeatSync": "Đồng bộ và sao lưu đám mây mã hóa đầu-cuối giữa các thiết bị",
+  "proFeatShared": "Tạo ví chung và mời người nhà (người được mời không cần Pro)",
+  "proFeatAttach": "Đồng bộ ảnh hóa đơn, hộp thư nhập tự động",
+  "proFeatQuota": "Hạn mức 200 MiB dữ liệu + 1 GiB ảnh",
+  "proFeatOneAccount": "Một gói dùng cho mọi ứng dụng TsuDEV cùng tài khoản",
+  "proPlanYear": "TsuDEV Pro - 1 năm",
+  "proTerms": "TsuDEV Pro {price} cho 1 năm, KHÔNG tự gia hạn. Gia hạn sớm được cộng thêm 1 năm vào thời hạn còn lại. Hết hạn mà chưa gia hạn, ứng dụng trở về bản miễn phí và ngừng đồng bộ lên đám mây; dữ liệu trên thiết bị vẫn giữ nguyên, bản sao trên đám mây còn tải về được 90 ngày rồi bị xoá.",
+  "@proTerms": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "proBuyStore": "Mua 1 năm",
+  "proRenewStore": "Gia hạn thêm 1 năm",
+  "proBuyWeb": "Mua trên tsudev.com",
+  "proCheckAgain": "Tôi đã thanh toán - kiểm tra lại",
+  "proSignInFirst": "Đăng nhập tài khoản TsuDEV để mua Pro hoặc ủng hộ.",
+  "proSignIn": "Đăng nhập",
+  "proAppStoreSoon": "Mua trong ứng dụng trên iPhone/iPad sẽ có khi ứng dụng phát hành trên App Store.",
+  "proStoreUnavailable": "Cửa hàng chưa sẵn sàng. Hãy thử lại sau.",
+  "proOutcomeVerified": "Cảm ơn bạn! Giao dịch đã được xác nhận.",
+  "proOutcomePending": "Giao dịch đang chờ xác nhận. Ứng dụng sẽ tự kiểm tra lại.",
+  "proOutcomeInvalid": "Không xác nhận được giao dịch này.",
+  "proOutcomeError": "Không mở được giao dịch. Hãy thử lại.",
+  "donateTitle": "Ủng hộ TsuDEV",
+  "donateBody": "Tự nguyện, không mở khóa tính năng nào. Lần ủng hộ đầu tiên được xác nhận sẽ có huy hiệu Ủng hộ.",
+  "donateWeb": "Ủng hộ trên tsudev.com",
+  "proServerDataUntil": "Bản sao trên đám mây còn tải về được tới ngày {date}, sau đó bị xoá. Dữ liệu trên thiết bị không bị ảnh hưởng.",
+  "@proServerDataUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "proBlockNoPro": "Đồng bộ lên đám mây cần TsuDEV Pro. Dữ liệu vẫn lưu đầy đủ trên máy này.",
+  "proBlockReauth": "Cần đăng nhập lại để xác nhận gói TsuDEV Pro. Dữ liệu vẫn lưu đầy đủ trên máy này.",
+  "proBlockOwner": "Chủ ví chung chưa có TsuDEV Pro nên thay đổi trong ví chung chưa đồng bộ được. Thay đổi vẫn lưu trên máy này.",
+  "proSeePlans": "Xem gói Pro",
+  "proSignInAgain": "Đăng nhập lại",
+  "proPurgeTitle": "Bản sao đám mây sắp bị xoá",
+  "proPurgeBody": "Gói TsuDEV Pro đã hết hạn. Bản sao dữ liệu trên đám mây sẽ bị xoá sau {days} ngày (ngày {date}). Dữ liệu trên thiết bị vẫn giữ nguyên. Gia hạn để giữ bản sao, hoặc tải về trước ngày đó.",
+  "@proPurgeBody": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "proClose": "Đóng",
+  "proRenew": "Gia hạn"
 }

@@ -5,6 +5,7 @@ import 'package:qulythuchi_core/qulythuchi_core.dart';
 
 import '../attachments/file_sync.dart';
 import '../data/record_store.dart';
+import '../pro/pro_block.dart';
 import '../security/vault.dart';
 import 'api_client.dart';
 import 'shared_wallets.dart';
@@ -44,6 +45,7 @@ final class SyncReport {
     this.quotaFull = false,
     this.shared,
     this.badInvites = 0,
+    this.proBlock,
     this.files = const FileSyncReport(),
   });
   final int pulled;
@@ -57,6 +59,9 @@ final class SyncReport {
 
   /// Lời mời có bằng chứng sai (ai đó không cầm mã thật nhận lời mời) - đã hủy.
   final int badInvites;
+
+  /// Máy chủ trả 402 ở lượt này (bản ghi/ảnh vẫn an toàn trên máy, chờ lượt sau).
+  final ProBlock? proBlock;
 
   /// Ảnh đính kèm (P7b).
   final FileSyncReport files;
@@ -117,24 +122,52 @@ final class SyncEngine {
     });
   }
 
-  Future<SyncReport> run() async {
+  /// [pushAllowed] = false: quyền lợi đã cho biết không đồng bộ được (`can_sync = false`) ⇒ chỉ kéo, không gọi đẩy
+  /// (PRODUCT_POLICY 7.4: gặp 402 thì không thử lại).
+  Future<SyncReport> run({bool pushAllowed = true}) async {
     if (!vault.isUnlocked) throw StateError('Kho khóa đang khóa');
     try {
       await syncKeys();
       final shared = book == null ? null : await refreshShared();
       var pulled = await pull();
-      var pushed = await push();
+      ProBlock? proBlock;
+      // 402 `pro_required` (ADR-0019 mục 5): giữ bản ghi chờ đẩy trên máy, KHÔNG thử lại trong lượt này, vẫn kéo tiếp.
+      Future<(int, int, bool)> gated(Future<(int, int, bool)> Function() run) async {
+        if (!pushAllowed) return (0, 0, false);
+        try {
+          return await run();
+        } on ApiException catch (e) {
+          if (!e.proRequired) rethrow;
+          proBlock = ProBlock.worst(proBlock, ProBlock.parse(e.reason));
+          return (0, 0, false);
+        }
+      }
+
+      var pushed = await gated(push);
+      if (!pushAllowed) proBlock = ProBlock.noPro;
       if (shared != null) {
         for (final w in store.sharedWallets()) {
           final p = await pullWallet(w.walletId);
           pulled = (pulled.$1 + p.$1, pulled.$2 + p.$2);
           if (WalletRole.fromName(w.role)?.canWrite ?? false) book!.publishWalletCategories(w.walletId);
-          final q = await pushWallet(w.walletId);
+          // Ví chung chạy bằng Pro của CHỦ ví: thành viên miễn phí vẫn đẩy được (ADR-0016 Q5).
+          ProBlock? walletBlock;
+          (int, int, bool) q;
+          try {
+            q = await pushWallet(w.walletId);
+          } on ApiException catch (e) {
+            if (!e.proRequired) rethrow;
+            walletBlock = ProBlock.parse(e.reason);
+            q = (0, 0, false);
+          }
+          proBlock = ProBlock.worst(proBlock, walletBlock);
           pushed = (pushed.$1 + q.$1, pushed.$2 + q.$2, pushed.$3 || q.$3);
         }
       }
-      final files = await FileSync(api: api, store: store).run();
+      final files = pushAllowed ? await FileSync(api: api, store: store).run() : const FileSyncReport(blocked: true);
+      if (files.blocked) proBlock = ProBlock.worst(proBlock, files.proBlock ?? ProBlock.noPro);
       return SyncReport(
+        proBlock: proBlock,
         files: files,
         pulled: pulled.$1,
         skipped: pulled.$2,

@@ -1,14 +1,21 @@
+import 'dart:async';
+
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tsudev_ui/tsudev_ui.dart' show TsuNameWithBadge;
 
 import '../../l10n/app_localizations.dart';
+import '../../pro/pro_block.dart';
+import '../../pro/pro_controller.dart';
 import '../../state/sync_controller.dart';
 import '../../sync/api_client.dart';
 import '../../sync/sync_engine.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import '../data/data_page.dart' show saveBytes;
+import '../pro/pro_page.dart' show proStatusText;
 import '../widgets/common.dart';
 import '../widgets/sign_in_buttons.dart';
 
@@ -93,6 +100,9 @@ class _AccountPageState extends ConsumerState<AccountPage> {
       context.toast(syncErrorText(context.l10n, err));
     } else if (ref.read(syncProvider).signedIn) {
       _reload();
+      // Đăng nhập lại (402 reauth): tsudev.com cấp lại grant ⇒ hỏi lại quyền lợi rồi đồng bộ.
+      await ref.read(proProvider.notifier).refresh(force: true);
+      unawaited(ref.read(syncProvider.notifier).syncNow());
     }
   });
 
@@ -170,13 +180,50 @@ class _AccountPageState extends ConsumerState<AccountPage> {
         child: SignInButtons(busy: _busy, onSignIn: _signIn),
       ),
       ListTile(leading: const Icon(Icons.person_outline), title: Text(l.guestModeNote)),
+      _proTile(context),
       ListTile(leading: const Icon(Icons.shield_outlined), title: Text(l.syncE2eeNote)),
     ];
+  }
+
+  Widget _proTile(BuildContext context) {
+    final pro = ref.watch(proProvider);
+    return ListTile(
+      key: const ValueKey('account-pro'),
+      leading: const Icon(Icons.workspace_premium_outlined),
+      title: Text(context.l10n.proMenu),
+      subtitle: Text(proStatusText(context.l10n, context, pro, ref.watch(proClockProvider)())),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => context.push('/more/pro'),
+    );
+  }
+
+  /// 402 `pro_required` theo `reason` (ADR-0019 mục 5): `no_pro` ⇒ màn Pro; `reauth` ⇒ đăng nhập lại (KHÔNG mời mua);
+  /// `owner_no_pro` ⇒ chỉ báo (thành viên không cần mua).
+  Widget? _proBlockTile(BuildContext context, SyncState s) {
+    final l = context.l10n;
+    final block = s.proBlock ?? (ref.watch(proProvider).server?.needsReauth ?? false ? ProBlock.reauth : null);
+    if (block == null) return null;
+    return ListTile(
+      key: ValueKey('pro-block-${block.name}'),
+      leading: const Icon(Icons.cloud_off_outlined),
+      title: Text(switch (block) {
+        ProBlock.noPro => l.proBlockNoPro,
+        ProBlock.reauth => l.proBlockReauth,
+        ProBlock.ownerNoPro => l.proBlockOwner,
+      }),
+      trailing: switch (block) {
+        ProBlock.noPro => TextButton(onPressed: () => context.push('/more/pro'), child: Text(l.proSeePlans)),
+        ProBlock.reauth => TextButton(onPressed: _busy ? null : _signIn, child: Text(l.proSignInAgain)),
+        ProBlock.ownerNoPro => null,
+      },
+    );
   }
 
   List<Widget> _signedIn(BuildContext context, SyncState s) {
     final l = context.l10n;
     final p = s.profile;
+    final pro = ref.watch(proProvider);
+    final blockTile = _proBlockTile(context, s);
     final status = switch (s.phase) {
       SyncPhase.syncing => l.syncStatusSyncing,
       SyncPhase.blocked => syncBlockText(l, s.block!),
@@ -186,7 +233,8 @@ class _AccountPageState extends ConsumerState<AccountPage> {
     return [
       ListTile(
         leading: const Icon(Icons.account_circle_outlined),
-        title: Text(p?.displayName ?? ''),
+        // Huy hiệu ngay sau tên (PRODUCT_POLICY 4.1) - theo `badge` của JWS đã kiểm.
+        title: TsuNameWithBadge(name: p?.displayName ?? '', badge: pro.badge),
         subtitle: p?.email == null ? null : Text(p!.email!),
       ),
       ListTile(
@@ -203,7 +251,7 @@ class _AccountPageState extends ConsumerState<AccountPage> {
             if (s.quotaFull) l.syncQuotaFull,
             if (s.rejected > 0 && !s.quotaFull) l.syncRejected(s.rejected),
             if (s.filesPending > 0) l.attFilesPending(s.filesPending),
-            if (s.filesBlocked) l.attProBlocked,
+            if (s.filesBlocked && s.proBlock == null) l.attProBlocked,
           ].join(' · '),
         ),
         trailing: TextButton(
@@ -211,6 +259,8 @@ class _AccountPageState extends ConsumerState<AccountPage> {
           child: Text(l.syncNow),
         ),
       ),
+      ?blockTile,
+      _proTile(context),
       FutureBuilder<_ServerInfo>(
         future: _info,
         builder: (context, snap) {

@@ -6,11 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:qulythuchi/domain/default_categories.dart';
 import 'package:qulythuchi/state/ledger_repository.dart';
 import 'package:qulythuchi/state/providers.dart';
+import 'package:qulythuchi/state/settings.dart';
 import 'package:qulythuchi/state/sync_controller.dart';
 import 'package:qulythuchi/sync/pinned_roots.g.dart';
 import 'package:qulythuchi/sync/pkce.dart';
 import 'package:qulythuchi/sync/sync_engine.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_sync_server.dart';
 import 'helpers.dart';
@@ -33,9 +35,12 @@ LoginRunner fakeLogin(String user) => (server) async {
 
 Future<Device> device(FakeSyncServer server, String user, {bool withAccount = true}) async {
   final services = makeServices(await testSodium());
+  SharedPreferences.setMockInitialValues({});
+  final prefs = await SharedPreferences.getInstance();
   final c = ProviderContainer(
     overrides: [
       servicesProvider.overrideWithValue(services),
+      sharedPreferencesProvider.overrideWithValue(prefs),
       syncConfigProvider.overrideWithValue(
         SyncConfig(httpClient: server.client, login: fakeLogin(user), autoSync: false),
       ),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
+import 'package:tsudev_ui/tsudev_ui.dart' show TsuBadgeKind, TsuNameWithBadge;
 
 import '../../l10n/app_localizations.dart';
 import '../../state/providers.dart';
@@ -245,10 +246,12 @@ class _SharedWalletPageState extends ConsumerState<SharedWalletPage> {
                   ListTile(
                     key: Key('share.member.${m.userId}'),
                     leading: CircleAvatar(child: Text(_initial(m))),
-                    title: Text(
-                      m.userId == myId ? '${m.displayName ?? m.email ?? '?'} (${l.shareYou})' : m.displayName ?? '?',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    // Huy hiệu ngay sau tên (PRODUCT_POLICY 4.1); tên tự cắt "…", huy hiệu giữ nguyên.
+                    title: TsuNameWithBadge(
+                      name: m.userId == myId
+                          ? '${m.displayName ?? m.email ?? '?'} (${l.shareYou})'
+                          : m.displayName ?? '?',
+                      badge: TsuBadgeKind.parse(m.badge),
                     ),
                     subtitle: Text(
                       [

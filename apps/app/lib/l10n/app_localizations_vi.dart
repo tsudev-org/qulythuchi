@@ -2782,4 +2782,131 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get errAttachmentsNotLocal =>
       'Ảnh đính kèm của giao dịch này chưa tải về máy. Hãy mở xem các ảnh (để tải về) rồi đổi ví.';
+
+  @override
+  String get proMenu => 'TsuDEV Pro và Ủng hộ';
+
+  @override
+  String get proMenuSub => 'Đồng bộ, sao lưu đám mây, ví chung';
+
+  @override
+  String proStatusActive(String date) {
+    return 'Pro còn hạn tới ngày $date';
+  }
+
+  @override
+  String proStatusExpired(String date) {
+    return 'Pro đã hết hạn ngày $date';
+  }
+
+  @override
+  String get proStatusFree =>
+      'Bạn đang dùng bản miễn phí: đủ mọi tính năng trên máy, dữ liệu chỉ lưu trên thiết bị này.';
+
+  @override
+  String get proFeaturesTitle => 'TsuDEV Pro gồm';
+
+  @override
+  String get proFeatSync => 'Đồng bộ và sao lưu đám mây mã hóa đầu-cuối giữa các thiết bị';
+
+  @override
+  String get proFeatShared => 'Tạo ví chung và mời người nhà (người được mời không cần Pro)';
+
+  @override
+  String get proFeatAttach => 'Đồng bộ ảnh hóa đơn, hộp thư nhập tự động';
+
+  @override
+  String get proFeatQuota => 'Hạn mức 200 MiB dữ liệu + 1 GiB ảnh';
+
+  @override
+  String get proFeatOneAccount => 'Một gói dùng cho mọi ứng dụng TsuDEV cùng tài khoản';
+
+  @override
+  String get proPlanYear => 'TsuDEV Pro - 1 năm';
+
+  @override
+  String proTerms(String price) {
+    return 'TsuDEV Pro $price cho 1 năm, KHÔNG tự gia hạn. Gia hạn sớm được cộng thêm 1 năm vào thời hạn còn lại. Hết hạn mà chưa gia hạn, ứng dụng trở về bản miễn phí và ngừng đồng bộ lên đám mây; dữ liệu trên thiết bị vẫn giữ nguyên, bản sao trên đám mây còn tải về được 90 ngày rồi bị xoá.';
+  }
+
+  @override
+  String get proBuyStore => 'Mua 1 năm';
+
+  @override
+  String get proRenewStore => 'Gia hạn thêm 1 năm';
+
+  @override
+  String get proBuyWeb => 'Mua trên tsudev.com';
+
+  @override
+  String get proCheckAgain => 'Tôi đã thanh toán - kiểm tra lại';
+
+  @override
+  String get proSignInFirst => 'Đăng nhập tài khoản TsuDEV để mua Pro hoặc ủng hộ.';
+
+  @override
+  String get proSignIn => 'Đăng nhập';
+
+  @override
+  String get proAppStoreSoon => 'Mua trong ứng dụng trên iPhone/iPad sẽ có khi ứng dụng phát hành trên App Store.';
+
+  @override
+  String get proStoreUnavailable => 'Cửa hàng chưa sẵn sàng. Hãy thử lại sau.';
+
+  @override
+  String get proOutcomeVerified => 'Cảm ơn bạn! Giao dịch đã được xác nhận.';
+
+  @override
+  String get proOutcomePending => 'Giao dịch đang chờ xác nhận. Ứng dụng sẽ tự kiểm tra lại.';
+
+  @override
+  String get proOutcomeInvalid => 'Không xác nhận được giao dịch này.';
+
+  @override
+  String get proOutcomeError => 'Không mở được giao dịch. Hãy thử lại.';
+
+  @override
+  String get donateTitle => 'Ủng hộ TsuDEV';
+
+  @override
+  String get donateBody =>
+      'Tự nguyện, không mở khóa tính năng nào. Lần ủng hộ đầu tiên được xác nhận sẽ có huy hiệu Ủng hộ.';
+
+  @override
+  String get donateWeb => 'Ủng hộ trên tsudev.com';
+
+  @override
+  String proServerDataUntil(String date) {
+    return 'Bản sao trên đám mây còn tải về được tới ngày $date, sau đó bị xoá. Dữ liệu trên thiết bị không bị ảnh hưởng.';
+  }
+
+  @override
+  String get proBlockNoPro => 'Đồng bộ lên đám mây cần TsuDEV Pro. Dữ liệu vẫn lưu đầy đủ trên máy này.';
+
+  @override
+  String get proBlockReauth => 'Cần đăng nhập lại để xác nhận gói TsuDEV Pro. Dữ liệu vẫn lưu đầy đủ trên máy này.';
+
+  @override
+  String get proBlockOwner =>
+      'Chủ ví chung chưa có TsuDEV Pro nên thay đổi trong ví chung chưa đồng bộ được. Thay đổi vẫn lưu trên máy này.';
+
+  @override
+  String get proSeePlans => 'Xem gói Pro';
+
+  @override
+  String get proSignInAgain => 'Đăng nhập lại';
+
+  @override
+  String get proPurgeTitle => 'Bản sao đám mây sắp bị xoá';
+
+  @override
+  String proPurgeBody(int days, String date) {
+    return 'Gói TsuDEV Pro đã hết hạn. Bản sao dữ liệu trên đám mây sẽ bị xoá sau $days ngày (ngày $date). Dữ liệu trên thiết bị vẫn giữ nguyên. Gia hạn để giữ bản sao, hoặc tải về trước ngày đó.';
+  }
+
+  @override
+  String get proClose => 'Đóng';
+
+  @override
+  String get proRenew => 'Gia hạn';
 }
