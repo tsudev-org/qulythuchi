@@ -36,13 +36,17 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T14 | Đồng hồ thiết bị sai/giả để thắng mọi xung đột | T | Chặn HLC lệch > 5 phút so với giờ nhận; bộ đếm tràn chuyển sang mili giây kế tiếp | ✅ P1 |
 | T15 | Dữ liệu đồng bộ hỏng/độc làm sập app | D | Giải mã thất bại ⇒ lỗi chung; `fromBytes` từ chối số thực, kiểu lạ, tên trường lạ; mô hình đọc trường lỗi về giá trị an toàn | ✅ P1 |
 | T16 | Người dùng khác đọc/ghi đè dữ liệu qua API (IDOR), chiếm phiên bằng token cắp | S, I, E | Mọi truy vấn lọc `user_id` từ phiên; khóa `(user_id, id)`; refresh xoay vòng phát hiện dùng lại; thu hồi thiết bị tức thì; cookie `__Host-` Strict + CSRF; test `services/sync-api/test/*` | ✅ P5 |
-| T17 | Lấp đầy D1/R2 hoặc dồn yêu cầu (từ chối dịch vụ gói 0 đồng) | D | Giới hạn tần suất theo IP/tài khoản, giới hạn thân, hạn mức 50/200 MiB, cỡ tối đa bản ghi/tệp | ✅ P5 |
+| T17 | Lấp đầy D1/R2 hoặc dồn yêu cầu (từ chối dịch vụ gói 0 đồng) | D | Giới hạn tần suất theo IP/tài khoản, giới hạn thân, hạn mức 200 MiB + 1 GiB (Pro, ADR-0016), cỡ tối đa bản ghi/tệp | ✅ P5 |
 | T18 | Máy chủ độc/thiết bị lẫn tài khoản làm trộn hai khóa chủ hoặc đẩy dữ liệu sang tài khoản TsuDEV khác | T, I | So danh tính gói khóa, ràng buộc CSDL với id người dùng, không tự trộn (ADR-0011 mục 3, 6) | ✅ P6 |
 | T19 | App độc/thư rác/máy chủ độc chèn giao dịch giả qua thông báo, email, sao kê | S, T | Chỉ nghe gói app người dùng chọn; mọi giao dịch tự nhập vào hàng chờ "Cần xác nhận" (tự xác nhận tắt mặc định); OTP bị bỏ; hộp thư ≤ 200 thư | ✅ P7 |
 | T21 | Máy chủ độc thay khóa công khai của người được mời bằng khóa của nó để nhận khóa ví chung | S, I | Bằng chứng nhận lời mời BLAKE2b có khóa = bí mật mã mời (máy chủ không có), chủ ví kiểm trên thiết bị trước khi chia khóa; mã an toàn để so qua kênh ngoài | ✅ P9 (ADR-0015) |
 | T22 | Máy chủ độc gửi thành viên khóa ví do nó tạo để đọc dữ liệu họ ghi | S, I | KEK khối chia sẻ = BLAKE2b(khóa = bí mật cặp, bí mật chung X-Wing ‖ bản mã) ⇒ khối giả không mở được | ✅ P9 |
 | T23 | Leo thang quyền trong ví chung (người xem ghi, người ghi sửa/xóa ví, người ngoài đọc) | E | Máy chủ kiểm thành viên + quyền ở mọi lượt (`read_only`, `forbidden`, 404); app chặn sớm | ✅ P9 |
 | T24 | Lộ mã mời qua kênh ngoài (tin nhắn bị đọc trộm) | S | Mã dùng một lần, sống 7 ngày; chủ ví thấy tài khoản đã nhận và thu hồi được; mã một mình không mở được khối khóa | ✅ P9 - rủi ro còn lại: kẻ nhận trước người thật |
+| T25 | Giả mạo quyền lợi Pro (app tự báo, JWS giả/của app khác/của người khác) để đồng bộ miễn phí | S, E | Gate ở máy chủ; chỉ tin JWS ES256 tsudev.com ký, kiểm `iss`/`aud`/`typ`/`sub`/`exp`; lỗi kênh ⇒ 503 không cấp quyền | ✅ T7 (ADR-0016) |
+| T26 | Vượt gate qua đường không chặn (khoá, ví chung của chủ ví đã hết Pro) | E | Ví chung kiểm Pro của chủ ví; `PUT /keys/*` mở có chủ đích nhưng giới hạn 32/512 KiB | ✅ T7 - rủi ro còn lại nhỏ |
+| T27 | Liệt kê/theo dõi thiết bị qua mã cài đặt | I | Mã ngẫu nhiên 128 bit, máy chủ chỉ lưu SHA-256, chỉ trả số đếm `devices_30d` | ✅ T7 |
+| T28 | Lộ khoá riêng RP (`RP_PRIVATE_JWK`) | I | Secret Cloudflare + tệp 600 ngoài repo; chỉ đọc được quyền lợi, không dữ liệu tài chính; xoay bằng `scripts/rp-key.mjs` | ✅ T7 |
 | T20 | Rò nội dung thông báo/ảnh hóa đơn/giọng nói khỏi thiết bị | I | Hàng đợi thông báo mã hóa Keystore, không sao lưu; OCR ML Kit trên máy, xóa ảnh tạm; giọng nói `onDevice`, dịch vụ HĐH chỉ khi đồng ý; widget không hiện dữ liệu | ✅ P7 |
 
 ## 3. Phụ thuộc mật mã (SECURITY_BASELINE mục 5)
