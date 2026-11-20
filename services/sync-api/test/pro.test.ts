@@ -148,6 +148,16 @@ describe('TsuDEV Pro - gate máy chủ', () => {
     const p = await wpush(member.auth);
     expect(p.status).toBe(402);
     expect(p.body.reason).toBe('owner_no_pro');
+    // Tệp của ví chung cũng theo Pro của CHỦ ví (P7b, ADR-0017).
+    const sealed = new Uint8Array(4 + 24 + 65536 + 16);
+    sealed.set([0x51, 0x54, 0x01, 0x01], 0);
+    const fput = await call(`/api/v1/wallets/${walletId}/files/${crypto.randomUUID()}`, {
+      method: 'PUT',
+      headers: { ...member.auth, 'Content-Length': String(sealed.length) },
+      body: sealed,
+    });
+    expect(fput.status).toBe(402);
+    expect(((await fput.json()) as any).reason).toBe('owner_no_pro');
     // Rời ví luôn được, không cần Pro.
     expect((await req(`/api/v1/wallets/${walletId}/members/me`, member.auth, undefined, 'DELETE')).status).toBe(200);
   });

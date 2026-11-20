@@ -279,3 +279,68 @@ describe('ví chung', () => {
     expect((await get(`/api/v1/wallets/${walletId}/pull`, member.auth)).status).toBe(404);
   });
 });
+
+// ------------------------------------------------------------------ P7b tệp của ví chung (ADR-0017)
+
+function sealedFile(padded = 65536): Uint8Array {
+  const bytes = new Uint8Array(4 + 24 + padded + 16);
+  crypto.getRandomValues(bytes.subarray(0, 65536));
+  bytes.set([0x51, 0x54, 0x01, 0x01], 0);
+  return bytes;
+}
+const putFile = (path: string, auth: Auth, body: Uint8Array) =>
+  call(path, { method: 'PUT', headers: { ...auth, 'Content-Length': String(body.length) }, body });
+
+describe('tệp đính kèm của ví chung', () => {
+  it('người ghi tải lên, chủ ví + người xem tải về đúng byte, tính vào hạn mức chủ ví; người ngoài 404', async () => {
+    const { owner, member, walletId } = await sharedWallet('editor');
+    const id = crypto.randomUUID();
+    const path = `/api/v1/wallets/${walletId}/files/${id}`;
+    const data = sealedFile();
+    expect((await putFile(path, member.auth, data)).status).toBe(201);
+    expect(((await (await putFile(path, member.auth, data)).json()) as any).status).toBe('unchanged');
+    const down = await call(path, { headers: owner.auth });
+    expect(down.status).toBe(200);
+    expect(down.headers.get('Cache-Control')).toBe('private, no-store');
+    expect(new Uint8Array(await down.arrayBuffer())).toEqual(data);
+    expect((await get('/api/v1/me/usage', owner.auth)).body.files).toMatchObject({ count: 1, bytes: data.length });
+    expect((await get('/api/v1/me/usage', member.auth)).body.files).toMatchObject({ count: 0, bytes: 0 });
+    // Người ngoài ví: 404 như ví không tồn tại, không xoá được.
+    const stranger = await login();
+    expect((await call(path, { headers: stranger.auth })).status).toBe(404);
+    expect((await call(path, { method: 'DELETE', headers: stranger.auth })).status).toBe(404);
+    expect((await putFile(`/api/v1/wallets/${walletId}/files/${crypto.randomUUID()}`, stranger.auth, data)).status).toBe(404);
+    // Tệp cá nhân không nhận wallet_id của ví chung (thành viên khác sẽ không đọc được).
+    expect((await putFile(`/api/v1/files/${crypto.randomUUID()}?wallet_id=${walletId}`, owner.auth, data)).status).toBe(409);
+    // Xoá ⇒ mất ở R2.
+    expect((await call(path, { method: 'DELETE', headers: owner.auth })).status).toBe(204);
+    expect((await call(path, { headers: member.auth })).status).toBe(404);
+    expect(await env.FILES.get(`w/${walletId}/${id}`)).toBeNull();
+  });
+
+  it('người xem chỉ tải về được; tải lên/xoá ⇒ 403 read_only; bị thu hồi ⇒ 404', async () => {
+    const { owner, member, walletId, memberId } = await sharedWallet('viewer');
+    const id = crypto.randomUUID();
+    const path = `/api/v1/wallets/${walletId}/files/${id}`;
+    expect((await putFile(path, owner.auth, sealedFile())).status).toBe(201);
+    expect((await call(path, { headers: member.auth })).status).toBe(200);
+    const up = await putFile(`/api/v1/wallets/${walletId}/files/${crypto.randomUUID()}`, member.auth, sealedFile());
+    expect(up.status).toBe(403);
+    expect(((await up.json()) as any).code).toBe('read_only');
+    expect((await call(path, { method: 'DELETE', headers: member.auth })).status).toBe(403);
+    expect((await call(path, { headers: owner.auth })).status).toBe(200);
+    await env.DB.prepare('DELETE FROM wallet_members WHERE wallet_id = ? AND user_id = ?').bind(walletId, memberId).run();
+    expect((await call(path, { headers: member.auth })).status).toBe(404);
+  });
+
+  it('xoá tài khoản chủ ví ⇒ xoá luôn tệp R2 của ví chung', async () => {
+    const { owner, walletId } = await sharedWallet('editor');
+    const id = crypto.randomUUID();
+    expect((await putFile(`/api/v1/wallets/${walletId}/files/${id}`, owner.auth, sealedFile())).status).toBe(201);
+    const ownerId = (await env.DB.prepare('SELECT owner_id FROM shared_wallets WHERE id = ?').bind(walletId).first<{ owner_id: string }>())!.owner_id;
+    await env.DB.prepare('UPDATE users SET deletion_requested_at = 1 WHERE id = ?').bind(ownerId).run();
+    await purgeDeletedAccounts(env, Date.now());
+    expect(await env.FILES.get(`w/${walletId}/${id}`)).toBeNull();
+    expect(await env.DB.prepare('SELECT 1 FROM wallet_files WHERE wallet_id = ?').bind(walletId).first()).toBeNull();
+  });
+});
