@@ -1,5 +1,5 @@
 import { env } from 'cloudflare:workers';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { purgeLapsedPro } from '../src/maintenance';
 import { RP_AUD, RP_STATUS_AUD, call, entState, entitlementFor, fakeEnvelope, fixture, json, login, playState, statusFor, statusState } from './helpers';
@@ -183,6 +183,16 @@ describe('TsuDEV Pro - gate máy chủ', () => {
  * `POST /api/rp/entitlements/status` ngay trước mọi lần xoá; đã gia hạn ⇒ giữ + cập nhật hạn; lỗi/unknown ⇒ hoãn 24 giờ.
  */
 describe('TsuDEV Pro - xoá có xác minh qua kênh trạng thái', () => {
+  // D1 dùng chung cả bộ test: tài khoản của tệp/ca khác (có bản ghi, không đệm quyền lợi) cũng là ứng viên, và `LIMIT`
+  // không thứ tự có thể bỏ sót tài khoản của ca đang chạy. Đánh dấu mọi tài khoản cũ là "vừa hỏi" trước mỗi ca.
+  beforeEach(async () => {
+    await env.DB.prepare(
+      `INSERT INTO pro_purge_checks (user_id, checked_at) SELECT id, ?1 FROM users WHERE 1
+       ON CONFLICT(user_id) DO UPDATE SET checked_at = ?1`,
+    )
+      .bind(Date.now())
+      .run();
+  });
   /** Tài khoản có 1 bản ghi trên máy chủ, đệm cục bộ ghi `pro_until` đã quá 90 ngày (ứng viên xoá). */
   async function lapsed() {
     const u = await account({});
