@@ -33,6 +33,8 @@
     "INBOX_DOMAIN": "in.qulythuchi.tsudev.com",
     // T7/ADR-0016: kênh RP của máy chủ quyền lợi tsudev.com (cũng là `aud` của client assertion).
     "ENTITLEMENTS_URL": "https://tsudev.com/api/rp/entitlements",
+    // PRO2/ADR-0018: kênh trạng thái - hỏi NGAY TRƯỚC mọi lần xoá bản mã vì hết Pro. Thiếu/lỗi ⇒ hoãn, không xoá.
+    "ENTITLEMENTS_STATUS_URL": "https://tsudev.com/api/rp/entitlements/status",
     // "on" CHỈ sau khi: (1) khoá RP công khai đã đăng ký ở tsudev.com, (2) secret RP_PRIVATE_JWK đã đặt,
     // (3) chủ dự án đồng ý xoá dữ liệu thử nghiệm (bật lên là dọn bản mã của tài khoản không Pro).
     "PRO_ENFORCE": "off"
