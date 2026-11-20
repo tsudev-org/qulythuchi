@@ -62,10 +62,11 @@
 ## 5. Kiểm tra bắt buộc
 
 - [x] Không secret trong mã/log/test (ảnh test sinh trong bộ nhớ).
-- [x] Phụ thuộc mới: `image` (lõi, MIT, Dart thuần, đã có trong cây phụ thuộc app qua gói khác) - đã xem giấy phép.
+- [x] Phụ thuộc mới: `image` 4.13.1 ở lõi (MIT, Dart thuần; đã có sẵn trong cây phụ thuộc app dạng gián tiếp).
 - [x] Migration MỚI `0005_wallet_files.sql`; 0001-0004 không đổi.
 - [x] Vector đối chiếu thêm mục `attachment-file`, kiểm bằng libsodium hệ thống.
-- [ ] Kết quả test: điền khi xong (mục 7 phiếu bàn giao).
+- [x] Lõi 101 test (6 mới), máy chủ 71 (3 mới + 402 tệp ví chung), app toàn bộ đạt (6 test đồng bộ + 2 widget mới);
+  PR #32 CI xanh.
 
 ## 6. Rủi ro còn lại
 
