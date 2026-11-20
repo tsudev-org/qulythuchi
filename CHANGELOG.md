@@ -5,6 +5,9 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 ## [Chưa phát hành]
 
 ### Sửa
+- Máy chủ (PRO2, ADR-0018): trước khi xoá bản sao đám mây vì TsuDEV Pro hết hạn quá 90 ngày, máy chủ luôn hỏi lại
+  tsudev.com qua kênh trạng thái. Người đã gia hạn trên web mà chưa mở app sẽ không bị xoá; tsudev.com không trả lời
+  được thì hoãn, không xoá. Dữ liệu trên thiết bị không bao giờ bị xoá.
 - Máy chủ: giải mã thực thể HTML của email một lượt (không giải mã kép, CodeQL).
 - Test app: cầu thông báo Android và bộ nghe lối tắt ghi nhanh ghi đè được (flutter test giả lập Android, không có plugin).
 - Phần trăm hiển thị theo ngôn ngữ: tiếng Việt dùng dấu phẩy thập phân ("97,9%"), tính bằng số nguyên.
