@@ -26,6 +26,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| PRO2 máy chủ: xoá vì hết Pro có xác minh qua kênh trạng thái tsudev.com (`feat/pro2-may-chu`) | agent-qulythuchi | 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
