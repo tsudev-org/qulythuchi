@@ -22,6 +22,10 @@
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
 - [ ] Chờ tsudev B2 (`POST /api/rp/entitlements/play`, phiếu tsudev `20261120-QT5`): xác nhận thân yêu cầu ⇒ thử mua
   Play đầu-cuối (cần sản phẩm Play thật).
+  Tin tsudev-8d 20/11/2026: B2 làm xong đúng hình dạng (mục 4 phiếu QT5: thêm 409 `purchase_pending`, 403
+  `forbidden_package`, 404 `unknown_subject`, 503 `play_unavailable` + Retry-After; gửi lại trả 200 `already_recorded`),
+  CHƯA lên production (chờ 👤 gộp + tài khoản dịch vụ Play). Việc phía ta: đối chiếu `services/sync-api/src/pro/play.ts`
+  với các mã mới + test; thử đầu-cuối khi tsudev báo lên production.
 - [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); icon app gốc ĐÃ sinh từ dây chuyền (LG1), bộ đóng gói
