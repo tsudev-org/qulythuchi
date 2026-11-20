@@ -26,6 +26,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| AP1 - `apple.yml` iOS/macOS cho `apps/app` (nhánh `feat/ap1-apple`) | agent-qulythuchi | 09:03 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
