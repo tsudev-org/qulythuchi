@@ -25,6 +25,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| P7b tệp đính kèm ảnh hóa đơn E2EE (nhánh `feat/p7b-tep-dinh-kem`) | agent-qulythuchi | 10:28 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
