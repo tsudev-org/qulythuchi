@@ -30,6 +30,10 @@ export const entState = {
   bySub: new Map<string, FakeEnt>(),
   calls: [] as { sub: string; installation: string | null; platform: string | null }[],
 };
+/** Lỗi chập chờn của IdP giả: url ⇒ hàng mã HTTP trả TRƯỚC khi trả bình thường (mỗi lần gọi lấy một mã). */
+export const flakyIdp = new Map<string, number[]>();
+export const idpCalls: string[] = [];
+
 /** `GET https://idp.test/api/v1/auth/providers` của IdP giả: thân trả về, hoặc mã HTTP lỗi. */
 export const providersState = {
   body: { providers: [{ id: 'google', name: 'Google', idp_hint: 'google' }, { id: 'github', name: 'GitHub', idp_hint: 'github' }] } as unknown,
@@ -80,6 +84,9 @@ export async function fakeIdp(opts: { sub?: string; tamperNonce?: boolean; wrong
   const rp = await ensureRpKey();
   setOidcFetcher(async (url, init) => {
     const json = (v: unknown, status = 200) => new Response(JSON.stringify(v), { status, headers: { 'content-type': 'application/json' } });
+    idpCalls.push(url);
+    const flaky = flakyIdp.get(url)?.shift();
+    if (flaky) return json({ error: 'flaky' }, flaky);
     if (url === 'https://idp.test/api/v1/auth/providers') {
       providersState.calls++;
       return json(providersState.body, providersState.status);

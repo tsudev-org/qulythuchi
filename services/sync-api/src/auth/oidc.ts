@@ -33,9 +33,35 @@ let discoveryCache: { issuer: string; value: Discovery; at: number } | null = nu
 let jwksCache: { uri: string; keys: JSONWebKeySet; at: number } | null = null;
 const DISCOVERY_TTL = 60 * 60 * 1000;
 const JWKS_MIN_REFRESH = 60 * 1000;
+/** Bản discovery/JWKS cũ còn được dùng khi IdP lỗi tới chừng này. */
+const STALE_MAX = 24 * 60 * 60 * 1000;
+
+/** Thời gian chờ trước lần thử lại thứ [attempt] (0, 1): theo Retry-After nếu ≤ 2 giây, không thì 300 ms / 900 ms. */
+function backoffMs(res: Response, attempt: number) {
+  const ra = Number(res.headers.get('Retry-After'));
+  return Number.isFinite(ra) && ra > 0 && ra <= 2 ? ra * 1000 : [300, 900][attempt] ?? 900;
+}
+let sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+/** Chỉ dùng trong test: bỏ thời gian chờ thử lại. */
+export function setOidcSleep(f: (ms: number) => Promise<void>) {
+  sleep = f;
+}
+
+/**
+ * Gọi IdP, thử lại tối đa 2 lần khi gặp mã chập chờn của lớp Cloudflare trước tsudev (AKB dieu-phoi#ISS-20261120-1459-46b8).
+ * [retryOn]: GET an toàn để thử lại với 429/503; POST đổi mã CHỈ thử lại với 429 (yêu cầu bị chặn trước khi tới IdP -
+ * mã một lần chưa bị tiêu), không thử lại 503 vì IdP có thể đã tiêu mã.
+ */
+async function fetchWithRetry(url: string, init: RequestInit, retryOn: readonly number[]): Promise<Response> {
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetcher(url, { ...init, signal: AbortSignal.timeout(10_000) });
+    if (res.ok || attempt >= 2 || !retryOn.includes(res.status)) return res;
+    await sleep(backoffMs(res, attempt));
+  }
+}
 
 async function getJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const res = await fetcher(url, { ...init, signal: AbortSignal.timeout(10_000) });
+  const res = await fetchWithRetry(url, init ?? {}, [429, 503]);
   if (!res.ok) throw new ApiError(502, 'idp_unavailable', `Máy chủ tài khoản TsuDEV trả lỗi ${res.status}.`);
   return res.json<T>();
 }
@@ -44,7 +70,14 @@ export async function discovery(env: Env): Promise<Discovery> {
   if (discoveryCache && discoveryCache.issuer === env.OIDC_ISSUER && Date.now() - discoveryCache.at < DISCOVERY_TTL) {
     return discoveryCache.value;
   }
-  const value = await getJson<Discovery>(`${env.OIDC_ISSUER}/.well-known/openid-configuration`);
+  let value: Discovery;
+  try {
+    value = await getJson<Discovery>(`${env.OIDC_ISSUER}/.well-known/openid-configuration`);
+  } catch (e) {
+    // IdP chập chờn: dùng bản cũ (≤ 24 giờ) thay vì làm gãy đăng nhập; lần sau hỏi lại.
+    if (discoveryCache?.issuer === env.OIDC_ISSUER && Date.now() - discoveryCache.at < STALE_MAX) return discoveryCache.value;
+    throw e;
+  }
   if (value.issuer !== env.OIDC_ISSUER) {
     throw new ApiError(502, 'idp_misconfigured', 'Cấu hình nhà cung cấp danh tính không khớp issuer.');
   }
@@ -55,7 +88,13 @@ export async function discovery(env: Env): Promise<Discovery> {
 async function jwks(uri: string, force: boolean): Promise<JSONWebKeySet> {
   const cached = jwksCache?.uri === uri ? jwksCache : null;
   if (cached && (!force || Date.now() - cached.at < JWKS_MIN_REFRESH)) return cached.keys;
-  const keys = await getJson<JSONWebKeySet>(uri);
+  let keys: JSONWebKeySet;
+  try {
+    keys = await getJson<JSONWebKeySet>(uri);
+  } catch (e) {
+    if (cached && Date.now() - cached.at < STALE_MAX) return cached.keys;
+    throw e;
+  }
   jwksCache = { uri, keys, at: Date.now() };
   return keys;
 }
@@ -154,7 +193,7 @@ export interface IdentityClaims {
 /** Đổi mã lấy token (máy chủ - máy chủ), kiểm id_token, đọc userinfo. */
 export async function exchangeCode(env: Env, code: string, verifier: string, nonce: string): Promise<IdentityClaims> {
   const d = await discovery(env);
-  const res = await fetcher(d.token_endpoint, {
+  const res = await fetchWithRetry(d.token_endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' },
     body: new URLSearchParams({
@@ -164,8 +203,10 @@ export async function exchangeCode(env: Env, code: string, verifier: string, non
       client_id: env.OIDC_CLIENT_ID,
       code_verifier: verifier,
     }).toString(),
-    signal: AbortSignal.timeout(10_000),
-  });
+  }, [429]);
+  if (res.status === 429 || res.status >= 500) {
+    throw new ApiError(502, 'idp_unavailable', `Máy chủ tài khoản TsuDEV trả lỗi ${res.status}.`);
+  }
   if (!res.ok) throw new ApiError(401, 'idp_rejected', 'tsudev.com từ chối mã đăng nhập (có thể đã hết hạn). Hãy thử lại.');
   const tokens = await res.json<{ id_token?: string; access_token?: string }>();
   const idToken = tokens.id_token;
