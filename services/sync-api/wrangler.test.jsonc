@@ -12,6 +12,7 @@
     "OIDC_CLIENT_ID": "qulythuchi",
     "INBOX_DOMAIN": "in.qulythuchi.tsudev.com",
     "ENTITLEMENTS_URL": "https://idp.test/api/rp/entitlements",
+    "ENTITLEMENTS_STATUS_URL": "https://idp.test/api/rp/entitlements/status",
     "PRO_ENFORCE": "on"
   }
 }

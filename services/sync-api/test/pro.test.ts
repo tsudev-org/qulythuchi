@@ -2,7 +2,7 @@ import { env } from 'cloudflare:workers';
 import { describe, expect, it } from 'vitest';
 
 import { purgeLapsedPro } from '../src/maintenance';
-import { call, entState, entitlementFor, fakeEnvelope, fixture, json, login } from './helpers';
+import { RP_STATUS_AUD, call, entState, entitlementFor, fakeEnvelope, fixture, json, login, statusFor, statusState } from './helpers';
 
 /**
  * T7 / ADR-0016 - gate TsuDEV Pro ở máy chủ (PRODUCT_POLICY 7.4 + checklist mục 8): 402 `pro_required` cho đẩy/tải
@@ -162,29 +162,6 @@ describe('TsuDEV Pro - gate máy chủ', () => {
     expect((await req(`/api/v1/wallets/${walletId}/members/me`, member.auth, undefined, 'DELETE')).status).toBe(200);
   });
 
-  it('dọn bản mã: hết Pro quá 90 ngày ⇒ xoá; còn trong 90 ngày hoặc còn Pro ⇒ giữ; hỏi lại tsudev.com trước khi xoá', async () => {
-    const mk = async (pushAs: Parameters<typeof entitlementFor>[1], later: Parameters<typeof entitlementFor>[1]) => {
-      const u = await account(pushAs);
-      expect((await push(u.auth)).status).toBe(200);
-      entitlementFor(u.sub, later);
-      const id = await userIdOf(u.sub);
-      await dropCache(id);
-      await env.DB.prepare('UPDATE entitlements SET pro_until = ? WHERE user_id = ?').bind(1000, id).run();
-      return id;
-    };
-    const gone = await mk({}, { proUntil: now() - 91 * DAY_S });
-    const recent = await mk({}, { proUntil: now() - 30 * DAY_S });
-    const renewed = await mk({}, {});
-    for (let i = 0; i < 20; i++) await purgeLapsedPro(env, Date.now(), 50);
-    const count = async (id: string) =>
-      (await env.DB.prepare('SELECT COUNT(*) AS n FROM records WHERE user_id = ?').bind(id).first<{ n: number }>())!.n;
-    expect(await count(gone)).toBe(0);
-    expect(await count(recent)).toBe(1);
-    expect(await count(renewed)).toBe(1);
-    const audit = await env.DB.prepare("SELECT COUNT(*) AS n FROM audit_log WHERE user_id = ? AND event = 'pro_data_purged'").bind(gone).first<{ n: number }>();
-    expect(audit!.n).toBe(1);
-  });
-
   it('PRO_ENFORCE=off: không gọi tsudev.com, đồng bộ mở như trước (bản chưa bật Pro)', async () => {
     const e = env as { PRO_ENFORCE: string };
     e.PRO_ENFORCE = 'off';
@@ -198,5 +175,131 @@ describe('TsuDEV Pro - gate máy chủ', () => {
     } finally {
       e.PRO_ENFORCE = 'on';
     }
+  });
+});
+
+/**
+ * PRO2 / ADR-0018 - xoá bản mã vì hết Pro CÓ XÁC MINH (PRODUCT_POLICY v1.2.0 mục 7.4 "Kênh trạng thái"): hỏi
+ * `POST /api/rp/entitlements/status` ngay trước mọi lần xoá; đã gia hạn ⇒ giữ + cập nhật hạn; lỗi/unknown ⇒ hoãn 24 giờ.
+ */
+describe('TsuDEV Pro - xoá có xác minh qua kênh trạng thái', () => {
+  /** Tài khoản có 1 bản ghi trên máy chủ, đệm cục bộ ghi `pro_until` đã quá 90 ngày (ứng viên xoá). */
+  async function lapsed() {
+    const u = await account({});
+    expect((await push(u.auth)).status).toBe(200);
+    const id = await userIdOf(u.sub);
+    await env.DB.prepare('UPDATE entitlements SET pro_until = ? WHERE user_id = ?').bind(1000, id).run();
+    return { ...u, id };
+  }
+  const records = async (id: string) =>
+    (await env.DB.prepare('SELECT COUNT(*) AS n FROM records WHERE user_id = ?').bind(id).first<{ n: number }>())!.n;
+  const cachedUntil = async (id: string) =>
+    (await env.DB.prepare('SELECT pro_until FROM entitlements WHERE user_id = ?').bind(id).first<{ pro_until: number }>())!.pro_until;
+  const statusCalls = (sub: string) => statusState.calls.filter((c) => c.subs.includes(sub)).length;
+  const audit = async (id: string) =>
+    (await env.DB.prepare("SELECT detail FROM audit_log WHERE user_id = ? AND event = 'pro_data_purged'").bind(id).all<{ detail: string }>()).results;
+  const run = () => purgeLapsedPro(env, Date.now(), 50);
+
+  it('hết hạn thật (ok quá 90 ngày) ⇒ xoá; tài khoản tsudev đã xoá (deleted) ⇒ xoá; luôn hỏi kênh trạng thái trước', async () => {
+    const expired = await lapsed();
+    const deleted = await lapsed();
+    statusFor(expired.sub, { status: 'ok', pro_until: now() - 91 * DAY_S });
+    statusFor(deleted.sub, { status: 'deleted' });
+    await run();
+    expect(statusCalls(expired.sub)).toBe(1);
+    expect(statusCalls(deleted.sub)).toBe(1);
+    expect(await records(expired.id)).toBe(0);
+    expect(await records(deleted.id)).toBe(0);
+    expect(await audit(expired.id)).toEqual([{ detail: 'verified:ok' }]);
+    expect(await audit(deleted.id)).toEqual([{ detail: 'verified:deleted' }]);
+  });
+
+  it('gia hạn trên web mà không mở app (kênh RP 404 vì grant quá 30 ngày) ⇒ KHÔNG xoá + cập nhật hạn đã đệm', async () => {
+    const u = await lapsed();
+    const renewedUntil = now() + 300 * DAY_S;
+    entitlementFor(u.sub, { httpStatus: 404 });
+    statusFor(u.sub, { status: 'ok', pro_until: renewedUntil });
+    const rpBefore = callsFor(u.sub);
+    await run();
+    expect(await records(u.id)).toBe(1);
+    expect(await cachedUntil(u.id)).toBe(renewedUntil * 1000);
+    expect(await audit(u.id)).toEqual([]);
+    // Không dựa vào kênh RP `GET /{sub}` để quyết định xoá.
+    expect(callsFor(u.sub)).toBe(rpBefore);
+    // Hạn mới ⇒ không còn là ứng viên, lượt sau không hỏi lại.
+    await env.DB.prepare('UPDATE pro_purge_checks SET checked_at = 0 WHERE user_id = ?').bind(u.id).run();
+    await run();
+    expect(statusCalls(u.sub)).toBe(1);
+  });
+
+  it('hết Pro mới 30 ngày (ok, còn trong 90 ngày) ⇒ giữ, cập nhật hạn', async () => {
+    const u = await lapsed();
+    statusFor(u.sub, { status: 'ok', pro_until: now() - 30 * DAY_S });
+    await run();
+    expect(await records(u.id)).toBe(1);
+    expect(await cachedUntil(u.id)).toBe((now() - 30 * DAY_S) * 1000);
+  });
+
+  it('kênh lỗi / hết giờ / khung sai / 404 / unknown_subject / thiếu mục ⇒ hoãn, không hỏi lại trong 24 giờ; sau 24 giờ hỏi lại', async () => {
+    const cases = ['http500', 'timeout', 'bad_body', 'http404', 'unknown_subject', 'omit'] as const;
+    for (const c of cases) {
+      const u = await lapsed();
+      statusFor(u.sub, { status: 'ok', pro_until: now() - 200 * DAY_S });
+      if (c === 'unknown_subject' || c === 'omit') statusFor(u.sub, { status: c });
+      else statusState.mode = c;
+      try {
+        await run();
+        await run();
+      } finally {
+        statusState.mode = 'ok';
+      }
+      expect(await records(u.id), c).toBe(1);
+      expect(statusCalls(u.sub), c).toBe(1);
+      expect(await audit(u.id), c).toEqual([]);
+      // 25 giờ sau: hỏi lại; lần này tsudev.com xác nhận hết hạn ⇒ xoá.
+      statusFor(u.sub, { status: 'ok', pro_until: now() - 200 * DAY_S });
+      await env.DB.prepare('UPDATE pro_purge_checks SET checked_at = ? WHERE user_id = ?').bind(Date.now() - 25 * 3600_000, u.id).run();
+      await run();
+      expect(statusCalls(u.sub), c).toBe(2);
+      expect(await records(u.id), c).toBe(0);
+    }
+  });
+
+  it('client assertion của kênh trạng thái: iss = sub = client_id, aud = đúng URL kênh, exp ≤ 300 giây, jti một lần', async () => {
+    const a = await lapsed();
+    const b = await lapsed();
+    statusFor(a.sub, { status: 'unknown_subject' });
+    statusFor(b.sub, { status: 'unknown_subject' });
+    const from = statusState.calls.length;
+    await purgeLapsedPro(env, Date.now(), 50);
+    await env.DB.prepare('UPDATE pro_purge_checks SET checked_at = 0 WHERE user_id IN (?, ?)').bind(a.id, b.id).run();
+    await purgeLapsedPro(env, Date.now(), 50);
+    const mine = statusState.calls.slice(from).filter((c) => c.subs.includes(a.sub));
+    expect(mine).toHaveLength(2);
+    for (const c of mine) {
+      expect(c.ok).toBe(true);
+      expect(c.clientId).toBe('qulythuchi');
+      expect(c.claims).toMatchObject({ iss: 'qulythuchi', sub: 'qulythuchi', aud: RP_STATUS_AUD });
+      expect((c.claims.exp as number) - (c.claims.iat as number)).toBeLessThanOrEqual(300);
+      expect(typeof c.claims.jti).toBe('string');
+      expect(c.subs.length).toBeLessThanOrEqual(100);
+    }
+    expect(mine[0]!.claims.jti).not.toBe(mine[1]!.claims.jti);
+    expect(await records(a.id)).toBe(1);
+  });
+
+  it('chưa cấu hình kênh trạng thái ⇒ không xoá theo đệm, không gọi tsudev.com', async () => {
+    const u = await lapsed();
+    statusFor(u.sub, { status: 'deleted' });
+    const e = env as { ENTITLEMENTS_STATUS_URL?: string };
+    const saved = e.ENTITLEMENTS_STATUS_URL;
+    delete e.ENTITLEMENTS_STATUS_URL;
+    try {
+      await run();
+    } finally {
+      e.ENTITLEMENTS_STATUS_URL = saved;
+    }
+    expect(statusCalls(u.sub)).toBe(0);
+    expect(await records(u.id)).toBe(1);
   });
 });

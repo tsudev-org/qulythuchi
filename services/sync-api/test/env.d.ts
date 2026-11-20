@@ -10,6 +10,7 @@ declare namespace Cloudflare {
     SESSION_SECRET: string;
     IP_HASH_SALT: string;
     ENTITLEMENTS_URL: string;
+    ENTITLEMENTS_STATUS_URL?: string;
     PRO_ENFORCE: string;
     RP_PRIVATE_JWK?: string;
   }

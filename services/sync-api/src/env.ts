@@ -15,6 +15,11 @@ export interface Env {
    */
   ENTITLEMENTS_URL: string;
   /**
+   * Kênh trạng thái tsudev.com (PRODUCT_POLICY 7.4, ADR-0018), ví dụ `https://tsudev.com/api/rp/entitlements/status`.
+   * Hỏi ngay trước mọi lần xoá bản mã vì hết Pro; cũng là `aud` của client assertion gửi kèm. Thiếu ⇒ không bao giờ xoá.
+   */
+  ENTITLEMENTS_STATUS_URL?: string;
+  /**
    * `on` ⇒ gate Pro (402 `pro_required`) + dọn bản mã khi Pro hết hạn quá 90 ngày. `off` ⇒ không gọi tsudev.com, không
    * chặn (trước khi chủ dự án đồng ý xoá dữ liệu thử nghiệm và khoá RP được đăng ký). ADR-0016.
    */

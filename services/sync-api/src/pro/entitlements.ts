@@ -139,8 +139,11 @@ const unavailable = () =>
 
 let signingKey: { jwk: string; key: JoseKey | Uint8Array } | null = null;
 
-/** Client assertion `private_key_jwt`: iss = sub = client_id, aud = ENTITLEMENTS_URL (khớp tuyệt đối), ≤ 300 giây. */
-export async function clientAssertion(env: Env): Promise<string> {
+/**
+ * Client assertion `private_key_jwt`: iss = sub = client_id, aud = URL của kênh được gọi (khớp tuyệt đối - kênh RP
+ * `ENTITLEMENTS_URL` hoặc kênh trạng thái `ENTITLEMENTS_STATUS_URL`), 120 giây (≤ 300), `jti` ngẫu nhiên một lần.
+ */
+export async function clientAssertion(env: Env, aud: string = env.ENTITLEMENTS_URL): Promise<string> {
   const raw = env.RP_PRIVATE_JWK;
   if (!raw) throw unavailable();
   if (signingKey?.jwk !== raw) {
@@ -155,7 +158,7 @@ export async function clientAssertion(env: Env): Promise<string> {
     .setProtectedHeader(header)
     .setIssuer(env.OIDC_CLIENT_ID)
     .setSubject(env.OIDC_CLIENT_ID)
-    .setAudience(env.ENTITLEMENTS_URL)
+    .setAudience(aud)
     .setIssuedAt()
     .setExpirationTime('120s')
     .setJti(randomToken(24))
@@ -230,3 +233,48 @@ export const requirePro = createMiddleware<AppEnv>(async (c, next) => {
   await assertPro(c, c.get('auth').userId);
   await next();
 });
+
+/** Kết quả kênh trạng thái cho một `sub` (PRODUCT_POLICY 7.4). `proUntil`: mili giây Unix; 0 = chưa từng có Pro. */
+export type SubjectStatus = { status: 'ok'; proUntil: number } | { status: 'deleted' } | { status: 'unknown_subject' };
+
+/** Trần `subs` mỗi lần hỏi kênh trạng thái (PRODUCT_POLICY 7.4). */
+export const STATUS_MAX_SUBS = 100;
+const STATUS_TIMEOUT_MS = 10_000;
+
+/**
+ * Hỏi kênh trạng thái tsudev.com (`POST ENTITLEMENTS_STATUS_URL`, ADR-0018) - KHÔNG phụ thuộc grant OIDC 30 ngày như
+ * kênh RP `GET /{sub}`. Chỉ trả `pro_until`/`deleted`/`unknown_subject`, không email/huy hiệu. Mọi lỗi (chưa cấu hình,
+ * mạng, hết giờ, HTTP ≠ 200, khung sai) ⇒ ném lỗi để bên gọi HOÃN; mục lạ/thiếu cho một `sub` ⇒ `unknown_subject`.
+ */
+export async function fetchSubjectStatus(env: Env, subs: string[]): Promise<Map<string, SubjectStatus>> {
+  const url = env.ENTITLEMENTS_STATUS_URL;
+  if (!url || !env.RP_PRIVATE_JWK) throw new Error('status_unconfigured');
+  if (subs.length === 0 || subs.length > STATUS_MAX_SUBS) throw new Error('status_bad_request');
+  const res = await idpFetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${await clientAssertion(env, url)}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ client_id: env.OIDC_CLIENT_ID, subs }),
+    signal: AbortSignal.timeout(STATUS_TIMEOUT_MS),
+  });
+  if (res.status !== 200) throw new Error(`status_${res.status}`);
+  const body = await res.json<{ results?: unknown }>().catch(() => null);
+  const results = body?.results;
+  if (!results || typeof results !== 'object' || Array.isArray(results)) throw new Error('status_bad_body');
+  const out = new Map<string, SubjectStatus>();
+  for (const sub of subs) {
+    const r = Object.hasOwn(results, sub) ? (results as Record<string, unknown>)[sub] : undefined;
+    const st = r && typeof r === 'object' ? (r as { status?: unknown; pro_until?: unknown }) : {};
+    if (st.status === 'ok' && typeof st.pro_until === 'number' && Number.isFinite(st.pro_until) && st.pro_until >= 0) {
+      out.set(sub, { status: 'ok', proUntil: Math.floor(st.pro_until) * 1000 });
+    } else if (st.status === 'deleted') {
+      out.set(sub, { status: 'deleted' });
+    } else {
+      out.set(sub, { status: 'unknown_subject' });
+    }
+  }
+  return out;
+}

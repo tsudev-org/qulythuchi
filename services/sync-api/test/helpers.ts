@@ -34,6 +34,23 @@ export function entitlementFor(sub: string, e: FakeEnt) {
   entState.bySub.set(sub, e);
 }
 export const RP_AUD = 'https://idp.test/api/rp/entitlements';
+export const RP_STATUS_AUD = `${RP_AUD}/status`;
+
+/**
+ * Kênh trạng thái giả (`POST /api/rp/entitlements/status`, PRODUCT_POLICY 7.4, ADR-0018). Không phụ thuộc grant: mặc
+ * định trả `ok` với `pro_until` của `entitlementFor` (kể cả khi kênh RP đang 404); `statusFor` đặt riêng theo `sub`;
+ * `statusState.mode` giả lập sự cố của cả kênh.
+ */
+export type FakeStatus = { status: 'ok'; pro_until: number } | { status: 'deleted' } | { status: 'unknown_subject' } | { status: 'omit' };
+export const statusState = {
+  mode: 'ok' as 'ok' | 'http500' | 'http404' | 'timeout' | 'bad_body',
+  bySub: new Map<string, FakeStatus>(),
+  calls: [] as { subs: string[]; clientId: unknown; claims: Record<string, unknown>; ok: boolean }[],
+  jtis: new Set<string>(),
+};
+export function statusFor(sub: string, st: FakeStatus) {
+  statusState.bySub.set(sub, st);
+}
 
 let rpKey: { publicKey: CryptoKey } | null = null;
 async function ensureRpKey() {
@@ -52,6 +69,35 @@ export async function fakeIdp(opts: { sub?: string; tamperNonce?: boolean; wrong
   const rp = await ensureRpKey();
   setOidcFetcher(async (url, init) => {
     const json = (v: unknown, status = 200) => new Response(JSON.stringify(v), { status, headers: { 'content-type': 'application/json' } });
+    if (url === RP_STATUS_AUD) {
+      const auth = new Headers(init?.headers).get('Authorization') ?? '';
+      const body = JSON.parse(typeof init?.body === 'string' ? init.body : '{}') as { client_id?: unknown; subs?: string[] };
+      const subs = Array.isArray(body.subs) ? body.subs : [];
+      let claims: Record<string, unknown> = {};
+      let ok: boolean;
+      try {
+        const v = await jwtVerify(auth.slice(7), rp.publicKey, { audience: RP_STATUS_AUD, issuer: 'qulythuchi', subject: 'qulythuchi', algorithms: ['ES256'] });
+        claims = v.payload;
+        const jti = v.payload.jti;
+        ok = init?.method === 'POST' && !!jti && !statusState.jtis.has(jti) && !!v.payload.exp && v.payload.exp - Math.floor(Date.now() / 1000) <= 300;
+        if (jti) statusState.jtis.add(jti);
+      } catch {
+        ok = false;
+      }
+      ok = ok && body.client_id === 'qulythuchi' && subs.length >= 1 && subs.length <= 100;
+      statusState.calls.push({ subs, clientId: body.client_id, claims, ok });
+      if (!ok) return json({ error: 'invalid_client' }, 401);
+      if (statusState.mode === 'timeout') throw new DOMException('The operation was aborted due to timeout', 'TimeoutError');
+      if (statusState.mode === 'http500') return json({ error: 'boom' }, 500);
+      if (statusState.mode === 'http404') return json({ error: 'not_found' }, 404);
+      if (statusState.mode === 'bad_body') return json({ result: [] });
+      const results: Record<string, unknown> = {};
+      for (const sub of subs) {
+        const st = statusState.bySub.get(sub) ?? { status: 'ok', pro_until: entState.bySub.get(sub)?.proUntil ?? Math.floor(Date.now() / 1000) + 30 * 86400 };
+        if (st.status !== 'omit') results[sub] = st;
+      }
+      return json({ results });
+    }
     if (url.startsWith(`${RP_AUD}/`)) {
       const h = new Headers(init?.headers);
       const auth = h.get('Authorization') ?? '';
