@@ -221,6 +221,18 @@ final class LedgerNotifier extends Notifier<LedgerData> {
   int importPlan({required List<Wallet> wallets, required List<Category> categories, required List<Txn> txns}) =>
       _mutate((r) => r.importPlan(wallets: wallets, categories: categories, txns: txns));
   int ensureStandardIncomeCategories(DefaultCategoryLocale l) => _mutate((r) => r.ensureStandardIncomeCategories(l));
+
+  // Ảnh đính kèm (P7b, ADR-0017).
+  List<Attachment> attachmentsOf(String txnId) => _repo.attachmentsOf(txnId);
+  Attachment addAttachment(String txnId, SanitizedImage image) => _mutate((r) => r.addAttachment(txnId, image));
+  void deleteAttachment(String id) => _mutate((r) => r.deleteAttachment(id));
+  BlobState? attachmentState(String id) => _repo.attachmentState(id);
+
+  /// Dọn đệm ảnh đã bị xóa ở thiết bị khác (sau một lượt đồng bộ).
+  void pruneAttachmentCache() {
+    if (ref.read(sessionProvider) != SessionStatus.unlocked) return;
+    _repo.pruneAttachmentCache();
+  }
 }
 
 /// Bộ lên lịch thông báo (ghi đè trong test bằng [NoopReminderScheduler]).

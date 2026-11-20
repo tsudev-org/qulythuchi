@@ -202,6 +202,17 @@ final class ApiClient {
   /// Tải thô (xuất dữ liệu máy chủ).
   Future<Uint8List> getBytes(String path) async => (await _authedRaw('GET', path)).bodyBytes;
 
+  /// Tải tệp (bản mã); lỗi HTTP ⇒ [ApiException] như lượt JSON.
+  Future<Uint8List> getFile(String path) async {
+    final res = await _authedRaw('GET', path);
+    if (res.statusCode >= 400) throw _error(res);
+    return res.bodyBytes;
+  }
+
+  /// Tải lên bản mã (`application/octet-stream`).
+  Future<Object?> putBytes(String path, Uint8List bytes, [Map<String, String>? query]) =>
+      _authed('PUT', path, query: query, body: bytes);
+
   Future<Object?> _authed(String method, String path, {Map<String, String>? query, Object? body}) async =>
       _decode(await _authedRaw(method, path, query: query, body: body));
 
@@ -236,7 +247,10 @@ final class ApiClient {
     req.headers['Accept'] = 'application/json';
     if (auth && _access != null) req.headers['Authorization'] = 'Bearer $_access';
     if (cookieMode && method != 'GET') req.headers['X-Qt-Csrf'] = '1';
-    if (body != null) {
+    if (body is Uint8List) {
+      req.headers['Content-Type'] = 'application/octet-stream';
+      req.bodyBytes = body;
+    } else if (body != null) {
       req.headers['Content-Type'] = 'application/json';
       req.bodyBytes = utf8.encode(jsonEncode(body));
     }

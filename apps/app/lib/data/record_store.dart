@@ -42,6 +42,45 @@ final class SharedWalletRow {
   );
 }
 
+/// Trạng thái một tệp đính kèm trên máy. Chỉ số lưu xuống CSDL - CHỈ thêm vào cuối.
+enum BlobState {
+  /// Tạo trên máy, chưa lên máy chủ (kể cả khi bị 402 - giữ nguyên, không mất ảnh).
+  pending,
+
+  /// Đã có trên máy chủ (tải lên xong hoặc tải về để xem).
+  synced,
+
+  /// Đã xóa ảnh, chờ gọi DELETE trên máy chủ.
+  deleting,
+}
+
+/// Tệp đang ở không gian nào trên máy chủ. Chỉ số lưu xuống CSDL - CHỈ thêm vào cuối.
+enum BlobRemote {
+  /// Chưa biết/chưa tải lên (tệp do thiết bị khác tạo: có thể ở cả hai chỗ).
+  unknown,
+
+  /// `/api/v1/files/:id` (tài khoản).
+  account,
+
+  /// `/api/v1/wallets/:wid/files/:id` (ví chung).
+  wallet,
+}
+
+final class BlobRow {
+  const BlobRow({
+    required this.id,
+    required this.walletId,
+    required this.sealed,
+    required this.state,
+    this.remote = BlobRemote.unknown,
+  });
+  final String id;
+  final String? walletId;
+  final Uint8List? sealed;
+  final BlobState state;
+  final BlobRemote remote;
+}
+
 /// Kho thô trên SQLite: chỉ lưu byte đã mã hóa và siêu dữ liệu tối thiểu (ADR-0001 mục 4).
 final class RecordStore {
   RecordStore(this._db) {
@@ -49,7 +88,7 @@ final class RecordStore {
   }
 
   final CommonDatabase _db;
-  static const schemaVersion = 2;
+  static const schemaVersion = 3;
 
   void _migrate() {
     final v = _db.userVersion;
@@ -91,7 +130,69 @@ final class RecordStore {
       ''');
       _db.userVersion = 2;
     }
+    if (v < 3) {
+      // P7b ảnh đính kèm (ADR-0017): bản mã ảnh (khóa tệp nằm trong bản ghi `attachment` đã niêm phong). Cùng một bảng
+      // cho mọi nền tảng kể cả web - ở máy cũng chỉ có bản mã. sealed NULL = chưa tải về hoặc chờ xóa trên máy chủ.
+      // remote: tệp đang nằm ở không gian nào trên máy chủ (BlobRemote) - ví cá nhân thành ví chung thì chuyển.
+      _db.execute('''
+        CREATE TABLE IF NOT EXISTS blobs (
+          id TEXT PRIMARY KEY,
+          wallet_id TEXT,
+          sealed BLOB,
+          state INTEGER NOT NULL,
+          remote INTEGER NOT NULL DEFAULT 0
+        ) STRICT;
+      ''');
+      _db.userVersion = 3;
+    }
   }
+
+  // ------------------------------------------------------------------ Tệp đính kèm (P7b)
+
+  BlobRow? blob(String id) {
+    final rs = _db.select('SELECT id, wallet_id, sealed, state, remote FROM blobs WHERE id = ?', [id]);
+    return rs.isEmpty ? null : _blob(rs.first);
+  }
+
+  BlobState? blobState(String id) {
+    final rs = _db.select('SELECT state FROM blobs WHERE id = ?', [id]);
+    return rs.isEmpty ? null : BlobState.values[rs.first['state'] as int];
+  }
+
+  /// Tệp theo trạng thái (không nạp nội dung khi [withBytes] = false).
+  List<BlobRow> blobsIn(BlobState state, {bool withBytes = true}) => [
+    for (final r in _db.select(
+      'SELECT id, wallet_id, ${withBytes ? 'sealed' : 'NULL AS sealed'}, state, remote FROM blobs WHERE state = ? ORDER BY rowid',
+      [state.index],
+    ))
+      _blob(r),
+  ];
+
+  void putBlob(BlobRow b) => _db.execute(
+    'INSERT INTO blobs(id, wallet_id, sealed, state, remote) VALUES(?, ?, ?, ?, ?) '
+    'ON CONFLICT(id) DO UPDATE SET wallet_id = excluded.wallet_id, sealed = excluded.sealed, state = excluded.state, '
+    'remote = excluded.remote',
+    [b.id, b.walletId, b.sealed, b.state.index, b.remote.index],
+  );
+
+  void setBlobState(String id, BlobState state, BlobRemote remote) =>
+      _db.execute('UPDATE blobs SET state = ?, remote = ? WHERE id = ?', [state.index, remote.index, id]);
+
+  /// Đánh dấu chờ xóa trên máy chủ và bỏ bản mã cục bộ ngay (giữ [BlobRemote] để biết gọi DELETE ở đâu).
+  void markBlobDeleted(String id, String? walletId) {
+    final remote = blob(id)?.remote ?? BlobRemote.unknown;
+    putBlob(BlobRow(id: id, walletId: walletId, sealed: null, state: BlobState.deleting, remote: remote));
+  }
+
+  void deleteBlob(String id) => _db.execute('DELETE FROM blobs WHERE id = ?', [id]);
+
+  static BlobRow _blob(Row r) => BlobRow(
+    id: r['id'] as String,
+    walletId: r['wallet_id'] as String?,
+    sealed: r['sealed'] as Uint8List?,
+    state: BlobState.values[r['state'] as int],
+    remote: BlobRemote.values[r['remote'] as int],
+  );
 
   // ------------------------------------------------------------------ Ví chung (P9)
 
@@ -314,6 +415,7 @@ final class RecordStore {
   void wipe() {
     transaction(() {
       _db.execute('DELETE FROM records');
+      _db.execute('DELETE FROM blobs');
       _db.execute('DELETE FROM wallet_keys');
       _db.execute('DELETE FROM shared_keys');
       _db.execute('DELETE FROM shared_wallets');

@@ -95,7 +95,14 @@ meRoutes.get('/api/v1/me/usage', async (c) => {
   const { userId } = c.get('auth');
   const [rec, files] = await c.env.DB.batch<{ n: number; bytes: number }>([
     c.env.DB.prepare('SELECT COUNT(*) AS n, COALESCE(SUM(size), 0) AS bytes FROM records WHERE user_id = ?').bind(userId),
-    c.env.DB.prepare('SELECT COUNT(*) AS n, COALESCE(SUM(size), 0) AS bytes FROM files WHERE user_id = ?').bind(userId),
+    // Tệp cá nhân + tệp trong ví chung mình làm chủ (cùng hạn mức - ADR-0017 mục 5).
+    c.env.DB.prepare(
+      `SELECT (SELECT COUNT(*) FROM files WHERE user_id = ?1)
+            + (SELECT COUNT(*) FROM wallet_files f JOIN shared_wallets w ON w.id = f.wallet_id WHERE w.owner_id = ?1) AS n,
+              (SELECT COALESCE(SUM(size), 0) FROM files WHERE user_id = ?1)
+            + (SELECT COALESCE(SUM(f.size), 0) FROM wallet_files f JOIN shared_wallets w ON w.id = f.wallet_id
+                WHERE w.owner_id = ?1) AS bytes`,
+    ).bind(userId),
   ]);
   const r = rec?.results[0];
   const f = files?.results[0];

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 
+import '../../attachments/attachments_section.dart';
 import '../../state/ledger_repository.dart';
 import '../../state/providers.dart';
 import '../../theme/app_theme.dart';
@@ -52,6 +53,7 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
   final _note = TextEditingController();
   final _payee = TextEditingController();
   final _withheld = TextEditingController();
+  final _draft = AttachmentDraft();
   String? _incomePlanId;
 
   _Mode _mode = _Mode.expense;
@@ -161,6 +163,7 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
     for (final c in [_amount, _fee, _received, _note, _payee, _withheld]) {
       c.dispose();
     }
+    _draft.dispose();
     super.dispose();
   }
 
@@ -196,7 +199,7 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
         );
       } else {
         final base = _editing;
-        notifier.saveTxn(
+        final saved = notifier.saveTxn(
           Txn(
             id: base?.id ?? notifier.newId(),
             walletId: wallet.id,
@@ -225,6 +228,7 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
                 : 0,
           ),
         );
+        _draft.commit(notifier, saved.id);
       }
       context.toast(context.l10n.saved);
       _close();
@@ -529,6 +533,10 @@ class _TxnFormPageState extends ConsumerState<TxnFormPage> {
                 maxLength: 500,
                 decoration: InputDecoration(labelText: l.txnNote),
               ),
+              if (_mode != _Mode.transfer) ...[
+                const SizedBox(height: QtSpace.s4),
+                AttachmentsSection(txnId: _editing?.id, walletId: _walletId, draft: _draft),
+              ],
               const SizedBox(height: QtSpace.s6),
               FilledButton(onPressed: _save, child: Text(l.actionSave)),
             ],

@@ -93,8 +93,8 @@ void main() {
       await tester.pump();
       expect(find.textContaining('= 100.000'), findsOneWidget);
       await tester.enterText(textField('Ghi chú'), 'Phở bò');
-      await tester.tap(find.widgetWithText(FilledButton, 'Lưu'));
-      await settle(tester);
+      // Form có thêm mục Ảnh hóa đơn (P7b) ⇒ nút Lưu có thể nằm dưới màn hình điện thoại.
+      await tapVisible(tester, find.widgetWithText(FilledButton, 'Lưu'));
 
       expect(find.text('Hôm nay'), findsOneWidget);
       expect(find.textContaining('Phở bò'), findsOneWidget);

@@ -47,6 +47,7 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T26 | Vượt gate qua đường không chặn (khoá, ví chung của chủ ví đã hết Pro) | E | Ví chung kiểm Pro của chủ ví; `PUT /keys/*` mở có chủ đích nhưng giới hạn 32/512 KiB | ✅ T7 - rủi ro còn lại nhỏ |
 | T27 | Liệt kê/theo dõi thiết bị qua mã cài đặt | I | Mã ngẫu nhiên 128 bit, máy chủ chỉ lưu SHA-256, chỉ trả số đếm `devices_30d` | ✅ T7 |
 | T28 | Lộ khoá riêng RP (`RP_PRIVATE_JWK`) | I | Secret Cloudflare + tệp 600 ngoài repo; chỉ đọc được quyền lợi, không dữ liệu tài chính; xoay bằng `scripts/rp-key.mjs` | ✅ T7 |
+| T29 | Ảnh hóa đơn lộ vị trí/thiết bị (EXIF/GPS), máy chủ tráo ảnh giữa giao dịch, ảnh "bom giải nén" | I, T, D | Làm sạch + mã hóa lại JPEG trên máy trước khi mã hóa; khóa tệp riêng + AAD `attf|ví|giao dịch|tệp`; trần 25 MiB/50 triệu điểm ảnh đọc trước khi giải mã; tệp ví chung theo quyền thành viên (ADR-0017) | ✅ P7b |
 | T20 | Rò nội dung thông báo/ảnh hóa đơn/giọng nói khỏi thiết bị | I | Hàng đợi thông báo mã hóa Keystore, không sao lưu; OCR ML Kit trên máy, xóa ảnh tạm; giọng nói `onDevice`, dịch vụ HĐH chỉ khi đồng ý; widget không hiện dữ liệu | ✅ P7 |
 
 ## 3. Phụ thuộc mật mã (SECURITY_BASELINE mục 5)

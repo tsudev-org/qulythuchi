@@ -202,6 +202,8 @@ class _AccountPageState extends ConsumerState<AccountPage> {
             if (s.pending > 0) l.syncPending(s.pending),
             if (s.quotaFull) l.syncQuotaFull,
             if (s.rejected > 0 && !s.quotaFull) l.syncRejected(s.rejected),
+            if (s.filesPending > 0) l.attFilesPending(s.filesPending),
+            if (s.filesBlocked) l.attProBlocked,
           ].join(' · '),
         ),
         trailing: TextButton(

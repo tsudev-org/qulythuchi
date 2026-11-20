@@ -1,3 +1,4 @@
+import { deleteOwnedWalletFiles, deleteR2Prefix } from './files/routes';
 import type { Env } from './env';
 import { DELETION_GRACE_MS } from './me/routes';
 import { PRO_GRACE_MS, enforcing, getEntitlement, isPro } from './pro/entitlements';
@@ -50,11 +51,8 @@ export async function purgeDeletedAccounts(env: Env, at = Date.now(), maxUsers =
     .bind(at - DELETION_GRACE_MS, maxUsers)
     .all<{ id: string }>();
   for (const { id } of due.results) {
-    for (;;) {
-      const page = await env.FILES.list({ prefix: `u/${id}/`, limit: 500 });
-      if (page.objects.length) await env.FILES.delete(page.objects.map((o) => o.key));
-      if (!page.truncated) break;
-    }
+    await deleteR2Prefix(env.FILES, `u/${id}/`);
+    await deleteOwnedWalletFiles(env, id);
     await db.batch([
       // Ví chung (ADR-0015): ví mình làm chủ bị xóa cùng bản ghi/lời mời/thành viên (FK CASCADE khi xóa shared_wallets);
       // ví mình là thành viên: rời ví, báo chủ ví xoay khóa.
@@ -123,11 +121,8 @@ export async function purgeLapsedPro(env: Env, at = Date.now(), maxUsers = 3) {
     if (proUntil + PRO_GRACE_MS >= at) continue;
     // tsudev.com không trả quyền lợi (Grant hết hạn) ⇒ chỉ xoá khi người dùng cũng bỏ app quá ân hạn.
     if (status === 'unknown_subject' && u.last_login_at > at - PRO_GRACE_MS) continue;
-    for (;;) {
-      const page = await env.FILES.list({ prefix: `u/${u.id}/`, limit: 500 });
-      if (page.objects.length) await env.FILES.delete(page.objects.map((o) => o.key));
-      if (!page.truncated) break;
-    }
+    await deleteR2Prefix(env.FILES, `u/${u.id}/`);
+    await deleteOwnedWalletFiles(env, u.id);
     await db.batch([
       db.prepare('DELETE FROM shared_wallets WHERE owner_id = ?').bind(u.id),
       db.prepare('DELETE FROM records WHERE user_id = ?').bind(u.id),

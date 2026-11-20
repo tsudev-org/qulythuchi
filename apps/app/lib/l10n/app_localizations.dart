@@ -4963,6 +4963,138 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Chỉ chủ ví được sửa thông tin ví chung.'**
   String get errOwnerOnly;
+
+  /// No description provided for @attTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh hóa đơn'**
+  String get attTitle;
+
+  /// No description provided for @attAdd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm ảnh'**
+  String get attAdd;
+
+  /// No description provided for @attCamera.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp ảnh'**
+  String get attCamera;
+
+  /// No description provided for @attGallery.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn từ thư viện'**
+  String get attGallery;
+
+  /// No description provided for @attFile.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn tệp ảnh'**
+  String get attFile;
+
+  /// No description provided for @attLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa {count} ảnh mỗi giao dịch'**
+  String attLimit(int count);
+
+  /// No description provided for @attPrivacy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh được thu nhỏ, xóa vị trí GPS và thông tin máy chụp, rồi mã hóa trên máy trước khi đồng bộ.'**
+  String get attPrivacy;
+
+  /// No description provided for @attNewHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh sẽ được gắn khi bạn lưu giao dịch.'**
+  String get attNewHint;
+
+  /// No description provided for @attProcessing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang xử lý ảnh…'**
+  String get attProcessing;
+
+  /// No description provided for @attPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đồng bộ - ảnh đang lưu an toàn trên máy này'**
+  String get attPending;
+
+  /// No description provided for @attProBlocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ ảnh cần TsuDEV Pro. Ảnh vẫn lưu đầy đủ trên máy này.'**
+  String get attProBlocked;
+
+  /// No description provided for @attFilesPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} ảnh chờ đồng bộ (đang lưu trên máy)'**
+  String attFilesPending(int count);
+
+  /// No description provided for @attNotAvailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh chưa có trên máy này. Đăng nhập đồng bộ để tải về.'**
+  String get attNotAvailable;
+
+  /// No description provided for @attOpenFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được ảnh (tệp hỏng hoặc không đúng giao dịch).'**
+  String get attOpenFailed;
+
+  /// No description provided for @attDelete.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa ảnh'**
+  String get attDelete;
+
+  /// No description provided for @attDeleteConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa ảnh này khỏi giao dịch trên mọi thiết bị?'**
+  String get attDeleteConfirm;
+
+  /// No description provided for @attView.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem ảnh {index}'**
+  String attView(int index);
+
+  /// No description provided for @attRejectTooLarge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh quá lớn (tối đa 25 MB).'**
+  String get attRejectTooLarge;
+
+  /// No description provided for @attRejectPixels.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh có độ phân giải quá lớn.'**
+  String get attRejectPixels;
+
+  /// No description provided for @attRejectUnsupported.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đọc được ảnh này. Hãy chọn ảnh JPEG hoặc PNG.'**
+  String get attRejectUnsupported;
+
+  /// No description provided for @errTooManyAttachments.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đủ số ảnh tối đa cho giao dịch này.'**
+  String get errTooManyAttachments;
+
+  /// No description provided for @errAttachmentsNotLocal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh đính kèm của giao dịch này chưa tải về máy. Hãy mở xem các ảnh (để tải về) rồi đổi ví.'**
+  String get errAttachmentsNotLocal;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

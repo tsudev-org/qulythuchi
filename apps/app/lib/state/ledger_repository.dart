@@ -604,10 +604,21 @@ final class LedgerRepository implements SharingBook {
     if (old != null && old.walletId != t.walletId) {
       // Đổi ví = bản ghi thuộc ví khác (khóa khác): xóa bản cũ, tạo bản mới với id mới.
       final moved = t._withId(newId());
-      _persist([
-        old.markDeleted(_clock),
-        _apply(SyncRecord(id: moved.id, type: RecordTypes.transaction, walletId: t.walletId), moved.toValues()),
-      ]);
+      // Ảnh đính kèm gắn ví + giao dịch trong AAD (ADR-0017) ⇒ mã hóa lại sang ví/giao dịch mới. Cần bản rõ trên máy.
+      final atts = [
+        for (final a in attachmentsOf(t.id))
+          (a, openAttachment(a) ?? (throw const LedgerException('attachmentsNotLocal'))),
+      ];
+      _store.transaction(() {
+        _persist([
+          old.markDeleted(_clock),
+          _apply(SyncRecord(id: moved.id, type: RecordTypes.transaction, walletId: t.walletId), moved.toValues()),
+        ]);
+        for (final (a, plain) in atts) {
+          addAttachment(moved.id, SanitizedImage(bytes: plain, width: a.width, height: a.height));
+          deleteAttachment(a.id);
+        }
+      });
       return moved;
     }
     _persist([_apply(_base(t.id, RecordTypes.transaction, t.walletId), t.toValues())]);
@@ -732,7 +743,7 @@ final class LedgerRepository implements SharingBook {
     return (tOut, tIn);
   }
 
-  /// Xóa giao dịch; nếu là chuyển ví thì xóa cả hai vế.
+  /// Xóa giao dịch; nếu là chuyển ví thì xóa cả hai vế. Ảnh đính kèm bị xóa theo (ADR-0017).
   void deleteTxn(String id) {
     final r = _records[id];
     if (r == null || r.isDeleted) return;
@@ -744,7 +755,96 @@ final class LedgerRepository implements SharingBook {
             (o.id == id || (tid != null && o['transferId'] == tid)))
           o.markDeleted(_clock),
     ];
-    _persist(targets);
+    final ids = {for (final t in targets) t.id};
+    final atts = [
+      for (final o in _records.values)
+        if (!o.isDeleted && o.type == RecordTypes.attachment && ids.contains(o['txnId'])) o.markDeleted(_clock),
+    ];
+    _store.transaction(() {
+      for (final a in atts) {
+        _store.markBlobDeleted(a.id, a.walletId);
+      }
+      _persist([...targets, ...atts]);
+    });
+  }
+
+  // ------------------------------------------------------------------ Ảnh đính kèm (P7b, ADR-0017)
+
+  /// Ảnh của giao dịch theo thứ tự thêm (bản ghi hỏng/định dạng mới hơn bị bỏ qua).
+  List<Attachment> attachmentsOf(String txnId) => [
+    for (final r in _records.values)
+      if (!r.isDeleted && r.type == RecordTypes.attachment && r['txnId'] == txnId) ?Attachment.fromRecord(r),
+  ];
+
+  Attachment? attachment(String id) {
+    final r = _records[id];
+    return r == null || r.isDeleted ? null : Attachment.fromRecord(r);
+  }
+
+  /// Gắn ảnh ĐÃ làm sạch: mã hóa bằng khóa tệp mới; bản mã + bản ghi ghi trong MỘT giao tác, trạng thái chờ tải lên.
+  Attachment addAttachment(String txnId, SanitizedImage image) {
+    final t = _records[txnId];
+    if (t == null || t.isDeleted || t.type != RecordTypes.transaction) throw const LedgerException('notFound');
+    if (attachmentsOf(txnId).length >= Attachment.maxPerTxn) throw const LedgerException('tooManyAttachments');
+    final a = Attachment(
+      id: newId(),
+      walletId: t.walletId,
+      txnId: txnId,
+      fileKey: _vault.attachments.newFileKey(),
+      mime: image.mime,
+      size: image.bytes.length,
+      width: image.width,
+      height: image.height,
+    );
+    final sealed = _vault.attachments.seal(image.bytes, a);
+    _store.transaction(() {
+      // Ghi tệp trước: _persist ném readOnly (người xem ví chung) ⇒ cả giao tác hủy, không sót tệp mồ côi.
+      _store.putBlob(BlobRow(id: a.id, walletId: a.walletId, sealed: sealed, state: BlobState.pending));
+      _persist([_apply(SyncRecord(id: a.id, type: RecordTypes.attachment, walletId: a.walletId), a.toValues())]);
+    });
+    return a;
+  }
+
+  /// Mở ảnh từ bản mã cục bộ; null nếu máy chưa có (cần tải về). Hỏng/bị tráo ⇒ [EnvelopeException].
+  Uint8List? openAttachment(Attachment a) {
+    final sealed = _store.blob(a.id)?.sealed;
+    return sealed == null ? null : _vault.attachments.open(sealed, a);
+  }
+
+  /// Trạng thái bản mã trên máy (null = chưa tải về).
+  BlobState? attachmentState(String id) => _store.blobState(id);
+
+  /// Bản mã vừa tải về: phải mở được đúng ngữ cảnh rồi mới đệm lại (máy chủ độc gửi tệp khác ⇒ ném, không lưu).
+  Uint8List cacheDownloaded(Attachment a, Uint8List sealed, BlobRemote from) {
+    final plain = _vault.attachments.open(sealed, a);
+    _store.putBlob(BlobRow(id: a.id, walletId: a.walletId, sealed: sealed, state: BlobState.synced, remote: from));
+    return plain;
+  }
+
+  void deleteAttachment(String id) {
+    final r = _records[id];
+    if (r == null || r.isDeleted || r.type != RecordTypes.attachment) return;
+    _store.transaction(() {
+      _store.markBlobDeleted(id, r.walletId);
+      _persist([r.markDeleted(_clock)]);
+    });
+  }
+
+  /// Bỏ bản mã đệm của ảnh đã bị xóa ở thiết bị khác (bia mộ kéo về). Ảnh của ví chưa có khóa thì giữ nguyên.
+  int pruneAttachmentCache() {
+    var n = 0;
+    _store.transaction(() {
+      for (final b in [
+        ..._store.blobsIn(BlobState.pending, withBytes: false),
+        ..._store.blobsIn(BlobState.synced, withBytes: false),
+      ]) {
+        if (_records[b.id]?.isDeleted ?? false) {
+          _store.deleteBlob(b.id);
+          n++;
+        }
+      }
+    });
+    return n;
   }
 
   // ------------------------------------------------------------------ Bản ghi cấp tài khoản dùng chung

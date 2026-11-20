@@ -115,6 +115,9 @@ final class Vault {
   final Map<String, Map<int, SecureKey>> _sharedKeys = {};
   final Map<String, int> _sharedCurrent = {};
   late final RecordCipher cipher = RecordCipher(_kh.envelope);
+
+  /// Mã hóa ảnh đính kèm bằng khóa tệp riêng (ADR-0017).
+  late final AttachmentCipher attachments = AttachmentCipher(_sodium);
   late final WalletSharing sharing = WalletSharing(_sodium);
 
   bool get hasAccount => _store.getMeta(_mBundle) != null;

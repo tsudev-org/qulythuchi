@@ -170,6 +170,8 @@ String errorMessage(BuildContext context, Object error) {
       'walletLocked' => l.errWalletLocked,
       'readOnly' => l.errReadOnly,
       'ownerOnly' => l.errOwnerOnly,
+      'tooManyAttachments' => l.errTooManyAttachments,
+      'attachmentsNotLocal' => l.errAttachmentsNotLocal,
       _ => l.errGeneric,
     };
   }

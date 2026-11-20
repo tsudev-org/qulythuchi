@@ -40,6 +40,12 @@ Future<void> main() async {
   add('record-account', EnvelopeContext.record(type: 'category', recordId: id), utf8.encode('{}'));
   add('master-key', EnvelopeContext.masterKey('password'), seq(32, 0x40));
   add('empty', EnvelopeContext.backup('b1'), const []);
+  // Tệp đính kèm (ADR-0017): khóa tệp riêng (ở đây dùng chung khóa vector), khối đệm 64 KiB.
+  add(
+    'attachment-file',
+    EnvelopeContext.attachmentFile(walletId: wallet, txnId: id, attachmentId: '3f1e2d4c-5b6a-4789-8a0b-1c2d3e4f5a6b'),
+    [0xff, 0xd8, 0xff, 0xdb, ...utf8.encode('hoa-don'), 0xff, 0xd9],
+  );
 
   final pwKdf = KdfParams(salt: seq(16, 0x10), opsLimit: 1, memLimit: 8192);
   final kek = sodium.crypto.pwhash.callRaw(
