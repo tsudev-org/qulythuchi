@@ -50,6 +50,7 @@ import 'ui/wallets/join_wallet_page.dart';
 import 'ui/wallets/shared_wallet_page.dart';
 import 'ui/wallets/wallet_form_page.dart';
 import 'ui/wallets/wallets_page.dart';
+import 'ui/widgets/brand.dart';
 
 /// Thời gian ở nền tối đa trước khi tự khóa.
 const autoLockAfter = Duration(seconds: 60);
@@ -348,7 +349,7 @@ class _QulyAppState extends ConsumerState<QulyApp> {
             Positioned.fill(
               child: ColoredBox(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                child: const Center(child: Icon(Icons.lock_outline, size: 48)),
+                child: const Center(child: BrandLogo(size: 64)),
               ),
             ),
         ],

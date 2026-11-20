@@ -8,6 +8,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:qulythuchi_core/qulythuchi_core.dart';
 
 import '../state/ledger_repository.dart';
+import '../theme/brand.dart';
 
 /// Một dòng xuất: giá trị chuỗi hoặc số (số tiền đã ở đơn vị chính, chuỗi thập phân dấu chấm).
 typedef ExportRow = List<Object>;
@@ -166,31 +167,62 @@ Uint8List toXlsx(ExportTable t, {String sheetName = 'Giao dich'}) {
   return Uint8List.fromList(ZipEncoder().encode(archive));
 }
 
-/// PDF khổ A4 ngang, font Inter (đủ dấu tiếng Việt), ngày DD/MM/YYYY.
+/// PDF khổ A4 ngang, font Inter (đủ dấu tiếng Việt), ngày DD/MM/YYYY. Đầu trang mang logo sản phẩm, chân trang
+/// mang khối nhà làm tsudev (BRAND_ASSETS.md mục 15.5) - ảnh nhúng thẳng vào tệp, không tải ngoài.
 Future<Uint8List> toPdf(ExportTable t, {required String title, required String subtitle}) async {
   final regular = pw.Font.ttf(await rootBundle.load('assets/fonts/Inter-Regular.ttf'));
   final bold = pw.Font.ttf(await rootBundle.load('assets/fonts/Inter-SemiBold.ttf'));
+  final logo = pw.MemoryImage((await rootBundle.load(brandLogoAsset)).buffer.asUint8List());
+  final tsudev = pw.MemoryImage((await rootBundle.load(tsudevLogoAsset)).buffer.asUint8List());
   String dmy(String iso) {
     final p = iso.split('-');
     return p.length == 3 ? '${p[2]}/${p[1]}/${p[0]}' : iso;
   }
 
-  final doc = pw.Document(title: title, creator: 'Quly Thu Chi');
+  const muted = PdfColors.grey700;
+  final doc = pw.Document(title: title, creator: 'Quly Thu Chi', producer: 'Quly Thu Chi - tsudev.com');
   doc.addPage(
     pw.MultiPage(
       pageFormat: PdfPageFormat.a4.landscape,
       theme: pw.ThemeData.withFont(base: regular, bold: bold),
-      header: (_) => pw.Column(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          pw.Text(title, style: pw.TextStyle(font: bold, fontSize: 16)),
-          pw.Text(subtitle, style: const pw.TextStyle(fontSize: 9)),
-          pw.SizedBox(height: 8),
-        ],
+      header: (_) => pw.Padding(
+        padding: const pw.EdgeInsets.only(bottom: 8),
+        child: pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.center,
+          children: [
+            pw.Image(logo, width: 30, height: 30),
+            pw.SizedBox(width: 10),
+            pw.Expanded(
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text(title, style: pw.TextStyle(font: bold, fontSize: 16)),
+                  pw.Text(subtitle, style: const pw.TextStyle(fontSize: 9)),
+                ],
+              ),
+            ),
+            pw.Text(
+              'Quly Thu Chi',
+              style: pw.TextStyle(font: bold, fontSize: 9, color: muted),
+            ),
+          ],
+        ),
       ),
-      footer: (ctx) => pw.Align(
-        alignment: pw.Alignment.centerRight,
-        child: pw.Text('${ctx.pageNumber}/${ctx.pagesCount}', style: const pw.TextStyle(fontSize: 8)),
+      footer: (ctx) => pw.Row(
+        children: [
+          pw.UrlLink(
+            destination: 'https://tsudev.com',
+            child: pw.Row(
+              children: [
+                pw.Image(tsudev, width: 10, height: 10),
+                pw.SizedBox(width: 4),
+                pw.Text('TsuDEV · tsudev.com', style: const pw.TextStyle(fontSize: 8, color: muted)),
+              ],
+            ),
+          ),
+          pw.Spacer(),
+          pw.Text('${ctx.pageNumber}/${ctx.pagesCount}', style: const pw.TextStyle(fontSize: 8)),
+        ],
       ),
       build: (_) => [
         pw.TableHelper.fromTextArray(

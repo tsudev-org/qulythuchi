@@ -28,6 +28,7 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
+| LG1 logo riêng Quly Thu Chi (site + app + tệp xuất), nhánh `feat/lg1-logo` | agent-qulythuchi | 19:35 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
 

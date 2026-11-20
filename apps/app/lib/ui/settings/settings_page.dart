@@ -9,6 +9,7 @@ import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import '../onboarding/onboarding.dart';
 import '../widgets/auth_widgets.dart';
+import '../widgets/brand.dart';
 import '../widgets/common.dart';
 import '../widgets/form_fields.dart';
 
@@ -311,12 +312,17 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             _section(l.settingsAbout),
             ListTile(leading: const Icon(Icons.shield_outlined), title: Text(l.settingsSecurityNote)),
             ListTile(
-              leading: const Icon(Icons.info_outline),
+              leading: const BrandLogo(size: 24),
               title: Text(l.settingsVersion(appVersion)),
               subtitle: Text(l.settingsLicense),
-              onTap: () =>
-                  showLicensePage(context: context, applicationName: l.appTitle, applicationVersion: appVersion),
+              onTap: () => showLicensePage(
+                context: context,
+                applicationName: l.appTitle,
+                applicationVersion: appVersion,
+                applicationIcon: const BrandLogo(size: 48),
+              ),
             ),
+            const MakerTile(),
             const SizedBox(height: QtSpace.s4),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: QtSpace.s4),

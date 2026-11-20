@@ -22,8 +22,13 @@
  *     header - AVIF/WebP nhỏ hơn PNG 5-20 lần, PNG chỉ là đường lui.
  *   - favicon.ico 7 lớp THẬT (16-256), favicon-{16,32,96}.png, android-chrome-{192,512}.png,
  *     maskable riêng (nền đặc, vùng an toàn 80%), apple-touch-icon 180 nền đặc, og-image 1200x630.
- *   - apps/app/web/: favicon.png + icons/Icon-{192,512}.png, Icon-maskable-{192,512}.png của web app Flutter (/app/).
- *   Icon app gốc (Android mipmap, iOS/macOS AppIcon, Windows .ico) sinh ở P10 (phát hành).
+ *   - apps/app/web/: favicon.png + icons/Icon-{192,512}.png, Icon-maskable-{192,512}.png, apple-touch-icon.png
+ *     của web app Flutter (/app/).
+ *   - Icon app gốc (LG1): Android mipmap (cũ + adaptive + monochrome), iOS AppIcon (nền đặc, không alpha), macOS
+ *     AppIcon (ô bo góc theo lưới Big Sur), Windows app_icon.ico 7 lớp, Linux (cửa sổ GTK đọc từ asset Flutter).
+ *   - apps/app/assets/brand/: logo trong giao diện app và trong tệp xuất (PDF) - logo sản phẩm + logo tsudev
+ *     (khối nhà làm, mục 15.5).
+ *   - assets/brand/app/: bộ đóng gói desktop (qulythuchi.ico, qulythuchi.icns, linux/qulythuchi-<cỡ>.png).
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -148,11 +153,26 @@ function buildIco(entries) {
   return Buffer.concat([header, dir, ...entries.map((e) => e.data)]);
 }
 
+/** ICNS: các khối PNG có mã kiểu 4 byte (icp4=16, icp5=32, icp6=64, ic07=128, ic08=256, ic09=512, ic10=1024). */
+function buildIcns(chunks) {
+  const parts = chunks.map(([type, data]) => {
+    const h = Buffer.alloc(8);
+    h.write(type, 0, 'ascii');
+    h.writeUInt32BE(data.length + 8, 4);
+    return Buffer.concat([h, data]);
+  });
+  const head = Buffer.alloc(8);
+  head.write('icns', 0, 'ascii');
+  head.writeUInt32BE(8 + parts.reduce((n, b) => n + b.length, 0), 4);
+  return Buffer.concat([head, ...parts]);
+}
+
 const esc = (s) => String(s).replace(/[<>&'"]/g, (c) => `&#${c.charCodeAt(0)};`);
 
 async function main() {
   const raw = fs.readFileSync(path.join(ROOT, 'assets/brand', CFG.source));
-  const { rounded, square } = CFG.mode === 'tile' ? await tile(raw) : await noWhite(raw);
+  // eslint-disable-next-line prefer-const
+  let { rounded, square } = CFG.mode === 'tile' ? await tile(raw) : await noWhite(raw);
   const SOLID = hex(CFG.solidBg);
   const at = (size, src = rounded) =>
     sharp(src).resize(size, size, { fit: 'contain', background: CLEAR, kernel: 'lanczos3' }).png({ compressionLevel: 9 }).toBuffer();
@@ -172,6 +192,23 @@ async function main() {
     for (const size of [16, 24, 32, 48, 64, 128, 256]) entries.push({ size, data: await at(size, src) });
     return buildIco(entries);
   };
+  // Ô bo góc nền đặc (lưới icon macOS / ô logo trên nền tối), trong suốt ngoài ô.
+  const roundTile = async (size, scale, radius = 0.225) => {
+    const r = Math.round(size * radius);
+    const mask = Buffer.from(`<svg width="${size}" height="${size}"><rect width="${size}" height="${size}" rx="${r}" ry="${r}"/></svg>`);
+    const solid = await onSolid(size, scale, square);
+    return sharp(solid).ensureAlpha().composite([{ input: mask, blend: 'dest-in' }]).png({ compressionLevel: 9 }).toBuffer();
+  };
+  const padTo = async (size, inner, src) => {
+    const pad = Math.round((size - inner) / 2);
+    return sharp({ create: { width: size, height: size, channels: 4, background: CLEAR } })
+      .composite([{ input: src, top: pad, left: pad }])
+      .png({ compressionLevel: 9 })
+      .toBuffer();
+  };
+  // `iconTile`: logo nền trắng có mảng tối (navy chìm trên nền Tối) ⇒ mọi bản "icon" (favicon, logo header, .ico,
+  // PNG Linux, logo trong app) đặt trên ô nền đặc bo góc. Trên nền Sáng ô hòa vào nền; trên nền Tối logo vẫn rõ.
+  if (CFG.iconTile) rounded = await roundTile(1024, 0.84);
 
   // --- Logo cho giao diện website (<picture>).
   for (const s of [48, 96, 144, 192]) {
@@ -226,6 +263,86 @@ async function main() {
     emit(web(`icons/Icon-${s}.png`), await png(s));
     emit(web(`icons/Icon-maskable-${s}.png`), await onSolid(s, 0.8, square));
   }
+
+  // --- web /app/: apple-touch nền đặc (iOS tô đen chỗ trong suốt).
+  emit(web('apple-touch-icon.png'), await onSolid(180, 0.86, square));
+
+  // --- Icon app gốc (apps/app). Cùng ảnh gốc, cùng nền đặc.
+  const app = (rel) => path.join(ROOT, 'apps/app', rel);
+  const res = (rel) => app(`android/app/src/main/res/${rel}`);
+  const dens = { mdpi: 1, hdpi: 1.5, xhdpi: 2, xxhdpi: 3, xxxhdpi: 4 };
+  for (const [d, k] of Object.entries(dens)) {
+    // Bản cũ (< Android 8): ô bo góc nền đặc, lề 1/12 như icon hệ thống.
+    const legacy = Math.round(48 * k);
+    emit(res(`mipmap-${d}/ic_launcher.png`), await padTo(legacy, Math.round(legacy * 0.84), await roundTile(Math.round(legacy * 0.84), 0.82)));
+    // Adaptive 108dp: logo trong vùng an toàn 66dp (61%).
+    const fg = Math.round(108 * k);
+    const inner = Math.round(fg * 0.61);
+    emit(res(`mipmap-${d}/ic_launcher_foreground.png`), await padTo(fg, inner, await at(inner, square)));
+    // Monochrome (icon theo chủ đề, Android 13+): giữ alpha, tô trắng.
+    const mono = await sharp(await at(inner, square)).ensureAlpha().linear(0, 255).png().toBuffer();
+    emit(res(`mipmap-${d}/ic_launcher_monochrome.png`), await padTo(fg, inner, mono));
+  }
+  emit(
+    res('mipmap-anydpi-v26/ic_launcher.xml'),
+    Buffer.from(`<?xml version="1.0" encoding="utf-8"?>
+<!-- SINH bởi apps/site/scripts/brand-assets.mjs - không sửa tay. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+    <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
+</adaptive-icon>
+`)
+  );
+  emit(
+    res('values/ic_launcher_background.xml'),
+    Buffer.from(`<?xml version="1.0" encoding="utf-8"?>
+<!-- SINH bởi apps/site/scripts/brand-assets.mjs từ assets/brand/brand.json (solidBg) - không sửa tay. -->
+<resources>
+    <color name="ic_launcher_background">${CFG.solidBg}</color>
+</resources>
+`)
+  );
+  // iOS: ảnh vuông đầy nền đặc, không alpha (App Store từ chối alpha); hệ thống tự bo góc.
+  const iosDir = 'ios/Runner/Assets.xcassets/AppIcon.appiconset';
+  const iosNames = JSON.parse(fs.readFileSync(app(`${iosDir}/Contents.json`), 'utf8')).images.map((i) => i.filename);
+  for (const f of new Set(iosNames)) {
+    const mm = /Icon-App-([\d.]+)x[\d.]+@(\d)x\.png/.exec(f);
+    if (!mm) continue;
+    emit(app(`${iosDir}/${f}`), await onSolid(Math.round(Number(mm[1]) * Number(mm[2])), 0.8, square));
+  }
+  // macOS: lưới Big Sur - ô bo góc 824/1024, logo trong ô.
+  for (const s2 of [16, 32, 64, 128, 256, 512, 1024]) {
+    const t = Math.round(s2 * (824 / 1024));
+    emit(app(`macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_${s2}.png`), await padTo(s2, t, await roundTile(t, 0.8)));
+  }
+  // Windows: .ico 7 lớp trong suốt.
+  const winIco = await ico(rounded);
+  emit(app('windows/runner/resources/app_icon.ico'), winIco);
+  // Giao diện app + tệp xuất (PDF) + icon cửa sổ Linux: logo sản phẩm; logo tsudev chỉ cho khối nhà làm.
+  emit(app('assets/brand/logo-qulythuchi-256.png'), await png(256));
+  emit(app('assets/brand/logo-tsudev-128.png'), await png(128, tsudev));
+
+  // --- Bộ đóng gói desktop (assets/brand/app/), dùng ở P10.
+  const pack = (rel) => path.join(ROOT, 'assets/brand/app', rel);
+  emit(pack(`${CFG.id}.ico`), winIco);
+  const macTile = async (s2) => {
+    const t = Math.round(s2 * (824 / 1024));
+    return padTo(s2, t, await roundTile(t, 0.8));
+  };
+  emit(
+    pack(`${CFG.id}.icns`),
+    buildIcns([
+      ['icp4', await macTile(16)],
+      ['icp5', await macTile(32)],
+      ['icp6', await macTile(64)],
+      ['ic07', await macTile(128)],
+      ['ic08', await macTile(256)],
+      ['ic09', await macTile(512)],
+      ['ic10', await macTile(1024)],
+    ])
+  );
+  for (const s2 of [16, 24, 32, 48, 64, 128, 256, 512]) emit(pack(`linux/${CFG.id}-${s2}.png`), await png(s2));
 
   // --- Ghi hoặc kiểm.
   const bad = [];

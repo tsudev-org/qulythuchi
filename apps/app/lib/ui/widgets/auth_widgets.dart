@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'brand.dart';
 import 'common.dart';
 
 /// Ô mật khẩu có nút hiện/ẩn (nhãn đọc màn hình đầy đủ), tắt gợi ý/tự sửa của bàn phím.
@@ -77,6 +78,8 @@ class AuthScaffold extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const Center(child: BrandLogo(size: 56)),
+                  const SizedBox(height: 16),
                   Semantics(header: true, child: Text(title, style: Theme.of(context).textTheme.headlineSmall)),
                   if (body != null) ...[const SizedBox(height: 12), Text(body!)],
                   const SizedBox(height: 24),

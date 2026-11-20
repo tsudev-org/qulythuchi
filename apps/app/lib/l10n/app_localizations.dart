@@ -1016,6 +1016,12 @@ abstract class AppLocalizations {
   /// **'Giới thiệu'**
   String get settingsAbout;
 
+  /// No description provided for @settingsMadeBy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Một sản phẩm của TsuDEV'**
+  String get settingsMadeBy;
+
   /// No description provided for @settingsVersion.
   ///
   /// In vi, this message translates to:
