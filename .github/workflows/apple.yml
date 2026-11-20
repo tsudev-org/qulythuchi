@@ -1,0 +1,255 @@
+# qulythuchi: dựng và chạy thử iOS + macOS KHÔNG KÝ trên máy chạy macOS của GitHub (phiếu toàn hệ AP1, mẫu
+# lotus-share#80).
+#
+# Chưa có Mac + Apple Developer Program (AGENTS.md B.4 "iOS chưa phát hành"): workflow này giữ cho mã iOS/macOS của
+# apps/app luôn dựng được và chạy được, để ngày có tài khoản chỉ còn bước ký. Repo CÔNG KHAI nên phút macOS miễn phí.
+#   - iOS: `flutter build ios --release --no-codesign` -> Quly-Thu-Chi-<ver>-unsigned.ipa (artifact 14 ngày, KHÔNG đăng
+#     Release, KHÔNG đưa người khác) để chủ dự án tự ký lại bằng Apple ID cá nhân cho máy của mình.
+#   - iOS Simulator: dựng bản debug, cài + mở trên iPhone giả lập ngôn ngữ vi, kiểm ứng dụng còn chạy sau 45 giây VÀ
+#     không rơi vào màn hình lỗi khởi động (main.dart in "Khởi động thất bại: <loại lỗi>"), chụp màn hình; lặp lại
+#     trên iPad 13" giả lập (TARGETED_DEVICE_FAMILY "1,2" => App Store bắt buộc ảnh iPad 13").
+#   - macOS: dựng release (Xcode ký ad-hoc kèm Release.entitlements => sandbox bật THẬT), kiểm entitlements, mở thử,
+#     kiểm còn chạy + không lỗi khởi động, chụp màn hình. KHÔNG ký lại bằng `codesign --force --deep --sign -`
+#     (làm mất entitlements, bài học AP1 mục 2.1).
+#   - Kiểm tĩnh: bundle id, PrivacyInfo.xcprivacy có trong .app, chuỗi xin quyền không rỗng, không có aps-environment.
+name: Apple (iOS, macOS)
+
+on:
+  pull_request:
+    paths:
+      - 'apps/app/**'
+      - 'packages/core/**'
+      - '.github/workflows/apple.yml'
+      - 'scripts/apple-simulator-run.sh'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/app/ios/**'
+      - 'apps/app/macos/**'
+      - 'apps/app/pubspec.yaml'
+      - 'apps/app/pubspec.lock'
+      - '.github/workflows/apple.yml'
+      - 'scripts/apple-simulator-run.sh'
+  schedule:
+    - cron: '23 3 * * 1'   # thứ Hai hằng tuần: bắt sớm lỗi do Xcode/máy chạy macOS đổi
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apple-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.47.8'   # giống ci.yml
+  FLUTTER_COMMIT: '737ba8f885dc774b53b442759999a312c9461e4e'
+  BUNDLE_ID: 'com.tsudev.qulythuchi'
+  APP_NAME: 'Quly Thu Chi'
+  # Dấu hiệu lỗi khởi động cố định do apps/app/lib/main.dart in ra. Tìm kèm ": " vì `log show` tự ghi chuỗi tìm kiếm.
+  INIT_ERROR: 'Khởi động thất bại: '
+
+jobs:
+  ios:
+    name: iOS (không ký + Simulator)
+    runs-on: macos-15
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Cài Flutter (ghim tag + commit)
+        run: |
+          set -euo pipefail
+          git clone --depth 1 -b "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$RUNNER_TEMP/flutter"
+          test "$(git -C "$RUNNER_TEMP/flutter" rev-parse HEAD)" = "$FLUTTER_COMMIT"
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      # Plugin mới (mobile_scanner, local_auth...) dùng API của SDK 26: cần Xcode 26 trở lên.
+      - name: Chọn Xcode 26
+        run: |
+          set -euo pipefail
+          xc="$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1 || true)"
+          [[ -n "$xc" ]] || { echo "::error::Máy chạy không có Xcode 26"; ls -d /Applications/Xcode*.app; exit 1; }
+          sudo xcode-select -s "$xc/Contents/Developer"
+          xcodebuild -version
+      - name: Kiểm tĩnh mã nguồn iOS
+        working-directory: apps/app/ios
+        run: |
+          set -euo pipefail
+          plutil -lint Runner/Info.plist Runner/PrivacyInfo.xcprivacy
+          pb() { /usr/libexec/PlistBuddy -c "Print :$1" "$2" 2>/dev/null; }
+          for k in NSCameraUsageDescription NSPhotoLibraryUsageDescription NSMicrophoneUsageDescription \
+                   NSSpeechRecognitionUsageDescription NSFaceIDUsageDescription; do
+            v="$(pb "$k" Runner/Info.plist || true)"
+            [[ -n "$v" ]] || { echo "::error::Info.plist: $k rỗng hoặc thiếu"; exit 1; }
+          done
+          # Lối về OIDC (app_links): lược đồ URL riêng của ứng dụng.
+          [[ "$(pb CFBundleURLTypes:0:CFBundleURLSchemes:0 Runner/Info.plist)" == "$BUNDLE_ID" ]] \
+            || { echo "::error::Info.plist thiếu lược đồ URL $BUNDLE_ID (đăng nhập tsudev.com)"; exit 1; }
+          grep -q "PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID;" Runner.xcodeproj/project.pbxproj
+          grep -q "PrivacyInfo.xcprivacy in Resources" Runner.xcodeproj/project.pbxproj \
+            || { echo "::error::PrivacyInfo.xcprivacy chưa gắn vào Resources của Runner"; exit 1; }
+          # Ứng dụng không dùng push: không được có aps-environment (buộc bật Push Notifications cho App ID).
+          for ent in $(find Runner -name '*.entitlements'); do
+            plutil -lint "$ent"
+            if pb aps-environment "$ent" >/dev/null; then echo "::error::$ent còn aps-environment"; exit 1; fi
+          done
+          # Mã hóa xuất khẩu: app dùng libsodium (ngoài hệ điều hành) => KHÔNG mặc nhiên khai false (AP1 mục 2.8).
+          if [[ "$(pb ITSAppUsesNonExemptEncryption Runner/Info.plist || true)" == false ]]; then
+            echo "::error::ITSAppUsesNonExemptEncryption=false sai với app mã hóa đầu-cuối bằng libsodium"; exit 1
+          fi
+      - name: Dựng iOS release không ký
+        working-directory: apps/app
+        run: |
+          set -euo pipefail
+          flutter config --no-analytics
+          flutter pub get
+          flutter build ios --release --no-codesign
+      - name: Kiểm gói .app + đóng .ipa không ký
+        run: |
+          set -euo pipefail
+          app=apps/app/build/ios/iphoneos/Runner.app
+          [[ "$(plutil -extract CFBundleIdentifier raw "$app/Info.plist")" == "$BUNDLE_ID" ]]
+          [[ "$(plutil -extract CFBundleDisplayName raw "$app/Info.plist")" == "$APP_NAME" ]]
+          test -f "$app/PrivacyInfo.xcprivacy" || { echo "::error::PrivacyInfo.xcprivacy không có trong Runner.app"; exit 1; }
+          plutil -lint "$app/PrivacyInfo.xcprivacy"
+          lipo -info "$app/Runner" | tee /dev/stderr | grep -q arm64
+          ver="$(plutil -extract CFBundleShortVersionString raw "$app/Info.plist")"
+          build="$(plutil -extract CFBundleVersion raw "$app/Info.plist")"
+          echo "Phiên bản $ver ($build)"
+          mkdir -p dist/Payload && cp -R "$app" dist/Payload/
+          (cd dist && zip -qry "Quly-Thu-Chi-${ver}-unsigned.ipa" Payload && rm -rf Payload)
+          (cd dist && shasum -a 256 ./*.ipa | tee SHA256SUMS.txt)
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ios-unsigned-ipa
+          path: dist/*
+          retention-days: 14
+          if-no-files-found: error
+      - name: Dựng bản Simulator
+        working-directory: apps/app
+        run: flutter build ios --simulator --debug
+      - name: Chạy thử trên iPhone giả lập
+        run: |
+          set -euo pipefail
+          udid="$(xcrun simctl list devices available -j | python3 -I -c '
+          import json, sys
+          d = json.load(sys.stdin)["devices"]
+          ios = sorted((k for k in d if "iOS" in k), key=lambda k: [int(x) for x in k.rsplit("iOS-", 1)[1].split("-")])
+          for k in reversed(ios):
+              for dev in d[k]:
+                  if dev["name"].startswith("iPhone") and "Pro Max" in dev["name"]:
+                      print(dev["udid"]); sys.exit()
+          for k in reversed(ios):
+              for dev in d[k]:
+                  if dev["name"].startswith("iPhone"):
+                      print(dev["udid"]); sys.exit()
+          ')"
+          [[ -n "$udid" ]] || { echo "::error::Không có iPhone giả lập"; xcrun simctl list devices available; exit 1; }
+          bash scripts/apple-simulator-run.sh "$udid" iphone
+      - name: Chạy thử + chụp ảnh trên iPad 13" giả lập
+        run: |
+          set -euo pipefail
+          udid="$(xcrun simctl list devices available -j | python3 -I -c '
+          import json, sys
+          d = json.load(sys.stdin)["devices"]
+          ios = sorted((k for k in d if "iOS" in k), key=lambda k: [int(x) for x in k.rsplit("iOS-", 1)[1].split("-")])
+          for ten in ("iPad Pro 13", "iPad Pro (12.9-inch)", "iPad Air 13"):
+              for k in reversed(ios):
+                  for dev in d[k]:
+                      if dev["name"].startswith(ten):
+                          print(dev["udid"]); sys.exit()
+          ')"
+          [[ -n "$udid" ]] || { echo "::error::Không có iPad 13\" giả lập"; xcrun simctl list devices available; exit 1; }
+          bash scripts/apple-simulator-run.sh "$udid" ipad-13
+          # Cỡ App Store nhận cho khe iPad 13" (dọc): 2064x2752 hoặc 2048x2732.
+          w=$(sips -g pixelWidth shots/ipad-13.png | awk '/pixelWidth/{print $2}')
+          h=$(sips -g pixelHeight shots/ipad-13.png | awk '/pixelHeight/{print $2}')
+          echo "Ảnh iPad: ${w}x${h}"
+          case "${w}x${h}" in
+            2064x2752|2048x2732) ;;
+            *) echo "::error::Ảnh iPad ${w}x${h} không đúng cỡ App Store 13\" (2064x2752 hoặc 2048x2732)"; exit 1 ;;
+          esac
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: ios-simulator-screenshot
+          path: shots/*
+          retention-days: 14
+          if-no-files-found: ignore
+
+  macos:
+    name: macOS (ad-hoc + chạy thử)
+    runs-on: macos-15
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Cài Flutter (ghim tag + commit)
+        run: |
+          set -euo pipefail
+          git clone --depth 1 -b "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$RUNNER_TEMP/flutter"
+          test "$(git -C "$RUNNER_TEMP/flutter" rev-parse HEAD)" = "$FLUTTER_COMMIT"
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      - name: Chọn Xcode 26
+        run: |
+          set -euo pipefail
+          xc="$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1 || true)"
+          [[ -n "$xc" ]] || { echo "::error::Máy chạy không có Xcode 26"; exit 1; }
+          sudo xcode-select -s "$xc/Contents/Developer"
+          xcodebuild -version
+      - name: Kiểm tĩnh mã nguồn macOS
+        working-directory: apps/app/macos
+        run: |
+          set -euo pipefail
+          plutil -lint Runner/Info.plist Runner/Release.entitlements Runner/DebugProfile.entitlements
+          grep -qx "PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID" Runner/Configs/AppInfo.xcconfig
+          grep -qx "PRODUCT_NAME = $APP_NAME" Runner/Configs/AppInfo.xcconfig
+          [[ -n "$(/usr/libexec/PlistBuddy -c 'Print :NSCameraUsageDescription' Runner/Info.plist)" ]]
+          # Bản phát hành không được mang quyền chỉ dành cho debug.
+          if /usr/libexec/PlistBuddy -c 'Print :com.apple.security.cs.allow-jit' Runner/Release.entitlements 2>/dev/null; then
+            echo "::error::Release.entitlements còn allow-jit"; exit 1
+          fi
+      - name: Dựng macOS release
+        working-directory: apps/app
+        run: |
+          set -euo pipefail
+          flutter config --no-analytics
+          flutter pub get
+          flutter build macos --release
+      - name: Kiểm chữ ký + entitlements, chạy thử
+        run: |
+          set -euo pipefail
+          app="apps/app/build/macos/Build/Products/Release/$APP_NAME.app"
+          exe="$app/Contents/MacOS/$APP_NAME"
+          [[ "$(plutil -extract CFBundleIdentifier raw "$app/Contents/Info.plist")" == "$BUNDLE_ID" ]]
+          lipo -info "$exe" | tee /dev/stderr | grep -q arm64
+          codesign --verify --deep --strict "$app"
+          codesign -dv "$app" 2>&1 | grep -E '^(Signature|Identifier|TeamIdentifier)'
+          # Entitlements Release (sandbox, mạng ra, camera) phải nằm trong chữ ký Xcode tạo ra.
+          codesign -d --entitlements - --xml "$app" > ent.plist
+          pb() { /usr/libexec/PlistBuddy -c "Print :$1" "$2" 2>/dev/null; }
+          for k in com.apple.security.app-sandbox com.apple.security.network.client com.apple.security.device.camera; do
+            [[ "$(pb "$k" ent.plist)" == true ]] || { echo "::error::Chữ ký thiếu $k"; exit 1; }
+          done
+          if pb com.apple.security.cs.allow-jit ent.plist >/dev/null; then echo "::error::Bản release mang allow-jit"; exit 1; fi
+          # Chạy thẳng tệp thực thi (giữ stdout của Flutter) - đúng chữ ký Xcode, sandbox bật thật.
+          "$exe" > macos-app.log 2>&1 &
+          sleep 30
+          pgrep -x "$APP_NAME" >/dev/null || { echo "::error::Ứng dụng macOS thoát/sập trong 30 giây đầu"; \
+            cat macos-app.log; log show --last 2m --predicate "process == \"$APP_NAME\"" | tail -80; exit 1; }
+          mkdir -p shots && screencapture -x shots/macos.png || echo "::warning::Không chụp được màn hình"
+          { cat macos-app.log; log show --last 5m --style compact \
+              --predicate "eventMessage CONTAINS \"${INIT_ERROR%: }\""; } > macos-check.log || true
+          if grep -qF "$INIT_ERROR" macos-check.log; then
+            echo "::error::Ứng dụng macOS hiện màn hình lỗi khởi động:"; grep -F "$INIT_ERROR" macos-check.log | tail -3; exit 1
+          fi
+          pkill -x "$APP_NAME" || true
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: macos-screenshot
+          path: shots/*
+          retention-days: 14
+          if-no-files-found: ignore
