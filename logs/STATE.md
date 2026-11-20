@@ -14,10 +14,10 @@
 - [ ] Dời từ P7 (chưa giao phase): tệp đính kèm ảnh hóa đơn mã hóa (`PUT /files` + đồng bộ tệp), sao kê PDF, OCR
   desktop (Tesseract), widget/lối tắt iOS.
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
-- [ ] ⏸ T7/PRO1 - Pro + Ủng hộ + huy hiệu, **đồng bộ/sao lưu đám mây thành Pro** (👤 chốt 19/11/2026): Quyết định + hợp đồng
-  chung ĐÃ CHỐT (phiếu gốc PRO1 mục 8-9). Chờ tsudev-standards v3.9.0 (PRO-A); phần máy chủ quyền lợi chờ PRO-B; phần
-  không phụ thuộc làm được ngay (ADR-0016 mục 3). Đọc
-  `docs/adr/0016-*` (ĐỀ XUẤT) + `logs/handover/20261119-PRO1_luu-cuc-bo-pro-dong-bo.md`.
+- [ ] ⏸ T7/PRO1 phần APP (Pro + Ủng hộ + huy hiệu + thông báo 30 ngày): máy chủ XONG 20/11/2026 (PR #27). Chờ gói
+  Flutter `tsudev_ui` (PRO-C2, `tsudev-org/tsudev-ui-flutter`) + trang `tsudev.com/pro` (B3). Đọc phiếu
+  `logs/handover/20261120-01_t7-may-chu-xong.md` + ADR-0016 mục 4.
+- [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] AP1 toàn hệ (`~/projects/logs/handover/20261119-AP1_*`): workflow `apple.yml` iOS/macOS cho `apps/app`.
 - [ ] Đề xuất "Đăng nhập với Apple" chờ tsudev-standards duyệt (`tsudev-standards/logs/handover/20261119-01_*`).
 - [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); sinh icon app gốc từ dây chuyền thương hiệu (hiện chỉ web)
@@ -26,9 +26,17 @@
 
 | Task | Agent | Bắt đầu |
 | --- | --- | --- |
-| T7-S máy chủ Pro (migration 0004, kênh RP, gate 402) | agent-qulythuchi (qulythuchi-28) | 20/11/2026 |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 20/11/2026 - T7 máy chủ Pro (agent-qulythuchi, phiên qulythuchi-28, ADR-0016 ĐÃ CHẤP NHẬN, phiếu rà soát
+  `20261120-t7-may-chu-pro`): đồng bộ chuẩn v3.9.1; migration 0004 (đệm quyền lợi ≤ 24 giờ + băm mã cài đặt); kênh RP
+  tsudev.com (`private_key_jwt`, kiểm JWS ES256/iss/aud/typ/sub); gate 402 `pro_required` (đẩy, tệp, tạo/mời ví chung,
+  email; ví chung theo Pro chủ ví); `GET /api/v1/me/entitlements`; dọn bản mã khi Pro hết > 90 ngày; hạn mức 200 MiB +
+  1 GiB; cờ `PRO_ENFORCE` (production `off`). Máy chủ 68 test đạt; PR #27 CI xanh, gộp `adc5e8c`. LÊN PRODUCTION
+  (Worker version `cdc9a0d7`, migration 0004 áp D1 remote): `/`, `/app/`, health 200, `/api/v1/me/entitlements` 401
+  khi chưa đăng nhập. 👤 đã đặt secret `RP_PRIVATE_JWK` + đăng ký khoá công khai (`kid` `qulythuchi-rp-c5128cae`) ở
+  Neon tsudev; agent thử kênh RP thật: assertion đúng ⇒ `404 unknown_subject` cho sub giả, không token ⇒ 401.
 
 - 19/11/2026 - T7 dừng trước khi viết mã (agent-qulythuchi, phiên qulythuchi-b2): T5/T6 ở tsudev chưa có mã, và tsudev
   ADR-0002 bác phương án app tự xác minh Play ⇒ 👤 chọn "phiếu trước, chờ T5". 👤 chốt thêm cho toàn hệ: miễn phí chỉ lưu
