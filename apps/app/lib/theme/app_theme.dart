@@ -72,19 +72,23 @@ ThemeData buildTheme(Brightness brightness) {
   final text = base.textTheme
       .apply(bodyColor: p.textPrimary, displayColor: p.textPrimary, fontFamily: 'Inter')
       .copyWith(
+        // h1-h3 và số liệu lớn (MoneyText tổng) dùng font tiêu đề của bản sắc (DESIGN_SYSTEM.md mục 1.2).
         headlineMedium: base.textTheme.headlineMedium?.copyWith(
+          fontFamily: QtBrand.fontDisplay,
           fontSize: QtFontSize.h1,
           fontWeight: FontWeight.w700,
           height: QtLineHeight.heading,
           color: p.textPrimary,
         ),
         headlineSmall: base.textTheme.headlineSmall?.copyWith(
+          fontFamily: QtBrand.fontDisplay,
           fontSize: QtFontSize.h2,
           fontWeight: FontWeight.w600,
           height: QtLineHeight.heading,
           color: p.textPrimary,
         ),
         titleLarge: base.textTheme.titleLarge?.copyWith(
+          fontFamily: QtBrand.fontDisplay,
           fontSize: QtFontSize.h3,
           fontWeight: FontWeight.w600,
           height: QtLineHeight.heading,
@@ -112,7 +116,7 @@ ThemeData buildTheme(Brightness brightness) {
     borderRadius: BorderRadius.circular(QtRadius.md),
     borderSide: BorderSide(color: p.borderControl),
   );
-  final buttonShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(QtRadius.md));
+  final buttonShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(QtRadius.control));
   const minButton = Size(64, 48);
   return base.copyWith(
     colorScheme: scheme,
@@ -193,7 +197,7 @@ ThemeData buildTheme(Brightness brightness) {
     navigationRailTheme: NavigationRailThemeData(
       backgroundColor: p.bgSurface,
       indicatorColor: p.bgHover,
-      selectedIconTheme: IconThemeData(color: p.primary),
+      selectedIconTheme: IconThemeData(color: p.iconNav),
     ),
     segmentedButtonTheme: SegmentedButtonThemeData(
       style: SegmentedButton.styleFrom(

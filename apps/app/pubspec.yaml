@@ -91,6 +91,8 @@ flutter:
   assets:
     - assets/brand/
     - assets/brand/providers/
+    - assets/fonts/Inter-LICENSE.txt
+    - assets/fonts/OFL-BeVietnamPro.txt
   fonts:
     - family: Inter
       fonts:
@@ -100,6 +102,13 @@ flutter:
         - asset: assets/fonts/Inter-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+    # Font tiêu đề của bản sắc qulythuchi (tsudev-standards v5.0.0, products/qulythuchi.json): tối đa 2 độ đậm.
+    - family: Be Vietnam Pro
+      fonts:
+        - asset: assets/fonts/BeVietnamPro-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/BeVietnamPro-Bold.ttf
           weight: 700
 
   # To add assets to your application, add an assets section, like this:

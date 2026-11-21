@@ -3,5 +3,5 @@
      Đổi token thì đổi cả ở đây (RemoteViews không đọc được ThemeData của Flutter). -->
 <resources>
     <color name="qt_widget_bg">#FFFFFFFF</color>
-    <color name="qt_widget_fg">#FF1C2B3A</color>
+    <color name="qt_widget_fg">#FF0A0A0A</color>
 </resources>

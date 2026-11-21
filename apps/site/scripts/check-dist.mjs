@@ -34,7 +34,7 @@ function kiemTra(tep, html) {
   const luaChon = [...html.matchAll(/data-chon-giao-dien="([a-z]+)"/g)].map((m) => m[1]).join(',');
   if (luaChon !== 'light,dark,system') loi.push(`${ten}: bộ chọn giao diện cần light,dark,system: ${luaChon}`);
   if (html.indexOf('id="giao-dien"') < html.indexOf('<footer')) loi.push(`${ten}: bộ chọn giao diện phải ở chân trang`);
-  if (!/<html lang="vi" data-theme="dark">/.test(html)) loi.push(`${ten}: mặc định phải là data-theme="dark"`);
+  if (!/<html lang="vi" data-theme="dark" data-product="qulythuchi">/.test(html)) loi.push(`${ten}: <html> cần data-theme="dark" + data-product="qulythuchi"`);
   if (/<style[\s>]/.test(html) || / style="/.test(html)) loi.push(`${ten}: có CSS nội tuyến (CSP chặn)`);
   for (const a of html.matchAll(/<a [^>]*target="_blank"[^>]*>/g)) {
     if (!a[0].includes('rel="noopener noreferrer"')) loi.push(`${ten}: thiếu rel noopener noreferrer`);
