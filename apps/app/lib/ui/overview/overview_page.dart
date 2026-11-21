@@ -14,6 +14,7 @@ import '../quick_entry/quick_entry_sheet.dart';
 import '../recurring/recurring_page.dart';
 import '../transactions/txn_tile.dart';
 import '../widgets/common.dart';
+import '../widgets/cot_tang_truong.dart';
 import 'period_card.dart';
 
 class OverviewPage extends ConsumerWidget {
@@ -104,45 +105,52 @@ class OverviewPage extends ConsumerWidget {
                     _Banner(text: l.skippedRecords(data.skipped)),
                     const SizedBox(height: QtSpace.s3),
                   ],
+                  // Thẻ số liệu trên cùng của bố cục bang-dieu-khien, nền hoạ tiết cot-tang-truong (bản sắc v5.0.0).
                   Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(QtSpace.s4),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(l.overviewTotal, style: TextStyle(color: p.textSecondary)),
-                          const SizedBox(height: QtSpace.s1),
-                          if (totals.isEmpty) MoneyText(Money.zero(Currency.vnd), style: textTheme.headlineMedium),
-                          for (final m in totals.values) MoneyText(m, style: textTheme.headlineMedium),
-                          if (totals.length > 1 || (totals.length == 1 && totals.keys.first != base)) ...[
-                            const SizedBox(height: QtSpace.s2),
-                            Text(l.overviewTotalIn(base.code), style: TextStyle(color: p.textSecondary)),
-                            MoneyText(converted.total, style: textTheme.titleLarge),
-                            if (converted.missing.isNotEmpty)
-                              Text(
-                                l.ratesMissing(converted.missing.map((c) => c.code).join(', ')),
-                                style: TextStyle(color: p.warning, fontSize: QtFontSize.sm),
-                              ),
-                          ],
-                          const SizedBox(height: QtSpace.s4),
-                          Wrap(
-                            spacing: QtSpace.s6,
-                            runSpacing: QtSpace.s2,
+                    clipBehavior: Clip.antiAlias,
+                    child: Stack(
+                      children: [
+                        const Positioned(right: QtSpace.s4, bottom: 0, width: 220, height: 96, child: CotTangTruong()),
+                        Padding(
+                          padding: const EdgeInsets.all(QtSpace.s4),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _Stat(
-                                label: l.overviewMonthIncome,
-                                icon: Icons.south_west,
-                                values: [for (final e in income.entries) Money(e.value, e.key)],
-                              ),
-                              _Stat(
-                                label: l.overviewMonthExpense,
-                                icon: Icons.north_east,
-                                values: [for (final e in expense.entries) Money(-e.value, e.key)],
+                              Text(l.overviewTotal, style: TextStyle(color: p.textSecondary)),
+                              const SizedBox(height: QtSpace.s1),
+                              if (totals.isEmpty) MoneyText(Money.zero(Currency.vnd), style: textTheme.headlineMedium),
+                              for (final m in totals.values) MoneyText(m, style: textTheme.headlineMedium),
+                              if (totals.length > 1 || (totals.length == 1 && totals.keys.first != base)) ...[
+                                const SizedBox(height: QtSpace.s2),
+                                Text(l.overviewTotalIn(base.code), style: TextStyle(color: p.textSecondary)),
+                                MoneyText(converted.total, style: textTheme.titleLarge),
+                                if (converted.missing.isNotEmpty)
+                                  Text(
+                                    l.ratesMissing(converted.missing.map((c) => c.code).join(', ')),
+                                    style: TextStyle(color: p.warning, fontSize: QtFontSize.sm),
+                                  ),
+                              ],
+                              const SizedBox(height: QtSpace.s4),
+                              Wrap(
+                                spacing: QtSpace.s6,
+                                runSpacing: QtSpace.s2,
+                                children: [
+                                  _Stat(
+                                    label: l.overviewMonthIncome,
+                                    icon: Icons.south_west,
+                                    values: [for (final e in income.entries) Money(e.value, e.key)],
+                                  ),
+                                  _Stat(
+                                    label: l.overviewMonthExpense,
+                                    icon: Icons.north_east,
+                                    values: [for (final e in expense.entries) Money(-e.value, e.key)],
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: QtSpace.s4),

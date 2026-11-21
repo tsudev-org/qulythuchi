@@ -1,0 +1,9 @@
+---
+// Hoạ tiết cot-tang-truong tĩnh ở nền hero (trang trí: aria-hidden). Màu = var(--accent) qua currentColor, độ mờ ≤ 15%.
+import { DO_PHU, cotSvg } from '../lib/cot-tang-truong.mjs';
+
+const RONG = 640;
+const CAO = 320;
+---
+<svg class="hoa-tiet" viewBox={`0 0 ${RONG} ${CAO}`} preserveAspectRatio="xMaxYMax meet" aria-hidden="true" focusable="false"
+     fill-opacity={DO_PHU} set:html={cotSvg(RONG, CAO, { bo: 10 })} />

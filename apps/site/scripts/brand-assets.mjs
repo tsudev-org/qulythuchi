@@ -34,6 +34,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import { DO_PHU, cotSvg } from '../src/lib/cot-tang-truong.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const WEB = path.resolve(HERE, '..'); // apps/site
@@ -42,6 +43,8 @@ const require = createRequire(path.join(WEB, 'package.json'));
 const sharp = require('sharp');
 
 const CFG = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/brand/brand.json'), 'utf8'));
+// Bản sắc sản phẩm (tsudev-standards v5.0.0): og-image dùng màu chế độ Tối của products/<id>.json + hoạ tiết chữ ký.
+const BAN_SAC = JSON.parse(fs.readFileSync(path.join(ROOT, `.standards/tokens/products/${CFG.id}.json`), 'utf8'));
 const CHECK = process.argv.includes('--check');
 const outputs = new Map(); // đường dẫn tuyệt đối -> Buffer
 
@@ -241,12 +244,15 @@ async function main() {
   const W = 1200;
   const H = 630;
   const L = 300;
+  const toi = BAN_SAC.colors.dark;
   const back = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
-    <defs><radialGradient id="g" cx="0.28" cy="0.5" r="0.75"><stop offset="0%" stop-color="${CFG.ogGlow}"/><stop offset="100%" stop-color="#0a0a0a"/></radialGradient></defs>
+    <defs><radialGradient id="g" cx="0.28" cy="0.5" r="0.75"><stop offset="0%" stop-color="${toi.primary}" stop-opacity="0.16"/><stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/></radialGradient></defs>
+    <rect width="${W}" height="${H}" fill="#0a0a0a"/>
     <rect width="${W}" height="${H}" fill="url(#g)"/>
+    <g fill-opacity="${DO_PHU}">${cotSvg(560, 360, { mau: toi.accent, bo: 12, dx: W - 600, dy: H - 360 })}</g>
     <text x="500" y="270" font-family="DejaVu Sans, Verdana, sans-serif" font-size="68" font-weight="700" fill="#ededed">${esc(CFG.name)}</text>
     ${CFG.ogLines.map((l, i) => `<text x="500" y="${340 + i * 44}" font-family="DejaVu Sans, Verdana, sans-serif" font-size="30" fill="#b4b4b4">${esc(l)}</text>`).join('')}
-    <text x="500" y="${360 + CFG.ogLines.length * 44 + 20}" font-family="DejaVu Sans, Verdana, sans-serif" font-size="26" fill="${CFG.ogAccent}">${esc(CFG.domain)}</text>
+    <text x="500" y="${360 + CFG.ogLines.length * 44 + 20}" font-family="DejaVu Sans, Verdana, sans-serif" font-size="26" fill="${toi['text-link']}">${esc(CFG.domain)}</text>
   </svg>`);
   emit(
     pub('og-image.png'),

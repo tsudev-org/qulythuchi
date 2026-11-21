@@ -2,7 +2,7 @@
 
 - **Mã phiếu**: 20261121-STD50
 - **Từ**: phiên tsudev-standards, 21/11/2026 - **Đến**: phiên kế tiếp của `qulythuchi`
-- **Trạng thái**: ĐANG LÀM - PR 1 xong mã (agent-qulythuchi 21/11/2026), PR 2 chưa
+- **Trạng thái**: ĐÓNG - PR 1 (#51) + PR 2 (agent-qulythuchi 21/11/2026)
 - **Nguồn**: https://github.com/tsudev-org/tsudev-standards/releases/tag/v5.0.0 - `docs/DESIGN_SYSTEM.md` mục 1.2,
   CHANGELOG 5.0.0 "Hướng dẫn nâng cấp"
 - **Bối cảnh**: chủ dự án muốn mỗi sản phẩm có đặc trưng nổi bật riêng (màu, giao diện, bố cục). Trước v5.0.0, 9/11
@@ -60,3 +60,15 @@ kiểm chống trùng phải xanh. KHÔNG ghi đè tại repo này.
   - Giữ: `design/tokens.qulythuchi.json` chỉ có màu biểu đồ dataviz (không trùng vai trò chuẩn); nút Google/GitHub giữ
     màu thương hiệu của họ; `warm` ⇒ `light` đã có sẵn (app + theme.js).
   - Ảnh: `logs/anh/20261121-STD50/pr1-*` (trước/sau, Sáng/Tối).
+- **PR 2** (nhánh `feat/bo-cuc-bang-dieu-khien`):
+  - Hoạ tiết `cot-tang-truong`: một hình học `apps/site/src/lib/cot-tang-truong.mjs` (9 cột cao 22%→100%, độ phủ 12%,
+    màu `accent`) dùng cho hero website (`CotTangTruong.astro`) và `og-image.png` (`brand-assets.mjs` đọc màu Tối từ
+    `products/qulythuchi.json`); app chép đúng công thức ở `lib/ui/widgets/cot_tang_truong.dart` (test đối chiếu .mjs).
+  - Website trang chủ: hero căn trái + hoạ tiết; THÂN theo `bang-dieu-khien`: thanh bên trái dính (Tổng quan, Tính năng,
+    Riêng tư, Bắt đầu; điện thoại thành dải ngang) + vùng làm việc mở đầu bằng 4 thẻ số liệu (font tiêu đề, màu
+    `primary`). Header/chân trang/bộ chọn giao diện không đổi.
+  - App: vốn đã là `bang-dieu-khien` (NavigationRail trái từ `wideBreakpoint`, thẻ tổng số dư + thu/chi tháng trên
+    cùng màn Tổng quan) ⇒ chỉ thêm hoạ tiết vào nền thẻ số liệu đầu.
+  - `og-image.png` sinh lại; ảnh nổi bật Google Play (`assets/store/play-feature-1024x500.png`) GIỮ NGUYÊN vì đã nộp
+    lên Play Console (`ogGlow` chỉ còn cho nó) - đổi khi cập nhật hồ sơ Play.
+  - Ảnh: `logs/anh/20261121-STD50/pr2-*`.

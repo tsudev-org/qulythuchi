@@ -1,4 +1,5 @@
 ---
+import CotTangTruong from '../components/CotTangTruong.astro';
 import Trang from '../layouts/Trang.astro';
 
 const diemManh = [
@@ -9,41 +10,78 @@ const diemManh = [
   ['Báo cáo dễ đọc', 'Thu chi theo kỳ so với kỳ trước, cơ cấu danh mục, tài sản ròng, lịch chi tiêu, "an toàn để tiêu". Biểu đồ nào cũng có bảng số.'],
   ['Dùng không cần tài khoản', 'Cài là dùng, dữ liệu nằm trên máy. Đăng nhập tài khoản TsuDEV chỉ khi muốn đồng bộ nhiều thiết bị.'],
 ];
+// Bố cục chữ ký bang-dieu-khien (DESIGN_SYSTEM.md mục 1.2.2): thanh bên trái cố định + vùng làm việc + thẻ số liệu trên cùng.
+const soLieu = [
+  ['0', 'quảng cáo và trình theo dõi'],
+  ['E2EE', 'mã hóa trên thiết bị bằng libsodium'],
+  ['5', 'nền tảng: Android, Windows, macOS, Linux, web'],
+  ['AGPL-3.0', 'mã nguồn mở, ai cũng kiểm được'],
+];
+const muc = [
+  { id: 'so-lieu', ten: 'Tổng quan' },
+  { id: 'tinh-nang', ten: 'Tính năng' },
+  { id: 'rieng-tu', ten: 'Riêng tư' },
+  { id: 'bat-dau', ten: 'Bắt đầu' },
+];
 ---
 <Trang moTa="Quly Thu Chi: app quản lý thu chi cá nhân mã hóa đầu-cuối, ghi nhanh bằng một câu, tự nhập từ ngân hàng, ngân sách, báo cáo. Có bản web." duongDan="/">
-  <section class="hero khung">
-    <span class="nhan">Một sản phẩm của TsuDEV</span>
-    <h1>Quản lý thu chi, <span class="nhan-mau">chỉ bạn đọc được</span></h1>
-    <p>Quly Thu Chi ghi lại từng khoản tiền vào ra, lập ngân sách và cho bạn thấy tiền đi đâu. Mọi dữ liệu được mã hóa
-      ngay trên thiết bị: kể cả máy chủ đồng bộ của chúng tôi cũng không đọc được.</p>
-    <div class="hang-nut">
-      <a class="nut nut--chinh" href="/app/">Dùng ngay trên trình duyệt</a>
-      <a class="nut nut--phu" href="/tai-ve/">Tải ứng dụng</a>
+  <section class="hero hero--bang">
+    <CotTangTruong />
+    <div class="khung hero__chu">
+      <span class="nhan">Một sản phẩm của TsuDEV</span>
+      <h1>Quản lý thu chi, <span class="nhan-mau">chỉ bạn đọc được</span></h1>
+      <p>Quly Thu Chi ghi lại từng khoản tiền vào ra, lập ngân sách và cho bạn thấy tiền đi đâu. Mọi dữ liệu được mã hóa
+        ngay trên thiết bị: kể cả máy chủ đồng bộ của chúng tôi cũng không đọc được.</p>
+      <div class="hang-nut">
+        <a class="nut nut--chinh" href="/app/">Dùng ngay trên trình duyệt</a>
+        <a class="nut nut--phu" href="/tai-ve/">Tải ứng dụng</a>
+      </div>
     </div>
   </section>
 
-  <section class="muc">
-    <div class="khung">
-      <h2>Đủ cho tài chính cá nhân, không thừa</h2>
-      <p class="dan">Chọn lọc từ những app quản lý chi tiêu phổ biến, bỏ quảng cáo và theo dõi, thêm mã hóa đầu-cuối.</p>
-      <div class="luoi">
-        {diemManh.map(([ten, moTa]) => <div class="the"><h3>{ten}</h3><p>{moTa}</p></div>)}
-      </div>
-      <p><a href="/tinh-nang/">Xem đầy đủ tính năng</a></p>
-    </div>
-  </section>
+  <div class="khung bang-dieu-khien">
+    <nav class="bang-dieu-khien__ben" aria-label="Trên trang này">
+      <ul>
+        {muc.map((m) => <li><a href={`#${m.id}`}>{m.ten}</a></li>)}
+      </ul>
+    </nav>
+    <div class="bang-dieu-khien__vung">
+      <section id="so-lieu" aria-labelledby="so-lieu-tieu-de">
+        <h2 id="so-lieu-tieu-de" class="an-di">Tổng quan</h2>
+        <ul class="the-so-lieu">
+          {soLieu.map(([so, nhan]) => <li class="the-so-lieu__o"><span class="the-so-lieu__so">{so}</span><span class="the-so-lieu__nhan">{nhan}</span></li>)}
+        </ul>
+      </section>
 
-  <section class="muc">
-    <div class="khung">
-      <h2>Tiền là chuyện riêng</h2>
-      <p class="dan">Ứng dụng tài chính biết nhiều về bạn hơn hầu hết mọi app khác. Vì vậy Quly Thu Chi được thiết kế để
-        dữ liệu không rời tay bạn ở dạng đọc được.</p>
-      <div class="luoi">
-        <div class="the"><h3>Không quảng cáo, không theo dõi</h3><p>Không SDK quảng cáo, không phân tích hành vi, không bán dữ liệu.</p></div>
-        <div class="the"><h3>Mã nguồn mở AGPL-3.0</h3><p>Ai cũng kiểm được cách mã hóa. Mọi bản phái sinh cũng phải công khai mã.</p></div>
-        <div class="the"><h3>Khóa ứng dụng</h3><p>Mật khẩu, mã PIN hoặc sinh trắc; tự khóa khi rời app; che nội dung trong trình chuyển app.</p></div>
-      </div>
-      <p><a href="/bao-mat/">Bảo mật và quyền riêng tư</a></p>
+      <section id="tinh-nang" class="muc">
+        <h2>Đủ cho tài chính cá nhân, không thừa</h2>
+        <p class="dan">Chọn lọc từ những app quản lý chi tiêu phổ biến, bỏ quảng cáo và theo dõi, thêm mã hóa đầu-cuối.</p>
+        <div class="luoi">
+          {diemManh.map(([ten, moTa]) => <div class="the"><h3>{ten}</h3><p>{moTa}</p></div>)}
+        </div>
+        <p><a href="/tinh-nang/">Xem đầy đủ tính năng</a></p>
+      </section>
+
+      <section id="rieng-tu" class="muc">
+        <h2>Tiền là chuyện riêng</h2>
+        <p class="dan">Ứng dụng tài chính biết nhiều về bạn hơn hầu hết mọi app khác. Vì vậy Quly Thu Chi được thiết kế để
+          dữ liệu không rời tay bạn ở dạng đọc được.</p>
+        <div class="luoi">
+          <div class="the"><h3>Không quảng cáo, không theo dõi</h3><p>Không SDK quảng cáo, không phân tích hành vi, không bán dữ liệu.</p></div>
+          <div class="the"><h3>Mã nguồn mở AGPL-3.0</h3><p>Ai cũng kiểm được cách mã hóa. Mọi bản phái sinh cũng phải công khai mã.</p></div>
+          <div class="the"><h3>Khóa ứng dụng</h3><p>Mật khẩu, mã PIN hoặc sinh trắc; tự khóa khi rời app; che nội dung trong trình chuyển app.</p></div>
+        </div>
+        <p><a href="/bao-mat/">Bảo mật và quyền riêng tư</a></p>
+      </section>
+
+      <section id="bat-dau" class="muc">
+        <h2>Bắt đầu trong một phút</h2>
+        <p class="dan">Không cần tài khoản: mở bản web hoặc cài app là ghi được ngay. Đăng nhập TsuDEV khi muốn đồng bộ.</p>
+        <div class="hang-nut hang-nut--trai">
+          <a class="nut nut--chinh" href="/app/">Mở bản web</a>
+          <a class="nut nut--phu" href="/tai-ve/">Tải ứng dụng</a>
+        </div>
+      </section>
     </div>
-  </section>
+  </div>
 </Trang>

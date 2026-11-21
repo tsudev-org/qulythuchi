@@ -8,10 +8,10 @@
   "solidBg": "#FFFFFF",
   "iconTile": true,
   "ogGlow": "#122545",
-  "ogAccent": "#16B781",
   "domain": "qulythuchi.tsudev.com",
   "ogLines": [
     "Quản lý thu chi cá nhân, mã hóa đầu-cuối",
     "Android, Windows, macOS, Linux và web"
-  ]
+  ],
+  "_ghi_chu_og": "og-image lấy màu chế độ Tối + hoạ tiết cot-tang-truong từ .standards/tokens/products/qulythuchi.json (STD50 PR 2). ogGlow chỉ còn cho ảnh nổi bật Google Play đã nộp (giữ nguyên tới lần cập nhật hồ sơ Play)."
 }
