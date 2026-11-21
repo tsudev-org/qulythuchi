@@ -1,9 +1,14 @@
-/* Giao diện qulythuchi.tsudev.com theo ngôn ngữ thiết kế website hệ sinh thái (ECOSYSTEM_IDENTITY.md mục 4.2): một nền
-   liền mạch, tím chỉ ở điểm nhấn, một quầng tĩnh ở đỉnh trang, không chuyển động nền. Token: tokens.css. */
+/* Giao diện qulythuchi.tsudev.com: lớp nền chung + bản sắc qulythuchi (tsudev-standards v5.0.0, DESIGN_SYSTEM.md mục
+   1.2: xanh lục bảo hue 160, bo góc `mem`, tiêu đề Be Vietnam Pro). Màu/bo góc CHỈ lấy từ .standards/tokens/tokens.css
+   + products.css (data-product="qulythuchi" trên <html>); không khai mã màu ở đây.
+   Tối là mặc định; data-theme do public/theme.js đặt trước khi vẽ (ECOSYSTEM_IDENTITY.md mục 4.1). */
 :root {
+  /* Thân bài website giữ Be Vietnam Pro tự host như tsudev.com (đã có bộ vietnamese); tiêu đề = --font-display. */
   --font-family: 'Be Vietnam Pro', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --khung: 72rem;
+  color-scheme: dark;
 }
+:root[data-theme='light'] { color-scheme: light; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-padding-top: 5rem; background: var(--bg-base); }
@@ -18,10 +23,10 @@ body {
 img { max-width: 100%; height: auto; }
 a { color: var(--text-link); text-underline-offset: 0.18em; }
 a:hover { color: var(--primary-hover); }
-h1, h2, h3 { font-weight: 600; line-height: 1.25; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.25; }
 code, pre, kbd, .so { font-family: var(--font-mono); }
-:not(pre) > code { background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 6px; padding: 0.08em 0.38em; }
-pre { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; }
+:not(pre) > code { background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.08em 0.38em; }
+pre { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem; overflow-x: auto; }
 :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 
 .khung { width: 100%; max-width: var(--khung); margin: 0 auto; padding: 0 1.25rem; }
@@ -40,15 +45,15 @@ pre { background: var(--bg-surface); border: 1px solid var(--border); border-rad
 .dau-trang__nut { display: flex; gap: 0.5rem; margin-left: auto; }
 .thuong-hieu { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--text-primary); text-decoration: none; font-weight: 600; font-size: 1.05rem; }
 .thuong-hieu:hover { color: var(--text-primary); }
-.thuong-hieu img { width: 2.25rem; height: 2.25rem; border-radius: 8px; }
+.thuong-hieu img { width: 2.25rem; height: 2.25rem; border-radius: var(--radius-md); }
 .thuong-hieu--nho img { width: 1.75rem; height: 1.75rem; }
 .menu { display: flex; gap: 0.15rem; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
-.menu a { display: block; padding: 0.4rem 0.7rem; border-radius: 6px; color: var(--text-secondary); text-decoration: none; font-size: 0.94rem; font-weight: 500; }
+.menu a { display: block; padding: 0.4rem 0.7rem; border-radius: var(--radius-sm); color: var(--text-secondary); text-decoration: none; font-size: 0.94rem; font-weight: 500; }
 .menu a:hover, .menu a[aria-current='page'] { color: var(--text-primary); }
 
 .nut {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer;
-  padding: 0.6rem 1.1rem; border-radius: 6px; font: inherit; font-size: 0.94rem; font-weight: 500; line-height: 1.2;
+  padding: 0.6rem 1.1rem; border-radius: var(--radius-control); font: inherit; font-size: 0.94rem; font-weight: 500; line-height: 1.2;
   text-decoration: none; border: 1px solid transparent; transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 .nut--nho { min-height: 2rem; padding: 0.3rem 0.75rem; font-size: 0.875rem; }
@@ -70,7 +75,7 @@ main { min-height: 60vh; }
 .muc h2 { font-size: 1.7rem; margin: 0 0 0.5rem; }
 .muc > .khung > p.dan { color: var(--text-secondary); max-width: 46rem; margin-top: 0; }
 .luoi { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); margin-top: 1.5rem; }
-.the { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+.the { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
 .the h3 { margin: 0 0 0.4rem; font-size: 1.05rem; }
 .the p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
 .van-ban { max-width: 46rem; padding-block: 3rem; }
@@ -81,7 +86,7 @@ main { min-height: 60vh; }
 .bang th, .bang td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border); }
 .bang th { color: var(--text-muted); font-weight: 500; }
 .bang td.so, .bang th.so { text-align: right; font-variant-numeric: tabular-nums; }
-.thong-bao { border: 1px solid var(--warning); border-radius: 8px; padding: 0.8rem 1rem; background: var(--bg-surface); }
+.thong-bao { border: 1px solid var(--warning); border-radius: var(--radius-md); padding: 0.8rem 1rem; background: var(--bg-surface); }
 .thong-bao--loi { border-color: var(--danger); }
 
 .chan-trang { margin-top: 4rem; padding: 2.5rem 0 2rem; border-top: 1px solid var(--border); font-size: 0.92rem; color: var(--text-secondary); }

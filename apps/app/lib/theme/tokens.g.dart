@@ -1,5 +1,5 @@
 // TỆP SINH TỰ ĐỘNG bởi tool/gen_tokens.dart - KHÔNG SỬA TAY.
-// Nguồn: .standards/tokens/design-tokens.json v2.0.0
+// Nguồn: .standards/tokens/design-tokens.json v3.0.0 + products/qulythuchi.json
 
 import 'dart:ui' show Color;
 
@@ -22,6 +22,10 @@ final class QtPalette {
     required this.primaryActive,
     required this.onPrimary,
     required this.focusRing,
+    required this.accent,
+    required this.glow,
+    required this.iconInfo,
+    required this.iconNav,
     required this.success,
     required this.warning,
     required this.danger,
@@ -45,6 +49,10 @@ final class QtPalette {
   final Color primaryActive;
   final Color onPrimary;
   final Color focusRing;
+  final Color accent;
+  final Color glow;
+  final Color iconInfo;
+  final Color iconNav;
   final Color success;
   final Color warning;
   final Color danger;
@@ -52,51 +60,59 @@ final class QtPalette {
   final Color onStatus;
   final Color overlay;
   static const light = QtPalette(
-    bgBase: Color(0xFFEEF4FB),
+    bgBase: Color(0xFFFAFAFA),
     bgSurface: Color(0xFFFFFFFF),
-    bgSubtle: Color(0xFFE3EDF8),
-    bgHover: Color(0xFFDCE8F6),
-    border: Color(0xFFC9D9EC),
-    borderStrong: Color(0xFF9FB8D4),
-    borderControl: Color(0xFF74899F),
-    textPrimary: Color(0xFF1C2B3A),
-    textSecondary: Color(0xFF44607C),
-    textMuted: Color(0xFF52627A),
-    textLink: Color(0xFF1D4ED8),
-    primary: Color(0xFF2563EB),
-    primaryHover: Color(0xFF1D4ED8),
-    primaryActive: Color(0xFF1E40AF),
+    bgSubtle: Color(0xFFF4F4F5),
+    bgHover: Color(0xFFEBEBED),
+    border: Color(0xFFE4E4E7),
+    borderStrong: Color(0xFFD4D4D8),
+    borderControl: Color(0xFF71717A),
+    textPrimary: Color(0xFF0A0A0A),
+    textSecondary: Color(0xFF3F3F46),
+    textMuted: Color(0xFF52525B),
+    textLink: Color(0xFF056641),
+    primary: Color(0xFF05794F),
+    primaryHover: Color(0xFF056641),
+    primaryActive: Color(0xFF005334),
     onPrimary: Color(0xFFFFFFFF),
-    focusRing: Color(0xFF2563EB),
+    focusRing: Color(0xFF05794F),
+    accent: Color(0xFF025939),
+    glow: Color(0x1A05794F),
+    iconInfo: Color(0xFF05794F),
+    iconNav: Color(0xFF056641),
     success: Color(0xFF15803D),
     warning: Color(0xFFB45309),
     danger: Color(0xFFDC2626),
     info: Color(0xFF0369A1),
     onStatus: Color(0xFFFFFFFF),
-    overlay: Color(0x730F1B2D),
+    overlay: Color(0x730A0A0A),
   );
   static const dark = QtPalette(
-    bgBase: Color(0xFF0F1B2D),
-    bgSurface: Color(0xFF16263C),
-    bgSubtle: Color(0xFF1C2F4A),
-    bgHover: Color(0xFF223A5A),
-    border: Color(0xFF2C4363),
-    borderStrong: Color(0xFF3F5B80),
-    borderControl: Color(0xFF6E88AE),
-    textPrimary: Color(0xFFE6EDF5),
-    textSecondary: Color(0xFFA9BBD0),
-    textMuted: Color(0xFF9BB0C9),
-    textLink: Color(0xFF7FB2F7),
-    primary: Color(0xFF66A3F2),
-    primaryHover: Color(0xFF7FB2F7),
-    primaryActive: Color(0xFF4E8FE6),
-    onPrimary: Color(0xFF0C1930),
-    focusRing: Color(0xFF66A3F2),
+    bgBase: Color(0xFF0A0A0A),
+    bgSurface: Color(0xFF0F1114),
+    bgSubtle: Color(0xFF15181D),
+    bgHover: Color(0xFF1C2027),
+    border: Color(0xFF22272F),
+    borderStrong: Color(0xFF2C323C),
+    borderControl: Color(0xFF6E6E6E),
+    textPrimary: Color(0xFFEDEDED),
+    textSecondary: Color(0xFFB4B4B4),
+    textMuted: Color(0xFF8F8F8F),
+    textLink: Color(0xFF63C795),
+    primary: Color(0xFF39BA81),
+    primaryHover: Color(0xFF67CA98),
+    primaryActive: Color(0xFF12A46C),
+    onPrimary: Color(0xFF0A0A0A),
+    focusRing: Color(0xFF39BA81),
+    accent: Color(0xFF8DDBB1),
+    glow: Color(0x2439BA81),
+    iconInfo: Color(0xFF39BA81),
+    iconNav: Color(0xFF63C795),
     success: Color(0xFF4ADE80),
     warning: Color(0xFFFBBF24),
     danger: Color(0xFFF87171),
     info: Color(0xFF38BDF8),
-    onStatus: Color(0xFF0C1930),
+    onStatus: Color(0xFF0A0A0A),
     overlay: Color(0x99000000),
   );
 }
@@ -142,12 +158,13 @@ final class QtChartPalette {
   List<Color> get sequential => [seq1, seq2, seq3, seq4, seq5];
 }
 
-/// Bo góc (px).
+/// Bo góc (px) - bộ `mem` của bản sắc; `control` cho nút.
 abstract final class QtRadius {
   static const double none = 0.0;
-  static const double sm = 4.0;
-  static const double md = 6.0;
-  static const double lg = 8.0;
+  static const double sm = 6.0;
+  static const double md = 10.0;
+  static const double lg = 14.0;
+  static const double control = 10.0;
 }
 
 /// Khoảng cách bội số 4px.
@@ -189,4 +206,13 @@ abstract final class QtLineHeight {
   static const double heading = 1.3;
   static const double body = 1.55;
   static const double long = 1.6;
+}
+
+/// Bản sắc sản phẩm (DESIGN_SYSTEM.md mục 1.2): font tiêu đề h1-h3 + số liệu lớn, bố cục, hoạ tiết.
+abstract final class QtBrand {
+  static const id = 'qulythuchi';
+  static const fontDisplay = 'Be Vietnam Pro';
+  static const layout = 'bang-dieu-khien';
+  static const shape = 'mem';
+  static const motif = 'cot-tang-truong';
 }

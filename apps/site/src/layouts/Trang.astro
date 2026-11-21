@@ -1,7 +1,9 @@
 ---
 // Khung chung (theo khung sounddb.tsudev.com): <head> theo ECOSYSTEM_IDENTITY mục 2.2, đầu trang, chân trang nối về tsudev.com (mục 4).
 import '../styles/fonts.css';
-import '../styles/tokens.css';
+// Token chung rồi bản sắc sản phẩm (tsudev-standards v5.0.0, DESIGN_SYSTEM.md mục 1.2.1) - không chép mã màu vào repo.
+import '../../../../.standards/tokens/tokens.css';
+import '../../../../.standards/tokens/products.css';
 import '../styles/site.css';
 import { REPO_URL, SAN_PHAM, SITE } from '../lib/site';
 
@@ -28,7 +30,7 @@ const cheDo = [
 const dangO = (href: string) => duongDan.startsWith(href);
 ---
 <!doctype html>
-<html lang="vi" data-theme="dark">
+<html lang="vi" data-theme="dark" data-product="qulythuchi">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -54,7 +56,7 @@ const dangO = (href: string) => duongDan.startsWith(href);
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="manifest" href="/manifest.webmanifest">
   </head>
-  <body>
+  <body data-platform="web">
     <a class="bo-qua" href="#noi-dung">Bỏ qua tới nội dung</a>
     <header class="dau-trang">
       <div class="khung dau-trang__trong">

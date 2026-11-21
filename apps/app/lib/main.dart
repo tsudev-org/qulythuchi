@@ -11,6 +11,7 @@ import 'data/record_store.dart';
 import 'security/vault.dart';
 import 'state/providers.dart';
 import 'state/settings.dart';
+import 'theme/font_licenses.dart';
 import 'ui/startup_error.dart';
 
 const _dbName = 'qulythuchi';
@@ -21,6 +22,7 @@ bool _dbExisted = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  registerFontLicenses();
   final prefs = await SharedPreferences.getInstance();
   final hadPrefs = prefs.getKeys().isNotEmpty;
   try {
