@@ -19,6 +19,8 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
 - Bản sắc riêng Quly Thu Chi theo tsudev-standards v5.0.0 (STD50): màu chính xanh lục bảo `#39BA81` (Tối) / `#05794F`
   (Sáng) trên nền đen tuyền/trắng chung của hệ, bo góc mềm 6/10/14px (nút 10px), tiêu đề và số tiền lớn dùng font
   Be Vietnam Pro - cả website, web app `/app/` và app di động/desktop. Màu lấy trực tiếp từ bộ quy ước, không khai lại.
+- Trang chủ website theo bố cục "bảng điều khiển": thanh mục bên trái, thẻ số liệu trên cùng; hoạ tiết cột tăng trưởng
+  ở đầu trang, ảnh chia sẻ (og-image) và thẻ tổng số dư trong app.
 - Logo riêng Quly Thu Chi (LG1) thay logo tsudev chung: favicon, logo đầu trang website, ảnh chia sẻ, icon ứng dụng
   Android/iOS/macOS/Windows/Linux, web app `/app/`, màn chào/khóa, Cài đặt > Giới thiệu (kèm dòng "Một sản phẩm của
   TsuDEV" dẫn tsudev.com). Tệp PDF xuất có logo ở đầu trang và chân trang TsuDEV · tsudev.com. Mọi bản sinh từ một ảnh
