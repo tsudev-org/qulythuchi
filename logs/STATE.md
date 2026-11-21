@@ -40,6 +40,16 @@
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 22/11/2026 - STD50 bản sắc sản phẩm v5.0.0 (agent-qulythuchi, phiên `qulythuchi-2012`), phiếu
+  `logs/handover/20261121-STD50_*` ĐÓNG. PR #51 (`.standards` v5.0.0; website nạp `tokens.css` + `products.css`,
+  `data-product="qulythuchi"`, xoá `apps/site/src/styles/tokens.css`; app `gen_tokens.dart` gộp đè
+  `products/qulythuchi.json` + bo góc `mem`, tiêu đề/số tiền lớn Be Vietnam Pro 600/700 kèm OFL; màu navy cứng ở web
+  app/widget Android đổi sang nền chung) gộp `153ab16`. PR #52 (bố cục `bang-dieu-khien` trang chủ website: thanh mục
+  trái + thẻ số liệu; hoạ tiết `cot-tang-truong` một hình học cho hero, og-image, thẻ tổng số dư app) gộp `c599394`.
+  Cả hai CI xanh (cả iOS/macOS); app 143 test. Ảnh trước/sau `logs/anh/20261121-STD50/`. LÊN PRODUCTION
+  `deploy-2026.11.22.1` (Worker `68af605a`): `/`, `/app/`, health, `/tai-ve/`, `/og-image.png`, providers 200; trang
+  chủ có `data-product="qulythuchi"`. Ảnh nổi bật Google Play GIỮ bản cũ (đã nộp) - đổi khi cập nhật hồ sơ Play.
+
 - 21/11/2026 - STD43 + việc dở phiên 429b (agent-qulythuchi, phiên `qulythuchi-fa79`): `.standards` v4.3.0; máy chủ
   `GET /api/v1/auth/providers` (hỏi IdP tsudev.com, đệm 5 phút, danh sách trắng google/apple/github, IdP lỗi ⇒ Google +
   GitHub, không bao giờ Apple), `idp_hint=apple` được nhận; app dựng nút theo danh sách + nút Apple theo HIG. Phiếu rà

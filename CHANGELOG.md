@@ -6,6 +6,8 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 
 Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-org/qulythuchi/tags>.
 
+- deploy-2026.11.22.1 - 22/11/2026 - bản sắc riêng Quly Thu Chi (xanh lục bảo, bo góc mềm, tiêu đề Be Vietnam Pro), trang
+  chủ bố cục bảng điều khiển + hoạ tiết cột tăng trưởng, og-image mới (STD50).
 - deploy-2026.11.21.2 - 21/11/2026 - đăng nhập chịu được tsudev.com chập chờn (thử lại 429/503, đệm discovery/JWKS).
 - deploy-2026.11.21.1 - 21/11/2026 - nút đăng nhập theo danh sách IdP (STD43), 409 `purchase_pending` thử lại, trang
   Bảo mật có mục xóa tài khoản/dữ liệu (GP1).
