@@ -2,30 +2,33 @@
 import Trang from '../layouts/Trang.astro';
 import { REPO_URL } from '../lib/site';
 
-const nenTang: { ten: string; trangThai: 'san' | 'sap'; moTa: string; nut?: [string, string] }[] = [
+const PHAT_HANH = `${REPO_URL}/releases`;
+const nenTang: { ten: string; trangThai: 'san' | 'thu' | 'sap'; moTa: string; nut?: [string, string] }[] = [
   { ten: 'Web', trangThai: 'san', moTa: 'Chạy ngay trên Chrome, Edge, Firefox, Safari. Cài lên màn hình chính như một app (PWA). iPhone, iPad dùng bản này.', nut: ['/app/', 'Mở bản web'] },
-  { ten: 'Android', trangThai: 'sap', moTa: 'Tệp APK ký số phát hành trên GitHub Releases, kèm SHA-256 và chứng thực nguồn gốc bản build. Sau đó lên các kho ứng dụng.' },
-  { ten: 'Windows', trangThai: 'sap', moTa: 'Bộ cài và gói winget, Scoop.' },
-  { ten: 'macOS', trangThai: 'sap', moTa: 'Gói Homebrew. Chưa ký bằng tài khoản Apple Developer nên lần đầu mở cần xác nhận trong Cài đặt hệ thống.' },
-  { ten: 'Linux', trangThai: 'sap', moTa: 'Gói .deb và .rpm qua kho APT/RPM của TsuDEV.' },
+  { ten: 'Windows', trangThai: 'thu', moTa: 'Tệp zip portable cho Windows 10/11 x64. Chưa ký Authenticode nên SmartScreen có thể hỏi khi mở lần đầu - đối chiếu SHA-256 trước khi chạy.', nut: [PHAT_HANH, 'Tải trên GitHub'] },
+  { ten: 'macOS', trangThai: 'thu', moTa: 'Tệp zip cho macOS 12+ (Intel và Apple Silicon). Chưa công chứng với Apple: lần đầu mở, vào Cài đặt hệ thống > Quyền riêng tư & Bảo mật > Vẫn mở.', nut: [PHAT_HANH, 'Tải trên GitHub'] },
+  { ten: 'Linux', trangThai: 'thu', moTa: 'Gói .deb cho Ubuntu 22.04+, Debian 12+ và bản .tar.gz chạy không cần cài.', nut: [PHAT_HANH, 'Tải trên GitHub'] },
+  { ten: 'Android', trangThai: 'sap', moTa: 'Google Play và tệp APK ký số trên GitHub. Trong lúc chờ, dùng bản web trên trình duyệt điện thoại.' },
   { ten: 'iOS', trangThai: 'sap', moTa: 'Chưa phát hành trên App Store. Trong lúc chờ, hãy dùng bản web và chọn "Thêm vào màn hình chính".' },
 ];
+const NHAN = { san: 'Dùng được ngay', thu: 'Bản thử nghiệm', sap: 'Sắp phát hành' } as const;
 ---
-<Trang tieuDe="Tải về" moTa="Tải Quly Thu Chi: bản web dùng được ngay trên mọi trình duyệt, bản Android, Windows, macOS, Linux sắp phát hành có ký số và mã băm SHA-256." duongDan="/tai-ve/">
+<Trang tieuDe="Tải về" moTa="Tải Quly Thu Chi: bản web dùng ngay trên mọi trình duyệt; bản Windows, macOS, Linux thử nghiệm kèm SHA-256 ký Sigstore và chứng thực nguồn gốc; Android sắp phát hành." duongDan="/tai-ve/">
   <div class="khung van-ban">
     <h1>Tải về</h1>
-    <p>Bản web đã sẵn sàng. Các bản cài đặt đang trong giai đoạn kiểm định trước khi phát hành; trang này sẽ cập nhật
-      liên kết tải khi có. Theo dõi <a href={`${REPO_URL}/releases`} target="_blank" rel="noopener noreferrer">trang
-      phát hành trên GitHub</a>.</p>
+    <p>Bản web đã sẵn sàng. Bản Windows, macOS, Linux đang ở giai đoạn thử nghiệm và được dựng tự động từ mã nguồn
+      công khai trên <a href={PHAT_HANH} target="_blank" rel="noopener noreferrer">trang phát hành GitHub</a>.</p>
   </div>
   <section class="khung">
     <div class="luoi">
       {nenTang.map((n) => (
         <div class="the">
-          <span class={n.trangThai === 'san' ? 'the__nhan the__nhan--san' : 'the__nhan'}>{n.trangThai === 'san' ? 'Dùng được ngay' : 'Sắp phát hành'}</span>
+          <span class={n.trangThai === 'sap' ? 'the__nhan' : 'the__nhan the__nhan--san'}>{NHAN[n.trangThai]}</span>
           <h3>{n.ten}</h3>
           <p>{n.moTa}</p>
-          {n.nut && <a class="nut nut--chinh nut--nho" href={n.nut[0]}>{n.nut[1]}</a>}
+          {n.nut && (n.nut[0].startsWith('http')
+            ? <a class="nut nut--phu nut--nho" href={n.nut[0]} target="_blank" rel="noopener noreferrer">{n.nut[1]}</a>
+            : <a class="nut nut--chinh nut--nho" href={n.nut[0]}>{n.nut[1]}</a>)}
         </div>
       ))}
     </div>
@@ -35,7 +38,9 @@ const nenTang: { ten: string; trangThai: 'san' | 'sap'; moTa: string; nut?: [str
     <ul class="danh-sach-kiem">
       <li>Tệp cài của Quly Thu Chi chỉ đến từ <code>qulythuchi.tsudev.com</code>, <code>github.com/tsudev-org/qulythuchi</code>
         và các kho gói của TsuDEV. Không dùng bản do người khác đăng lại.</li>
-      <li>Mỗi bản phát hành kèm mã băm SHA-256 để bạn đối chiếu tệp đã tải.</li>
+      <li>Mỗi bản phát hành kèm <code>SHA256SUMS.txt</code> ký bằng Sigstore và chứng thực nguồn gốc bản dựng: đối chiếu
+        bằng <code>sha256sum -c SHA256SUMS.txt --ignore-missing</code> hoặc
+        <code>gh attestation verify &lt;tệp&gt; --repo tsudev-org/qulythuchi</code>.</li>
       <li>Ứng dụng tài chính chỉ nên cài từ nguồn bạn tin: một bản bị sửa có thể đọc mọi dữ liệu bạn nhập.</li>
     </ul>
   </div>

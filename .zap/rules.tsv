@@ -1,2 +1,9 @@
 # Luật ZAP baseline cho qulythuchi.tsudev.com (workflow dast.yml). Khuôn: <id>\t<IGNORE|WARN|FAIL>\t<lý do>.
 # Mọi IGNORE PHẢI có lý do kiểm được; mặc định mọi cảnh báo là FAIL (-I không dùng).
+10094	IGNORE	Base64 Disclosure: chuỗi base64 trong mã JS/wasm đã dựng (Flutter, sodium.js) và băm tài sản - không phải dữ liệu
+10096	IGNORE	Timestamp Disclosure: hằng số trong sodium.js (libsodium.js), không phải thời điểm máy chủ
+10109	IGNORE	Modern Web Application: thông tin, web app Flutter là SPA có chủ đích
+90005	IGNORE	Sec-Fetch-Dest missing: header YÊU CẦU do trình duyệt gửi, ZAP client không gửi - không áp dụng phía máy chủ
+10015	IGNORE	Re-examine Cache-control: HTML/manifest max-age=0 must-revalidate và /app/ no-cache CỐ Ý để bản mới tới ngay; API no-store
+10049	IGNORE	Storable/Non-Storable Content: thông tin; tài sản băm tên cache immutable 1 năm, HTML luôn kiểm lại (cố ý)
+10055	IGNORE	CSP: chỉ cảnh báo ở /app/ - CSP đặt bằng <meta> nên không chứa được frame-ancestors (đã chặn khung bằng X-Frame-Options: DENY) và style-src 'unsafe-inline' do engine Flutter chèn <style> (ADR-0013). CSP site không nội tuyến, có frame-ancestors 'none'

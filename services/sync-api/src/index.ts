@@ -30,6 +30,7 @@ app.use('*', async (c, next) => {
   h.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   h.set('Cross-Origin-Resource-Policy', 'same-origin');
   h.set('Cross-Origin-Opener-Policy', 'same-origin');
+  h.set('Cross-Origin-Embedder-Policy', 'require-corp');
   h.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()');
   if (!h.has('Content-Security-Policy')) h.set('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'");
 });
