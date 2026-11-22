@@ -28,3 +28,22 @@ jobs:
           allow_issue_writing: false
           fail_action: true
           artifact_name: zap-${{ matrix.path == '/' && 'site' || 'app' }}
+
+  ten-mien:
+    # Phiếu AV1 mục 2 (DISTRIBUTION_TRUST.md mục 3): tên miền không bị hãng nào gắn cờ trên VirusTotal. Dùng
+    # VT_API_KEY chung của org; chưa có khoá thì bỏ qua (xanh).
+    name: VirusTotal tên miền
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - env: { VT_API_KEY: '${{ secrets.VT_API_KEY }}' }
+        run: |
+          set -euo pipefail
+          [ -n "$VT_API_KEY" ] || { echo "::notice::Chưa có VT_API_KEY - bỏ qua"; exit 0; }
+          for d in qulythuchi.tsudev.com in.qulythuchi.tsudev.com; do
+            s=$(curl -sSf -H "x-apikey: $VT_API_KEY" "https://www.virustotal.com/api/v3/domains/$d" \
+              | jq -c '.data.attributes.last_analysis_stats')
+            echo "$d: $s"
+            n=$(echo "$s" | jq '.malicious + .suspicious')
+            [ "$n" = 0 ] || { echo "::error::$d bị $n hãng gắn cờ - xử lý theo DISTRIBUTION_TRUST.md mục 3"; exit 1; }
+          done
