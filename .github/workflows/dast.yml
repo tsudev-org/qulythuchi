@@ -1,0 +1,30 @@
+# qulythuchi: quét DAST (OWASP ZAP baseline - thụ động, không tấn công) với production - P10, DISTRIBUTION_TRUST.md
+# mục 4.1, TESTING_QUALITY.md. Chạy hằng tuần + sau mỗi lần cần (workflow_dispatch). Cảnh báo nào chưa được ghi lý do
+# trong `.zap/rules.tsv` ⇒ job đỏ. Báo cáo HTML/JSON là artifact (không mở issue tự động: repo Public, báo cáo lỗ
+# hổng đi đường SECURITY.md).
+name: DAST (ZAP baseline)
+on:
+  schedule:
+    - cron: '41 2 * * 3'   # thứ Tư hằng tuần
+  workflow_dispatch:
+permissions: { contents: read }
+jobs:
+  zap:
+    name: ZAP baseline ${{ matrix.path }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        path: ['/', '/app/']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - uses: zaproxy/action-baseline@de8ad967d3548d44ef623df22cf95c3b0baf8b25 # v0.15.0
+        with:
+          target: https://qulythuchi.tsudev.com${{ matrix.path }}
+          rules_file_name: .zap/rules.tsv
+          cmd_options: '-a'
+          allow_issue_writing: false
+          fail_action: true
+          artifact_name: zap-${{ matrix.path == '/' && 'site' || 'app' }}

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -31,11 +33,28 @@ android {
         versionName = flutter.versionName
     }
 
+    // Khóa ký phát hành: workflow Release ghi `android/key.properties` từ secret Environment `release` rồi xoá ngay sau
+    // khi dựng (DISTRIBUTION_TRUST.md mục 1.3, 2.4). Máy dev không có tệp này ⇒ `flutter run --release` dùng khóa debug;
+    // CI đặt QLTC_REQUIRE_RELEASE_KEY=1 để KHÔNG BAO GIỜ phát hành tệp ký bằng khóa debug.
+    val keyFile = rootProject.file("key.properties")
+    if (keyFile.exists()) {
+        val props = Properties().apply { keyFile.inputStream().use { load(it) } }
+        signingConfigs {
+            create("release") {
+                storeFile = file(props.getProperty("storeFile"))
+                storePassword = props.getProperty("storePassword")
+                keyAlias = props.getProperty("keyAlias")
+                keyPassword = props.getProperty("keyPassword")
+            }
+        }
+    } else if (System.getenv("QLTC_REQUIRE_RELEASE_KEY") == "1") {
+        throw GradleException("Thiếu android/key.properties - không phát hành tệp ký bằng khóa debug.")
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig =
+                if (keyFile.exists()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
         }
     }
 }
