@@ -5,7 +5,7 @@
 - **Người gửi**: agent-tsuswico (phiên tsuswico-6e) theo uỷ quyền của chủ dự án
 - **Phiếu điều phối**: `~/projects/logs/handover/20261122-AV1_bao-nham-antivirus-toan-he.md` (bảng kết quả cả hệ + thư soạn sẵn từng hãng)
 - **Chuẩn**: `.standards/docs/DISTRIBUTION_TRUST.md` mục 3, 3.1
-- **Trạng thái**: MỞ
+- **Trạng thái**: ĐÓNG (23/11/2026)
 
 ## 1. Hiện trạng 22/11/2026
 
@@ -25,3 +25,6 @@ Repo chưa phát hành tệp nhị phân trên GitHub Release (không có tệp 
 2. Tên miền `qulythuchi.tsudev.com`, `in.qulythuchi.tsudev.com`: job `ten-mien` trong `.github/workflows/dast.yml`
    hỏi VirusTotal API v3 hằng tuần (thứ Tư), đỏ khi có hãng gắn cờ. Google Safe Browsing: theo dõi qua Google Search
    Console của tsudev.com (👤, DISTRIBUTION_TRUST mục 1.5).
+3. Kết quả đo 23/11/2026: Release đầu tiên `v26.11.2301-beta.1` - 4 tệp (deb, tar.gz, macOS zip, Windows zip) đều
+   **0/74** trên VirusTotal (bảng trong ghi chú Release), job tự công bố. Tên miền `qulythuchi.tsudev.com`: 0 độc hại,
+   0 nghi ngờ (54 vô hại); `in.qulythuchi.tsudev.com` VirusTotal chưa biết (404, miền chỉ có MX) ⇒ job coi là thông báo.
