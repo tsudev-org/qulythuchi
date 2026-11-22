@@ -1,0 +1,299 @@
+# qulythuchi: phát hành app cài đặt khi đẩy thẻ `vYY.M.DDNN` (hoặc `-beta.N`/`-rc.N` ⇒ Pre-release) - P10,
+# VERSIONING.md mục 2.2, DISTRIBUTION_TRUST.md mục 2 + 7.
+#
+# Tệp lên Release (tên `qulythuchi_<V>_<os>-<arch>[-<loại>].<ext>`):
+#   - Linux: `linux-x64.tar.gz` (portable) + `linux-x64.deb` (dựng trên ubuntu-22.04 ⇒ glibc 2.35, chạy Ubuntu 22.04+).
+#   - Windows: `windows-x64-portable.zip` (chưa ký Authenticode - mục 1.1.3).
+#   - macOS: `macos-universal.zip` (Xcode ký ad-hoc KÈM entitlements sandbox; chưa notarize - mục 1.2). Có bí mật
+#     APPLE_* thì ký Developer ID + notarize + staple tự bật.
+#   - Android: `android-universal.apk` (TSU_CHANNEL=direct, khoá APK RIÊNG - mục 1.3.3) CHỈ khi có bí mật
+#     ANDROID_APK_*; `.aab` (TSU_CHANNEL=play, khoá upload) chỉ là artifact để nộp Play, KHÔNG lên Release. Thiếu bí mật
+#     ⇒ bỏ qua Android, KHÔNG BAO GIỜ ký bằng khoá debug (QLTC_REQUIRE_RELEASE_KEY).
+#   - SBOM SPDX (`sbom.spdx.json`), `SHA256SUMS.txt` + `SHA256SUMS.txt.sigstore.json` (cosign keyless), chứng thực
+#     nguồn gốc SLSA + bundle `.intoto.jsonl` để kiểm ngoại tuyến.
+#
+# Release tạo ở NHÁP ⇒ quét VirusTotal (mẫu chung tsudev-org/.github; thiếu VT_API_KEY thì bỏ qua) ⇒ không engine nào
+# gắn cờ thì công bố. Bí mật ký chỉ ở Environment `release` (chỉ thẻ `v*` được dùng), máy chạy xoá khoá sau khi dựng.
+name: Release
+on:
+  push: { tags: ['v*'] }
+permissions: { contents: read }
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  FLUTTER_VERSION: '3.47.8'
+  FLUTTER_COMMIT: '737ba8f885dc774b53b442759999a312c9461e4e'
+
+jobs:
+  version:
+    name: Phiên bản từ thẻ
+    runs-on: ubuntu-24.04
+    outputs:
+      v: ${{ steps.v.outputs.v }}
+      base: ${{ steps.v.outputs.base }}
+      code: ${{ steps.v.outputs.code }}
+      pre: ${{ steps.v.outputs.pre }}
+    steps:
+      - id: v
+        run: |
+          set -euo pipefail
+          t="$GITHUB_REF_NAME"
+          [[ "$t" =~ ^v([0-9]{2})\.([1-9][0-9]?)\.([0-3][0-9])([0-9]{2})(-(beta|rc)\.[0-9]+)?$ ]] \
+            || { echo "::error::Thẻ sai khuôn vYY.M.DDNN[-beta.N|-rc.N]: $t"; exit 1; }
+          base="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
+          {
+            echo "v=${t#v}"
+            echo "base=$base"
+            echo "code=${base//./}"            # versionCode YYMDDNN (VERSIONING.md 2.2)
+            echo "pre=$([ -n "${BASH_REMATCH[5]}" ] && echo true || echo false)"
+          } >> "$GITHUB_OUTPUT"
+          cat "$GITHUB_OUTPUT"
+
+  desktop:
+    name: Dựng ${{ matrix.target }}
+    needs: version
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-22.04, target: linux }
+          - { os: windows-2025, target: windows }
+          - { os: macos-26, target: macos }
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    env:
+      V: ${{ needs.version.outputs.v }}
+      BASE: ${{ needs.version.outputs.base }}
+      CODE: ${{ needs.version.outputs.code }}
+    defaults: { run: { shell: bash } }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - name: Flutter (ghim commit)
+        run: |
+          git clone --depth 1 -b "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$RUNNER_TEMP/flutter"
+          test "$(git -C "$RUNNER_TEMP/flutter" rev-parse HEAD)" = "$FLUTTER_COMMIT"
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      - name: Gói hệ thống Linux
+        if: matrix.target == 'linux'
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -yq clang cmake ninja-build pkg-config libgtk-3-dev libsecret-1-dev liblzma-dev >/dev/null
+      - name: Dựng + đóng gói
+        working-directory: apps/app
+        run: |
+          set -euo pipefail
+          flutter pub get
+          flutter gen-l10n
+          out="$GITHUB_WORKSPACE/out"; mkdir -p "$out"
+          defs=(--dart-define=APP_VERSION="$V" --dart-define=TSU_CHANNEL=direct)
+          case "${{ matrix.target }}" in
+            linux)
+              flutter build linux --release --build-name="$BASE" --build-number="$CODE" "${defs[@]}"
+              "$GITHUB_WORKSPACE/scripts/package-linux.sh" build/linux/x64/release/bundle "$BASE" "$out"
+              if [ "$V" != "$BASE" ]; then for f in "$out"/*; do mv "$f" "${f//_${BASE}_/_${V}_}"; done; fi ;;
+            windows)
+              # FileVersion 4 phần 16 bit = YY.M.DDNN.0 (VERSIONING.md 2.2) ⇒ build-number 0, không phải versionCode.
+              flutter build windows --release --build-name="$BASE" --build-number=0 "${defs[@]}"
+              exe=build/windows/x64/runner/Release/qulythuchi.exe
+              vi=$(powershell -NoProfile -Command "\$v=(Get-Item '$exe').VersionInfo; '{0}.{1}.{2}.{3}|{4}|{5}' -f \$v.FileMajorPart,\$v.FileMinorPart,\$v.FileBuildPart,\$v.FilePrivatePart,\$v.FileVersion,\$v.CompanyName" | tr -d '\r')
+              echo "Thông tin phiên bản: $vi"
+              [ "$vi" = "$BASE.0|$BASE.0|TsuDEV" ] || { echo "::error::Thông tin phiên bản sai: $vi (cần $BASE.0|$BASE.0|TsuDEV)"; exit 1; }
+              (cd build/windows/x64/runner/Release && 7z a "$out/qulythuchi_${V}_windows-x64-portable.zip" . >/dev/null) ;;
+            macos)
+              flutter build macos --release --build-name="$BASE" --build-number="$CODE" "${defs[@]}"
+              app="build/macos/Build/Products/Release/Quly Thu Chi.app"
+              codesign -d --entitlements :- "$app" 2>/dev/null | grep -q 'com.apple.security.app-sandbox' \
+                || { echo "::error::Bản macOS mất entitlements sandbox"; exit 1; }
+              echo "MAC_APP=$PWD/$app" >> "$GITHUB_ENV" ;;
+          esac
+      - name: Ký Developer ID + notarize (tự bỏ qua khi chưa có tài khoản Apple)
+        if: matrix.target == 'macos'
+        env:
+          APPLE_CERT_P12_BASE64: ${{ secrets.APPLE_CERT_P12_BASE64 }}
+          APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -z "$APPLE_CERT_P12_BASE64" ]; then
+            echo "::notice::Chưa có bí mật APPLE_* - bản macOS giữ chữ ký ad-hoc, chưa notarize (DISTRIBUTION_TRUST 1.2)."
+          else
+            kc="$RUNNER_TEMP/ky.keychain-db"; kp=$(openssl rand -hex 16)
+            echo "$APPLE_CERT_P12_BASE64" | base64 -d > "$RUNNER_TEMP/cert.p12"
+            security create-keychain -p "$kp" "$kc"; security unlock-keychain -p "$kp" "$kc"
+            security import "$RUNNER_TEMP/cert.p12" -k "$kc" -P "$APPLE_CERT_PASSWORD" -T /usr/bin/codesign
+            security set-key-partition-list -S apple-tool:,apple: -k "$kp" "$kc" >/dev/null
+            security list-keychains -d user -s "$kc"
+            rm -f "$RUNNER_TEMP/cert.p12"
+            codesign --force --options runtime --timestamp --sign "$APPLE_SIGNING_IDENTITY" \
+              --entitlements apps/app/macos/Runner/Release.entitlements "$MAC_APP"
+            ditto -c -k --keepParent "$MAC_APP" "$RUNNER_TEMP/notarize.zip"
+            xcrun notarytool submit "$RUNNER_TEMP/notarize.zip" --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" \
+              --password "$APPLE_APP_PASSWORD" --wait
+            xcrun stapler staple "$MAC_APP"
+            security delete-keychain "$kc"
+          fi
+          mkdir -p out
+          ditto -c -k --keepParent "$MAC_APP" "out/qulythuchi_${V}_macos-universal.zip"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with: { name: 'build-${{ matrix.target }}', path: out/*, if-no-files-found: error }
+
+  android:
+    name: Dựng android
+    needs: version
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    environment: release
+    env:
+      V: ${{ needs.version.outputs.v }}
+      BASE: ${{ needs.version.outputs.base }}
+      CODE: ${{ needs.version.outputs.code }}
+      QLTC_REQUIRE_RELEASE_KEY: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - name: Flutter (ghim commit)
+        run: |
+          git clone --depth 1 -b "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$RUNNER_TEMP/flutter"
+          test "$(git -C "$RUNNER_TEMP/flutter" rev-parse HEAD)" = "$FLUTTER_COMMIT"
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      - name: APK ngoài Play (khoá APK riêng)
+        env:
+          KS: ${{ secrets.ANDROID_APK_KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.ANDROID_APK_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_APK_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_APK_KEY_PASSWORD }}
+        working-directory: apps/app
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/out"
+          if [ -z "$KS" ]; then echo "::warning::Chưa có bí mật ANDROID_APK_* - bỏ qua APK"; exit 0; fi
+          trap 'rm -f android/key.properties "$RUNNER_TEMP/apk.jks"' EXIT
+          echo "$KS" | base64 -d > "$RUNNER_TEMP/apk.jks"
+          printf 'storeFile=%s\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' "$RUNNER_TEMP/apk.jks" "$KS_PASS" "$KEY_ALIAS" "$KEY_PASS" > android/key.properties
+          flutter pub get && flutter gen-l10n
+          flutter build apk --release --build-name="$BASE" --build-number="$CODE" \
+            --dart-define=APP_VERSION="$V" --dart-define=TSU_CHANNEL=direct
+          f="$GITHUB_WORKSPACE/out/qulythuchi_${V}_android-universal.apk"
+          cp build/app/outputs/flutter-apk/app-release.apk "$f"
+          bt=$(ls "$ANDROID_HOME"/build-tools | sort -V | tail -1)
+          "$ANDROID_HOME/build-tools/$bt/apksigner" verify --print-certs "$f" | grep -i 'SHA-256' | tee "$RUNNER_TEMP/cert.txt"
+          grep -qi 'Android Debug' <("$ANDROID_HOME/build-tools/$bt/apksigner" verify --print-certs "$f") \
+            && { echo "::error::APK ký bằng khoá debug"; exit 1; } || true
+      - name: AAB cho Google Play (khoá upload)
+        env:
+          KS: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+        working-directory: apps/app
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/play"
+          if [ -z "$KS" ]; then echo "::warning::Chưa có bí mật ANDROID_UPLOAD_* - bỏ qua AAB"; exit 0; fi
+          trap 'rm -f android/key.properties "$RUNNER_TEMP/upload.jks"' EXIT
+          echo "$KS" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          printf 'storeFile=%s\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' "$RUNNER_TEMP/upload.jks" "$KS_PASS" "$KEY_ALIAS" "$KEY_PASS" > android/key.properties
+          flutter pub get && flutter gen-l10n
+          flutter build appbundle --release --build-name="$BASE" --build-number="$CODE" \
+            --dart-define=APP_VERSION="$V" --dart-define=TSU_CHANNEL=play
+          cp build/app/outputs/bundle/release/app-release.aab "$GITHUB_WORKSPACE/play/qulythuchi_${V}_android-universal.aab"
+      - name: Có APK thì đưa vào Release
+        id: has
+        run: echo "apk=$(ls out/*.apk >/dev/null 2>&1 && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - if: steps.has.outputs.apk == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with: { name: build-android, path: out/*.apk, if-no-files-found: error }
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with: { name: play-aab, path: play/*.aab, if-no-files-found: ignore, retention-days: 30 }
+
+  publish:
+    name: Ký, chứng thực, tạo Release nháp
+    needs: [version, desktop, android]
+    runs-on: ubuntu-24.04
+    permissions: { contents: write, id-token: write, attestations: write }
+    env:
+      V: ${{ needs.version.outputs.v }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with: { path: dist, pattern: 'build-*', merge-multiple: true }
+      - name: SBOM (SPDX) của mã nguồn
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+        with:
+          path: .
+          format: spdx-json
+          output-file: dist/qulythuchi_${{ needs.version.outputs.v }}_sbom.spdx.json
+          upload-artifact: false
+          upload-release-assets: false
+      - name: SHA256SUMS
+        working-directory: dist
+        run: |
+          set -euo pipefail
+          sha256sum -- * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+      - uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+      - name: Ký SHA256SUMS bằng Sigstore (keyless, danh tính = workflow này)
+        working-directory: dist
+        run: cosign sign-blob --yes --bundle SHA256SUMS.txt.sigstore.json SHA256SUMS.txt
+      - name: Chứng thực nguồn gốc bản build (SLSA)
+        id: prov
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with: { subject-path: 'dist/qulythuchi_*' }
+      - name: Bundle chứng thực để kiểm ngoại tuyến
+        env: { B: '${{ steps.prov.outputs.bundle-path }}' }
+        run: cp "$B" "dist/qulythuchi_${V}_provenance.intoto.jsonl"
+      - name: Tạo bản phát hành (nháp)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRE: ${{ needs.version.outputs.pre }}
+        run: |
+          set -euo pipefail
+          android="Bản Android chưa có trong lần phát hành này (chờ khoá ký) - dùng bản web."
+          ls dist/*.apk >/dev/null 2>&1 && android="APK ngoài Google Play ký bằng khoá RIÊNG, không cập nhật chéo được với bản Play."
+          cat > notes.md <<EOF
+          Quly Thu Chi $V - quản lý thu chi cá nhân, mã hoá đầu cuối. Thay đổi: CHANGELOG.md. Giấy phép AGPL-3.0-only.
+
+          **Kiểm chứng tệp tải về** (docs/RELEASE.md):
+          - \`sha256sum -c SHA256SUMS.txt --ignore-missing\`
+          - \`cosign verify-blob SHA256SUMS.txt --bundle SHA256SUMS.txt.sigstore.json --certificate-identity-regexp '^https://github.com/tsudev-org/qulythuchi/.github/workflows/release.yml@refs/tags/v' --certificate-oidc-issuer https://token.actions.githubusercontent.com\`
+          - \`gh attestation verify <tệp> --repo tsudev-org/qulythuchi\`
+
+          **Trạng thái ký** (nói thật, DISTRIBUTION_TRUST.md):
+          - Windows: chưa ký Authenticode - SmartScreen có thể hỏi; đối chiếu SHA-256 trước khi chạy.
+          - macOS: ký ad-hoc, chưa notarize - lần đầu mở, vào System Settings > Privacy & Security > Open Anyway.
+          - Linux: \`.deb\` cho Ubuntu 22.04+/Debian 12+, hoặc \`.tar.gz\` chạy \`./qulythuchi\`.
+          - Android: $android
+          - iPhone/iPad: chưa có trên App Store - dùng bản web https://qulythuchi.tsudev.com/app/
+
+          English: Quly Thu Chi $V, an end-to-end encrypted personal finance app (AGPL-3.0-only). Verify downloads with
+          SHA256SUMS.txt (Sigstore-signed) and \`gh attestation verify <file> --repo tsudev-org/qulythuchi\`.
+          Windows build is not Authenticode-signed yet; macOS build is ad-hoc signed, not notarized.
+          EOF
+          sed -i 's/^          //' notes.md
+          args=(--draft --title "Quly Thu Chi $V" --notes-file notes.md --verify-tag)
+          [ "$PRE" = true ] && args+=(--prerelease)
+          gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" "${args[@]}"
+
+  virustotal:
+    needs: publish
+    permissions: { contents: write }
+    uses: tsudev-org/.github/.github/workflows/virustotal.yml@8a393ebd89349300637c8c57e89c12492b174e4d # main 18/11/2026
+    with: { tag: '${{ github.ref_name }}' }
+    secrets: { VT_API_KEY: '${{ secrets.VT_API_KEY }}' }
+
+  cong-bo:
+    name: Công bố Release
+    needs: virustotal
+    if: needs.virustotal.outputs.flagged != 'true'
+    runs-on: ubuntu-24.04
+    permissions: { contents: write }
+    steps:
+      - name: Bỏ nháp
+        env: { GH_TOKEN: '${{ github.token }}' }
+        run: gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false

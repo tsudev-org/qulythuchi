@@ -1,0 +1,2 @@
+# Luật ZAP baseline cho qulythuchi.tsudev.com (workflow dast.yml). Khuôn: <id>\t<IGNORE|WARN|FAIL>\t<lý do>.
+# Mọi IGNORE PHẢI có lý do kiểm được; mặc định mọi cảnh báo là FAIL (-I không dùng).

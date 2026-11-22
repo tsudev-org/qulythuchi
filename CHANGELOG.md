@@ -29,6 +29,10 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
   gốc qua `npm --prefix apps/site run brand`.
 
 ### Thêm
+- Phát hành app cài đặt (P10): thẻ `vYY.M.DDNN` dựng Windows (zip portable), macOS (zip universal, sandbox), Linux
+  (`.deb` + `.tar.gz`) và Android (APK/AAB khi đã có khoá ký) trên runner sạch; mỗi Release kèm `SHA256SUMS.txt` ký
+  Sigstore, chứng thực nguồn gốc SLSA và SBOM SPDX. Hướng dẫn kiểm tệp: `docs/RELEASE.md`.
+- Quét DAST hằng tuần (OWASP ZAP baseline) với website và web app `/app/`.
 - Nút "Tiếp tục với ..." dựng từ danh sách nhà cung cấp IdP tsudev.com đang bật (`GET /api/v1/auth/providers`) thay vì
   gõ cứng; có "Tiếp tục với Apple" ngay khi tsudev.com bật Apple, chưa bật thì không hiện nút (quy ước v4.3.0,
   AUTH_AND_ACCOUNT mục 3.2).
