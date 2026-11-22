@@ -41,8 +41,11 @@ jobs:
           set -euo pipefail
           [ -n "$VT_API_KEY" ] || { echo "::notice::Chưa có VT_API_KEY - bỏ qua"; exit 0; }
           for d in qulythuchi.tsudev.com in.qulythuchi.tsudev.com; do
-            s=$(curl -sSf -H "x-apikey: $VT_API_KEY" "https://www.virustotal.com/api/v3/domains/$d" \
-              | jq -c '.data.attributes.last_analysis_stats')
+            code=$(curl -sS -o vt.json -w '%{http_code}' -H "x-apikey: $VT_API_KEY" "https://www.virustotal.com/api/v3/domains/$d")
+            # 404 = VirusTotal chưa từng thấy tên miền (vd. miền chỉ có MX) - không phải bị gắn cờ.
+            if [ "$code" = 404 ]; then echo "::notice::$d chưa có trên VirusTotal"; continue; fi
+            [ "$code" = 200 ] || { echo "::error::VirusTotal trả $code cho $d"; exit 1; }
+            s=$(jq -c '.data.attributes.last_analysis_stats' vt.json)
             echo "$d: $s"
             n=$(echo "$s" | jq '.malicious + .suspicious')
             [ "$n" = 0 ] || { echo "::error::$d bị $n hãng gắn cờ - xử lý theo DISTRIBUTION_TRUST.md mục 3"; exit 1; }

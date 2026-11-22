@@ -11,7 +11,6 @@
 
 - [ ] 👤 Nghiệm thu P9 trên production bằng HAI tài khoản tsudev thật (phiếu `logs/handover/20261119-03_p9-xong.md` mục 2b);
   thử đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
-- [ ] Dời từ P7 (chưa giao phase): sao kê PDF, OCR desktop (Tesseract), widget/lối tắt iOS. (Tệp đính kèm XONG P7b.)
 - [ ] 👤 Nghiệm thu P7b trên production: gắn ảnh hóa đơn trên điện thoại, mở ở máy thứ hai/`/app/`, xem trong ví chung
   (phiếu `logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
 - [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
@@ -30,8 +29,10 @@
 - [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] Apple (chuẩn v4.3.0 mục 3.2): RP đã sẵn (nút theo IdP, `idp_hint=apple`). 👤 Trước khi phát hành iOS: tsudev.com
   phải bật Apple (Apple Developer Program) - nút tự hiện, không cần phát hành lại app.
-- [ ] P10 - Phát hành + kiểm định (cần 👤 khóa ký Android); icon app gốc ĐÃ sinh từ dây chuyền (LG1), bộ đóng gói
-  desktop ở `assets/brand/app/`
+- [ ] P10 còn lại (phiếu `logs/handover/20261123-01_p10-phat-hanh-desktop-xong.md`): 👤 chạy `scripts/android-keys.sh`
+  (khoá APK + upload) ⇒ cắt thẻ mới có APK/AAB ⇒ AAB vào Thử nghiệm nội bộ Play (GP1); MSIX/winget/Scoop/Homebrew tap/
+  kho APT `pkg.tsudev.com`; bản chính thức (bỏ `-beta`) sau khi 👤 nghiệm thu P9/P7b.
+- [ ] Dời từ P7: sao kê PDF (pdfrx/PDFium), OCR desktop (Tesseract), widget/lối tắt iOS.
 
 ## Đang thực hiện
 
@@ -39,6 +40,17 @@
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 23/11/2026 - P10 phần desktop + kiểm định (agent-qulythuchi, phiên `qulythuchi-1f`): `release.yml` (thẻ
+  `vYY.M.DDNN[-beta.N]` ⇒ Windows zip, macOS zip sandbox, Linux deb + tar.gz; Android APK/AAB chỉ khi có khoá, Gradle
+  chặn khoá debug; SBOM SPDX, SHA256SUMS ký Sigstore, chứng thực SLSA + bundle; Release nháp ⇒ VirusTotal ⇒ công bố),
+  Environment `release` (chỉ thẻ `v*`), `scripts/package-linux.sh`, `scripts/android-keys.sh` (👤), `docs/RELEASE.md`;
+  DAST `dast.yml` (ZAP baseline `/`, `/app/` + VirusTotal tên miền, hằng tuần). Sửa: Windows STL1011 (VS 18,
+  local_auth_windows), thêm COEP `require-corp` (ZAP 90004; đã thử /app/ cục bộ + production: Argon2/sinh 24 từ chạy).
+  PR #53 (log STD50), #54, #55 gộp. LÊN PRODUCTION `deploy-2026.11.23.1` (Worker `38c7ef91`): `/`, `/app/`, health,
+  `/tai-ve/`, providers 200, `/auth/web/start` 302. RELEASE ĐẦU TIÊN `v26.11.2301-beta.1` (Pre-release): 4 tệp 0/74
+  VirusTotal, `sha256sum -c` + `gh attestation verify` đạt. Thẻ `v26.11.2201-beta.1` lần chạy hỏng Windows, KHÔNG có
+  Release (giữ thẻ, không xoá). Phiếu AV1 ĐÓNG.
 
 - 22/11/2026 - STD50 bản sắc sản phẩm v5.0.0 (agent-qulythuchi, phiên `qulythuchi-2012`), phiếu
   `logs/handover/20261121-STD50_*` ĐÓNG. PR #51 (`.standards` v5.0.0; website nạp `tokens.css` + `products.css`,
