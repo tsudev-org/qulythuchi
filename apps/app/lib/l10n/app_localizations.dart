@@ -2561,13 +2561,13 @@ abstract class AppLocalizations {
   /// No description provided for @importTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập từ tệp CSV'**
+  /// **'Nhập từ tệp (CSV, Excel, PDF sao kê)'**
   String get importTitle;
 
   /// No description provided for @importPick.
   ///
   /// In vi, this message translates to:
-  /// **'Chọn tệp CSV'**
+  /// **'Chọn tệp CSV, XLSX hoặc PDF'**
   String get importPick;
 
   /// No description provided for @importMapping.
@@ -2651,7 +2651,7 @@ abstract class AppLocalizations {
   /// No description provided for @importTooBig.
   ///
   /// In vi, this message translates to:
-  /// **'Tệp quá lớn (tối đa 5 MB)'**
+  /// **'Tệp quá lớn (tối đa 5 MB, PDF 15 MB)'**
   String get importTooBig;
 
   /// No description provided for @importDateFormat.
@@ -3257,7 +3257,7 @@ abstract class AppLocalizations {
   /// No description provided for @statementExplain.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập tệp CSV hoặc XLSX tải từ ngân hàng. App tự tìm bảng giao dịch, cột ghi nợ/ghi có, bỏ dòng đã có và gợi ý danh mục. Sao kê PDF: hãy tải bản Excel/CSV từ ngân hàng.'**
+  /// **'Nhập sao kê CSV, XLSX hoặc PDF (kể cả PDF có mật khẩu) tải từ ngân hàng. App tự tìm bảng giao dịch, cột ghi nợ/ghi có, bỏ dòng đã có và gợi ý danh mục.'**
   String get statementExplain;
 
   /// No description provided for @statementOpen.
@@ -5335,6 +5335,30 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Gia hạn'**
   String get proRenew;
+
+  /// No description provided for @importPdfPasswordTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao kê PDF có mật khẩu'**
+  String get importPdfPasswordTitle;
+
+  /// No description provided for @importPdfPasswordBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mật khẩu ngân hàng đặt cho tệp (thường là ngày sinh hoặc số giấy tờ). Mật khẩu chỉ dùng để mở tệp trên máy này, không được lưu.'**
+  String get importPdfPasswordBody;
+
+  /// No description provided for @importPdfPasswordWrong.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu PDF không đúng'**
+  String get importPdfPasswordWrong;
+
+  /// No description provided for @importPdfNoText.
+  ///
+  /// In vi, this message translates to:
+  /// **'PDF không có lớp chữ (ảnh quét). Hãy tải bản PDF điện tử, CSV hoặc Excel từ ngân hàng, hoặc chụp từng trang ở Tự nhập > Hóa đơn.'**
+  String get importPdfNoText;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

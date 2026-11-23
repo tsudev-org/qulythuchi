@@ -51,6 +51,7 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T20 | Rò nội dung thông báo/ảnh hóa đơn/giọng nói khỏi thiết bị | I | Hàng đợi thông báo mã hóa Keystore, không sao lưu; OCR ML Kit trên máy, xóa ảnh tạm; giọng nói `onDevice`, dịch vụ HĐH chỉ khi đồng ý; widget không hiện dữ liệu | ✅ P7 |
 | T30 | App tự cấp Pro / giả JWS trong đệm cục bộ để mở nút | S, E | JWS kiểm lại mỗi lần đọc (ES256 + JWKS, `aud` = `qulythuchi`, `exp` ≤ 7 ngày); trường không ký chỉ đổi lời nhắn; máy chủ vẫn gate mọi lượt đẩy (T25) | ✅ T7 app (ADR-0019) |
 | T31 | Dùng lại biên nhận Play cho tài khoản khác / app tự tin biên nhận / bản Play dẫn ra thanh toán web | S, E | `obfuscatedAccountId` từ `sub` của JWS đã kiểm; app chỉ chuyển biên nhận (máy chủ ⇒ tsudev.com xác minh), chỉ hoàn tất giao dịch khi xác minh xong; danh sách mã cố định, không `thang`; kênh mặc định an toàn (Android ⇒ Play) | ✅ T7 app (ADR-0019) |
+| T32 | Sao kê PDF độc khai thác lỗi bộ nhớ của PDFium / tệp phình to / lộ mật khẩu PDF | T, D, I, E | PDFium (`pdfrx` 3.0.0 ghim, bản không V8) chỉ lấy chữ; giới hạn 15 MiB/200 trang/2 triệu ký tự; mật khẩu chỉ trong bộ nhớ; sandbox nền tảng; SHA-256 ghim bản PDFium | ✅ Sao kê PDF (ADR-0020) |
 
 ## 3. Phụ thuộc mật mã (SECURITY_BASELINE mục 5)
 

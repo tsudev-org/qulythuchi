@@ -12,6 +12,7 @@ import '../../l10n/app_localizations.dart';
 import '../../services/auto_import.dart';
 import '../../services/export.dart';
 import '../../services/import_csv.dart';
+import '../../services/import_pdf.dart';
 import '../../services/import_template.dart';
 import '../../services/xlsx_reader.dart';
 import '../../state/ledger_repository.dart';
@@ -290,23 +291,36 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
     final file = await openFile(
       acceptedTypeGroups: const [
         XTypeGroup(
-          label: 'CSV, XLSX',
-          extensions: ['csv', 'txt', 'xlsx'],
-          mimeTypes: ['text/csv', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+          label: 'CSV, XLSX, PDF',
+          extensions: ['csv', 'txt', 'xlsx', 'pdf'],
+          mimeTypes: [
+            'text/csv',
+            'text/plain',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/pdf',
+          ],
           uniformTypeIdentifiers: [
             'public.comma-separated-values-text',
             'public.plain-text',
             'org.openxmlformats.spreadsheetml.sheet',
+            'com.adobe.pdf',
           ],
         ),
       ],
     );
     if (file == null || !mounted) return;
     try {
-      if (await file.length() > maxImportBytes) throw const FormatException('too_big');
+      final pdfName = file.name.toLowerCase().endsWith('.pdf');
+      if (await file.length() > (pdfName ? maxPdfBytes : maxImportBytes)) throw const FormatException('too_big');
       final bytes = await file.readAsBytes();
-      // XLSX là tệp zip (bắt đầu "PK").
-      final rows = bytes.length > 2 && bytes[0] == 0x50 && bytes[1] == 0x4B ? parseXlsx(bytes) : parseCsv(bytes);
+      if (!mounted) return;
+      // XLSX là tệp zip (bắt đầu "PK"); PDF bắt đầu "%PDF" (ADR-0020).
+      final rows = isPdf(bytes)
+          ? await parsePdfStatement(bytes, askPassword: (retry) => _askPdfPassword(retry))
+          : bytes.length > 2 && bytes[0] == 0x50 && bytes[1] == 0x4B
+          ? parseXlsx(bytes)
+          : parseCsv(bytes);
+      if (!mounted) return;
       if (rows.isEmpty) throw const FormatException('empty');
       final template = detectTemplate(rows.first);
       if (template != null) {
@@ -335,10 +349,24 @@ class _ImportCardState extends ConsumerState<_ImportCard> {
         _pending = headerRow > 0 || g.debit != null || g.credit != null;
       });
     } on FormatException catch (e) {
-      if (mounted) context.toast(e.message == 'too_big' ? l.importTooBig : l.importEmpty);
+      if (!mounted || e.message == 'cancelled') return;
+      context.toast(switch (e.message) {
+        'too_big' => l.importTooBig,
+        'password' => l.importPdfPasswordWrong,
+        'no_text' => l.importPdfNoText,
+        _ => l.importEmpty,
+      });
     } on Object {
       if (mounted) context.toast(l.importEmpty);
     }
+  }
+
+  Future<String?> _askPdfPassword(bool retry) {
+    if (!mounted) return Future.value();
+    return showDialog<String>(
+      context: context,
+      builder: (_) => _PdfPasswordDialog(retry: retry),
+    );
   }
 
   ImportResult? _result(LedgerData data) {
@@ -706,6 +734,50 @@ class _RestoreDialogState extends ConsumerState<_RestoreDialog> {
         actions: [
           TextButton(onPressed: _busy ? null : () => Navigator.pop(context), child: Text(l.actionCancel)),
           FilledButton(onPressed: _busy ? null : () => _submit(c[0].text), child: Text(l.actionContinue)),
+        ],
+      ),
+    );
+  }
+}
+
+/// Mật khẩu sao kê PDF (ngân hàng thường đặt theo ngày sinh/số CMND). Chỉ giữ trong bộ nhớ để mở tệp, không lưu.
+class _PdfPasswordDialog extends StatelessWidget {
+  const _PdfPasswordDialog({required this.retry});
+  final bool retry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    return ControllerScope(
+      count: 1,
+      builder: (context, c) => AlertDialog(
+        title: Text(l.importPdfPasswordTitle),
+        content: SizedBox(
+          width: 420,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l.importPdfPasswordBody),
+              const SizedBox(height: QtSpace.s3),
+              TextField(
+                controller: c[0],
+                obscureText: true,
+                autofocus: true,
+                autocorrect: false,
+                enableSuggestions: false,
+                decoration: InputDecoration(
+                  labelText: l.passwordLabel,
+                  errorText: retry ? l.importPdfPasswordWrong : null,
+                ),
+                onSubmitted: (v) => Navigator.pop(context, v),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(l.actionCancel)),
+          FilledButton(onPressed: () => Navigator.pop(context, c[0].text), child: Text(l.actionContinue)),
         ],
       ),
     );

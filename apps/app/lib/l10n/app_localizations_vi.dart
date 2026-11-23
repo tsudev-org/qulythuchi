@@ -1340,10 +1340,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get exportCancelled => 'Đã hủy';
 
   @override
-  String get importTitle => 'Nhập từ tệp CSV';
+  String get importTitle => 'Nhập từ tệp (CSV, Excel, PDF sao kê)';
 
   @override
-  String get importPick => 'Chọn tệp CSV';
+  String get importPick => 'Chọn tệp CSV, XLSX hoặc PDF';
 
   @override
   String get importMapping => 'Ghép cột';
@@ -1391,7 +1391,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get importEmpty => 'Tệp trống hoặc không đọc được';
 
   @override
-  String get importTooBig => 'Tệp quá lớn (tối đa 5 MB)';
+  String get importTooBig => 'Tệp quá lớn (tối đa 5 MB, PDF 15 MB)';
 
   @override
   String get importDateFormat => 'Định dạng ngày';
@@ -1728,7 +1728,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get statementExplain =>
-      'Nhập tệp CSV hoặc XLSX tải từ ngân hàng. App tự tìm bảng giao dịch, cột ghi nợ/ghi có, bỏ dòng đã có và gợi ý danh mục. Sao kê PDF: hãy tải bản Excel/CSV từ ngân hàng.';
+      'Nhập sao kê CSV, XLSX hoặc PDF (kể cả PDF có mật khẩu) tải từ ngân hàng. App tự tìm bảng giao dịch, cột ghi nợ/ghi có, bỏ dòng đã có và gợi ý danh mục.';
 
   @override
   String get statementOpen => 'Nhập sao kê';
@@ -2915,4 +2915,18 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get proRenew => 'Gia hạn';
+
+  @override
+  String get importPdfPasswordTitle => 'Sao kê PDF có mật khẩu';
+
+  @override
+  String get importPdfPasswordBody =>
+      'Nhập mật khẩu ngân hàng đặt cho tệp (thường là ngày sinh hoặc số giấy tờ). Mật khẩu chỉ dùng để mở tệp trên máy này, không được lưu.';
+
+  @override
+  String get importPdfPasswordWrong => 'Mật khẩu PDF không đúng';
+
+  @override
+  String get importPdfNoText =>
+      'PDF không có lớp chữ (ảnh quét). Hãy tải bản PDF điện tử, CSV hoặc Excel từ ngân hàng, hoặc chụp từng trang ở Tự nhập > Hóa đơn.';
 }

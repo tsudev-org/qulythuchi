@@ -21,7 +21,7 @@
 | Báo cáo | Thu-chi theo kỳ, cơ cấu danh mục, xu hướng, dòng tiền, so sánh kỳ, tài sản ròng, lịch chi tiêu | Money Manager, MISA, TNEX | P4 |
 | Tìm kiếm | Tìm không dấu tiếng Việt, lọc nhiều điều kiện, lưu bộ lọc | (chuẩn TsuDEV SEARCH_AND_FILTER) | P4 |
 | Xuất/nhập | CSV, XLSX, PDF; nhập từ file CSV của app khác; sao lưu tệp mã hóa | Money Manager, MISA | P4 |
-| Tự nhập | Thông báo biến động số dư (Android), sao kê ngân hàng, OCR hóa đơn, giọng nói "ăn trưa 50 nghìn", email chuyển tiếp | MISA (giọng nói), Money Lover (liên kết NH) | P7 |
+| Tự nhập | Thông báo biến động số dư (Android), sao kê ngân hàng CSV/XLSX/PDF (kể cả PDF có mật khẩu), OCR hóa đơn, giọng nói "ăn trưa 50 nghìn", email chuyển tiếp | MISA (giọng nói), Money Lover (liên kết NH) | P7 |
 | Thông minh | Tự xếp danh mục theo lịch sử (trên máy), phát hiện khoản bất thường/trùng lặp | Mint, PocketGuard | P7 |
 | Tiện ích | Widget màn hình chính, lối tắt ghi nhanh, máy tính tích hợp ở ô số tiền | Fast Budget, Money Manager | P7 |
 | Đồng bộ | Mọi thiết bị cùng tài khoản TsuDEV, ngoại tuyến vẫn dùng được, E2EE | Home Budget with Sync, Spendee | P5-P6 |

@@ -68,6 +68,7 @@ dependencies:
   # Google Play Billing (chỉ bản TSU_CHANNEL=play): tsudev_pro/nam + ung_ho_* - biên nhận xác minh ở tsudev.com.
   in_app_purchase: ^3.2.3
   in_app_purchase_android: ^0.5.5
+  pdfrx: 3.0.0
 
 dev_dependencies:
   flutter_test:

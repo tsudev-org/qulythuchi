@@ -4,6 +4,7 @@ library;
 export 'src/attachments/attachment.dart';
 export 'src/attachments/image_sanitizer.dart';
 export 'src/autoimport/bank_notification.dart';
+export 'src/autoimport/pdf_table.dart';
 export 'src/autoimport/quick_entry.dart';
 export 'src/autoimport/receipt.dart';
 export 'src/autoimport/smart.dart';

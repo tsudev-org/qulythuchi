@@ -762,8 +762,8 @@
   "exportRange": "Khoảng ngày",
   "exportAllTime": "Toàn bộ",
   "exportCancelled": "Đã hủy",
-  "importTitle": "Nhập từ tệp CSV",
-  "importPick": "Chọn tệp CSV",
+  "importTitle": "Nhập từ tệp (CSV, Excel, PDF sao kê)",
+  "importPick": "Chọn tệp CSV, XLSX hoặc PDF",
   "importMapping": "Ghép cột",
   "importColDate": "Cột ngày",
   "importColAmount": "Cột số tiền",
@@ -801,7 +801,7 @@
     }
   },
   "importEmpty": "Tệp trống hoặc không đọc được",
-  "importTooBig": "Tệp quá lớn (tối đa 5 MB)",
+  "importTooBig": "Tệp quá lớn (tối đa 5 MB, PDF 15 MB)",
   "importDateFormat": "Định dạng ngày",
   "backupTitle": "Sao lưu mã hóa",
   "backupBody": "Tệp sao lưu được mã hóa đầu-cuối; chỉ mở được bằng mật khẩu mã hóa hoặc 24 từ của bạn.",
@@ -1000,7 +1000,7 @@
   "scanFailed": "Không đọc được ảnh",
   "scanNoTotal": "Không tìm thấy tổng tiền trên hóa đơn - hãy gõ số tiền",
   "statementTitle": "Sao kê ngân hàng",
-  "statementExplain": "Nhập tệp CSV hoặc XLSX tải từ ngân hàng. App tự tìm bảng giao dịch, cột ghi nợ/ghi có, bỏ dòng đã có và gợi ý danh mục. Sao kê PDF: hãy tải bản Excel/CSV từ ngân hàng.",
+  "statementExplain": "Nhập sao kê CSV, XLSX hoặc PDF (kể cả PDF có mật khẩu) tải từ ngân hàng. App tự tìm bảng giao dịch, cột ghi nợ/ghi có, bỏ dòng đã có và gợi ý danh mục.",
   "statementOpen": "Nhập sao kê",
   "voiceStart": "Nói",
   "voiceConsent": "Máy này không có bộ nhận dạng giọng nói ngoại tuyến. Có thể dùng dịch vụ nhận dạng của hệ điều hành - âm thanh có thể được gửi tới nhà cung cấp hệ điều hành (Google/Apple). Quly Thu Chi không nhận hay lưu âm thanh. Tiếp tục?",
@@ -1801,5 +1801,9 @@
     }
   },
   "proClose": "Đóng",
-  "proRenew": "Gia hạn"
+  "proRenew": "Gia hạn",
+  "importPdfPasswordTitle": "Sao kê PDF có mật khẩu",
+  "importPdfPasswordBody": "Nhập mật khẩu ngân hàng đặt cho tệp (thường là ngày sinh hoặc số giấy tờ). Mật khẩu chỉ dùng để mở tệp trên máy này, không được lưu.",
+  "importPdfPasswordWrong": "Mật khẩu PDF không đúng",
+  "importPdfNoText": "PDF không có lớp chữ (ảnh quét). Hãy tải bản PDF điện tử, CSV hoặc Excel từ ngân hàng, hoặc chụp từng trang ở Tự nhập > Hóa đơn."
 }
