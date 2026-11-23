@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pdfrx/pdfrx.dart' show Pdfrx;
+import 'package:pdfrx/pdfrx.dart';
 import 'package:qulythuchi/services/export.dart';
 import 'package:qulythuchi/services/import_csv.dart';
 import 'package:qulythuchi/services/import_pdf.dart';
@@ -43,6 +43,25 @@ void main() {
     final pdf = await toPdf(t, title: 'Giao dịch', subtitle: '01/11/2026 - 28/11/2026');
     expect(isPdf(pdf), isTrue);
 
+    // CHẨN ĐOÁN TẠM: in toạ độ ký tự vùng chân/đầu trang 1.
+    {
+      final doc = await PdfDocument.openData(pdf);
+      final pg = doc.pages.first;
+      final t = (await pg.loadText())!;
+      final out = StringBuffer('PAGE ${pg.width}x${pg.height} rot=${pg.rotation}\n');
+      for (var i = 0; i < t.fullText.length && i < t.charRects.length; i++) {
+        final r = t.charRects[i];
+        if ('TQ1/|'.contains(t.fullText[i]) || (i > 0 && t.fullText[i - 1] == '2' && t.fullText[i] == '1')) {
+          out.write(
+            '${t.fullText.substring(i, (i + 8).clamp(0, t.fullText.length)).replaceAll('\n', '⏎')} '
+            'L${r.left.toStringAsFixed(1)} T${r.top.toStringAsFixed(1)} R${r.right.toStringAsFixed(1)} B${r.bottom.toStringAsFixed(1)}\n',
+          );
+        }
+      }
+      // ignore: avoid_print
+      print(out);
+      await doc.dispose();
+    }
     final table = await parsePdfStatement(pdf, askPassword: (_) async => null);
     final h = findHeaderRow(table);
     expect(table[h], containsAll(['Ngày', 'Loại', 'Số tiền', 'Ghi chú']));
