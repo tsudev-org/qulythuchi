@@ -33,6 +33,9 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
   gốc qua `npm --prefix apps/site run brand`.
 
 ### Thêm
+- Nhập sao kê ngân hàng dạng **PDF**, kể cả PDF có mật khẩu: app tự dựng bảng giao dịch (cột căn phải, diễn giải
+  xuống dòng, nhiều trang), rồi ghép cột, bỏ dòng đã có và đưa vào hàng chờ xác nhận như CSV/XLSX. Đọc hoàn toàn trên
+  máy (PDFium), mật khẩu không được lưu (ADR-0020).
 - Phát hành app cài đặt (P10): thẻ `vYY.M.DDNN` dựng Windows (zip portable), macOS (zip universal, sandbox), Linux
   (`.deb` + `.tar.gz`) và Android (APK/AAB khi đã có khoá ký) trên runner sạch; mỗi Release kèm `SHA256SUMS.txt` ký
   Sigstore, chứng thực nguồn gốc SLSA và SBOM SPDX. Hướng dẫn kiểm tệp: `docs/RELEASE.md`.

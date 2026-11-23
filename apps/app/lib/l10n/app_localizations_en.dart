@@ -1345,7 +1345,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importTitle => 'Import from CSV';
 
   @override
-  String get importPick => 'Choose a CSV file';
+  String get importPick => 'Choose a CSV, XLSX or PDF file';
 
   @override
   String get importMapping => 'Map columns';
@@ -1393,7 +1393,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importEmpty => 'The file is empty or unreadable';
 
   @override
-  String get importTooBig => 'File too large (max 5 MB)';
+  String get importTooBig => 'File too large (max 5 MB, PDF 15 MB)';
 
   @override
   String get importDateFormat => 'Date format';
@@ -1732,7 +1732,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statementExplain =>
-      'Import a CSV or XLSX file downloaded from your bank. The app finds the transaction table and debit/credit columns, skips rows you already have and suggests categories. PDF statements: download the Excel/CSV version from your bank.';
+      'Import a CSV, XLSX or PDF statement (password-protected PDFs too) downloaded from your bank. The app finds the transaction table and debit/credit columns, skips rows you already have and suggests categories.';
 
   @override
   String get statementOpen => 'Import statement';
@@ -2919,4 +2919,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get proRenew => 'Renew';
+
+  @override
+  String get importPdfPasswordTitle => 'Password-protected PDF statement';
+
+  @override
+  String get importPdfPasswordBody =>
+      'Enter the password your bank set for this file (often a date of birth or ID number). It is only used to open the file on this device and is never stored.';
+
+  @override
+  String get importPdfPasswordWrong => 'Wrong PDF password';
+
+  @override
+  String get importPdfNoText =>
+      'This PDF has no text layer (scanned image). Download the electronic PDF, CSV or Excel statement from your bank, or capture pages under Auto import > Receipt.';
 }
