@@ -32,7 +32,8 @@
 - [ ] P10 còn lại (phiếu `logs/handover/20261123-02_android-play-noi-bo.md`): Play nội bộ ĐÃ xuất bản 23/11 (link
   trong `docs/store/google-play.md` bước 4a) ⇒ 👤 cài thử trên máy thật; sản phẩm `tsudev_pro`/`nam` + `ung_ho_*` ĐÃ TẠO
   (bản nháp, bước 4b) ⇒ 👤 kiểm thử giấy phép + `PLAY_SERVICE_ACCOUNT_JSON` (Render tsudev) ⇒ kích hoạt ⇒ thử mua B2;
-  kênh gói (MSIX/winget/Scoop/Homebrew/APT); bản chính thức (bỏ `-beta`) sau khi 👤 nghiệm thu P9/P7b.
+  bản chính thức (bỏ `-beta`) sau khi 👤 nghiệm thu P9/P7b ⇒ bật kênh gói theo `docs/RELEASE.md` mục 6
+  (`packaging/package.json` đã có, kênh đang `planned`).
 - [ ] Dời từ P7: sao kê PDF (pdfrx/PDFium), OCR desktop (Tesseract), widget/lối tắt iOS.
 
 ## Đang thực hiện
@@ -41,6 +42,12 @@
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 23/11/2026 - Play sản phẩm + kênh gói + dọn (agent-qulythuchi, phiên `qulythuchi-1f`): Play nội bộ ĐÃ xuất bản
+  (👤 xác nhận); hồ sơ thanh toán có sẵn ⇒ tạo `tsudev_pro`/`nam` + `ung_ho_*` ở bản nháp (PR #62, #63). Test máy chủ
+  chập chờn sửa bằng `CLEANUP_SAMPLE_RATE` (PR #60). Phiếu SEC1 ĐÓNG (PR #61). `packaging/package.json` (PR #64, kênh
+  `planned` tới bản chính thức). LÊN PRODUCTION `deploy-2026.11.23.3` (Worker `18200764`): `/`, `/app/`, health,
+  `/tai-ve/`, providers 200.
 
 - 23/11/2026 - Android release đầu tiên (agent-qulythuchi, phiên `qulythuchi-1f`): 👤 tạo khoá APK + upload
   (`scripts/android-keys.sh`); vân tay ghi `docs/RELEASE.md` + ghim trong `release.yml` (PR #57, #59). Lần đầu dựng
