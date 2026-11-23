@@ -57,9 +57,8 @@ List<List<String>> pdfGlyphsToRows(List<PdfGlyph> glyphs) {
   final lines = _buildLines(_buildWords(glyphs));
   if (lines.isEmpty) return const [];
   final bounds = _columnBounds(lines);
-  final rows = <List<String>>[];
-  List<String>? header;
-  var started = false; // đã gặp dòng giao dịch đầu tiên (có ngày)
+  // Lượt 1: mỗi dòng chữ ⇒ ô theo cột.
+  final cellsOf = <List<String>>[];
   for (final line in lines) {
     final cells = List.filled(bounds.length + 1, '');
     for (final w in line.words) {
@@ -70,24 +69,51 @@ List<List<String>> pdfGlyphsToRows(List<PdfGlyph> glyphs) {
       }
       cells[col] = cells[col].isEmpty ? w.text.toString() : '${cells[col]} ${w.text}';
     }
+    cellsOf.add(cells);
+  }
+  bool isDate(String c) => _dateRe.hasMatch(c);
+  bool isAmount(String c) => _amountRe.hasMatch(c.replaceAll(' ', ''));
+  // Cột ngày / cột số: quá nửa dòng giao dịch có ngày / số tiền ở đó. Dòng nối chỉ được gộp khi KHÔNG chạm các cột này
+  // (chân trang "TsuDEV · 1/3" sát dòng cuối, đầu trang sau... không bị nối vào giao dịch).
+  final txnIdx = [
+    for (var i = 0; i < lines.length; i++)
+      if (_isTxn(lines[i])) i,
+  ];
+  final structural = <int>{};
+  for (var c = 0; c <= bounds.length; c++) {
+    final d = txnIdx.where((i) => isDate(cellsOf[i][c])).length;
+    final m = txnIdx.where((i) => isAmount(cellsOf[i][c])).length;
+    if (txnIdx.isNotEmpty && (d * 2 > txnIdx.length || m * 2 > txnIdx.length)) structural.add(c);
+  }
+  // Lượt 2: ghép dòng.
+  final rows = <List<String>>[];
+  List<String>? header;
+  var started = false; // đã gặp dòng giao dịch đầu tiên
+  var lastPage = -1;
+  for (var i = 0; i < lines.length; i++) {
+    final cells = cellsOf[i];
     final joined = cells.join('\u0001');
     // Tiêu đề cột lặp lại ở đầu trang sau.
     if (header != null && joined == header.join('\u0001')) continue;
-    final hasDate = cells.any((c) => _dateRe.hasMatch(c));
-    final hasAmount = cells.any((c) => _amountRe.hasMatch(c.replaceAll(' ', ''))) || _isTxn(line);
-    // Giao dịch = có ngày VÀ có số tiền; dòng chỉ có ngày (vd. "Từ 01/11/2026 - 28/11/2026" ở đầu trang) không phải.
-    final txn = hasDate && hasAmount;
+    final txn = _isTxn(lines[i]);
+    final hasDate = cells.any(isDate);
+    final hasAmount = cells.any(isAmount);
     if (!started && !txn && cells.where((c) => c.isNotEmpty).length >= 3) header = cells;
     if (txn) started = true;
-    if (started && !hasDate && !hasAmount && rows.isNotEmpty) {
+    final onlyText = [
+      for (var c = 0; c < cells.length; c++)
+        if (cells[c].isNotEmpty) c,
+    ].every((c) => !structural.contains(c));
+    if (started && !txn && !hasDate && !hasAmount && onlyText && rows.isNotEmpty && lines[i].page == lastPage) {
       // Dòng xuống hàng của diễn giải ⇒ nối vào ô cùng cột của giao dịch phía trên.
       final prev = rows.last;
-      for (var i = 0; i < cells.length; i++) {
-        if (cells[i].isNotEmpty) prev[i] = prev[i].isEmpty ? cells[i] : '${prev[i]} ${cells[i]}';
+      for (var c = 0; c < cells.length; c++) {
+        if (cells[c].isNotEmpty) prev[c] = prev[c].isEmpty ? cells[c] : '${prev[c]} ${cells[c]}';
       }
       continue;
     }
     rows.add(cells);
+    lastPage = lines[i].page;
     if (rows.length > maxPdfRows + 1) throw const FormatException('too_big');
   }
   // Bỏ cột trống hoàn toàn.

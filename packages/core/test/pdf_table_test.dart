@@ -115,4 +115,17 @@ void main() {
       ['02/11/2026', 'Hoàn tiền', '', '50.000', '850.000'],
     ]);
   });
+
+  test('chân trang sát dòng cuối (cột ngày/số) không bị nối vào giao dịch', () {
+    final g = [
+      ...header(720),
+      ...txn('01/11/2026', 'Mua sắm', '200.000', '', '800.000', 700),
+      ...txn('02/11/2026', 'Hoàn tiền', '', '50.000', '850.000', 680),
+      ...put('TsuDEV · tsudev.com', 40, 666),
+      ...put('1/3', 560, 666, right: true),
+    ];
+    final rows = pdfGlyphsToRows(g);
+    expect(rows[2], ['02/11/2026', 'Hoàn tiền', '', '50.000', '850.000']);
+    expect(rows[3].join(' ').replaceAll(RegExp(r'\s+'), ' ').trim(), 'TsuDEV · tsudev.com 1/3');
+  });
 }
