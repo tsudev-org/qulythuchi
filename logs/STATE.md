@@ -30,7 +30,8 @@
 - [ ] Apple (chuẩn v4.3.0 mục 3.2): RP đã sẵn (nút theo IdP, `idp_hint=apple`). 👤 Trước khi phát hành iOS: tsudev.com
   phải bật Apple (Apple Developer Program) - nút tự hiện, không cần phát hành lại app.
 - [ ] P10 còn lại (phiếu `logs/handover/20261123-02_android-play-noi-bo.md`): Play nội bộ ĐÃ xuất bản 23/11 (link
-  trong `docs/store/google-play.md` bước 4a) ⇒ 👤 cài thử trên máy thật ⇒ hồ sơ thanh toán ⇒ tạo sản phẩm `tsudev_pro`/`nam` + `ung_ho_*`;
+  trong `docs/store/google-play.md` bước 4a) ⇒ 👤 cài thử trên máy thật; sản phẩm `tsudev_pro`/`nam` + `ung_ho_*` ĐÃ TẠO
+  (bản nháp, bước 4b) ⇒ 👤 kiểm thử giấy phép + `PLAY_SERVICE_ACCOUNT_JSON` (Render tsudev) ⇒ kích hoạt ⇒ thử mua B2;
   kênh gói (MSIX/winget/Scoop/Homebrew/APT); bản chính thức (bỏ `-beta`) sau khi 👤 nghiệm thu P9/P7b.
 - [ ] Dời từ P7: sao kê PDF (pdfrx/PDFium), OCR desktop (Tesseract), widget/lối tắt iOS.
 

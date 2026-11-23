@@ -111,10 +111,28 @@ tạo `thang`; sản phẩm một lần `ung_ho_20k`, `ung_ho_50k`, `ung_ho_100k
   <https://play.google.com/apps/internaltest/4700541829715107418>. Tên tạm trên Play: `com.tsudev.qulythuchi
   (unreviewed)` cho tới khi app được duyệt.
 
+## Bước 4b - Sản phẩm (23/11/2026, phiên `qulythuchi-1f`) - BẢN NHÁP
+
+Hồ sơ thanh toán: ĐÃ CÓ ở cấp tài khoản nhà phát triển (trang Gói thuê bao / Sản phẩm một lần không còn chặn) - không
+tạo mới. Đã tạo, tất cả **Bản nháp, chưa kích hoạt**:
+
+| Mã | Loại | Chi tiết | Giá VN (Play tự quy đổi 173-178 khu vực khác) |
+| --- | --- | --- | --- |
+| `tsudev_pro` "TsuDEV Pro" | Thuê bao | Gói cơ sở `nam`: 1 năm, **trả trước**, cho phép gia hạn trên Play | 490.000 ₫ |
+| `ung_ho_20k` / `50k` / `100k` / `200k` | Một lần | Lựa chọn mua `mua` (Mua, tương thích ngược), nội dung kỹ thuật số; tên "Ủng hộ TsuDEV 20.000 ₫"..., mô tả = `donateBody` của app | 20.000 / 50.000 / 100.000 / 200.000 ₫ |
+
+Bẫy: nhãn nút ("Tiếp tục", "Lưu dưới dạng bản nháp") và ô tìm quốc gia là Unicode NFD, ô tìm dùng `aria-label` ⇒ tìm
+bằng `normalize('NFC')`; KHÔNG bấm theo toạ độ ở thanh dưới (cùng vị trí với "Kích hoạt").
+
+Trước khi **Kích hoạt** (👤 quyết): (1) Cài đặt > Kiểm thử giấy phép - thêm danh sách người thử nghiệm để mua thử không
+mất tiền; (2) `PLAY_SERVICE_ACCOUNT_JSON` ở Render của tsudev.com (không có ⇒ B2 trả 503 `play_unavailable`, người mua
+trả tiền nhưng không nhận Pro); (3) điều khoản Pro 7.5 hiện trong app.
+
 ## Việc 👤 trước khi gửi duyệt
 
 - [ ] Tài khoản tsudev MEMBER riêng cho người duyệt Google, cấp Pro, điền tên đăng nhập/mật khẩu ở "Thông tin đăng nhập".
-- [ ] Hồ sơ thanh toán Google Payments (bước 4).
+- [x] Hồ sơ thanh toán Google Payments (đã có ở cấp tài khoản, 23/11/2026).
 - [x] Khoá ký Android ⇒ AAB đầu tiên (P10, 23/11/2026).
 - [x] Danh sách người thử nghiệm nội bộ + xuất bản (23/11/2026).
-- [ ] Tạo sản phẩm (cần hồ sơ thanh toán) ⇒ thử kín 12 người × 14 ngày.
+- [x] Tạo sản phẩm - bản nháp (bước 4b).
+- [ ] Kiểm thử giấy phép + `PLAY_SERVICE_ACCOUNT_JSON` ⇒ kích hoạt ⇒ thử mua đầu-cuối ⇒ thử kín 12 người × 14 ngày.

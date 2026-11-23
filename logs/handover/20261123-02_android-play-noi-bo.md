@@ -21,6 +21,6 @@
 
 1. XONG 23/11 21:03: xuất bản Thử nghiệm nội bộ cho danh sách "TsuDev Compass noi bo"; link
    https://play.google.com/apps/internaltest/4700541829715107418. 👤 cài thử trên máy thật, báo lỗi nếu có.
-2. 👤 Hồ sơ thanh toán ⇒ agent tạo `tsudev_pro`/`nam` (P1Y 490.000 ₫, trả trước) + `ung_ho_20k/50k/100k/200k` ⇒ thử mua
-   đầu-cuối với tsudev B2 (phiếu tsudev QT5 mục 4).
+2. XONG 23/11: hồ sơ thanh toán đã có sẵn; agent tạo `tsudev_pro`/`nam` + `ung_ho_*` ở BẢN NHÁP (google-play.md bước 4b).
+   Còn: 👤 kiểm thử giấy phép + `PLAY_SERVICE_ACCOUNT_JSON` ⇒ kích hoạt ⇒ thử mua đầu-cuối (phiếu tsudev QT5 mục 4).
 3. Kênh gói, bản chính thức, việc dời từ P7 - như phiếu `20261123-01` mục 3.2-3.4.
