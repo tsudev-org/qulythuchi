@@ -61,7 +61,7 @@ Version: $ver-1
 Architecture: amd64
 Maintainer: TsuDEV <contact@tsudev.com>
 Installed-Size: $size
-Depends: libc6 (>= $glibc), libgtk-3-0, libsecret-1-0
+Depends: libc6 (>= $glibc), libgtk-3-0 | libgtk-3-0t64, libsecret-1-0
 Section: misc
 Priority: optional
 Homepage: https://qulythuchi.tsudev.com
