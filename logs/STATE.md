@@ -29,9 +29,9 @@
 - [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] Apple (chuẩn v4.3.0 mục 3.2): RP đã sẵn (nút theo IdP, `idp_hint=apple`). 👤 Trước khi phát hành iOS: tsudev.com
   phải bật Apple (Apple Developer Program) - nút tự hiện, không cần phát hành lại app.
-- [ ] P10 còn lại (phiếu `logs/handover/20261123-01_p10-phat-hanh-desktop-xong.md`): 👤 chạy `scripts/android-keys.sh`
-  (khoá APK + upload) ⇒ cắt thẻ mới có APK/AAB ⇒ AAB vào Thử nghiệm nội bộ Play (GP1); MSIX/winget/Scoop/Homebrew tap/
-  kho APT `pkg.tsudev.com`; bản chính thức (bỏ `-beta`) sau khi 👤 nghiệm thu P9/P7b.
+- [ ] P10 còn lại (phiếu `logs/handover/20261123-02_android-play-noi-bo.md`): 👤 danh sách người thử nghiệm nội bộ +
+  "Lưu và xuất bản" bản nháp Play `26.11.2304-beta.1` ⇒ hồ sơ thanh toán ⇒ tạo sản phẩm `tsudev_pro`/`nam` + `ung_ho_*`;
+  kênh gói (MSIX/winget/Scoop/Homebrew/APT); bản chính thức (bỏ `-beta`) sau khi 👤 nghiệm thu P9/P7b.
 - [ ] Dời từ P7: sao kê PDF (pdfrx/PDFium), OCR desktop (Tesseract), widget/lối tắt iOS.
 
 ## Đang thực hiện
@@ -40,6 +40,14 @@
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 23/11/2026 - Android release đầu tiên (agent-qulythuchi, phiên `qulythuchi-1f`): 👤 tạo khoá APK + upload
+  (`scripts/android-keys.sh`); vân tay ghi `docs/RELEASE.md` + ghim trong `release.yml` (PR #57, #59). Lần đầu dựng
+  Android release lộ 2 lỗi: compileSdk 37 (flutter_local_notifications 23, androidx.core 1.19) + R8 thiếu lớp ML Kit
+  Trung/Nhật/Hàn ⇒ `proguard-rules.pro`; thêm job CI Android (PR #58). `v26.11.2304-beta.1` có APK (ký `34:41:64:51...`,
+  versionCode 26112304, 0/73 VirusTotal); thẻ `v26.11.2302-beta.1`, `v26.11.2303-beta.1` hỏng, không Release.
+  `deploy-2026.11.23.2` (Worker `c118a6e7`): trang Tải về có Android. Play: AAB vào bản nháp Thử nghiệm nội bộ
+  (`docs/store/google-play.md` bước 4a), chưa xuất bản.
 
 - 23/11/2026 - P10 phần desktop + kiểm định (agent-qulythuchi, phiên `qulythuchi-1f`): `release.yml` (thẻ
   `vYY.M.DDNN[-beta.N]` ⇒ Windows zip, macOS zip sandbox, Linux deb + tar.gz; Android APK/AAB chỉ khi có khoá, Gradle

@@ -98,8 +98,18 @@ Khi xong 1-2, phiên sau tạo đúng: thuê bao `tsudev_pro` - một gói cơ s
 tạo `thang`; sản phẩm một lần `ung_ho_20k`, `ung_ho_50k`, `ung_ho_100k`, `ung_ho_200k` (20/50/100/200 nghìn ₫) - khớp
 `apps/app/lib/pro/purchases.dart`. RTDN: chờ tsudev A6.
 
+## Bước 4a - Thử nghiệm nội bộ (23/11/2026, phiên `qulythuchi-1f`)
+
+- AAB `qulythuchi_26.11.2304-beta.1_android-universal.aab` (artifact `play-aab` của Release `v26.11.2304-beta.1`, khoá
+  upload `41:86:5C:BF:...:64:84`) - 👤 tải lên tay vì Playwright qua CDP không chuyển tệp > 50 MB. Play nhận: mã phiên
+  bản 26112304, API 24+, SDK mục tiêu 36, 3 ABI; cài mới 24 MB.
+- Tên bản `26.11.2304-beta.1`; ghi chú `<vi>`/`<en-US>` (Play dùng mã `vi`, KHÔNG `vi-VN`). ĐÃ LƯU NHÁP, đang ở trang
+  "Xem trước và xác nhận": 0 lỗi, 1 cảnh báo "chưa chỉ định người thử nghiệm". CHƯA bấm "Lưu và xuất bản".
+- 👤 còn: tab Người thử nghiệm ⇒ tạo danh sách email ⇒ "Lưu và xuất bản" (hoặc xác nhận để agent bấm bằng `--allow`).
+
 ## Việc 👤 trước khi gửi duyệt
 
 - [ ] Tài khoản tsudev MEMBER riêng cho người duyệt Google, cấp Pro, điền tên đăng nhập/mật khẩu ở "Thông tin đăng nhập".
 - [ ] Hồ sơ thanh toán Google Payments (bước 4).
-- [ ] Khoá ký Android ⇒ AAB đầu tiên (P10) ⇒ tạo sản phẩm ⇒ thử kín 12 người × 14 ngày.
+- [x] Khoá ký Android ⇒ AAB đầu tiên (P10, 23/11/2026).
+- [ ] Danh sách người thử nghiệm nội bộ + xuất bản ⇒ tạo sản phẩm ⇒ thử kín 12 người × 14 ngày.
