@@ -6,6 +6,7 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 
 Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-org/qulythuchi/tags>.
 
+- deploy-2026.11.23.2 - 23/11/2026 - trang Tải về có bản Android (APK ký số trên GitHub Releases).
 - deploy-2026.11.23.1 - 23/11/2026 - header Cross-Origin-Embedder-Policy (DAST), trang Tải về có bản thử nghiệm
   Windows/macOS/Linux trên GitHub Releases (P10).
 - deploy-2026.11.22.1 - 22/11/2026 - bản sắc riêng Quly Thu Chi (xanh lục bảo, bo góc mềm, tiêu đề Be Vietnam Pro), trang
