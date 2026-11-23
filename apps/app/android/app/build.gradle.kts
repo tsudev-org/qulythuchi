@@ -8,7 +8,9 @@ plugins {
 
 android {
     namespace = "com.tsudev.qulythuchi"
-    compileSdk = flutter.compileSdkVersion
+    // flutter_local_notifications 23 + androidx.core 1.19 đòi biên dịch với API 37 (checkReleaseAarMetadata). Chỉ đổi
+    // compileSdk; targetSdk vẫn theo Flutter nên hành vi lúc chạy không đổi.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -55,6 +57,7 @@ android {
         release {
             signingConfig =
                 if (keyFile.exists()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 }

@@ -112,6 +112,28 @@ jobs:
           ./tool/fetch_web_assets.sh
           flutter build web --release --base-href /app/ --csp --no-web-resources-cdn
 
+  android:
+    # Dựng APK release (ký khoá debug - chỉ kiểm dựng, KHÔNG phát hành) để lỗi Gradle/AAR metadata/compileSdk lộ ra ở PR
+    # thay vì lúc cắt thẻ (bài học v26.11.2302-beta.1).
+    name: Android (apps/app)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - name: Flutter/Dart (ghim commit)
+        run: |
+          git clone --depth 1 -b "$FLUTTER_VERSION" https://github.com/flutter/flutter.git "$RUNNER_TEMP/flutter"
+          test "$(git -C "$RUNNER_TEMP/flutter" rev-parse HEAD)" = "$FLUTTER_COMMIT"
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      - name: Build APK release (khoá debug, không phát hành)
+        working-directory: apps/app
+        run: |
+          set -euo pipefail
+          flutter pub get
+          flutter gen-l10n
+          flutter build apk --release --dart-define=TSU_CHANNEL=direct
+
   server:
     name: Máy chủ (services/sync-api)
     runs-on: ubuntu-24.04
