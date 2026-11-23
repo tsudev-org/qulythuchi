@@ -46,7 +46,12 @@ void main() {
     final table = await parsePdfStatement(pdf, askPassword: (_) async => null);
     final h = findHeaderRow(table);
     expect(table[h], containsAll(['Ngày', 'Loại', 'Số tiền', 'Ghi chú']));
-    final body = table.sublist(h + 1).where((r) => RegExp(r'^\d{2}/11/2026$').hasMatch(r.first)).toList();
+    // Dòng giao dịch = có ngày VÀ số tiền (phụ đề khoảng ngày lặp ở đầu trang không có số tiền - bước nhập vốn bỏ qua).
+    final amountCol = table[h].indexOf('Số tiền');
+    final body = table
+        .sublist(h + 1)
+        .where((r) => RegExp(r'^\d{2}/11/2026$').hasMatch(r.first) && r[amountCol].isNotEmpty)
+        .toList();
     final noteCol = table[h].indexOf('Ghi chú');
     final seen = {for (final r in body) r[noteCol]};
     final missing = [
