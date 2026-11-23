@@ -54,8 +54,10 @@ Thiếu bí mật nào thì bước đó tự bỏ qua (có cảnh báo); Gradle
 
 Dấu vân tay SHA-256 chứng chỉ ký (ghi khi 👤 tạo khoá; người dùng đối chiếu bằng `apksigner verify --print-certs`):
 
-- APK trên Release: _(chưa có)_
-- Upload Play: _(chưa có)_
+- APK trên Release (`qulythuchi-apk`, tạo 23/11/2026):
+  `34:41:64:51:7B:22:3B:DB:8A:3D:E3:26:7D:BE:1C:87:0B:73:34:58:BF:F9:DA:B3:19:EE:DB:A7:62:FC:4E:98`
+- Upload Play (`qulythuchi-upload`, tạo 23/11/2026; Play App Signing giữ khoá ký app thật):
+  `41:86:5C:BF:CC:B2:0A:11:C8:18:72:3A:5B:68:E3:6C:D7:8A:D6:3E:1B:2D:02:BB:54:4F:BB:2A:59:49:64:84`
 
 ## 5. Kiểm định định kỳ
 
