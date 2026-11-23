@@ -8,15 +8,15 @@ const nenTang: { ten: string; trangThai: 'san' | 'thu' | 'sap'; moTa: string; nu
   { ten: 'Windows', trangThai: 'thu', moTa: 'Tệp zip portable cho Windows 10/11 x64. Chưa ký Authenticode nên SmartScreen có thể hỏi khi mở lần đầu - đối chiếu SHA-256 trước khi chạy.', nut: [PHAT_HANH, 'Tải trên GitHub'] },
   { ten: 'macOS', trangThai: 'thu', moTa: 'Tệp zip cho macOS 12+ (Intel và Apple Silicon). Chưa công chứng với Apple: lần đầu mở, vào Cài đặt hệ thống > Quyền riêng tư & Bảo mật > Vẫn mở.', nut: [PHAT_HANH, 'Tải trên GitHub'] },
   { ten: 'Linux', trangThai: 'thu', moTa: 'Gói .deb cho Ubuntu 22.04+, Debian 12+ và bản .tar.gz chạy không cần cài.', nut: [PHAT_HANH, 'Tải trên GitHub'] },
-  { ten: 'Android', trangThai: 'sap', moTa: 'Google Play và tệp APK ký số trên GitHub. Trong lúc chờ, dùng bản web trên trình duyệt điện thoại.' },
+  { ten: 'Android', trangThai: 'thu', moTa: 'Tệp APK ký số trên GitHub (SHA-256 chứng chỉ bắt đầu 34:41:64:51). Bản Google Play sắp có; APK và bản Play dùng khoá khác nên không cập nhật chéo được.', nut: [PHAT_HANH, 'Tải trên GitHub'] },
   { ten: 'iOS', trangThai: 'sap', moTa: 'Chưa phát hành trên App Store. Trong lúc chờ, hãy dùng bản web và chọn "Thêm vào màn hình chính".' },
 ];
 const NHAN = { san: 'Dùng được ngay', thu: 'Bản thử nghiệm', sap: 'Sắp phát hành' } as const;
 ---
-<Trang tieuDe="Tải về" moTa="Tải Quly Thu Chi: bản web dùng ngay trên mọi trình duyệt; bản Windows, macOS, Linux thử nghiệm kèm SHA-256 ký Sigstore; Android sắp phát hành." duongDan="/tai-ve/">
+<Trang tieuDe="Tải về" moTa="Tải Quly Thu Chi: bản web dùng ngay trên mọi trình duyệt; bản Android, Windows, macOS, Linux thử nghiệm kèm SHA-256 ký Sigstore." duongDan="/tai-ve/">
   <div class="khung van-ban">
     <h1>Tải về</h1>
-    <p>Bản web đã sẵn sàng. Bản Windows, macOS, Linux đang ở giai đoạn thử nghiệm và được dựng tự động từ mã nguồn
+    <p>Bản web đã sẵn sàng. Bản Android, Windows, macOS, Linux đang ở giai đoạn thử nghiệm và được dựng tự động từ mã nguồn
       công khai trên <a href={PHAT_HANH} target="_blank" rel="noopener noreferrer">trang phát hành GitHub</a>.</p>
   </div>
   <section class="khung">

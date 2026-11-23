@@ -24,6 +24,8 @@ concurrency:
 env:
   FLUTTER_VERSION: '3.47.8'
   FLUTTER_COMMIT: '737ba8f885dc774b53b442759999a312c9461e4e'
+  # Vân tay chứng chỉ khoá APK (docs/RELEASE.md mục 4). APK ký khoá khác ⇒ job đỏ, không phát hành.
+  ANDROID_APK_CERT_SHA256: '344164517b223bdb8a3de3267dbe1c870b733458bff9dab319eedba762fc4e98'
 
 jobs:
   version:
@@ -181,9 +183,10 @@ jobs:
           f="$GITHUB_WORKSPACE/out/qulythuchi_${V}_android-universal.apk"
           cp build/app/outputs/flutter-apk/app-release.apk "$f"
           bt=$(ls "$ANDROID_HOME"/build-tools | sort -V | tail -1)
-          "$ANDROID_HOME/build-tools/$bt/apksigner" verify --print-certs "$f" | grep -i 'SHA-256' | tee "$RUNNER_TEMP/cert.txt"
-          grep -qi 'Android Debug' <("$ANDROID_HOME/build-tools/$bt/apksigner" verify --print-certs "$f") \
-            && { echo "::error::APK ký bằng khoá debug"; exit 1; } || true
+          got=$("$ANDROID_HOME/build-tools/$bt/apksigner" verify --print-certs "$f" \
+            | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')
+          echo "Vân tay APK: $got"
+          [ "$got" = "$ANDROID_APK_CERT_SHA256" ] || { echo "::error::Vân tay APK $got ≠ giá trị ghim"; exit 1; }
       - name: AAB cho Google Play (khoá upload)
         env:
           KS: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
@@ -255,7 +258,7 @@ jobs:
         run: |
           set -euo pipefail
           android="Bản Android chưa có trong lần phát hành này (chờ khoá ký) - dùng bản web."
-          ls dist/*.apk >/dev/null 2>&1 && android="APK ngoài Google Play ký bằng khoá RIÊNG, không cập nhật chéo được với bản Play."
+          ls dist/*.apk >/dev/null 2>&1 && android="APK ngoài Google Play ký bằng khoá RIÊNG (SHA-256 chứng chỉ \`$ANDROID_APK_CERT_SHA256\`, kiểm bằng \`apksigner verify --print-certs\`), không cập nhật chéo được với bản Play."
           cat > notes.md <<EOF
           Quly Thu Chi $V - quản lý thu chi cá nhân, mã hoá đầu cuối. Thay đổi: CHANGELOG.md. Giấy phép AGPL-3.0-only.
 
