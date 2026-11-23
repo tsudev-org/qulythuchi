@@ -111,7 +111,7 @@ tạo `thang`; sản phẩm một lần `ung_ho_20k`, `ung_ho_50k`, `ung_ho_100k
   <https://play.google.com/apps/internaltest/4700541829715107418>. Tên tạm trên Play: `com.tsudev.qulythuchi
   (unreviewed)` cho tới khi app được duyệt.
 
-## Bước 4b - Sản phẩm (23/11/2026, phiên `qulythuchi-1f`) - BẢN NHÁP
+## Bước 4b - Sản phẩm (23/11/2026, phiên `qulythuchi-1f`) - ĐANG HOẠT ĐỘNG
 
 Hồ sơ thanh toán: ĐÃ CÓ ở cấp tài khoản nhà phát triển (trang Gói thuê bao / Sản phẩm một lần không còn chặn) - không
 tạo mới. Đã tạo, tất cả **Bản nháp, chưa kích hoạt**:
@@ -131,11 +131,24 @@ Lợi ích gói `tsudev_pro` (23/11): "Đồng bộ đám mây mã hoá đầu-c
 `tsudev-com`, 👤 tạo + đặt khoá vào `PLAY_SERVICE_ACCOUNT_JSON` của Render `tsudev-backend`). Agent mời vào Play
 Console (Người dùng và quyền), CHỈ app Quly Thu Chi, quyền: xem thông tin app + chất lượng (chỉ đọc, mặc định), **Xem dữ
 liệu tài chính**, **Quản lý đơn đặt hàng và gói đăng ký**. Lúc mời, Play Developer API còn trả 401 (quyền chưa lan
-truyền, tới 24 giờ) ⇒ B2 503 `play_unavailable`. Kiểm lại: `services/sync-api/scripts/thu-b2-play.mjs` (purchase token
-giả; ĐẠT khi hết 503).
+truyền) ⇒ B2 503; **24/11/2026 00:44 (sau ~1 giờ 50 phút) ĐẠT**: `services/sync-api/scripts/thu-b2-play.mjs` với
+purchase token giả ⇒ `422 purchase_invalid` cho cả `ung_ho_20k` và `tsudev_pro` (Google đã trả lời).
 
-Trước khi **Kích hoạt** (👤 quyết): (1) Cài đặt > Kiểm thử giấy phép - thêm danh sách người thử nghiệm để mua thử không
-mất tiền; (2) `scripts/thu-b2-play.mjs` ĐẠT (hết 503 - nếu còn 503 thì người mua trả tiền nhưng không nhận Pro; Play tự hoàn
+**23/11/2026 (👤 uỷ quyền bằng lời trong phiên):** Thử nghiệm giấy phép (cấp TÀI KHOẢN, áp cho mọi app - đã báo phiên
+app-la-ban) = danh sách "TsuDev Compass noi bo"; gói `nam` **Đang hoạt động**; `ung_ho_20k/50k/100k/200k` mỗi gói 1
+lựa chọn mua đang hoạt động. Người thử nghiệm mua = giao dịch thử, không trừ tiền.
+
+### Thử mua đầu-cuối trên điện thoại (👤 - phía máy chủ đã sẵn sàng)
+
+1. Điện thoại Android, tài khoản Google nằm trong danh sách "TsuDev Compass noi bo"; mở link tham gia thử nghiệm nội
+   bộ (bước 4a) ⇒ cài Quly Thu Chi từ Play.
+2. Trong app: đăng nhập tài khoản tsudev ⇒ Thêm ⇒ TsuDEV Pro và Ủng hộ ⇒ "Mua 1 năm". Hộp thoại Play phải ghi "Đơn đặt
+   hàng thử nghiệm" ⇒ chọn thẻ thử "Luôn chấp thuận".
+3. Mong đợi: app báo Pro còn hạn tới (hôm nay + 1 năm); tsudev.com/pro hiện cùng hạn; Play Console > Đơn đặt hàng có
+   đơn thử. Lặp với "Ủng hộ 20.000 ₫" ⇒ huy hiệu Ủng hộ.
+4. Thử thẻ "Luôn từ chối" ⇒ app báo không thành công, không cấp Pro.
+
+Trước khi mở bán cho người dùng thật (bản production): (1) ĐÃ XONG kiểm thử giấy phép; (2) `scripts/thu-b2-play.mjs` ĐẠT (hết 503 - nếu còn 503 thì người mua trả tiền nhưng không nhận Pro; Play tự hoàn
 tiền sau 3 ngày vì giao dịch không được xác nhận); (3) điều khoản Pro 7.5 hiện trong app.
 
 ## Việc 👤 trước khi gửi duyệt
