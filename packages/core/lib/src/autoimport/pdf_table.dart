@@ -5,7 +5,7 @@
 ///
 /// 1. Ký tự ⇒ **từ** (cùng dòng chữ, khoảng hở ngang nhỏ hơn ~0,3 chiều cao chữ, không qua khoảng trắng).
 /// 2. Từ ⇒ **dòng** (tâm dọc lệch nhau dưới ~0,5 chiều cao chữ), xếp trên xuống, trái sang phải.
-/// 3. **Ranh giới cột** từ hồ sơ chiếu theo trục x của các dòng giao dịch (có ngày) trên MỌI trang: vạch x nào gần
+/// 3. **Ranh giới cột** từ hồ sơ chiếu theo trục x của các dòng giao dịch (có ngày + số tiền) trên MỌI trang: vạch x nào gần
 ///    như không dòng nào phủ là khe giữa hai cột. Cột căn phải (số tiền) cũng đúng vì không dựa vào mép trái.
 /// 4. Dòng xuống hàng của diễn giải (không có ngày, không có số tiền) được **gộp** vào giao dịch phía trên; dòng tiêu
 ///    đề cột lặp lại ở đầu mỗi trang bị bỏ.
@@ -74,9 +74,11 @@ List<List<String>> pdfGlyphsToRows(List<PdfGlyph> glyphs) {
     // Tiêu đề cột lặp lại ở đầu trang sau.
     if (header != null && joined == header.join('\u0001')) continue;
     final hasDate = cells.any((c) => _dateRe.hasMatch(c));
-    final hasAmount = cells.any((c) => _amountRe.hasMatch(c.replaceAll(' ', '')));
-    if (!started && !hasDate && cells.where((c) => c.isNotEmpty).length >= 3) header = cells;
-    if (hasDate) started = true;
+    final hasAmount = cells.any((c) => _amountRe.hasMatch(c.replaceAll(' ', ''))) || _isTxn(line);
+    // Giao dịch = có ngày VÀ có số tiền; dòng chỉ có ngày (vd. "Từ 01/11/2026 - 28/11/2026" ở đầu trang) không phải.
+    final txn = hasDate && hasAmount;
+    if (!started && !txn && cells.where((c) => c.isNotEmpty).length >= 3) header = cells;
+    if (txn) started = true;
     if (started && !hasDate && !hasAmount && rows.isNotEmpty) {
       // Dòng xuống hàng của diễn giải ⇒ nối vào ô cùng cột của giao dịch phía trên.
       final prev = rows.last;
@@ -98,6 +100,11 @@ List<List<String>> pdfGlyphsToRows(List<PdfGlyph> glyphs) {
       ],
   ];
 }
+
+/// Dòng giao dịch: có một từ là ngày và một từ là số tiền.
+bool _isTxn(_Line l) =>
+    l.words.any((w) => _dateRe.hasMatch(w.text.toString())) &&
+    l.words.any((w) => _amountRe.hasMatch(w.text.toString()));
 
 List<_Word> _buildWords(List<PdfGlyph> glyphs) {
   final words = <_Word>[];
@@ -153,8 +160,8 @@ List<_Line> _buildLines(List<_Word> words) {
 List<double> _columnBounds(List<_Line> lines) {
   // Bảng do các dòng GIAO DỊCH (có ngày) định nghĩa; tiêu đề sao kê, thông tin tài khoản, chân trang không được làm
   // lấp khe cột. Không dòng nào có ngày ⇒ dùng mọi dòng ≥ 3 từ.
-  bool dated(_Line l) => l.words.any((w) => _dateRe.hasMatch(w.text.toString()));
-  var rich = lines.where((l) => l.words.length >= 2 && dated(l)).toList();
+  bool dated(_Line l) => _isTxn(l);
+  var rich = lines.where(dated).toList();
   // Thêm dòng tiêu đề cột (dòng ≥ 3 từ ngay trước dòng có ngày đầu tiên của mỗi trang): tiêu đề có đủ mọi cột kể cả
   // cột mà mọi giao dịch đều để trống (vd. cả kỳ không có khoản "Ghi có").
   if (rich.isNotEmpty) {

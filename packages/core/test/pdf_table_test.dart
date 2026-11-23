@@ -98,4 +98,21 @@ void main() {
       ['2026-11-13', 'Refund', '120,000'],
     ]);
   });
+
+  test('phụ đề chứa khoảng ngày phía trên bảng không bị coi là giao dịch', () {
+    final g = [
+      ...put('Giao dịch', 40, 760),
+      ...put('01/11/2026 - 28/11/2026', 40, 745),
+      ...header(720),
+      ...txn('01/11/2026', 'Mua sắm', '200.000', '', '800.000', 700),
+      ...txn('02/11/2026', 'Hoàn tiền', '', '50.000', '850.000', 680),
+    ];
+    final rows = pdfGlyphsToRows(g);
+    final h = rows.indexWhere((r) => r.contains('Ngày'));
+    expect(rows[h], ['Ngày', 'Diễn giải', 'Ghi nợ', 'Ghi có', 'Số dư']);
+    expect(rows.sublist(h + 1), [
+      ['01/11/2026', 'Mua sắm', '200.000', '', '800.000'],
+      ['02/11/2026', 'Hoàn tiền', '', '50.000', '850.000'],
+    ]);
+  });
 }
