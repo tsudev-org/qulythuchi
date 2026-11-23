@@ -65,3 +65,15 @@ Dấu vân tay SHA-256 chứng chỉ ký (ghi khi 👤 tạo khoá; người dù
   hằng tuần; cảnh báo chưa ghi lý do trong `.zap/rules.tsv` ⇒ đỏ.
 - Khôi phục: test `.qtbak` (sao lưu/khôi phục mã hoá) và đồng bộ chạy trong CI mỗi PR; kiểm tay trên bản phát hành:
   cài mới ⇒ "Khôi phục từ tệp sao lưu" ⇒ số dư trùng máy gốc.
+
+## 6. Kênh trình quản lý gói (Scoop, Homebrew, winget, APT/RPM, MSIX)
+
+Nguồn khai báo duy nhất: [`packaging/package.json`](../packaging/package.json) (`.standards/docs/PACKAGING.md` mục 3).
+Bucket `tsudev-org/scoop-bucket`, tap `tsudev-org/homebrew-tap` và kho `tsudev-org/linux-packages` (APT/RPM
+`pkg.tsudev.com`) tự sinh manifest từ GitHub Release - repo này KHÔNG giữ token ghi vào chúng.
+
+Hiện `channels` để trống, mọi kênh ở `planned`: các bản đến nay đều là `-beta` (Pre-release) và Scoop/Homebrew đọc
+`releases/latest` (bỏ qua Pre-release); `tagRegex` cũng chỉ nhận thẻ chính thức. Khi có bản chính thức đầu tiên
+(sau khi 👤 nghiệm thu P9/P7b): chuyển kênh từ `planned` sang `channels`, mở PR thêm sản phẩm vào bucket/tap
+(`bucket/qulythuchi.json`, `Casks/qulythuchi.rb`) và `linux-packages/products.json` theo AGENTS.md của từng repo đó.
+winget/MSIX cần tài khoản Microsoft Partner Center (👤).
