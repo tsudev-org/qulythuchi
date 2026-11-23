@@ -23,4 +23,6 @@
    https://play.google.com/apps/internaltest/4700541829715107418. 👤 cài thử trên máy thật, báo lỗi nếu có.
 2. XONG 23/11: hồ sơ thanh toán đã có sẵn; agent tạo `tsudev_pro`/`nam` + `ung_ho_*` ở BẢN NHÁP (google-play.md bước 4b).
    Còn: 👤 kiểm thử giấy phép + `PLAY_SERVICE_ACCOUNT_JSON` ⇒ kích hoạt ⇒ thử mua đầu-cuối (phiếu tsudev QT5 mục 4).
-3. Kênh gói, bản chính thức, việc dời từ P7 - như phiếu `20261123-01` mục 3.2-3.4.
+3. Kênh gói: `packaging/package.json` đã có (PR #64), bật khi có bản chính thức (`docs/RELEASE.md` mục 6).
+4. Việc dời từ P7 (sao kê PDF, OCR desktop, widget iOS) - chưa bắt đầu; sao kê PDF cần ADR chọn thư viện đọc PDF
+   (pdfrx/PDFium BSD chạy cả web, hay chỉ máy gốc) trước khi viết mã.
