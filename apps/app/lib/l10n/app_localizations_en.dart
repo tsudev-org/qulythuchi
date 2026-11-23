@@ -1342,7 +1342,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportCancelled => 'Cancelled';
 
   @override
-  String get importTitle => 'Import from CSV';
+  String get importTitle => 'Import from file (CSV, Excel, PDF statement)';
 
   @override
   String get importPick => 'Choose a CSV, XLSX or PDF file';

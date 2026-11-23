@@ -28,8 +28,10 @@ nguyên tắc "không tự chế mật mã" (AGENTS.md B.5).
    bản điện tử/CSV hoặc OCR từng trang (Tự nhập > Hóa đơn).
 6. **Chuỗi cung ứng**: bản PDFium native do build hook của `pdfium_dart` tải từ `bblanchon/pdfium-binaries` (GitHub
    Releases) và **kiểm SHA-256 ghim trong gói** (`verifyPdfiumArchive`); iOS/macOS qua XCFramework của tác giả gói. Bản web
-   là `pdfium.wasm` + worker nằm trong gói, app TỰ phục vụ ở `/app/assets/packages/pdfrx/assets/` - CSP giữ nguyên
-   (`'self'`, `'wasm-unsafe-eval'`, `worker-src 'self' blob:`). `pubspec.lock` ghim băm nội dung mọi gói.
+   là `pdfium.wasm` + worker nằm trong gói, app TỰ phục vụ ở `/app/assets/packages/pdfrx/assets/`. CSP `<meta>` của
+   `/app/` thêm DUY NHẤT `blob:` vào `connect-src` (worker của pdfrx đọc dữ liệu qua `blob:` URL - đo thật bằng
+   Playwright: bị chặn khi thiếu); `blob:` chỉ trỏ tới dữ liệu do chính trang tạo trong bộ nhớ, không mở nguồn mạng
+   nào. Phần còn lại giữ nguyên (`'self'`, `'wasm-unsafe-eval'`, `worker-src 'self' blob:`). `pubspec.lock` ghim băm nội dung mọi gói.
 7. **Dựng**: build hook biên dịch một thư viện C nhỏ (`pdfrx_pdfium_gate`) ⇒ Linux cần `clang` khi `flutter test`/
    `flutter build` (job CI đã cài); Windows cần Visual Studio C++, macOS/iOS cần Xcode (đã có trên runner).
 

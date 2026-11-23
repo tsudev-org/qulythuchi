@@ -2561,7 +2561,7 @@ abstract class AppLocalizations {
   /// No description provided for @importTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập từ tệp CSV'**
+  /// **'Nhập từ tệp (CSV, Excel, PDF sao kê)'**
   String get importTitle;
 
   /// No description provided for @importPick.

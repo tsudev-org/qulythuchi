@@ -1340,7 +1340,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get exportCancelled => 'Đã hủy';
 
   @override
-  String get importTitle => 'Nhập từ tệp CSV';
+  String get importTitle => 'Nhập từ tệp (CSV, Excel, PDF sao kê)';
 
   @override
   String get importPick => 'Chọn tệp CSV, XLSX hoặc PDF';

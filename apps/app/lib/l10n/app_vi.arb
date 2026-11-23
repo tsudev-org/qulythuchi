@@ -762,7 +762,7 @@
   "exportRange": "Khoảng ngày",
   "exportAllTime": "Toàn bộ",
   "exportCancelled": "Đã hủy",
-  "importTitle": "Nhập từ tệp CSV",
+  "importTitle": "Nhập từ tệp (CSV, Excel, PDF sao kê)",
   "importPick": "Chọn tệp CSV, XLSX hoặc PDF",
   "importMapping": "Ghép cột",
   "importColDate": "Cột ngày",

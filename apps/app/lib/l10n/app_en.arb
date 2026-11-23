@@ -411,7 +411,7 @@
   "exportRange": "Date range",
   "exportAllTime": "All time",
   "exportCancelled": "Cancelled",
-  "importTitle": "Import from CSV",
+  "importTitle": "Import from file (CSV, Excel, PDF statement)",
   "importPick": "Choose a CSV, XLSX or PDF file",
   "importMapping": "Map columns",
   "importColDate": "Date column",
