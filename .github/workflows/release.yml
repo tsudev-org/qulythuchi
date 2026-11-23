@@ -183,10 +183,11 @@ jobs:
           f="$GITHUB_WORKSPACE/out/qulythuchi_${V}_android-universal.apk"
           cp build/app/outputs/flutter-apk/app-release.apk "$f"
           bt=$(ls "$ANDROID_HOME"/build-tools | sort -V | tail -1)
-          got=$("$ANDROID_HOME/build-tools/$bt/apksigner" verify --print-certs "$f" \
-            | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')
+          certs=$("$ANDROID_HOME/build-tools/$bt/apksigner" verify --print-certs "$f")
+          # Tên signer khác nhau giữa các bản build-tools ("Signer #1", "Signer (minSdkVersion=...)") ⇒ chỉ lấy digest.
+          got=$(grep -oiE 'certificate SHA-256 digest: [0-9a-f]{64}' <<<"$certs" | awk '{print tolower($NF)}' | sort -u)
           echo "Vân tay APK: $got"
-          [ "$got" = "$ANDROID_APK_CERT_SHA256" ] || { echo "::error::Vân tay APK $got ≠ giá trị ghim"; exit 1; }
+          [ "$got" = "$ANDROID_APK_CERT_SHA256" ] || { echo "$certs"; echo "::error::Vân tay APK '$got' ≠ giá trị ghim"; exit 1; }
       - name: AAB cho Google Play (khoá upload)
         env:
           KS: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
