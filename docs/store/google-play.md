@@ -105,11 +105,16 @@ tạo `thang`; sản phẩm một lần `ung_ho_20k`, `ung_ho_50k`, `ung_ho_100k
   bản 26112304, API 24+, SDK mục tiêu 36, 3 ABI; cài mới 24 MB.
 - Tên bản `26.11.2304-beta.1`; ghi chú `<vi>`/`<en-US>` (Play dùng mã `vi`, KHÔNG `vi-VN`). ĐÃ LƯU NHÁP, đang ở trang
   "Xem trước và xác nhận": 0 lỗi, 1 cảnh báo "chưa chỉ định người thử nghiệm". CHƯA bấm "Lưu và xuất bản".
-- 👤 còn: tab Người thử nghiệm ⇒ tạo danh sách email ⇒ "Lưu và xuất bản" (hoặc xác nhận để agent bấm bằng `--allow`).
+- 23/11/2026 21:03: 👤 xác nhận bằng lời trong phiên ⇒ agent chọn danh sách sẵn có **"TsuDev Compass noi bo"** (6 người,
+  dùng chung với app-la-ban) và bấm "Lưu và xuất bản" (`tsb --allow "Lưu và xuất bản"`). Kênh **Đang hoạt động**, bản
+  `26.11.2304-beta.1` "Đã phát hành cho những người thử nghiệm nội bộ". Link tham gia:
+  <https://play.google.com/apps/internaltest/4700541829715107418>. Tên tạm trên Play: `com.tsudev.qulythuchi
+  (unreviewed)` cho tới khi app được duyệt.
 
 ## Việc 👤 trước khi gửi duyệt
 
 - [ ] Tài khoản tsudev MEMBER riêng cho người duyệt Google, cấp Pro, điền tên đăng nhập/mật khẩu ở "Thông tin đăng nhập".
 - [ ] Hồ sơ thanh toán Google Payments (bước 4).
 - [x] Khoá ký Android ⇒ AAB đầu tiên (P10, 23/11/2026).
-- [ ] Danh sách người thử nghiệm nội bộ + xuất bản ⇒ tạo sản phẩm ⇒ thử kín 12 người × 14 ngày.
+- [x] Danh sách người thử nghiệm nội bộ + xuất bản (23/11/2026).
+- [ ] Tạo sản phẩm (cần hồ sơ thanh toán) ⇒ thử kín 12 người × 14 ngày.
