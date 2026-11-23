@@ -29,5 +29,5 @@
    tsudev (không sửa hộ). Quá 48 giờ vẫn 401 ⇒ kiểm lại lời mời ở
    Người dùng và quyền + Google Play Android Developer API đã bật trong `tsudev-com`.
 3. Kênh gói: `packaging/package.json` đã có (PR #64), bật khi có bản chính thức (`docs/RELEASE.md` mục 6).
-4. Việc dời từ P7 (sao kê PDF, OCR desktop, widget iOS) - chưa bắt đầu; sao kê PDF cần ADR chọn thư viện đọc PDF
-   (pdfrx/PDFium BSD chạy cả web, hay chỉ máy gốc) trước khi viết mã.
+4. Việc dời từ P7: sao kê PDF XONG 24/11 (ADR-0020, PR #68, `deploy-2026.11.24.1`; bản app cài đặt có tính năng này
+   từ thẻ phát hành KẾ TIẾP). Còn OCR desktop (Tesseract), widget/lối tắt iOS.
