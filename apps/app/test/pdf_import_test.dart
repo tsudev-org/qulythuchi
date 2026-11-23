@@ -47,7 +47,23 @@ void main() {
     final h = findHeaderRow(table);
     expect(table[h], containsAll(['Ngày', 'Loại', 'Số tiền', 'Ghi chú']));
     final body = table.sublist(h + 1).where((r) => RegExp(r'^\d{2}/11/2026$').hasMatch(r.first)).toList();
-    expect(body.length, 60, reason: 'mọi giao dịch trên mọi trang, tiêu đề lặp đã bỏ');
+    final noteCol = table[h].indexOf('Ghi chú');
+    final seen = {for (final r in body) r[noteCol]};
+    final missing = [
+      for (var i = 0; i < 60; i++)
+        if (!seen.contains('Giao dịch số $i đường Nguyễn Huệ')) i,
+    ];
+    final ctx = [
+      for (final r in table)
+        if (missing.any(
+          (i) =>
+              r.join(' ').contains('số ${i - 1} ') ||
+              r.join(' ').contains('số $i ') ||
+              r.join(' ').contains('số ${i + 1} '),
+        ))
+          r.join(' | '),
+    ];
+    expect(body.length, 60, reason: 'thiếu $missing; ngữ cảnh: $ctx');
     final date = table[h].indexOf('Ngày'), amount = table[h].indexOf('Số tiền'), note = table[h].indexOf('Ghi chú');
     expect(body.first[date], '01/11/2026');
     expect(body.first[amount].replaceAll(RegExp(r'[^\d-]'), ''), '-50000');
