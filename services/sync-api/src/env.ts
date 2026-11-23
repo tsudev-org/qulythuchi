@@ -24,6 +24,8 @@ export interface Env {
    * chặn (trước khi chủ dự án đồng ý xoá dữ liệu thử nghiệm và khoá RP được đăng ký). ADR-0016.
    */
   PRO_ENFORCE: string;
+  /** Tỉ lệ yêu cầu /api/* kích hoạt dọn dẹp nền (mặc định 0.01). Test đặt '0' để dọn dẹp không chạy chen vào ca kiểm. */
+  CLEANUP_SAMPLE_RATE?: string;
   /** Khoá riêng EC P-256 (JWK có `d`) ký client assertion kênh RP, `wrangler secret put`. Thiếu ⇒ không lấy được quyền lợi. */
   RP_PRIVATE_JWK?: string;
   /** Muối băm IP trong nhật ký, `wrangler secret put`. */

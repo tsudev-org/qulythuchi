@@ -16,10 +16,16 @@ import { walletRoutes } from './wallets/routes';
 
 const app = new Hono<AppEnv>();
 
+/** Tỉ lệ dọn dẹp nền: giá trị hợp lệ trong [0, 1], còn lại dùng 1%. */
+function cleanupRate(raw: string | undefined): number {
+  const n = raw === undefined || raw === '' ? NaN : Number(raw);
+  return Number.isFinite(n) && n >= 0 && n <= 1 ? n : 0.01;
+}
+
 // Header bảo mật cho mọi phản hồi (SECURITY_BASELINE.md mục 7.2). Phản hồi API mặc định không cache.
 app.use('*', async (c, next) => {
   await next();
-  if (c.req.path.startsWith('/api/') && Math.random() < 0.01) {
+  if (c.req.path.startsWith('/api/') && Math.random() < cleanupRate(c.env.CLEANUP_SAMPLE_RATE)) {
     c.executionCtx.waitUntil(cleanup(c.env).catch((e: unknown) => { console.error('cleanup', e instanceof Error ? e.name : 'error'); }));
   }
   const h = c.res.headers;
