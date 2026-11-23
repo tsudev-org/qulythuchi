@@ -22,7 +22,11 @@
 1. XONG 23/11 21:03: xuất bản Thử nghiệm nội bộ cho danh sách "TsuDev Compass noi bo"; link
    https://play.google.com/apps/internaltest/4700541829715107418. 👤 cài thử trên máy thật, báo lỗi nếu có.
 2. XONG 23/11: hồ sơ thanh toán đã có sẵn; agent tạo `tsudev_pro`/`nam` + `ung_ho_*` ở BẢN NHÁP (google-play.md bước 4b).
-   Còn: 👤 kiểm thử giấy phép + `PLAY_SERVICE_ACCOUNT_JSON` ⇒ kích hoạt ⇒ thử mua đầu-cuối (phiếu tsudev QT5 mục 4).
+   23/11: `PLAY_SERVICE_ACCOUNT_JSON` đã có trên Render (`play-billing-b2@tsudev-com`, 👤 đặt), agent mời tài khoản
+   vào Play Console (chỉ Quly Thu Chi, xem dữ liệu tài chính + quản lý đơn). Google còn trả 401 ⇒ B2 503. Phiên sau:
+   chạy `services/sync-api/scripts/thu-b2-play.mjs` (xem đầu tệp) - ĐẠT ⇒ 👤 kiểm thử giấy phép ⇒ kích hoạt ⇒ thử mua
+   đầu-cuối, ghi kết quả vào phiếu tsudev QT5 mục 4 qua phiên tsudev. Quá 48 giờ vẫn 401 ⇒ kiểm lại lời mời ở
+   Người dùng và quyền + Google Play Android Developer API đã bật trong `tsudev-com`.
 3. Kênh gói: `packaging/package.json` đã có (PR #64), bật khi có bản chính thức (`docs/RELEASE.md` mục 6).
 4. Việc dời từ P7 (sao kê PDF, OCR desktop, widget iOS) - chưa bắt đầu; sao kê PDF cần ADR chọn thư viện đọc PDF
    (pdfrx/PDFium BSD chạy cả web, hay chỉ máy gốc) trước khi viết mã.

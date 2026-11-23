@@ -124,9 +124,19 @@ tạo mới. Đã tạo, tất cả **Bản nháp, chưa kích hoạt**:
 Bẫy: nhãn nút ("Tiếp tục", "Lưu dưới dạng bản nháp") và ô tìm quốc gia là Unicode NFD, ô tìm dùng `aria-label` ⇒ tìm
 bằng `normalize('NFC')`; KHÔNG bấm theo toạ độ ở thanh dưới (cùng vị trí với "Kích hoạt").
 
+Lợi ích gói `tsudev_pro` (23/11): "Đồng bộ đám mây mã hoá đầu-cuối", "Ví chung, mời người nhà", "Đồng bộ ảnh hoá
+đơn", "Dùng cho mọi ứng dụng TsuDEV" (rút từ `proFeat*` của app).
+
+**Tài khoản dịch vụ B2** (23/11/2026): `play-billing-b2@tsudev-com.iam.gserviceaccount.com` (project Google Cloud
+`tsudev-com`, 👤 tạo + đặt khoá vào `PLAY_SERVICE_ACCOUNT_JSON` của Render `tsudev-backend`). Agent mời vào Play
+Console (Người dùng và quyền), CHỈ app Quly Thu Chi, quyền: xem thông tin app + chất lượng (chỉ đọc, mặc định), **Xem dữ
+liệu tài chính**, **Quản lý đơn đặt hàng và gói đăng ký**. Lúc mời, Play Developer API còn trả 401 (quyền chưa lan
+truyền, tới 24 giờ) ⇒ B2 503 `play_unavailable`. Kiểm lại: `services/sync-api/scripts/thu-b2-play.mjs` (purchase token
+giả; ĐẠT khi hết 503).
+
 Trước khi **Kích hoạt** (👤 quyết): (1) Cài đặt > Kiểm thử giấy phép - thêm danh sách người thử nghiệm để mua thử không
-mất tiền; (2) `PLAY_SERVICE_ACCOUNT_JSON` ở Render của tsudev.com (không có ⇒ B2 trả 503 `play_unavailable`, người mua
-trả tiền nhưng không nhận Pro); (3) điều khoản Pro 7.5 hiện trong app.
+mất tiền; (2) `scripts/thu-b2-play.mjs` ĐẠT (hết 503 - nếu còn 503 thì người mua trả tiền nhưng không nhận Pro; Play tự hoàn
+tiền sau 3 ngày vì giao dịch không được xác nhận); (3) điều khoản Pro 7.5 hiện trong app.
 
 ## Việc 👤 trước khi gửi duyệt
 
