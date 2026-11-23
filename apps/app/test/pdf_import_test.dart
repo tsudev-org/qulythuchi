@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pdfrx/pdfrx.dart' show Pdfrx;
 import 'package:qulythuchi/services/export.dart';
 import 'package:qulythuchi/services/import_csv.dart';
 import 'package:qulythuchi/services/import_pdf.dart';
@@ -9,6 +11,8 @@ import 'package:qulythuchi/services/import_pdf.dart';
 /// thật (native assets; máy Linux cần clang như job CI App).
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  // flutter test không có plugin path_provider ⇒ đặt sẵn thư mục đệm cho pdfrx (app thật lấy từ path_provider).
+  setUpAll(() => Pdfrx.cacheDirectoryPath = Directory.systemTemp.createTempSync('qlt-pdfrx').path);
 
   test('khứ hồi: xuất PDF giao dịch rồi nhập lại ra đúng dòng, cột, ngày, số tiền', () async {
     final rows = <ExportRow>[
