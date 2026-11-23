@@ -31,8 +31,9 @@
   phải bật Apple (Apple Developer Program) - nút tự hiện, không cần phát hành lại app.
 - [ ] P10 còn lại (phiếu `logs/handover/20261123-02_android-play-noi-bo.md`): Play nội bộ ĐÃ xuất bản 23/11 (link
   trong `docs/store/google-play.md` bước 4a) ⇒ 👤 cài thử trên máy thật; sản phẩm `tsudev_pro`/`nam` + `ung_ho_*` ĐÃ TẠO
-  (bản nháp, bước 4b) ⇒ tài khoản dịch vụ B2 ĐÃ đặt + mời (23/11; chờ Google lan truyền quyền, chạy
-  `services/sync-api/scripts/thu-b2-play.mjs` tới khi ĐẠT) ⇒ 👤 kiểm thử giấy phép ⇒ kích hoạt ⇒ thử mua đầu-cuối;
+  (bản nháp, bước 4b) ⇒ tài khoản dịch vụ B2 ĐÃ đặt + mời, `thu-b2-play.mjs` ĐẠT 24/11 00:44 (Google
+  trả lời, 422 với token giả) ⇒ kiểm thử giấy phép + kích hoạt sản phẩm ĐÃ XONG 23/11 ⇒ 👤 thử mua
+  trên điện thoại (`docs/store/google-play.md` bước 4b "Thử mua đầu-cuối");
   bản chính thức (bỏ `-beta`) sau khi 👤 nghiệm thu P9/P7b ⇒ bật kênh gói theo `docs/RELEASE.md` mục 6
   (`packaging/package.json` đã có, kênh đang `planned`).
 - [ ] Dời từ P7: sao kê PDF (pdfrx/PDFium), OCR desktop (Tesseract), widget/lối tắt iOS.
@@ -43,6 +44,11 @@
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 24/11/2026 - Play mở bán thử (agent-qulythuchi, phiên `qulythuchi-1f`, 👤 uỷ quyền): tài khoản dịch vụ
+  `play-billing-b2@tsudev-com` mời vào Play Console (chỉ Quly Thu Chi: xem tài chính + quản lý đơn); lợi ích gói Pro;
+  Thử nghiệm giấy phép = "TsuDev Compass noi bo" (cấp tài khoản, đã báo phiên app-la-ban); kích hoạt `tsudev_pro`/`nam`
+  + `ung_ho_*`. Kênh B2 ĐẠT (`thu-b2-play.mjs`: 422 với token giả). Còn 👤 mua thử trên điện thoại.
 
 - 23/11/2026 - Play sản phẩm + kênh gói + dọn (agent-qulythuchi, phiên `qulythuchi-1f`): Play nội bộ ĐÃ xuất bản
   (👤 xác nhận); hồ sơ thanh toán có sẵn ⇒ tạo `tsudev_pro`/`nam` + `ung_ho_*` ở bản nháp (PR #62, #63). Test máy chủ
