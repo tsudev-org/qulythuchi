@@ -24,4 +24,7 @@ updates:
       # vitest major phải đi cùng @cloudflare/vitest-pool-workers hỗ trợ nó (0.23 khai peer vitest 4) - xem PR #10.
       - dependency-name: vitest
         update-types: ['version-update:semver-major']
+      # typescript major (7.x) phải chờ typescript-eslint khai peer hỗ trợ nó (8.73 khai <6.1.0) - xem PR #79.
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
 # Thêm npm cho apps/site ở P8.
