@@ -44,7 +44,7 @@ class _QuickEntrySheetState extends ConsumerState<QuickEntrySheet> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       if (widget.mode == QuickEntryMode.voice) _voice();
-      if (widget.mode == QuickEntryMode.scan) _scan(fromCamera: true);
+      if (widget.mode == QuickEntryMode.scan) _scan(fromCamera: ref.read(receiptScannerProvider).camera);
     });
   }
 
@@ -106,6 +106,8 @@ class _QuickEntrySheetState extends ConsumerState<QuickEntrySheet> {
       _text.text = '${info.merchant ?? l.scanDefaultNote} ${info.total}đ';
       _receiptDate = info.date;
       _source = TxnSource.ocr;
+    } on OcrUnavailable {
+      if (mounted) context.toast(l.scanNoOcrLanguage);
     } on Object {
       if (mounted) context.toast(l.scanFailed);
     } finally {
@@ -169,7 +171,7 @@ class _QuickEntrySheetState extends ConsumerState<QuickEntrySheet> {
                     if (scanner.supported)
                       IconButton(
                         tooltip: l.scanReceipt,
-                        onPressed: _busy ? null : () => _scan(fromCamera: true),
+                        onPressed: _busy ? null : () => _scan(fromCamera: scanner.camera),
                         icon: const Icon(Icons.document_scanner_outlined),
                       ),
                   ],

@@ -3248,6 +3248,30 @@ abstract class AppLocalizations {
   /// **'Không tìm thấy tổng tiền trên hóa đơn - hãy gõ số tiền'**
   String get scanNoTotal;
 
+  /// No description provided for @voiceMobileOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi bằng giọng nói chạy trên điện thoại (Android/iOS), nhận dạng ngay trên máy.'**
+  String get voiceMobileOnly;
+
+  /// No description provided for @scanDesktopHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trên máy tính, \"Quét hóa đơn\" mở ảnh hóa đơn có sẵn (ảnh chụp, ảnh màn hình). Chữ được nhận dạng ngay trên máy, ảnh không gửi đi đâu.'**
+  String get scanDesktopHint;
+
+  /// No description provided for @scanLinuxNeedsTesseract.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét hóa đơn trên Linux cần Tesseract: sudo apt install tesseract-ocr tesseract-ocr-vie (gói .deb đã gợi ý cài sẵn).'**
+  String get scanLinuxNeedsTesseract;
+
+  /// No description provided for @scanNoOcrLanguage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Máy chưa có bộ nhận dạng chữ. Windows: Cài đặt > Thời gian và ngôn ngữ > Ngôn ngữ, thêm ngôn ngữ có \"Nhận dạng ký tự quang học\".'**
+  String get scanNoOcrLanguage;
+
   /// No description provided for @statementTitle.
   ///
   /// In vi, this message translates to:
