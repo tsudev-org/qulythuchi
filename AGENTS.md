@@ -49,7 +49,7 @@ xuất tại repo `tsudev-standards` theo `.standards/docs/SYNC.md` mục 1.
 
 ```bash
 ./scripts/check-standards.sh
-export PATH="$HOME/tools/flutter/bin:$PATH"          # Flutter 3.47.8 (ghim trong CI)
+export PATH="$HOME/tools/flutter/bin:$PATH"          # Flutter 3.50.1 (ghim trong CI)
 (cd packages/core && dart test)                      # lõi
 cd apps/app && flutter test && flutter run -d linux  # app (Linux cần clang, libsecret-1-dev, libgtk-3-dev)
 ./tool/fetch_web_assets.sh && flutter run -d chrome  # web: tải sodium.js + sqlite3.wasm có checksum

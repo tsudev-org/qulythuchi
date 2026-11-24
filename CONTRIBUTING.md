@@ -10,7 +10,7 @@ data it handles is financial (classification **D3**), so the bar for changes to 
 ```bash
 git clone https://github.com/tsudev-org/qulythuchi.git && cd qulythuchi
 (cd packages/core && dart pub get && dart test)                 # core: money, crypto envelopes, sync records
-(cd apps/app && flutter pub get && flutter test)                # app (Flutter 3.47.8, pinned in CI)
+(cd apps/app && flutter pub get && flutter test)                # app (Flutter 3.50.1, pinned in CI)
 (cd services/sync-api && npm ci && npm test)                    # sync server (Workers + D1 + R2, runs in workerd)
 (cd apps/site && npm ci) && ./scripts/build-web.sh                # web app (/app/) + website (Astro), checked dist
 ```

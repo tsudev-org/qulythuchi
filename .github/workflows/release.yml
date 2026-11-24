@@ -22,8 +22,8 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 env:
-  FLUTTER_VERSION: '3.47.8'
-  FLUTTER_COMMIT: '737ba8f885dc774b53b442759999a312c9461e4e'
+  FLUTTER_VERSION: '3.50.1'
+  FLUTTER_COMMIT: 'ae9b586f34a8443573f82ef57c3bf914a908cbf7'
   # Vân tay chứng chỉ khoá APK (docs/RELEASE.md mục 4). APK ký khoá khác ⇒ job đỏ, không phát hành.
   ANDROID_APK_CERT_SHA256: '344164517b223bdb8a3de3267dbe1c870b733458bff9dab319eedba762fc4e98'
 
