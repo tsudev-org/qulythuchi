@@ -180,7 +180,7 @@ jobs:
           flutter build ${{ matrix.target }} --release
           case "${{ matrix.target }}" in
             linux)
-              dbus-run-session -- sh -c 'printf "" | gnome-keyring-daemon --unlock --components=secrets >/dev/null &&
+              dbus-run-session -- sh -c 'echo -n qt | gnome-keyring-daemon --replace --daemonize --unlock --components=secrets >/dev/null &&
                 xvfb-run -a python3 -I tool/do_khoi_dong.py "$0"' build/linux/x64/release/bundle/qulythuchi ;;
             windows) python -I tool/do_khoi_dong.py build/windows/x64/runner/Release/qulythuchi.exe ;;
             macos) python3 -I tool/do_khoi_dong.py "build/macos/Build/Products/Release/Quly Thu Chi.app/Contents/MacOS/Quly Thu Chi" ;;

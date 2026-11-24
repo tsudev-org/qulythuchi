@@ -2,14 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 
-/// Chỉ desktop, chỉ khi biến môi trường `QT_DO_KHOI_DONG=<đường dẫn tệp>` được đặt (script đo của CI): khi khung hình
-/// đầu tiên đã raster ⇒ ghi tệp mốc (không chứa dữ liệu) rồi thoát. Không đặt biến ⇒ không làm gì.
+/// Mã thoát báo "khung hình đầu tiên đã raster" cho `tool/do_khoi_dong.py`.
+const startupProbeExitCode = 37;
+
+/// Chỉ desktop, chỉ khi biến môi trường `QT_DO_KHOI_DONG=1` (script đo của CI): khi khung hình đầu tiên đã raster thì
+/// thoát với mã [startupProbeExitCode]. Không dùng tệp/stdout vì app macOS chạy trong sandbox và app Windows là GUI.
 void armStartupProbe() {
   if (!(Platform.isLinux || Platform.isWindows || Platform.isMacOS)) return;
-  final path = Platform.environment['QT_DO_KHOI_DONG'];
-  if (path == null || path.isEmpty) return;
-  WidgetsBinding.instance.waitUntilFirstFrameRasterized.then((_) {
-    File(path).writeAsStringSync('first-frame');
-    exit(0);
-  });
+  if (Platform.environment['QT_DO_KHOI_DONG'] != '1') return;
+  WidgetsBinding.instance.waitUntilFirstFrameRasterized.then((_) => exit(startupProbeExitCode));
 }
