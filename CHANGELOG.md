@@ -26,6 +26,10 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
 ## [Chưa phát hành]
 
 ### Thêm
+- Trang <https://qulythuchi.tsudev.com/security/> "Bảo mật và tin cậy": mỗi bằng chứng (OpenSSF Best Practices,
+  Scorecard, SSL Labs, Mozilla Observatory, VirusTotal, chữ ký Sigstore và chứng thực build của bản phát hành) có liên
+  kết tới trang kết quả của bên thứ ba và ngày đo; mục "Chưa có" ghi lý do thật. `security.txt` thêm
+  `security@tsudev.com` và trỏ chính sách về trang này (SEC2).
 - Đăng nhập bằng mã QR trên điện thoại: "Quét để đăng nhập" ở màn chào và trang Tài khoản - quét mã QR trên máy tính
   đã đăng nhập tsudev.com, xác nhận trong trình duyệt rồi bấm Tiếp tục. Mã QR chỉ đăng nhập tài khoản; dữ liệu vẫn mở
   bằng mật khẩu hoặc 24 từ khôi phục (ADR-0023).

@@ -58,6 +58,16 @@ if (/'unsafe-(inline|eval)'/.test(csp)) loi.push(`_headers: CSP không được 
 for (const f of ['theme.js', 'favicon.ico', 'manifest.webmanifest', 'android-chrome-192x192.png', 'android-chrome-maskable-512x512.png', 'favicon-96x96.png', 'apple-touch-icon.png', 'og-image.png', '.well-known/security.txt']) {
   if (!existsSync(join(dist, f))) loi.push(`thiếu dist/${f}`);
 }
+// security.txt (RFC 9116, phiếu SEC2 E4): Contact đầu tiên là security@tsudev.com, Expires còn hạn và <= 1 năm, Policy trỏ /security/.
+const stxt = readFileSync(join(dist, '.well-known/security.txt'), 'utf8');
+if (stxt.match(/^Contact: (.+)$/m)?.[1] !== 'mailto:security@tsudev.com') loi.push('security.txt: Contact đầu tiên phải là mailto:security@tsudev.com');
+const hetHan = Date.parse(stxt.match(/^Expires: (.+)$/m)?.[1] ?? '');
+const conNgay = (hetHan - Date.now()) / 86_400_000;
+if (!(conNgay > 0 && conNgay <= 366)) loi.push(`security.txt: Expires phải còn hạn và không quá 1 năm (còn ${Math.round(conNgay)} ngày)`);
+if (!/^Policy: https:\/\/qulythuchi\.tsudev\.com\/security\/$/m.test(stxt)) loi.push('security.txt: Policy phải trỏ https://qulythuchi.tsudev.com/security/');
+// /security/ phải là trang thật (SPA trả 200 cho mọi đường dẫn - kiểm nội dung, phiếu SEC2 mục 2).
+const trangSec = existsSync(join(dist, 'security/index.html')) ? readFileSync(join(dist, 'security/index.html'), 'utf8') : '';
+if (!trangSec.includes('Báo lỗ hổng') || !trangSec.includes('Kiểm chứng')) loi.push('security/index.html: thiếu mục Báo lỗ hổng hoặc bảng Kiểm chứng');
 const DONG = ['/auth/', '/api/', '/app/']; // /app/ gom riêng (gom-app.mjs), có thể vắng khi CI chỉ kiểm site
 for (const [ten, duong] of lienKet) {
   if (DONG.some((d) => duong.startsWith(d))) continue;

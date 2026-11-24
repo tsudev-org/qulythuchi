@@ -86,6 +86,15 @@ main { min-height: 60vh; }
 .bang th, .bang td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border); }
 .bang th { color: var(--text-muted); font-weight: 500; }
 .bang td.so, .bang th.so { text-align: right; font-variant-numeric: tabular-nums; }
+.bang-cuon { overflow-x: auto; }
+@media (max-width: 40rem) {
+  .bang-cuon thead { display: none; }
+  .bang-cuon tr { display: block; padding: 0.7rem 0; border-bottom: 1px solid var(--border); }
+  .bang-cuon th, .bang-cuon td { display: block; padding: 0.15rem 0; border: 0; }
+  .bang-cuon th[scope="row"] { color: var(--text); font-weight: 600; }
+  .bang-cuon td[data-nhan]::before { content: attr(data-nhan) ": "; color: var(--text-muted); }
+}
+.bang__ghi-chu { margin: 0.3rem 0 0; font-weight: 400; font-size: 0.85rem; color: var(--text-muted); }
 .thong-bao { border: 1px solid var(--warning); border-radius: var(--radius-md); padding: 0.8rem 1rem; background: var(--bg-surface); }
 .thong-bao--loi { border-color: var(--danger); }
 

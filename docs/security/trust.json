@@ -1,0 +1,100 @@
+{
+  "$comment": "Nguồn dữ liệu của trang https://qulythuchi.tsudev.com/security/ (phiếu 20261125-SEC2). Chỉ ghi số đo THẬT, mỗi mục 'bang_chung' phải có liên kết tới trang kết quả do bên thứ ba lưu trữ + ngày đo (YYYY-MM-DD). Không có liên kết kiểm chứng => đưa vào 'chua_co' kèm lý do. apps/site/src/lib/tin-cay.ts dừng build khi thiếu trường, liên kết trỏ về chính website hoặc ngày đo quá 120 ngày.",
+  "cap_nhat": "2026-11-25",
+  "bang_chung": [
+    {
+      "ma": "E1",
+      "ten": "OpenSSF Best Practices",
+      "ket_qua": "Passing (đạt 100% tiêu chí mức cơ bản)",
+      "lien_ket": "https://www.bestpractices.dev/projects/16946",
+      "ngay_do": "2026-11-25",
+      "ghi_chu": "Hồ sơ tự khai do OpenSSF lưu trữ; mỗi tiêu chí \"đạt\" có giải thích và liên kết tới bằng chứng trong repo."
+    },
+    {
+      "ma": "E2",
+      "ten": "OpenSSF Scorecard",
+      "ket_qua": "7.1/10",
+      "lien_ket": "https://scorecard.dev/viewer/?uri=github.com/tsudev-org/qulythuchi",
+      "ngay_do": "2026-11-24",
+      "ghi_chu": "Chấm tự động thực hành bảo mật của repo. Điểm thấp: Code-Review 0 (một người bảo trì, không có người duyệt thứ hai), Contributors 0 (chưa có tổ chức đóng góp), Maintained 0 (repo tạo chưa đủ 90 ngày), Fuzzing 0, Branch-Protection 3, CII-Best-Practices 5."
+    },
+    {
+      "ma": "E5",
+      "ten": "SSL Labs (Qualys)",
+      "ket_qua": "A+ trên cả 4 địa chỉ IPv4/IPv6",
+      "lien_ket": "https://www.ssllabs.com/ssltest/analyze.html?d=qulythuchi.tsudev.com&hideResults=on",
+      "ngay_do": "2026-11-25",
+      "ghi_chu": "Kiểm cấu hình TLS của qulythuchi.tsudev.com; bấm liên kết để chạy lại (không công khai lên bảng xếp hạng)."
+    },
+    {
+      "ma": "E6",
+      "ten": "Mozilla HTTP Observatory",
+      "ket_qua": "A+ (150 điểm, đạt 12/12 bài kiểm tra)",
+      "lien_ket": "https://developer.mozilla.org/en-US/observatory/analyze?host=qulythuchi.tsudev.com",
+      "ngay_do": "2026-11-25",
+      "ghi_chu": "Kiểm header bảo mật của website: CSP không 'unsafe-inline', HSTS, X-Content-Type-Options, Referrer-Policy, chống nhúng khung."
+    },
+    {
+      "ma": "E3",
+      "ten": "Bản phát hành 26.11.2403-beta.1: SHA-256 ký Sigstore, chứng thực build, SBOM",
+      "ket_qua": "Có SHA256SUMS.txt ký bằng Sigstore (cosign, không khóa riêng), chứng thực nguồn gốc build của GitHub Actions và SBOM SPDX",
+      "lien_ket": "https://github.com/tsudev-org/qulythuchi/releases/tag/v26.11.2403-beta.1",
+      "ngay_do": "2026-11-24",
+      "ghi_chu": "Cách tự kiểm ở mục \"Tự kiểm bản tải về\" bên dưới."
+    },
+    {
+      "ma": "E3",
+      "ten": "VirusTotal - bản Windows 26.11.2403-beta.1",
+      "ket_qua": "0/73 engine gắn cờ",
+      "lien_ket": "https://www.virustotal.com/gui/file/b4d5eb1c724b9c0a30557b38c2214c6c84d284dc8ab27d9267d3a2300223dcb7",
+      "ngay_do": "2026-11-24",
+      "ghi_chu": "Bản 26.11.2401/2402 từng bị AhnLab-V3 báo nhầm; đã gửi mẫu, nhà cung cấp gỡ cờ ngày 24/11/2026."
+    },
+    {
+      "ma": "E3",
+      "ten": "VirusTotal - bản Android 26.11.2403-beta.1",
+      "ket_qua": "0/73 engine gắn cờ",
+      "lien_ket": "https://www.virustotal.com/gui/file/34f0500e54a467febe7b407b8c012dea0d2fd01205150a6b7dd88e6338b88f25",
+      "ngay_do": "2026-11-24"
+    },
+    {
+      "ma": "E3",
+      "ten": "VirusTotal - bản macOS 26.11.2403-beta.1",
+      "ket_qua": "0/73 engine gắn cờ",
+      "lien_ket": "https://www.virustotal.com/gui/file/b9624f1860d16ccfcbc0e814b2cb8132c42b745c660c19b52d2af1e51298a83a",
+      "ngay_do": "2026-11-24"
+    },
+    {
+      "ma": "E3",
+      "ten": "VirusTotal - bản Linux (.deb) 26.11.2403-beta.1",
+      "ket_qua": "0/73 engine gắn cờ",
+      "lien_ket": "https://www.virustotal.com/gui/file/e0923b0bc9793852e707dab734c9b98aa70169e35d53ee2e13e946e7f8cbeb34",
+      "ngay_do": "2026-11-24"
+    },
+    {
+      "ma": "E10",
+      "ten": "Báo lỗ hổng riêng tư trên GitHub",
+      "ket_qua": "Đang bật; có chính sách SECURITY.md",
+      "lien_ket": "https://github.com/tsudev-org/qulythuchi/security",
+      "ngay_do": "2026-11-25"
+    }
+  ],
+  "chua_co": [
+    {
+      "ma": "E8",
+      "ten": "Chữ ký số Authenticode cho bản Windows (SignPath Foundation)",
+      "ly_do": "Chưa có: SignPath Foundation (ký mã miễn phí cho dự án mã nguồn mở) đã từ chối hệ TsuDEV ngày 12/11/2026 vì dự án chưa đủ tín hiệu cộng đồng công khai; chứng thư thương mại tốn phí, trái nguyên tắc chi phí 0 đồng. Bản Windows hiện là gói zip chưa ký Authenticode, nên Windows SmartScreen có thể cảnh báo. Thay vào đó: SHA-256 ký Sigstore, chứng thực build và kết quả VirusTotal ở trên."
+    },
+    {
+      "ma": "E7",
+      "ten": "HSTS preload",
+      "ly_do": "Chưa có: website đã gửi header Strict-Transport-Security có includeSubDomains và preload; danh sách preload của trình duyệt được nộp một lần cho tên miền gốc tsudev.com (phủ mọi tên miền con), việc nộp đang chuẩn bị.",
+      "lien_ket": "https://hstspreload.org/?domain=tsudev.com"
+    },
+    {
+      "ma": "E9",
+      "ten": "Tín nhiệm mạng (NCA)",
+      "ly_do": "Chưa có: chưa có trang xác minh do cổng Tín nhiệm mạng cấp cho website này."
+    }
+  ]
+}

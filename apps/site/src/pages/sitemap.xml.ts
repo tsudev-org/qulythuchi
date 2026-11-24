@@ -1,6 +1,6 @@
 import { SITE } from '../lib/site';
 
-const PAGES = ['/', '/tinh-nang/', '/bao-mat/', '/tai-ve/'];
+const PAGES = ['/', '/tinh-nang/', '/bao-mat/', '/security/', '/tai-ve/'];
 
 export function GET() {
   const body = `<?xml version="1.0" encoding="UTF-8"?>
