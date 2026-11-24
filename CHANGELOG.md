@@ -23,6 +23,8 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
 ## [Chưa phát hành]
 
 ### Đổi
+- Biểu tượng mục đang chọn trên thanh điều hướng (Tổng quan, Giao dịch, Kế hoạch, Ví, Thêm) rõ ràng ở cả giao diện Sáng
+  và Tối - trước đây bị vẽ trắng trên nền nhạt (UI1).
 - Bản sắc riêng Quly Thu Chi theo tsudev-standards v5.0.0 (STD50): màu chính xanh lục bảo `#39BA81` (Tối) / `#05794F`
   (Sáng) trên nền đen tuyền/trắng chung của hệ, bo góc mềm 6/10/14px (nút 10px), tiêu đề và số tiền lớn dùng font
   Be Vietnam Pro - cả website, web app `/app/` và app di động/desktop. Màu lấy trực tiếp từ bộ quy ước, không khai lại.
@@ -34,6 +36,11 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
   gốc qua `npm --prefix apps/site run brand`.
 
 ### Thêm
+- **Quét hóa đơn trên máy tính** (Windows, macOS, Linux): chọn ảnh hóa đơn có sẵn, chữ được nhận dạng ngay trên máy
+  bằng bộ nhận dạng của hệ điều hành (Windows OCR, Apple Vision) hoặc Tesseract trên Linux (gói `.deb` gợi ý cài
+  `tesseract-ocr-vie`). Ảnh không gửi đi đâu, không lưu tạm (ADR-0021).
+- **iPhone/iPad**: widget "Ghi nhanh" (màn hình chính, cỡ nhỏ/vừa, và màn hình khoá iOS 16+) và lối tắt khi nhấn giữ
+  biểu tượng app: Gõ, Nói, Quét. Widget không hiển thị số dư hay dữ liệu nào (ADR-0022).
 - Nhập sao kê ngân hàng dạng **PDF**, kể cả PDF có mật khẩu: app tự dựng bảng giao dịch (cột căn phải, diễn giải
   xuống dòng, nhiều trang), rồi ghép cột, bỏ dòng đã có và đưa vào hàng chờ xác nhận như CSV/XLSX. Đọc hoàn toàn trên
   máy (PDFium), mật khẩu không được lưu (ADR-0020).
