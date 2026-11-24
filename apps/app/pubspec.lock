@@ -1059,10 +1059,9 @@ packages:
   sodium:
     dependency: "direct main"
     description:
-      name: sodium
-      sha256: "44dc5c6be610690302fe51896f1ed34e909a93fd8520f3eda3394402220cabb7"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../third_party/sodium"
+      relative: true
+    source: path
     version: "4.1.5+1"
   source_span:
     dependency: transitive

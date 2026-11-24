@@ -1,0 +1,51 @@
+import 'package:code_assets/code_assets.dart';
+import 'package:meta/meta.dart';
+
+import 'darwin_builder.dart';
+
+@internal
+final class IosBuilder(super.config, super.logger) extends DarwinBuilder {
+  @override
+  DarwinConfig getPlatformConfig(Uri xcodeDir) {
+    assert(config.targetOS == .iOS, 'Expected target OS to be iOS.');
+
+    final sdkName = _mapSdk(config.iOS.targetSdk);
+
+    final platform = xcodeDir.resolve('Platforms/$sdkName.platform/Developer/');
+    return DarwinConfig(
+      arch: _mapArch(config.targetArchitecture),
+      build: 'aarch64-apple-darwin',
+      host: _mapHost(config.targetArchitecture),
+      platform: platform,
+      sdk: platform.resolve('SDKs/$sdkName.sdk/'),
+      versionParameter: _mapIosVersionParam(
+        config.iOS.targetSdk,
+        config.iOS.deploymentVersion,
+      ),
+    );
+  }
+
+  String _mapArch(Architecture arch) => switch (arch) {
+    .arm64 => 'arm64',
+    .x64 => 'x86_64',
+    _ => throw UnsupportedError('Unsupported iOS architecture: $arch'),
+  };
+
+  String _mapHost(Architecture arch) => switch (arch) {
+    .arm64 => 'aarch64-apple-darwin23',
+    .x64 => 'x86_64-apple-darwin23',
+    _ => throw UnsupportedError('Unsupported iOS architecture: $arch'),
+  };
+
+  String _mapSdk(IOSSdk sdk) => switch (sdk) {
+    .iPhoneOS => 'iPhoneOS',
+    .iPhoneSimulator => 'iPhoneSimulator',
+    _ => throw UnsupportedError('Unsupported iOS SDK: $sdk'),
+  };
+
+  String _mapIosVersionParam(IOSSdk sdk, AppleVersion version) => switch (sdk) {
+    .iPhoneOS => '-mios-version-min=${version.asStr}',
+    .iPhoneSimulator => '-mios-simulator-version-min=${version.asStr}',
+    _ => throw UnsupportedError('Unsupported iOS SDK: $sdk'),
+  };
+}
