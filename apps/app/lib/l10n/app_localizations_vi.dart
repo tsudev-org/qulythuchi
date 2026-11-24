@@ -1724,6 +1724,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get scanNoTotal => 'Không tìm thấy tổng tiền trên hóa đơn - hãy gõ số tiền';
 
   @override
+  String get voiceMobileOnly => 'Ghi bằng giọng nói chạy trên điện thoại (Android/iOS), nhận dạng ngay trên máy.';
+
+  @override
+  String get scanDesktopHint =>
+      'Trên máy tính, \"Quét hóa đơn\" mở ảnh hóa đơn có sẵn (ảnh chụp, ảnh màn hình). Chữ được nhận dạng ngay trên máy, ảnh không gửi đi đâu.';
+
+  @override
+  String get scanLinuxNeedsTesseract =>
+      'Quét hóa đơn trên Linux cần Tesseract: sudo apt install tesseract-ocr tesseract-ocr-vie (gói .deb đã gợi ý cài sẵn).';
+
+  @override
+  String get scanNoOcrLanguage =>
+      'Máy chưa có bộ nhận dạng chữ. Windows: Cài đặt > Thời gian và ngôn ngữ > Ngôn ngữ, thêm ngôn ngữ có \"Nhận dạng ký tự quang học\".';
+
+  @override
   String get statementTitle => 'Sao kê ngân hàng';
 
   @override

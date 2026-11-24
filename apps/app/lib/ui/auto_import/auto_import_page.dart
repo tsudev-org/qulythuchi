@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -148,7 +149,10 @@ class _AutoImportPageState extends ConsumerState<AutoImportPage> with WidgetsBin
                       ),
                   ],
                 ),
-                if (!voice.supported || !scanner.supported) Text(l.captureMobileOnly),
+                if (!voice.supported) Text(scanner.supported ? l.voiceMobileOnly : l.captureMobileOnly),
+                if (scanner.supported && !scanner.camera) Text(l.scanDesktopHint),
+                if (!scanner.supported && !kIsWeb && defaultTargetPlatform == TargetPlatform.linux)
+                  Text(l.scanLinuxNeedsTesseract),
               ],
             ),
             _Card(

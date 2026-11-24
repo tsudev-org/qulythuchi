@@ -8,6 +8,7 @@ import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import 'capture.dart';
+import 'desktop_ocr.dart';
 
 bool get mobileCaptureSupported =>
     !kIsWeb && (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS);
@@ -100,6 +101,9 @@ final class MlKitReceiptScanner implements ReceiptScanner {
   bool get supported => mobileCaptureSupported;
 
   @override
+  bool get camera => true;
+
+  @override
   Future<ScannedReceipt?> scan({required bool fromCamera}) async {
     final x = await _picker.pickImage(
       source: fromCamera ? ImageSource.camera : ImageSource.gallery,
@@ -126,4 +130,8 @@ final class MlKitReceiptScanner implements ReceiptScanner {
 }
 
 VoiceInput createVoiceInput() => mobileCaptureSupported ? MobileVoiceInput() : const NoVoiceInput();
-ReceiptScanner createReceiptScanner() => mobileCaptureSupported ? MlKitReceiptScanner() : const NoReceiptScanner();
+ReceiptScanner createReceiptScanner() => mobileCaptureSupported
+    ? MlKitReceiptScanner()
+    : desktopOcrPlatform
+    ? DesktopReceiptScanner(createDesktopOcrEngine())
+    : const NoReceiptScanner();

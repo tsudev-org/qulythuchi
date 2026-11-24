@@ -1728,6 +1728,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanNoTotal => 'No total found on the receipt - type the amount';
 
   @override
+  String get voiceMobileOnly => 'Voice entry runs on phones (Android/iOS), recognised on the device.';
+
+  @override
+  String get scanDesktopHint =>
+      'On a computer, \"Scan receipt\" opens an existing receipt image (photo, screenshot). Text is recognised on this device; the image is not sent anywhere.';
+
+  @override
+  String get scanLinuxNeedsTesseract =>
+      'Receipt scanning on Linux needs Tesseract: sudo apt install tesseract-ocr tesseract-ocr-vie (the .deb package recommends it).';
+
+  @override
+  String get scanNoOcrLanguage =>
+      'No text recognition is installed. Windows: Settings > Time & language > Language, add a language with \"Optical character recognition\".';
+
+  @override
   String get statementTitle => 'Bank statements';
 
   @override

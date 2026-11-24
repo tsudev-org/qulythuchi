@@ -52,6 +52,7 @@ Ranh giới: **thiết bị đã mở khóa** là vùng tin cậy duy nhất. M�
 | T30 | App tự cấp Pro / giả JWS trong đệm cục bộ để mở nút | S, E | JWS kiểm lại mỗi lần đọc (ES256 + JWKS, `aud` = `qulythuchi`, `exp` ≤ 7 ngày); trường không ký chỉ đổi lời nhắn; máy chủ vẫn gate mọi lượt đẩy (T25) | ✅ T7 app (ADR-0019) |
 | T31 | Dùng lại biên nhận Play cho tài khoản khác / app tự tin biên nhận / bản Play dẫn ra thanh toán web | S, E | `obfuscatedAccountId` từ `sub` của JWS đã kiểm; app chỉ chuyển biên nhận (máy chủ ⇒ tsudev.com xác minh), chỉ hoàn tất giao dịch khi xác minh xong; danh sách mã cố định, không `thang`; kênh mặc định an toàn (Android ⇒ Play) | ✅ T7 app (ADR-0019) |
 | T32 | Sao kê PDF độc khai thác lỗi bộ nhớ của PDFium / tệp phình to / lộ mật khẩu PDF | T, D, I, E | PDFium (`pdfrx` 3.0.0 ghim, bản không V8) chỉ lấy chữ; giới hạn 15 MiB/200 trang/2 triệu ký tự; mật khẩu chỉ trong bộ nhớ; sandbox nền tảng; SHA-256 ghim bản PDFium | ✅ Sao kê PDF (ADR-0020) |
+| T33 | Ảnh hóa đơn độc khai thác bộ giải mã ảnh / chiếm tệp chạy Tesseract / ảnh lớn làm treo (OCR desktop) | T, D, I, E | OCR của hệ điều hành (Windows.Media.Ocr, Vision) + Tesseract hệ thống qua đường dẫn tuyệt đối, không shell, ảnh qua stdin; ≤ 25 MiB; timeout 60 giây giết tiến trình; không mạng/tệp tạm | ✅ OCR desktop (ADR-0021) |
 
 ## 3. Phụ thuộc mật mã (SECURITY_BASELINE mục 5)
 
