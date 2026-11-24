@@ -77,3 +77,12 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.1")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
+
+// THỬ NGHIỆM (thu/apk-unbundled): ML Kit nhận dạng chữ bản "thin" (mô hình tải qua Google Play services) thay bản
+// đóng gói sẵn mà google_mlkit_text_recognition ghim cứng. Cùng API com.google.mlkit.vision.text.
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module("com.google.mlkit:text-recognition"))
+            .using(module("com.google.android.gms:play-services-mlkit-text-recognition:19.0.2"))
+    }
+}
