@@ -6,7 +6,7 @@ import { randomToken, sha256Hex } from '../lib/crypto';
 
 /** ADR-0003: access JWT 15 phút + refresh mờ xoay vòng 30 ngày. */
 export const ACCESS_TTL_S = 15 * 60;
-export const REFRESH_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+const REFRESH_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 export const WEB_SESSION_TTL_MS = 14 * 24 * 60 * 60 * 1000;
 const AUDIENCE = 'qulythuchi-api';
 
@@ -77,7 +77,7 @@ export async function newWebSession(db: D1Database, userId: string, userAgent: s
 }
 
 /** Tên hiển thị thô cho phiên web, chỉ từ danh sách cố định (không lưu nguyên User-Agent). */
-export function browserName(ua: string | undefined): string {
+function browserName(ua: string | undefined): string {
   const s = ua ?? '';
   const browser = /Edg\//.test(s) ? 'Edge' : /Firefox\//.test(s) ? 'Firefox' : /Chrome\//.test(s) ? 'Chrome' : /Safari\//.test(s) ? 'Safari' : 'Trình duyệt';
   const os = /Android/.test(s) ? 'Android' : /iPhone|iPad/.test(s) ? 'iOS' : /Windows/.test(s) ? 'Windows' : /Mac OS X/.test(s) ? 'macOS' : /Linux/.test(s) ? 'Linux' : '';

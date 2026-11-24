@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Chụp hóa đơn và quét mã QR thanh toán, xử lý ngay trên máy. Ảnh không được gửi đi.</string>
+	<string>Chụp hóa đơn, quét mã QR thanh toán và mã QR đăng nhập tsudev khi bạn bấm "Quét để đăng nhập", xử lý ngay trên máy. Ảnh không được gửi đi.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Chọn ảnh hóa đơn để đọc số tiền ngay trên máy. Ảnh không được gửi đi.</string>
 	<key>NSMicrophoneUsageDescription</key>

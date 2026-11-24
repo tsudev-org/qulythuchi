@@ -1809,5 +1809,14 @@
   "importPdfPasswordTitle": "Sao kê PDF có mật khẩu",
   "importPdfPasswordBody": "Nhập mật khẩu ngân hàng đặt cho tệp (thường là ngày sinh hoặc số giấy tờ). Mật khẩu chỉ dùng để mở tệp trên máy này, không được lưu.",
   "importPdfPasswordWrong": "Mật khẩu PDF không đúng",
-  "importPdfNoText": "PDF không có lớp chữ (ảnh quét). Hãy tải bản PDF điện tử, CSV hoặc Excel từ ngân hàng, hoặc chụp từng trang ở Tự nhập > Hóa đơn."
+  "importPdfNoText": "PDF không có lớp chữ (ảnh quét). Hãy tải bản PDF điện tử, CSV hoặc Excel từ ngân hàng, hoặc chụp từng trang ở Tự nhập > Hóa đơn.",
+  "xdScanTitle": "Quét để đăng nhập",
+  "xdScanHint": "Trên máy tính đã đăng nhập tsudev.com, mở Tài khoản ⇒ Bảo mật ⇒ Mã QR, rồi hướng camera vào mã.",
+  "xdNotTsudev": "Mã QR này không phải của tsudev.",
+  "xdApproveElsewhere": "Đây là mã để máy kia đăng nhập. Hãy quét bằng camera của điện thoại (mở bằng trình duyệt đã đăng nhập tsudev.com), hoặc dùng mã QR ở Tài khoản ⇒ Bảo mật trên máy đã đăng nhập.",
+  "xdBrowserFailed": "Không mở được trình duyệt. Hãy thử lại.",
+  "xdContinueTitle": "Đã xác nhận trên trình duyệt?",
+  "xdContinueBody": "Khi trình duyệt báo đăng nhập xong, bấm Tiếp tục để hoàn tất đăng nhập vào Quly Thu Chi. Mã QR chỉ đăng nhập tài khoản - dữ liệu vẫn mở bằng mật khẩu hoặc 24 từ khôi phục của bạn.",
+  "xdContinue": "Tiếp tục",
+  "xdScanAccount": "Quét để đăng nhập"
 }

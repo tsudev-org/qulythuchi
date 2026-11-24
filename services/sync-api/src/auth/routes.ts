@@ -88,7 +88,7 @@ const tokenBody = z.discriminatedUnion('grant_type', [
   z.object({ grant_type: z.literal('refresh_token'), refresh_token: z.string().startsWith(REFRESH_PREFIX).max(100) }),
 ]);
 
-export function userJson(u: {
+function userJson(u: {
   id: string;
   email: string | null;
   email_verified: number;

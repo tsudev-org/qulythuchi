@@ -14,7 +14,7 @@ import { assertPro, requirePro } from '../pro/entitlements';
  * Tệp của VÍ CHUNG (P7b, ADR-0017): `w/<wallet_id>/<file_id>`, bảng `wallet_files`, đường `/api/v1/wallets/:wid/files/:id`
  * - kiểm thành viên từ phiên; người ngoài 404; người xem chỉ đọc; ghi theo Pro của chủ ví; tính vào hạn mức chủ ví.
  */
-export const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const MAX_FILE_BYTES = 10 * 1024 * 1024;
 export const ACCOUNT_FILE_QUOTA = 1024 * 1024 * 1024;
 const FILE_MIN_PADDED = 4096;
 
@@ -27,7 +27,7 @@ const objectKey = (userId: string, id: string) => `u/${userId}/${id}`;
 const walletObjectKey = (walletId: string, id: string) => `w/${walletId}/${id}`;
 
 /** Byte tệp tính vào hạn mức của [ownerId]: tệp cá nhân + tệp trong các ví chung người đó làm chủ. */
-export async function fileBytesUsed(db: D1Database, ownerId: string): Promise<number> {
+async function fileBytesUsed(db: D1Database, ownerId: string): Promise<number> {
   const row = await db
     .prepare(
       `SELECT (SELECT COALESCE(SUM(size), 0) FROM files WHERE user_id = ?1)

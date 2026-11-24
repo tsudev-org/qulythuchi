@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tsudev_ui/tsudev_ui.dart' show TsuNavColors, tsuNavigationBarTheme, tsuNavigationRailTheme;
 
 import 'tokens.g.dart';
 
@@ -46,6 +47,14 @@ ThemeData buildTheme(Brightness brightness) {
   // Nền viên chỉ báo/vùng "container": primary 14% trên nền thẻ (đục, để đo tương phản được). Khai đủ *Container để
   // thành phần M3 (NavigationBar, Chip, FilledTonalButton, Badge) không lấy onSecondary (trắng) - phiếu UI1.
   final container = Color.alphaBlend(p.primary.withValues(alpha: 0.14), p.bgSurface);
+  final nav = TsuNavColors(
+    background: p.bgSurface,
+    indicator: container,
+    selected: p.primary,
+    unselected: p.iconNav,
+    selectedLabel: p.textPrimary,
+    unselectedLabel: p.textSecondary,
+  );
   final scheme = ColorScheme(
     brightness: brightness,
     primary: p.primary,
@@ -201,28 +210,9 @@ ThemeData buildTheme(Brightness brightness) {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(QtRadius.lg)),
     ),
     // Biểu tượng trên viên chỉ báo: đang chọn = primary trên primary 14%, còn lại iconNav (DESIGN_SYSTEM.md mục 1, UI1).
-    navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: p.bgSurface,
-      indicatorColor: container,
-      surfaceTintColor: Colors.transparent,
-      iconTheme: WidgetStateProperty.resolveWith(
-        (s) => IconThemeData(color: s.contains(WidgetState.selected) ? p.primary : p.iconNav),
-      ),
-      labelTextStyle: WidgetStateProperty.resolveWith(
-        (s) => TextStyle(
-          color: s.contains(WidgetState.selected) ? p.textPrimary : p.textSecondary,
-          fontWeight: s.contains(WidgetState.selected) ? FontWeight.w600 : FontWeight.w500,
-        ),
-      ),
-    ),
-    navigationRailTheme: NavigationRailThemeData(
-      backgroundColor: p.bgSurface,
-      indicatorColor: container,
-      selectedIconTheme: IconThemeData(color: p.primary),
-      unselectedIconTheme: IconThemeData(color: p.iconNav),
-      selectedLabelTextStyle: TextStyle(color: p.textPrimary, fontWeight: FontWeight.w600),
-      unselectedLabelTextStyle: TextStyle(color: p.textSecondary, fontWeight: FontWeight.w500),
-    ),
+    // tsudev_ui v0.3.0+ (phiếu UI1): ghi đè biểu tượng + nhãn theo WidgetState; TsuNavColors ném lỗi khi < 3:1.
+    navigationBarTheme: tsuNavigationBarTheme(nav),
+    navigationRailTheme: tsuNavigationRailTheme(nav),
     segmentedButtonTheme: SegmentedButtonThemeData(
       style: SegmentedButton.styleFrom(
         selectedBackgroundColor: p.primary,

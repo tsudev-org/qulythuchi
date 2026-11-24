@@ -2948,4 +2948,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get importPdfNoText =>
       'This PDF has no text layer (scanned image). Download the electronic PDF, CSV or Excel statement from your bank, or capture pages under Auto import > Receipt.';
+
+  @override
+  String get xdScanTitle => 'Scan to sign in';
+
+  @override
+  String get xdScanHint =>
+      'On a computer signed in to tsudev.com, open Account ⇒ Security ⇒ QR code, then point the camera at the code.';
+
+  @override
+  String get xdNotTsudev => 'This QR code is not from tsudev.';
+
+  @override
+  String get xdApproveElsewhere =>
+      'This code is for signing in the other device. Scan it with your phone camera (opens in a browser signed in to tsudev.com), or use the QR code under Account ⇒ Security on a signed-in device.';
+
+  @override
+  String get xdBrowserFailed => 'Could not open the browser. Please try again.';
+
+  @override
+  String get xdContinueTitle => 'Confirmed in the browser?';
+
+  @override
+  String get xdContinueBody =>
+      'When the browser says you\'re signed in, tap Continue to finish signing in to Quly Thu Chi. The QR code only signs in your account - your data still unlocks with your password or 24 recovery words.';
+
+  @override
+  String get xdContinue => 'Continue';
+
+  @override
+  String get xdScanAccount => 'Scan to sign in';
 }

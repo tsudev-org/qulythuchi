@@ -8,7 +8,8 @@ import '../../theme/app_theme.dart';
 import '../../theme/tokens.g.dart';
 import 'common.dart';
 
-const _kLastProvider = 'lastLoginProvider';
+/// Khoá SharedPreferences ghi lối đăng nhập lần trước (dùng chung với màn chào [TsuSignInScreen]).
+const kLastLoginProvider = 'lastLoginProvider';
 
 /// Lối vào ĐÚNG thứ tự (AUTH_AND_ACCOUNT.md mục 3 + 3.2): Google, Apple, GitHub - chỉ những lối IdP tsudev.com đang
 /// bật ([loginProvidersProvider]) - rồi tài khoản tsudev. Tất cả đi qua IdP (cùng một tài khoản). Đánh dấu "Lần trước
@@ -23,13 +24,13 @@ class SignInButtons extends ConsumerWidget {
     final l = context.l10n;
     final p = context.palette;
     final prefs = ref.watch(sharedPreferencesProvider);
-    final last = prefs.getString(_kLastProvider);
+    final last = prefs.getString(kLastLoginProvider);
     final dark = Theme.of(context).brightness == Brightness.dark;
     // Lối liên kết do IdP quyết (mục 3.2); đang tải ⇒ dùng dự phòng Google + GitHub để không giật bố cục.
     final providers = ref.watch(loginProvidersProvider).value ?? fallbackLoginProviders;
 
     Future<void> go(String key, String? provider) async {
-      await prefs.setString(_kLastProvider, key);
+      await prefs.setString(kLastLoginProvider, key);
       await onSignIn(provider);
     }
 

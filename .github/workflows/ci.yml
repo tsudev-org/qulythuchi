@@ -21,6 +21,12 @@ jobs:
         with: { persist-credentials: false }
       - run: ./scripts/check-standards.sh
       - run: ./scripts/sync-standards.sh --check
+      # PROJECT_STRUCTURE.md mục 3.1: import/biến thừa trong script Python (ruff ghim kèm băm).
+      - name: Mã thừa Python (ruff F401, F841)
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user --require-hashes -r scripts/requirements-lint.txt
+          python3 -m ruff check --select F401,F841 conformance services/sync-api/scripts scripts
 
   gitleaks:
     name: Quét lộ bí mật (gitleaks)
@@ -205,6 +211,8 @@ jobs:
           npm run typecheck
           npm run lint
           npm test
+      - name: Mã chết / export / phụ thuộc thừa (knip - PROJECT_STRUCTURE 3.1)
+        run: npm run knip
       - name: Build Worker (dry-run)
         run: |
           # Thư mục tĩnh thật do job Website dựng; dry-run chỉ cần thư mục tồn tại.
@@ -234,3 +242,5 @@ jobs:
           set -euo pipefail
           npm run build
           npm run typecheck
+      - name: Mã chết / export / phụ thuộc thừa (knip - PROJECT_STRUCTURE 3.1)
+        run: npm run knip

@@ -4,16 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
+import 'package:tsudev_ui/tsudev_ui.dart' show TsuSignInOption, TsuSignInScreen;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../domain/default_categories.dart';
 import '../../security/vault.dart';
 import '../../state/providers.dart';
+import '../../state/settings.dart' show sharedPreferencesProvider;
+import '../../state/sync_controller.dart' show loginProvidersProvider;
+import '../../sync/pkce.dart' show fallbackLoginProviders;
 import '../../theme/app_theme.dart';
+import '../../theme/tokens.g.dart';
 import '../account/remote_restore.dart';
+import '../account/xd_scan.dart';
 import '../data/data_page.dart' show restoreFromBackupFlow;
 import '../widgets/auth_widgets.dart';
+import '../widgets/brand.dart';
 import '../widgets/common.dart';
-import '../widgets/sign_in_buttons.dart';
+import '../widgets/sign_in_buttons.dart' show kLastLoginProvider;
 
 enum _Step { welcome, password, words, verify, pin }
 
@@ -72,44 +80,76 @@ class _Welcome extends ConsumerWidget {
   final VoidCallback onStart;
   final Future<void> Function(String? provider) onSyncSignIn;
 
+  /// Màn chào = màn đăng nhập thống nhất (AUTH_AND_ACCOUNT 13.2 + ô đồng ý 13.4, CROSS_DEVICE_LOGIN v1.1.0, ADR-0023):
+  /// lối vào do IdP bật ([loginProvidersProvider]) rồi tài khoản tsudev; "Quét để đăng nhập" (Đ1) chỉ ở điện thoại;
+  /// "Dùng ngay" (khách) không bắt tích ô; "Khôi phục từ tệp sao lưu" ở `extra`.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l = context.l10n;
-    return AuthScaffold(
-      title: l.welcomeTitle,
-      body: l.welcomeBody,
-      children: [
-        Text(l.syncWelcomeSignIn, style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center),
-        const SizedBox(height: 12),
-        SignInButtons(onSignIn: onSyncSignIn),
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            const Expanded(child: Divider()),
-            Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: Text(l.signInOr)),
-            const Expanded(child: Divider()),
-          ],
+    final prefs = ref.watch(sharedPreferencesProvider);
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final providers = ref.watch(loginProvidersProvider).value ?? fallbackLoginProviders;
+
+    Future<void> go(String id, String? provider) async {
+      await prefs.setString(kLastLoginProvider, id);
+      await onSyncSignIn(provider);
+    }
+
+    TsuSignInOption provider(String id) {
+      const s = 18.0;
+      final (Widget icon, String label) = switch (id) {
+        'google' => (
+          Image.asset('assets/brand/providers/google.png', width: s, height: s, excludeFromSemantics: true),
+          l.signInGoogle,
         ),
-        const SizedBox(height: 12),
-        OutlinedButton.icon(
-          key: const Key('welcome.guest'),
-          onPressed: onStart,
-          icon: const Icon(Icons.person_outline),
-          label: Text(l.welcomeGuest),
+        'apple' => (const Icon(Icons.apple, size: 20), l.signInApple),
+        _ => (
+          Image.asset(
+            'assets/brand/providers/github-${dark ? 'light' : 'dark'}.png',
+            width: s,
+            height: s,
+            excludeFromSemantics: true,
+          ),
+          l.signInGithub,
         ),
-        const SizedBox(height: 4),
-        Text(
-          l.welcomeGuestNote,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: context.palette.textMuted, fontSize: 12),
-        ),
-        const SizedBox(height: 12),
-        TextButton.icon(
-          onPressed: () => restoreFromBackupFlow(context, ref),
-          icon: const Icon(Icons.restore),
-          label: Text(l.restoreFromBackup),
-        ),
-      ],
+      };
+      return TsuSignInOption(id: id, label: label, icon: icon, onPressed: () => go(id, id));
+    }
+
+    void open(String path) => launchUrl(Uri.https('tsudev.com', path), mode: LaunchMode.externalApplication);
+    return Scaffold(
+      body: TsuSignInScreen(
+        logo: const BrandLogo(size: 48),
+        title: l.welcomeTitle,
+        tagline: l.welcomeBody,
+        primary: [
+          for (final id in providers) provider(id),
+          TsuSignInOption(
+            id: 'tsudev',
+            label: l.signInTsudev,
+            icon: const Icon(Icons.mail_outline, size: 18),
+            onPressed: () => go('tsudev', null),
+          ),
+        ],
+        lastUsedId: prefs.getString(kLastLoginProvider),
+        onScanToSignIn: xdScanSupported ? () => scanToSignIn(context, () => go('tsudev', null)) : null,
+        // IdP chưa có /dieu-khoan, /quyen-rieng-tu (404 ngày 24/11) - dùng /terms, /privacy đang chạy.
+        onOpenTerms: () => open('/terms'),
+        onOpenPrivacy: () => open('/privacy'),
+        guestLabel: l.welcomeGuest,
+        onGuest: onStart,
+        guestNote: l.welcomeGuestNote,
+        extra: [
+          const SizedBox(height: QtSpace.s3),
+          TextButton.icon(
+            key: const Key('welcome.restore'),
+            onPressed: () => restoreFromBackupFlow(context, ref),
+            icon: const Icon(Icons.restore),
+            label: Text(l.restoreFromBackup),
+          ),
+        ],
+        locale: Localizations.localeOf(context),
+      ),
     );
   }
 }

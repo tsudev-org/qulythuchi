@@ -85,7 +85,7 @@ void main() {
   testWidgets('màn chào có nút đăng nhập lấy dữ liệu đã đồng bộ', (tester) async {
     final services = makeServices((await tester.runAsync(testSodium))!);
     await pumpApp(tester, services);
-    expect(find.text('Đăng nhập để lấy dữ liệu đã đồng bộ'), findsOneWidget);
+    expect(find.byKey(const ValueKey('tsu-sign-in-tsudev')), findsOneWidget);
     expect(DefaultCategoryLocale.values, isNotEmpty);
   });
 

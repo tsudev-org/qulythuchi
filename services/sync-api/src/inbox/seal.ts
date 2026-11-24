@@ -10,7 +10,7 @@ import nacl from 'tweetnacl';
  * libsodium. Tương thích được kiểm hai chiều với libsodium hệ thống: `test/fixtures/sealed-box-v1.json`
  * (`scripts/gen-sealed-vector.py`). Không tự chế nguyên hàm mật mã (AGENTS.md B.5, ADR-0012).
  */
-export const SEAL_OVERHEAD = nacl.box.publicKeyLength + nacl.box.overheadLength; // 48
+const SEAL_OVERHEAD = nacl.box.publicKeyLength + nacl.box.overheadLength; // 48
 
 function sealNonce(epk: Uint8Array, pk: Uint8Array): Uint8Array {
   const input = new Uint8Array(epk.length + pk.length);

@@ -6,7 +6,7 @@ export function randomToken(bytes = 32): string {
   return base64Url(buf);
 }
 
-export function base64Url(data: Uint8Array): string {
+function base64Url(data: Uint8Array): string {
   return base64(data).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 

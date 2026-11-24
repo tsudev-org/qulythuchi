@@ -66,7 +66,7 @@ async function getJson<T>(url: string, init?: RequestInit): Promise<T> {
   return res.json<T>();
 }
 
-export async function discovery(env: Env): Promise<Discovery> {
+async function discovery(env: Env): Promise<Discovery> {
   if (discoveryCache && discoveryCache.issuer === env.OIDC_ISSUER && Date.now() - discoveryCache.at < DISCOVERY_TTL) {
     return discoveryCache.value;
   }
@@ -99,7 +99,7 @@ async function jwks(uri: string, force: boolean): Promise<JSONWebKeySet> {
   return keys;
 }
 
-export function redirectUri(env: Env) {
+function redirectUri(env: Env) {
   return `${env.PUBLIC_ORIGIN}/auth/callback`;
 }
 

@@ -22,7 +22,14 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
 
 ## [Chưa phát hành]
 
+### Thêm
+- Đăng nhập bằng mã QR trên điện thoại: "Quét để đăng nhập" ở màn chào và trang Tài khoản - quét mã QR trên máy tính
+  đã đăng nhập tsudev.com, xác nhận trong trình duyệt rồi bấm Tiếp tục. Mã QR chỉ đăng nhập tài khoản; dữ liệu vẫn mở
+  bằng mật khẩu hoặc 24 từ khôi phục (ADR-0023).
+
 ### Đổi
+- Màn chào theo màn đăng nhập thống nhất của TsuDEV: ô đồng ý Điều khoản không tích sẵn, "Dùng ngay, không cần tài
+  khoản" và "Khôi phục từ tệp sao lưu" giữ nguyên.
 - Biểu tượng mục đang chọn trên thanh điều hướng (Tổng quan, Giao dịch, Kế hoạch, Ví, Thêm) rõ ràng ở cả giao diện Sáng
   và Tối - trước đây bị vẽ trắng trên nền nhạt (UI1).
 - Bản sắc riêng Quly Thu Chi theo tsudev-standards v5.0.0 (STD50): màu chính xanh lục bảo `#39BA81` (Tối) / `#05794F`

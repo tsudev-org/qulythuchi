@@ -2944,4 +2944,34 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get importPdfNoText =>
       'PDF không có lớp chữ (ảnh quét). Hãy tải bản PDF điện tử, CSV hoặc Excel từ ngân hàng, hoặc chụp từng trang ở Tự nhập > Hóa đơn.';
+
+  @override
+  String get xdScanTitle => 'Quét để đăng nhập';
+
+  @override
+  String get xdScanHint =>
+      'Trên máy tính đã đăng nhập tsudev.com, mở Tài khoản ⇒ Bảo mật ⇒ Mã QR, rồi hướng camera vào mã.';
+
+  @override
+  String get xdNotTsudev => 'Mã QR này không phải của tsudev.';
+
+  @override
+  String get xdApproveElsewhere =>
+      'Đây là mã để máy kia đăng nhập. Hãy quét bằng camera của điện thoại (mở bằng trình duyệt đã đăng nhập tsudev.com), hoặc dùng mã QR ở Tài khoản ⇒ Bảo mật trên máy đã đăng nhập.';
+
+  @override
+  String get xdBrowserFailed => 'Không mở được trình duyệt. Hãy thử lại.';
+
+  @override
+  String get xdContinueTitle => 'Đã xác nhận trên trình duyệt?';
+
+  @override
+  String get xdContinueBody =>
+      'Khi trình duyệt báo đăng nhập xong, bấm Tiếp tục để hoàn tất đăng nhập vào Quly Thu Chi. Mã QR chỉ đăng nhập tài khoản - dữ liệu vẫn mở bằng mật khẩu hoặc 24 từ khôi phục của bạn.';
+
+  @override
+  String get xdContinue => 'Tiếp tục';
+
+  @override
+  String get xdScanAccount => 'Quét để đăng nhập';
 }

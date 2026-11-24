@@ -21,7 +21,7 @@ void main() {
     expect(cotDoPhu, lessThanOrEqualTo(0.15));
     expect(cotSoCot, 9);
     final js = File('../site/src/lib/cot-tang-truong.mjs').readAsStringSync();
-    expect(js, contains('export const SO_COT = 9;'));
+    expect(js, contains('const SO_COT = 9;'));
     expect(js, contains('export const DO_PHU = 0.12;'));
     expect(js, contains('0.22 + 0.78 * Math.pow(i / (soCot - 1), 1.15)'));
     expect(js, contains('buoc * 0.62'));

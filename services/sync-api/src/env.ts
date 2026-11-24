@@ -32,7 +32,7 @@ export interface Env {
   IP_HASH_SALT: string;
 }
 
-export interface AuthContext {
+interface AuthContext {
   userId: string;
   deviceId: string;
   via: 'bearer' | 'cookie';

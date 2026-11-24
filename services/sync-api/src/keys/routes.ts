@@ -26,7 +26,7 @@ const MIN_OPS = 2;
 const MIN_MEM = 19 * 1024 * 1024;
 
 /** Khớp `AccountKeyBundle.toJson` của `packages/core` (v1). Trường lạ bị từ chối. */
-export const accountBundle = z
+const accountBundle = z
   .object({
     v: z.literal(1),
     kdf: z

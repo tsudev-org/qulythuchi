@@ -67,6 +67,7 @@ void main() {
   testWidgets('màn chào có lối khôi phục từ tệp sao lưu', (tester) async {
     final sodium = await tester.runAsync(testSodium);
     await pumpApp(tester, makeServices(sodium!));
+    await scrollTo(tester, find.text('Khôi phục từ tệp sao lưu'));
     expect(find.text('Khôi phục từ tệp sao lưu'), findsOneWidget);
   });
 }
