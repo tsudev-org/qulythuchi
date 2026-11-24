@@ -10,6 +10,7 @@ import 'data/db_open.dart';
 import 'data/key_storage.dart';
 import 'data/record_store.dart';
 import 'security/vault.dart';
+import 'startup_probe.dart';
 import 'state/providers.dart';
 import 'state/settings.dart';
 import 'theme/font_licenses.dart';
@@ -23,6 +24,7 @@ bool _dbExisted = false;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  armStartupProbe();
   registerFontLicenses();
   final prefs = await SharedPreferences.getInstance();
   final hadPrefs = prefs.getKeys().isNotEmpty;
