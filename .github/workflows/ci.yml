@@ -111,6 +111,10 @@ jobs:
         run: |
           ./tool/fetch_web_assets.sh
           flutter build web --release --base-href /app/ --csp --no-web-resources-cdn
+      - name: Cây làm việc sạch sau build (PROJECT_STRUCTURE.md mục 3.1)
+        run: |
+          dirty="$(git status --porcelain)"
+          [ -z "$dirty" ] || { echo "::error::Build sinh tệp chưa được .gitignore/commit:"; echo "$dirty"; exit 1; }
 
   android:
     # Dựng APK release (ký khoá debug - chỉ kiểm dựng, KHÔNG phát hành) để lỗi Gradle/AAR metadata/compileSdk lộ ra ở PR

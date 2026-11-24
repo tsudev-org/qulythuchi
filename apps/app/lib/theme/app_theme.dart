@@ -43,12 +43,23 @@ extension QtThemeContext on BuildContext {
 
 ThemeData buildTheme(Brightness brightness) {
   final p = brightness == Brightness.dark ? QtPalette.dark : QtPalette.light;
+  // Nền viên chỉ báo/vùng "container": primary 14% trên nền thẻ (đục, để đo tương phản được). Khai đủ *Container để
+  // thành phần M3 (NavigationBar, Chip, FilledTonalButton, Badge) không lấy onSecondary (trắng) - phiếu UI1.
+  final container = Color.alphaBlend(p.primary.withValues(alpha: 0.14), p.bgSurface);
   final scheme = ColorScheme(
     brightness: brightness,
     primary: p.primary,
     onPrimary: p.onPrimary,
     secondary: p.textLink,
     onSecondary: p.onPrimary,
+    primaryContainer: container,
+    onPrimaryContainer: p.textPrimary,
+    secondaryContainer: container,
+    onSecondaryContainer: p.textPrimary,
+    tertiary: p.accent,
+    onTertiary: p.onPrimary,
+    tertiaryContainer: p.bgHover,
+    onTertiaryContainer: p.textPrimary,
     error: p.danger,
     onError: p.onStatus,
     surface: p.bgSurface,
@@ -189,15 +200,28 @@ ThemeData buildTheme(Brightness brightness) {
       foregroundColor: p.onPrimary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(QtRadius.lg)),
     ),
+    // Biểu tượng trên viên chỉ báo: đang chọn = primary trên primary 14%, còn lại iconNav (DESIGN_SYSTEM.md mục 1, UI1).
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: p.bgSurface,
-      indicatorColor: p.bgHover,
+      indicatorColor: container,
       surfaceTintColor: Colors.transparent,
+      iconTheme: WidgetStateProperty.resolveWith(
+        (s) => IconThemeData(color: s.contains(WidgetState.selected) ? p.primary : p.iconNav),
+      ),
+      labelTextStyle: WidgetStateProperty.resolveWith(
+        (s) => TextStyle(
+          color: s.contains(WidgetState.selected) ? p.textPrimary : p.textSecondary,
+          fontWeight: s.contains(WidgetState.selected) ? FontWeight.w600 : FontWeight.w500,
+        ),
+      ),
     ),
     navigationRailTheme: NavigationRailThemeData(
       backgroundColor: p.bgSurface,
-      indicatorColor: p.bgHover,
-      selectedIconTheme: IconThemeData(color: p.iconNav),
+      indicatorColor: container,
+      selectedIconTheme: IconThemeData(color: p.primary),
+      unselectedIconTheme: IconThemeData(color: p.iconNav),
+      selectedLabelTextStyle: TextStyle(color: p.textPrimary, fontWeight: FontWeight.w600),
+      unselectedLabelTextStyle: TextStyle(color: p.textSecondary, fontWeight: FontWeight.w500),
     ),
     segmentedButtonTheme: SegmentedButtonThemeData(
       style: SegmentedButton.styleFrom(
