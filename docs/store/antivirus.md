@@ -6,7 +6,7 @@ Chuẩn: `.standards/docs/DISTRIBUTION_TRUST.md` mục 3, 3.1. Job VirusTotal ch
 
 | Ngày | Bản | Tệp | Kết quả | Việc đã làm |
 | --- | --- | --- | --- | --- |
-| 24/11/2026 | v26.11.2401-beta.1 | `qulythuchi_26.11.2401-beta.1_windows-x64-portable.zip` | **1/73: AhnLab-V3 `Trojan/Win.Generic.C5980531`** (4 tệp khác 0/73) | Release giữ NHÁP. Khoanh vùng: cờ AhnLab nằm ở `pdfrx_pdfium_gate.dll` (DLL 102 KB do build hook `pdfium_dart` biên dịch, không có thông tin phiên bản) - mới từ bản này (ADR-0020). Thư mục 1 soạn sẵn - 👤 gửi |
+| 24/11/2026 | v26.11.2401-beta.1 | `qulythuchi_26.11.2401-beta.1_windows-x64-portable.zip` | **1/73: AhnLab-V3 `Trojan/Win.Generic.C5980531`** (4 tệp khác 0/73) | Release giữ NHÁP. Khoanh vùng: cờ AhnLab nằm ở `pdfrx_pdfium_gate.dll` (DLL 102 KB do build hook `pdfium_dart` biên dịch, không có thông tin phiên bản) - mới từ bản này (ADR-0020). **24/11 đã gửi thư mục 1** tới v3sos@ahnlab.com từ security@tsudev.com (Resend id `01a20bcb-b2f6-7ce9-ae0a-d9421aec48a7`, CC security@, 👤 uỷ quyền bằng lời). Chờ hãng trả lời |
 | 23/11/2026 | v26.11.2304-beta.1 | 5 tệp | 0/73 mỗi tệp | Không cần nộp |
 | 23/11/2026 | v26.11.2301-beta.1 | 4 tệp | 0/74 mỗi tệp | Không cần nộp |
 
@@ -15,7 +15,7 @@ Chuẩn: `.standards/docs/DISTRIBUTION_TRUST.md` mục 3, 3.1. Job VirusTotal ch
 (`qulythuchi.exe`, `flutter_windows.dll`, plugin) 0/73. Các DLL thư viện bên thứ ba (sqlite3mc, libsodium, PDFium) bị
 Cynet/Skyhigh gắn cờ theo hành vi/điểm học máy - không làm tệp zip bị gắn cờ.
 
-## 1. AhnLab - email v3sos@ahnlab.com (BẮT BUỘC để công bố bản)
+## 1. AhnLab - email v3sos@ahnlab.com (BẮT BUỘC để công bố bản) - ĐÃ GỬI 24/11/2026
 
 **Subject:** False positive report: Quly Thu Chi 26.11.2401-beta.1 (Trojan/Win.Generic.C5980531)
 
