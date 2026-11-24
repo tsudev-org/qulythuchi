@@ -9,3 +9,14 @@ khóa và đầu ra KDF trong đó dẫn xuất từ mật khẩu/salt/khóa ki�
 An toàn vì CI sinh lại tệp và so khớp từng byte - mọi nội dung chèn tay đều làm CI đỏ.
 """
 paths = ['''^conformance/envelope-v1\.json$''']
+
+[[allowlists]]
+description = """
+third_party/sodium (bản chép gói sodium 4.1.5+1, BAN_VA.md): luật generic-api-key bắt nhầm getter hằng số
+`keyBytes => sodium.crypto_<thuật toán>_KEYBYTES` (độ dài khóa của libsodium, không phải giá trị khóa).
+Chỉ miễn khi CẢ đường dẫn VÀ nguyên dòng khớp mẫu đó. Gỡ cùng thư mục khi upstream sửa #245.
+"""
+condition = "AND"
+regexTarget = "line"
+paths = ['''^third_party/sodium/lib/''']
+regexes = ['''^\s*int get keyBytes => sodium\.crypto_[a-z0-9_]+_KEYBYTES;$''']
