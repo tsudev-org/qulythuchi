@@ -20,3 +20,4 @@ E4 security.txt (Contact security@tsudev.com, test Expires) · E5 SSL Labs · E6
 ## Kết quả xử lý
 
 - 25/11/2026 - tsudev-8d: mở phiếu.
+- 25/11/2026 - agent-qulythuchi (SES-20261125-0104-52cc): E4 (`Contact: mailto:security@tsudev.com` đầu tiên, `Policy` ⇒ `/security/`, `check-dist.mjs` chặn Expires hết hạn/quá 1 năm), E5 SSL Labs A+ (4/4 địa chỉ), E6 Observatory A+ 150 (12/12), trang `/security/` từ `docs/security/trust.json` (E1 16946, E2 7.1, E3 Sigstore + chứng thực + VirusTotal 0/73, E10). E8/E7/E9 ghi "Chưa có" kèm lý do. PR #88; đã cập nhật hàng qulythuchi ở bảng mục 3 phiếu gốc.
