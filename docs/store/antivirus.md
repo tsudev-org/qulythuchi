@@ -6,6 +6,7 @@ Chuẩn: `.standards/docs/DISTRIBUTION_TRUST.md` mục 3, 3.1. Job VirusTotal ch
 
 | Ngày | Bản | Tệp | Kết quả | Việc đã làm |
 | --- | --- | --- | --- | --- |
+| 24/11/2026 | v26.11.2402-beta.1 | `qulythuchi_26.11.2402-beta.1_windows-x64-portable.zip` (SHA-256 `45ea61e1…6fcab4`) | **1/73: AhnLab-V3 `Trojan/Win.Generic.C5980531`** (cùng mã với 2401 - cùng `pdfrx_pdfium_gate.dll`) | Job VirusTotal tự giữ NHÁP. Không gửi thư mới (thư 24/11 đã nêu DLL; gửi thêm chỉ khi 👤 uỷ quyền). Bỏ nháp cùng lúc với 2401 khi AhnLab gỡ cờ |
 | 24/11/2026 (chiều, quét lại) | v26.11.2401-beta.1 | zip + `pdfrx_pdfium_gate.dll` | zip 1/73 (AhnLab-V3, cùng mã); DLL 2/73 (AhnLab-V3, Cynet) | `POST /analyse` cả hai (phiên `qulythuchi-07`) - AhnLab chưa gỡ cờ, mới vài giờ sau thư. Giữ NHÁP. Mốc đánh giá bỏ DLL khỏi gói Windows: 01/12/2026 |
 | 24/11/2026 | v26.11.2401-beta.1 | `qulythuchi_26.11.2401-beta.1_windows-x64-portable.zip` | **1/73: AhnLab-V3 `Trojan/Win.Generic.C5980531`** (4 tệp khác 0/73) | Release giữ NHÁP. Khoanh vùng: cờ AhnLab nằm ở `pdfrx_pdfium_gate.dll` (DLL 102 KB do build hook `pdfium_dart` biên dịch, không có thông tin phiên bản) - mới từ bản này (ADR-0020). **24/11 đã gửi thư mục 1** tới v3sos@ahnlab.com từ security@tsudev.com (Resend id `01a20bcb-b2f6-7ce9-ae0a-d9421aec48a7`, CC security@, 👤 uỷ quyền bằng lời). Chờ hãng trả lời |
 | 23/11/2026 | v26.11.2304-beta.1 | 5 tệp | 0/73 mỗi tệp | Không cần nộp |

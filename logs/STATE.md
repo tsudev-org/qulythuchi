@@ -9,27 +9,30 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261124-01_viec-phien-sau.md` (thứ tự việc, việc chờ 👤 và cách xử lý
+> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261124-02_viec-phien-sau.md` (thứ tự việc, việc chờ 👤 và cách xử lý
 > khi 👤 báo kết quả, bẫy đã gặp).
 
 Agent tự làm:
-- [ ] Kiểm AhnLab đã gỡ cờ `v26.11.2401-beta.1` chưa (thư ĐÃ GỬI 24/11) ⇒ bỏ nháp Release; quá 7 ngày ⇒ đánh giá bỏ
-  `pdfrx_pdfium_gate.dll` khỏi gói Windows (phiếu 20261124-01 mục 1.1).
-- [ ] P7 còn lại: OCR desktop (ADR-0021 trước khi code) rồi widget/lối tắt iOS (phiếu 20261124-01 mục 1.3-1.4).
+- [ ] Kiểm AhnLab cho `v26.11.2401-beta.1` + `v26.11.2402-beta.1` ⇒ bỏ nháp; từ 01/12 còn cờ ⇒ đánh giá bỏ
+  `pdfrx_pdfium_gate.dll` khỏi gói Windows (phiếu 20261124-02 mục 1.1).
+- [ ] STD-SYNC còn lại: `knip` (ghim), `ruff`, ngân sách tốc độ LANGUAGE_SELECTION 5.1 (phiếu 20261124-02 mục 1.2).
+- [ ] Nâng `tsudev_ui` v0.3.0, dùng `tsuNavigationBarTheme` (mục 1.3).
+- [ ] QR3 ĐÃ MỞ KHOÁ (`tsudev_ui` v0.4.0, chuẩn v5.3.0) - làm ngay sau AhnLab (phiếu 20261124-02 mục 1.4).
 - [ ] Sau mỗi tính năng: cắt thẻ beta mới, theo dõi job VirusTotal.
 
-Chờ 👤 (agent xử lý khi 👤 báo kết quả - phiếu 20261124-01 mục 2):
+Chờ 👤 (agent xử lý khi 👤 báo kết quả - phiếu 20261124-02 mục 2):
 - [ ] 👤 Mua thử Pro + Ủng hộ trên điện thoại (`docs/store/google-play.md` bước 4b); kết quả ⇒ phiên tsudev ghi QT5 mục 4.
 - [ ] 👤 Nghiệm thu P9 ví chung bằng HAI tài khoản tsudev thật (`logs/handover/20261119-03_p9-xong.md` mục 2b); thử
   đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật.
 - [ ] 👤 Nghiệm thu P7b ảnh hoá đơn (`logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
+- [ ] 👤 Thử Quét hóa đơn trên máy tính với ảnh hóa đơn thật (bản `v26.11.2402-beta.1`, phiếu 20261124-02 mục 2).
 - [ ] (Tuỳ chọn) 👤 uỷ quyền gửi thư Cynet (`docs/store/antivirus.md` mục 2).
 - [ ] 👤 Bật `PRO_ENFORCE=on` + đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] 👤 Play: tài khoản tsudev cho người duyệt Google (có Pro) + điền ở "Quyền truy cập ứng dụng"; Thử nghiệm kín
   12 người × 14 ngày khi có bản chính thức.
 - [ ] Apple: 👤 Apple Developer Program (đầu 2027) ⇒ tsudev.com bật Apple; workflow đã sẵn bước notarize (bí mật APPLE_*).
 
-Sau khi 👤 nghiệm thu P9 + P7b + mua Pro (phiếu 20261124-01 mục 3):
+Sau khi 👤 nghiệm thu P9 + P7b + mua Pro (phiếu 20261124-02 mục 3):
 - [ ] Bản chính thức `vYY.M.DDNN` ⇒ bật kênh gói (`docs/RELEASE.md` mục 6) ⇒ AAB Thử nghiệm kín ⇒ trang Tải về.
 
 Phiên khác làm:
@@ -41,6 +44,17 @@ Phiên khác làm:
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 24/11/2026 - OCR desktop + widget iOS + UI1 + chuẩn v5.1.0 (agent-qulythuchi, phiên `qulythuchi-07`):
+  **OCR hóa đơn trên desktop** (ADR-0021, phiếu rà soát `20261124-ocr-desktop`, T33): Windows.Media.Ocr (C++/WinRT trong
+  runner), Vision (macOS, + entitlement `files.user-selected.read-only`), Tesseract hệ thống (Linux, `.deb` Recommends
+  `tesseract-ocr-vie`); không thêm DLL vào gói; job CI `desktop-ocr` chạy engine THẬT ⇒ đúng nguyên văn trên cả 3 (PR
+  #74). **Widget "Ghi nhanh" + Quick Actions iOS** (ADR-0022, phiếu `20261124-widget-ios`): target WidgetKit thêm vào
+  pbxproj, không dữ liệu/App Group; `apple.yml` kiểm `.appex` (PR #75). **UI1** (phiếu `20261124-QR1`): biểu tượng
+  thanh điều hướng ≥ 3:1 Sáng/Tối + test chặn tái phát; `.standards` v5.1.0 + cổng cây sạch sau build (PR #73).
+  CHANGELOG #76. App 159 test. LÊN PRODUCTION `deploy-2026.11.24.2` (Worker `fa8d1759`): `/`, `/app/`, health,
+  `/tai-ve/`, providers 200. Thẻ `v26.11.2402-beta.1`: dựng đủ 3 desktop + APK, ký Sigstore + SLSA; NHÁP vì AhnLab-V3 gắn cờ zip Windows (cùng DLL). AhnLab quét lại
+  24/11 chiều: `v26.11.2401-beta.1` vẫn cờ ⇒ giữ nháp.
 
 - 24/11/2026 - Nhập sao kê PDF, kể cả có mật khẩu (agent-qulythuchi, phiên `qulythuchi-1f`, ADR-0020, phiếu rà soát
   `20261124-sao-ke-pdf`, THREAT_MODEL T32): `pdfrx` 3.0.0 (PDFium, ghim) chỉ lấy chữ; lõi `pdfGlyphsToRows` dựng bảng
