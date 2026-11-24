@@ -31,6 +31,9 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
   bằng mật khẩu hoặc 24 từ khôi phục (ADR-0023).
 
 ### Đổi
+- Nâng nền tảng dựng: Flutter 3.50.1 (Dart 3.14.0), thư viện mật mã `sodium` 4.1.5+1 (libsodium 1.0.22, cùng định
+  dạng phong bì - vector đối chiếu không đổi), đọc PDF `pdfrx` 3.1.0 (PDFium chromium/8125 như trước), `sqlite3`
+  3.9.2 (SQLite3 Multiple Ciphers 2.7.0 - CSDL đã mã hóa trên máy mở được như cũ, có test CSDL mẫu từ bản trước).
 - Màn chào theo màn đăng nhập thống nhất của TsuDEV: ô đồng ý Điều khoản không tích sẵn, "Dùng ngay, không cần tài
   khoản" và "Khôi phục từ tệp sao lưu" giữ nguyên.
 - Biểu tượng mục đang chọn trên thanh điều hướng (Tổng quan, Giao dịch, Kế hoạch, Ví, Thêm) rõ ràng ở cả giao diện Sáng

@@ -50,3 +50,12 @@ nguyên tắc "không tự chế mật mã" (AGENTS.md B.5).
 - Bề mặt tấn công mới: PDFium phân tích tệp không tin cậy (T32) - chấp nhận vì PDFium là bộ đọc PDF được kiểm thử
   khắc nghiệt nhất hiện có; tệp chỉ do chính người dùng chọn; nâng `pdfrx` theo Dependabot + đọc changelog bảo mật.
 - Nâng `pdfrx` lên 3.0.1+ khi nâng Flutter ≥ 3.50 (cùng PR).
+
+## Cập nhật
+
+- **25/11/2026 - nâng `pdfrx` 3.1.0** (cùng PR nâng Flutter 3.50.1, nhánh `chore/flutter-3.50`): vẫn ghim ĐÚNG phiên
+  bản như mục 1. `pdfrx_engine` 0.9.6, `pdfium_dart`/`pdfium_flutter` 0.4.4. PDFium vẫn chromium/8125 (đổi lần cuối ở
+  0.4.1) ⇒ thư viện PDFium trong gói Windows/macOS/Linux/Android không đổi; `pdfium_dart` 0.4.3 thêm kiểm SHA-256 ghim
+  cho gói PDFium tải lúc dựng. Cách nạp PDFium và `pdfrx_pdfium_gate` không đổi (không cần ADR mới). `pdfrx` 3.0.1+
+  kéo theo `material_ui`/`cupertino_ui` (bắc cầu); app chỉ dùng phần đọc chữ, không dùng widget xem PDF.
+
