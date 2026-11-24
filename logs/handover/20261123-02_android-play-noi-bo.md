@@ -31,3 +31,11 @@
 3. Kênh gói: `packaging/package.json` đã có (PR #64), bật khi có bản chính thức (`docs/RELEASE.md` mục 6).
 4. Việc dời từ P7: sao kê PDF XONG 24/11 (ADR-0020, PR #68, `deploy-2026.11.24.1`; bản app cài đặt có tính năng này
    từ thẻ phát hành KẾ TIẾP). Còn OCR desktop (Tesseract), widget/lối tắt iOS.
+
+## 4. Bổ sung 24/11/2026 - Release v26.11.2401-beta.1 giữ nháp (báo nhầm AhnLab)
+
+Bản có nhập sao kê PDF dựng đủ 5 nền tảng, nhưng VirusTotal: Windows zip 1/73 (AhnLab-V3 `Trojan/Win.Generic.C5980531`,
+khoanh vùng ở `pdfrx_pdfium_gate.dll` - DLL nhỏ do build hook pdfium_dart biên dịch). Job giữ Release NHÁP đúng thiết
+kế. Thư báo nhầm soạn sẵn: `docs/store/antivirus.md`. Phiên sau: 👤 gửi thư ⇒ chờ hãng ⇒ quét lại ⇒ bỏ nháp. Nếu AhnLab
+không gỡ trong ~1 tuần: cân nhắc không đóng gói gate DLL cho Windows (chỉ cần khi dùng `desktop_multi_window`) - phải
+thử kỹ trên Windows thật trước, vì có thể làm hỏng việc tải PDFium.
