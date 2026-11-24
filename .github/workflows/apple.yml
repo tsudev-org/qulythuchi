@@ -114,6 +114,12 @@ jobs:
           test -f "$app/PrivacyInfo.xcprivacy" || { echo "::error::PrivacyInfo.xcprivacy không có trong Runner.app"; exit 1; }
           plutil -lint "$app/PrivacyInfo.xcprivacy"
           lipo -info "$app/Runner" | tee /dev/stderr | grep -q arm64
+          # Widget Ghi nhanh (ADR-0022): phải được nhúng, cùng phiên bản với app, đúng điểm mở rộng WidgetKit.
+          wx="$app/PlugIns/QuickWidgetExtension.appex"
+          test -d "$wx" || { echo "::error::Thiếu QuickWidgetExtension.appex trong Runner.app/PlugIns"; exit 1; }
+          [[ "$(plutil -extract NSExtension.NSExtensionPointIdentifier raw "$wx/Info.plist")" == com.apple.widgetkit-extension ]]
+          [[ "$(plutil -extract CFBundleIdentifier raw "$wx/Info.plist")" == "$BUNDLE_ID.QuickWidget" ]]
+          [[ "$(plutil -extract CFBundleShortVersionString raw "$wx/Info.plist")" == "$(plutil -extract CFBundleShortVersionString raw "$app/Info.plist")" ]]
           ver="$(plutil -extract CFBundleShortVersionString raw "$app/Info.plist")"
           build="$(plutil -extract CFBundleVersion raw "$app/Info.plist")"
           echo "Phiên bản $ver ($build)"
