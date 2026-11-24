@@ -9,23 +9,23 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261124-02_viec-phien-sau.md` (thứ tự việc, việc chờ 👤 và cách xử lý
-> khi 👤 báo kết quả, bẫy đã gặp).
+> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261124-03_viec-phien-sau.md` (thứ tự việc, việc chờ 👤 và cách xử lý
+> khi 👤 báo kết quả, bẫy đã gặp - có bẫy tắt máy đột ngột làm rỗng tệp).
 
 Agent tự làm:
-- [ ] Kiểm AhnLab cho `v26.11.2401-beta.1` + `v26.11.2402-beta.1` ⇒ bỏ nháp; từ 01/12 còn cờ ⇒ đánh giá bỏ
-  `pdfrx_pdfium_gate.dll` khỏi gói Windows (phiếu 20261124-02 mục 1.1).
-- [ ] STD-SYNC còn lại: `knip` (ghim), `ruff`, ngân sách tốc độ LANGUAGE_SELECTION 5.1 (phiếu 20261124-02 mục 1.2).
-- [ ] Nâng `tsudev_ui` v0.3.0, dùng `tsuNavigationBarTheme` (mục 1.3).
-- [ ] QR3 ĐÃ MỞ KHOÁ (`tsudev_ui` v0.4.0, chuẩn v5.3.0) - làm ngay sau AhnLab (phiếu 20261124-02 mục 1.4).
+- [ ] Nâng Flutter (Dart ≥ 3.14) ⇒ nâng `sodium` 4.1.5 + `pdfrx` 3.1.0 (PR #84/#85 đã đóng; phiếu 20261124-03 mục 1.3).
+- [ ] Ngân sách APK mỗi ABI (AGENTS.md B.4): thử ML Kit OCR + quét mã vạch bản "unbundled" (phiếu 20261124-03 mục 1.2).
+- [ ] Đo khởi động desktop (Windows/macOS/Linux) - mục cuối LANGUAGE_SELECTION 5.1 còn thiếu.
+- [ ] QR vai XÁC NHẬN (app quét QR ở `/login` của PC): CHỜ QR2b phía tsudev.
 - [ ] Sau mỗi tính năng: cắt thẻ beta mới, theo dõi job VirusTotal.
 
-Chờ 👤 (agent xử lý khi 👤 báo kết quả - phiếu 20261124-02 mục 2):
+Chờ 👤 (agent xử lý khi 👤 báo kết quả - phiếu 20261124-03 mục 2):
 - [ ] 👤 Mua thử Pro + Ủng hộ trên điện thoại (`docs/store/google-play.md` bước 4b); kết quả ⇒ phiên tsudev ghi QT5 mục 4.
 - [ ] 👤 Nghiệm thu P9 ví chung bằng HAI tài khoản tsudev thật (`logs/handover/20261119-03_p9-xong.md` mục 2b); thử
   đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật.
 - [ ] 👤 Nghiệm thu P7b ảnh hoá đơn (`logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
-- [ ] 👤 Thử Quét hóa đơn trên máy tính với ảnh hóa đơn thật (bản `v26.11.2402-beta.1`, phiếu 20261124-02 mục 2).
+- [ ] 👤 Thử Quét hóa đơn trên máy tính với ảnh hóa đơn thật (bản `v26.11.2403-beta.1`, phiếu 20261124-03 mục 2).
+- [ ] 👤 Thử "Quét để đăng nhập" trên điện thoại (APK `v26.11.2403-beta.1`) với QR ở tsudev.com (phiếu 20261124-03 mục 2).
 - [ ] (Tuỳ chọn) 👤 uỷ quyền gửi thư Cynet (`docs/store/antivirus.md` mục 2).
 - [ ] 👤 Bật `PRO_ENFORCE=on` + đồng ý xoá dữ liệu thử nghiệm D1/R2.
 - [ ] 👤 Play: tài khoản tsudev cho người duyệt Google (có Pro) + điền ở "Quyền truy cập ứng dụng"; Thử nghiệm kín
@@ -44,6 +44,21 @@ Phiên khác làm:
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 24/11/2026 - Phiên `qulythuchi-08` (agent-qulythuchi, nối phiên bị tắt đột ngột 22:32): khôi phục sau sự cố (5
+  object git + `refs/stash` + `.github/dependabot.yml` + 4251 tệp `apps/site/node_modules` bị cắt về 0 byte ⇒ chuyển
+  object rỗng ra ngoài, `git fetch`, fsck sạch; `npm ci` lại; AKB `ISS-20261124-2309-41e4`). PR #80: dependabot bỏ qua
+  typescript major (#79 đỏ: TS 7 vs peer typescript-eslint `<6.1.0`) ⇒ #83 (npm sync-api) + #82 (actions) gộp; #84/#85
+  đóng (cần Dart 3.14). **AhnLab-V3 đã gỡ cờ** ⇒ bỏ nháp `v26.11.2401-beta.1` + `v26.11.2402-beta.1` (zip 0/7x; DLL
+  còn Cynet). Ngân sách tốc độ: website LCP trung vị 1,9 s, CLS ≤ 0,053, JS 2,2 KB (đạt); APK arm64 ~57 MB cài /
+  ~27,5 MB tải (vượt, ghi B.4). Vision macOS có tiếng Việt `vi-VT` (ADR-0021 mục 5, PR #81). LÊN PRODUCTION
+  `deploy-2026.11.24.3` (Worker `db6c9687`, màn chào TsuSignInScreen; Playwright `/app/` Sáng + Tối 0 lỗi console) và
+  `deploy-2026.11.24.4` (Worker `5ff4dc02`, #83; máy chủ 87 test): `/`, `/app/`, `/tai-ve/`, health, providers 200,
+  `/auth/web/start` 302.
+- 24/11/2026 - QR3 + chuẩn v5.3.0 (agent-qulythuchi, phiên `qulythuchi-07`, PR #78, ADR-0023, phiếu rà soát
+  `20261124-qr3`, THREAT_MODEL T34): màn chào `TsuSignInScreen` (`tsudev_ui` v0.4.0, ô đồng ý 13.4), "Quét để đăng nhập"
+  Android/iOS (`TsuXdLink.parse` ⇒ `/x/<id>` trong trình duyệt hệ thống ⇒ OIDC; QR không mang khoá E2EE); theme điều
+  hướng `tsuNavigationBarTheme`; knip 6.44.2 + ruff ghim, bước CI. Thẻ `v26.11.2403-beta.1` tự công bố (VirusTotal sạch).
 
 - 24/11/2026 - OCR desktop + widget iOS + UI1 + chuẩn v5.1.0 (agent-qulythuchi, phiên `qulythuchi-07`):
   **OCR hóa đơn trên desktop** (ADR-0021, phiếu rà soát `20261124-ocr-desktop`, T33): Windows.Media.Ocr (C++/WinRT trong

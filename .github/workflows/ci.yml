@@ -155,7 +155,10 @@ jobs:
           case "${{ matrix.target }}" in
             linux) tesseract --list-langs ;;
             windows) powershell -NoProfile -Command "[Windows.Media.Ocr.OcrEngine,Windows.Foundation,ContentType=WindowsRuntime] > \$null; [Windows.Media.Ocr.OcrEngine]::AvailableRecognizerLanguages | ForEach-Object LanguageTag" || true ;;
-            macos) sw_vers ;;
+            macos)
+              sw_vers
+              printf '%s\n' 'import Vision' 'let r = VNRecognizeTextRequest()' 'r.recognitionLevel = .accurate' \
+                'print(try r.supportedRecognitionLanguages())' | swift - || true ;;
           esac
       - name: OCR thật trên hóa đơn vẽ sẵn
         working-directory: apps/app

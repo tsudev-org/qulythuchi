@@ -6,6 +6,9 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 
 Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-org/qulythuchi/tags>.
 
+- deploy-2026.11.24.4 - 24/11/2026 - máy chủ: cập nhật jose 6.2.18, postal-mime 4.2.1, wrangler 4.166 (không đổi hành vi).
+- deploy-2026.11.24.3 - 24/11/2026 - màn chào web app dùng TsuSignInScreen (ô đồng ý điều khoản không tích sẵn), QR3.
+- deploy-2026.11.24.2 - 24/11/2026 - biểu tượng thanh điều hướng đủ tương phản Sáng/Tối (UI1).
 - deploy-2026.11.24.1 - 24/11/2026 - web app nhập được sao kê PDF (kể cả có mật khẩu), ADR-0020.
 - deploy-2026.11.23.3 - 23/11/2026 - máy chủ: tỉ lệ dọn dẹp nền cấu hình được (không đổi hành vi).
 - deploy-2026.11.23.2 - 23/11/2026 - trang Tải về có bản Android (APK ký số trên GitHub Releases).
