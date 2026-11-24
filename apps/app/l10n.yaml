@@ -3,3 +3,6 @@ template-arb-file: app_vi.arb
 output-localization-file: app_localizations.dart
 output-class: AppLocalizations
 nullable-getter: false
+# Flutter 3.50 đánh dấu lỗi thời GlobalMaterial/CupertinoLocalizations của flutter_localizations nhưng gen-l10n vẫn
+# sinh chúng. Gỡ khi app chuyển sang material_ui (phiếu 20261125-MUI1, chờ tsudev_ui).
+header: "// ignore_for_file: deprecated_member_use"

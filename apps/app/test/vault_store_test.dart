@@ -39,6 +39,20 @@ void main() {
     dir.deleteSync(recursive: true);
   });
 
+  test('CSDL sqlite3mc: mặc định ChaCha20 và đọc được CSDL tạo bởi bản cũ (sqlite3 3.9.1)', () {
+    // Tệp mẫu do libsqlite3mc của gói sqlite3 3.9.1 tạo (khóa thử 'ab' * 32). Nâng sqlite3/sqlite3mc mà đổi cipher
+    // mặc định hoặc định dạng trang ⇒ test này đỏ ⇒ người dùng cũ không mở được CSDL. KHÔNG sinh lại tệp mẫu.
+    final dir = Directory.systemTemp.createTempSync('qt');
+    final path = '${dir.path}/cu.db';
+    File('test/fixtures/sqlite3mc-chacha20-tu-3.9.1.mau').copySync(path);
+    final db = sqlite3.open(path);
+    expect(db.select('PRAGMA cipher').single.values.single, 'chacha20');
+    keyDatabase(db, 'ab' * 32);
+    expect(db.select('SELECT x FROM mau').single['x'], 'tao-boi-sqlite3-3.9.1');
+    db.close();
+    dir.deleteSync(recursive: true);
+  });
+
   test('tạo tài khoản → ghi → khóa → mở bằng mật khẩu/24 từ/PIN đọc lại đúng', () async {
     final store = RecordStore(sqlite3.openInMemory());
     final keys = MemoryKeyStorage();

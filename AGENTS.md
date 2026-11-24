@@ -49,7 +49,7 @@ xuất tại repo `tsudev-standards` theo `.standards/docs/SYNC.md` mục 1.
 
 ```bash
 ./scripts/check-standards.sh
-export PATH="$HOME/tools/flutter/bin:$PATH"          # Flutter 3.47.8 (ghim trong CI)
+export PATH="$HOME/tools/flutter/bin:$PATH"          # Flutter 3.50.1 (ghim trong CI)
 (cd packages/core && dart test)                      # lõi
 cd apps/app && flutter test && flutter run -d linux  # app (Linux cần clang, libsecret-1-dev, libgtk-3-dev)
 ./tool/fetch_web_assets.sh && flutter run -d chrome  # web: tải sodium.js + sqlite3.wasm có checksum
@@ -73,8 +73,9 @@ Sinh lại mã: `flutter gen-l10n` (chuỗi trong `lib/l10n/*.arb`), `dart run t
 | --- | --- | --- |
 | Web không có SQLCipher | sqlite3 WASM không hỗ trợ | CSDL web chỉ chứa bản ghi còn mã hóa, giải mã trong bộ nhớ (ADR-0001 mục 4) |
 | iOS chưa phát hành | Apple Developer tốn phí, chủ dự án hoãn | Mã iOS vẫn build trên CI; iPhone dùng PWA |
-| Web app `/app/` vượt ngân sách JS ban đầu ≤ 170 KB gzip (LANGUAGE_SELECTION 5.1) | Flutter web: đo 24/11/2026 `main.dart.js` 1,81 MB gzip + `canvaskit.wasm` 2,85 MB gzip; website Astro 1,8 KB gzip (đạt) | Chấp nhận cho web app (PWA cho iPhone/máy không cài được); trang chủ/Tải về là Astro tĩnh. Website đo 24/11 (Playwright, 4G chậm 150 ms/1,6 Mbps, CPU ×4, 7 lần): LCP trung vị 1,9 s, CLS ≤ 0,053 (đạt). Còn đo: khởi động desktop |
+| Web app `/app/` vượt ngân sách JS ban đầu ≤ 170 KB gzip (LANGUAGE_SELECTION 5.1) | Flutter web: đo 25/11/2026 (Flutter 3.50.1, `gzip -9`) `main.dart.js` 1,88 MB gzip + `canvaskit.wasm` 2,93 MB gzip (24/11 trên 3.47.8: 1,81 + 2,85); website Astro 1,8 KB gzip (đạt) | Chấp nhận cho web app (PWA cho iPhone/máy không cài được); trang chủ/Tải về là Astro tĩnh. Website đo 24/11 (Playwright, 4G chậm 150 ms/1,6 Mbps, CPU ×4, 7 lần): LCP trung vị 1,9 s, CLS ≤ 0,053 (đạt). Còn đo: khởi động desktop |
 | APK mỗi ABI vượt ≤ 25 MB (LANGUAGE_SELECTION 5.1) | Đo 24/11/2026 trên `v26.11.2403-beta.1`: arm64 ~57 MB cài đặt (thư viện native lưu không nén), ~27,5 MB tải về nén; armv7 ~48 MB, x86_64 ~61 MB. Gốc: ML Kit OCR 11 MB, quét mã vạch 4,9 MB, PDFium 6,6 MB, Flutter 26 MB | Thử ML Kit/mobile_scanner bản "unbundled" (tải mô hình qua Google Play services, bớt ~16 MB) - phải giữ chạy được khi máy không có Play services |
+| `// ignore: deprecated_member_use` trên từng dòng import `flutter/material.dart` / `GlobalMaterialLocalizations` (76 dòng) + `header` trong `apps/app/l10n.yaml` | Flutter 3.50 tách Material ra gói `material_ui` (bản sao, khác kiểu); `tsudev_ui` v0.4.0 còn trả kiểu `flutter/material` cho `ThemeData` ⇒ app chuyển một mình sẽ lỗi biên dịch | Phiếu `tsudev-ui-flutter` 20261125-MUI1; khi `tsudev_ui` lên `material_ui`: `dart fix --apply --code=migrate_design_widgets`, gỡ ignore + header, bọc `MaterialUiCompatibilityBridge` nếu còn gói cũ |
 | Giấy phép AGPL-3.0 thay vì Apache-2.0 phổ biến trong hệ | Bảo đảm bản phái sinh của app tài chính E2EE luôn công khai mã | ADR-0005 |
 
 ### B.5. Việc riêng của repo cần biết trước khi sửa

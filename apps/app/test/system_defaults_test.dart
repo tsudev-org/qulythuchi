@@ -1,4 +1,5 @@
 // tsudev-standards PRODUCT_POLICY mục 1.4: lần chạy đầu theo ngôn ngữ + giao diện của hệ thống.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qulythuchi/state/settings.dart';
