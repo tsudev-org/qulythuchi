@@ -25,9 +25,7 @@
    - ML Kit nhận dạng chữ qua Google Play services (thin) thay bản gói sẵn.
    Điều kiện: máy không có Play services (APK GitHub, F-Droid sau này) phải báo lỗi rõ, không sập; đo lại bằng cách
    tải APK và cộng `lib/<abi>` + phần không phải lib (cách đo trong phiên `qulythuchi-08`). Cần ADR nếu đổi.
-3. **Nâng Flutter** lên bản stable có Dart ≥ 3.14 (ghim commit trong CI + `release.yml`, AGENTS.md B.2), rồi nâng
-   `sodium` 4.1.5 + `pdfrx` 3.1.0 (bản 3.1.0 có pdfium dựng sẵn cho iOS/macOS - đọc ghi chú phát hành, chạy lại job
-   `desktop-ocr` + test nhập PDF). `sodium` đụng mật mã (D3) ⇒ phiếu rà soát + `conformance/` vẫn khớp.
+3. **Nâng Flutter 3.47.8 ⇒ 3.50.1 (Dart 3.13.7 ⇒ 3.14.0)** - ưu tiên CAO, làm ĐẦU phiên sau. Kế hoạch đầy đủ: mục 5.
 4. **Đo khởi động desktop** (≤ 1 giây tới cửa sổ dùng được): thêm bước đo trong job `desktop-ocr` hoặc đo tay trên
    bản 2403; ghi B.4.
 5. **QR vai XÁC NHẬN** (app quét QR ở `/login` của PC): vẫn CHỜ QR2b phía tsudev.
@@ -62,3 +60,69 @@ Như phiếu `20261124-01` mục 3: bản chính thức `vYY.M.DDNN` ⇒ kênh g
 - Job macOS có thể "not acquired by Runner ... after multiple attempts" (15 phút, không có log) ⇒ không phải lỗi mã,
   `gh run rerun <id> --failed`.
 - `/auth/web/start` nằm ở gốc, KHÔNG dưới `/api/v1` (đo nhầm sẽ ra 404).
+
+## 5. Kế hoạch nâng Flutter (bổ sung 24/11/2026 theo yêu cầu của chủ dự án)
+
+**Lý do.** `sodium` 4.1.5+1 (lõi + app) và `pdfrx` 3.1.0 (+ `pdfrx_engine` 0.9.6, `pdfium_*` 0.4.4) đòi Dart SDK
+^3.14.0 ⇒ dependabot #84/#85 đỏ, đã đóng. ADR-0020 mục 1 cũng ghim `pdfrx` 3.0.0 chỉ vì lý do này.
+
+**Bản đích** (đo từ `releases_linux.json` của Flutter, 24/11/2026):
+
+| Flutter | Dart | Commit | Ngày |
+| --- | --- | --- | --- |
+| 3.47.8 (đang ghim) | 3.13.7 | `737ba8f885dc774b53b442759999a312c9461e4e` | 23/10/2026 |
+| **3.50.1 (đích)** | **3.14.0** | `ae9b586f34a8443573f82ef57c3bf914a908cbf7` | 20/11/2026 |
+
+Đầu phiên đo lại: có 3.50.2+ thì lấy bản vá mới nhất của 3.50 (đối chiếu `hash` trong
+`https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json`, KHÔNG tin số commit trong phiếu
+nếu đã có bản mới hơn).
+
+**Chỗ phải đổi - MỘT PR duy nhất, nhánh `chore/flutter-3.50`** (đổi lẻ ⇒ CI ghim lệch ⇒ đỏ):
+
+| Tệp | Đổi |
+| --- | --- |
+| `.github/workflows/ci.yml` dòng 11-12 | `FLUTTER_VERSION`, `FLUTTER_COMMIT` (5 job dùng chung: core, app, desktop-ocr, android) |
+| `.github/workflows/release.yml` dòng 25-26 | như trên (bản phát hành phải dựng cùng Flutter với CI) |
+| `.github/workflows/apple.yml` dòng 45-46 | như trên |
+| `packages/core/pubspec.yaml`, `apps/app/pubspec.yaml` | `environment.sdk: ^3.14.0`; `sodium: ^4.1.5+1` |
+| `apps/app/pubspec.yaml` dòng 71 | `pdfrx: 3.1.0` (vẫn ghim ĐÚNG phiên bản như ADR-0020) |
+| `pubspec.lock` (lõi + app) | `dart pub get` / `flutter pub upgrade` (kéo luôn 7 gói "upgradable" đang khoá) |
+| AGENTS.md B.2, `CONTRIBUTING.md` dòng 13 | "Flutter 3.50.1" |
+| ADR-0020 mục 1 | KHÔNG sửa ADR đã chấp nhận ⇒ ghi bổ sung cuối ADR (mục "Cập nhật") hoặc ADR mới nếu cách nạp PDFium đổi |
+| `CHANGELOG.md` | mục chưa phát hành: nâng Flutter/Dart, sodium, pdfrx |
+
+`qr` 3.0.3 ⇒ 4.0.1 là bản MAJOR: KHÔNG gộp vào PR này (để dependabot riêng).
+
+**Các bước:**
+
+1. Máy dev: giữ bản cũ làm dự phòng `mv ~/tools/flutter ~/tools/flutter-3.47.8`, rồi
+   `git clone --depth 1 -b 3.50.1 https://github.com/flutter/flutter.git ~/tools/flutter`, kiểm `git rev-parse HEAD`
+   khớp commit, `flutter --version` báo Dart 3.14.0. Linux cần clang (bẫy mục 4 phiếu 20261124-02:
+   `~/.cache/lotus-tmp/clang`, xuất `PATH` + `LD_LIBRARY_PATH`).
+2. Lõi: `cd packages/core && dart pub get && dart format lib test tool && dart analyze --fatal-infos && dart test`.
+   Đổi `sdk` ⇒ đổi language version ⇒ **`dart format` có thể định dạng lại nhiều tệp**: commit riêng trong cùng PR
+   ("style: dart format theo Dart 3.14") để dễ duyệt. Lint mới/deprecation ⇒ sửa, không tắt lint.
+3. **Mật mã (D3)**: `sodium` 4.1.2+1 ⇒ 4.1.5+1 là bản vá nhưng đụng lớp gọi libsodium ⇒ BẮT BUỘC: chạy bước "Vector đối
+   chiếu khớp mã nguồn" (`conformance/`) cục bộ - phải khớp, KHÔNG sinh lại vector (sinh lại = che lỗi); đọc changelog
+   `libsodium_dart_bindings` 4.1.3-4.1.5; phiếu rà soát `docs/security-reviews/2026112x-nang-flutter-sodium.md` theo
+   `.standards/docs/templates/SECURITY_REVIEW.md`. Web: `tool/fetch_web_assets.sh` (sodium.js có checksum) - kiểm bản
+   `sodium` mới có đòi sodium.js khác không; đổi thì cập nhật checksum.
+4. App: `cd apps/app && flutter pub upgrade && flutter gen-l10n && dart run tool/gen_tokens.dart && flutter analyze &&
+   flutter test` (mốc: 159+ test đạt như phiên 07). Kiểm cây sạch sau sinh mã (cổng CI "cây sạch sau build").
+5. **pdfrx 3.1.0**: ghi chú phát hành nói có PDFium dựng sẵn (xcframework) cho iOS/macOS ⇒ đọc kỹ: Podfile/SPM có
+   đổi không, `apple.yml` kiểm gói `.app` có thêm framework không. Chạy test khứ hồi PDF (60 dòng, 3 trang) + job
+   `desktop-ocr` cả 3 OS. Windows: xem `pdfrx_pdfium_gate.dll` có đổi không (bản mới ⇒ băm mới ⇒ có thể bị AhnLab gắn
+   cờ lại - theo dõi VirusTotal bản beta kế tiếp, `docs/store/antivirus.md`).
+6. Web: `./scripts/build-web.sh` ⇒ đo lại `main.dart.js`/`canvaskit.wasm` gzip (AGENTS.md B.4) ⇒ chạy cục bộ
+   `/app/` + Playwright Sáng/Tối 0 lỗi console; luồng nhập PDF trên web (`pdfium.wasm`, CSP `blob:`).
+7. PR ⇒ CI đủ: core, app, desktop-ocr ×3, Android, Apple (iOS Simulator + macOS ad-hoc). Job macOS "not acquired by
+   Runner" ⇒ `gh run rerun --failed` (không phải lỗi mã). Android đỏ vì Gradle tải mạng ⇒ rerun. AGP/Gradle/Kotlin tối
+   thiểu có thể tăng theo Flutter 3.50 ⇒ đọc cảnh báo `flutter build apk`, sửa `android/settings.gradle(.kts)` nếu cần.
+8. Gộp ⇒ deploy (`build-web.sh` + `npm run deploy`, kiểm khói như mục 0) ⇒ cắt `v26.11.DDNN-beta.1` ⇒ theo dõi
+   VirusTotal + kiểm APK/zip/deb chạy được ⇒ ghi STATE.
+9. Dependabot sẽ mở lại PR pub (#84/#85 đã đóng) ⇒ đóng nếu trùng với PR này.
+
+**Dừng & hỏi 👤 nếu:** vector `conformance/` không khớp sau khi nâng `sodium`; định dạng phong bì/AAD phải đổi; hoặc
+pdfrx 3.1.0 buộc đổi cách đóng gói PDFium trên Windows (ảnh hưởng cờ antivirus vừa gỡ).
+
+**Quay lui:** revert PR; máy dev `mv ~/tools/flutter-3.47.8 ~/tools/flutter`.

@@ -13,7 +13,8 @@
 > khi 👤 báo kết quả, bẫy đã gặp - có bẫy tắt máy đột ngột làm rỗng tệp).
 
 Agent tự làm:
-- [ ] Nâng Flutter (Dart ≥ 3.14) ⇒ nâng `sodium` 4.1.5 + `pdfrx` 3.1.0 (PR #84/#85 đã đóng; phiếu 20261124-03 mục 1.3).
+- [ ] **ƯU TIÊN ĐẦU**: nâng Flutter 3.47.8 ⇒ 3.50.1 (Dart 3.14.0) + `sodium` 4.1.5+1 + `pdfrx` 3.1.0, MỘT PR, có phiếu
+  rà soát (đụng mật mã) - kế hoạch từng bước: phiếu 20261124-03 mục 5.
 - [ ] Ngân sách APK mỗi ABI (AGENTS.md B.4): thử ML Kit OCR + quét mã vạch bản "unbundled" (phiếu 20261124-03 mục 1.2).
 - [ ] Đo khởi động desktop (Windows/macOS/Linux) - mục cuối LANGUAGE_SELECTION 5.1 còn thiếu.
 - [ ] QR vai XÁC NHẬN (app quét QR ở `/login` của PC): CHỜ QR2b phía tsudev.
