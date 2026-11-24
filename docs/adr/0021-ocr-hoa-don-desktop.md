@@ -56,3 +56,13 @@ chữ số + chữ Latinh theo dòng; mất dấu tiếng Việt không làm h�
   bộ đọc bỏ dấu; người dùng luôn xem trước và sửa trước khi lưu.
 - Windows không có gói OCR nào (hiếm, máy cắt giảm) ⇒ báo lỗi rõ, không ẩn nút.
 - Linux bản `.tar.gz`/máy không cài Tesseract ⇒ không có OCR (như trước), có hướng dẫn cài.
+
+## 5. Số đo trên CI (PR #74, 24/11/2026)
+
+| Máy | Engine / ngôn ngữ có sẵn | Kết quả trên hóa đơn vẽ sẵn (3 dòng, font Inter 64 px) |
+| --- | --- | --- |
+| `windows-2025` | Windows.Media.Ocr, chỉ `en-US` | Đúng nguyên văn 3 dòng, `parseReceiptText` = 125000 |
+| `macos-15` (15.8.2) | Vision `.accurate` | Đúng nguyên văn 3 dòng, = 125000 |
+| `ubuntu-24.04` | Tesseract 5, `eng`, `osd`, `vie` ⇒ `vie+eng` | Đúng nguyên văn 3 dòng, = 125000 |
+
+Chưa đo: chữ có dấu tiếng Việt và ảnh chụp hóa đơn thật (nghiệm thu của 👤 trên máy thật).
