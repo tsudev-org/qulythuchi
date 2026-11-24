@@ -1,7 +1,7 @@
 # PHIẾU BÀN GIAO 20261124-02 - Việc cho phiên sau (sau phiên `qulythuchi-07`)
 
 - **Người gửi**: agent-qulythuchi (phiên `qulythuchi-07`), 24/11/2026
-- **Trạng thái**: MỞ. Thay phần "Việc agent tự làm" của phiếu `20261124-01` (phiếu đó giữ làm lịch sử; bảng mục 2 và
+- **Trạng thái**: ĐÓNG 24/11/2026 (thay bằng phiếu `20261124-03`; mục 1.1-1.4 xong, 1.5 xong ở phiên `qulythuchi-08`). Trước đó: MỞ. Thay phần "Việc agent tự làm" của phiếu `20261124-01` (phiếu đó giữ làm lịch sử; bảng mục 2 và
   mục 3 của nó VẪN DÙNG, chép lại dưới đây).
 - **Đọc kèm**: `logs/STATE.md`, `docs/store/antivirus.md`, `logs/handover/20261124-QR1_dang-nhap-qr-ui1-dk2.md`,
   ADR-0021, ADR-0022.
