@@ -5,7 +5,7 @@
  *   nên được tự do, mọi phần khác khớp tuyệt đối).
  * Phải khớp cấu hình đăng nhập của `apps/app` (P6).
  */
-export const APP_SCHEME_REDIRECT = 'com.tsudev.qulythuchi:/auth/callback';
+const APP_SCHEME_REDIRECT = 'com.tsudev.qulythuchi:/auth/callback';
 
 export function isAllowedAppRedirect(value: string): boolean {
   if (value === APP_SCHEME_REDIRECT) return true;
@@ -15,7 +15,7 @@ export function isAllowedAppRedirect(value: string): boolean {
   return port >= 1024 && port <= 65535;
 }
 
-export const DEFAULT_RETURN_TO = '/app/';
+const DEFAULT_RETURN_TO = '/app/';
 
 /** Đích nội bộ sau đăng nhập web: chỉ đường dẫn tương đối cùng gốc (chống open redirect). */
 export function safeReturnTo(value: string | undefined | null): string {

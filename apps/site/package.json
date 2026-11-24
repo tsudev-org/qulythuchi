@@ -8,13 +8,16 @@
     "dev": "astro dev",
     "brand": "node scripts/brand-assets.mjs",
     "build": "node scripts/brand-assets.mjs --check && astro build && node scripts/gom-app.mjs && node scripts/check-dist.mjs",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "knip": "knip --no-progress"
   },
   "dependencies": {
     "astro": "7.4.12"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
+    "knip": "6.44.2",
+    "sharp": "0.35.5",
     "typescript": "5.9.3"
   }
 }

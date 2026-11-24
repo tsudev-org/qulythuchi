@@ -12,16 +12,16 @@ import { clientAssertion } from './entitlements';
  */
 
 /** Định danh cửa hàng của hợp đồng chung (PRODUCT_POLICY 7.4) - KHÔNG có `thang`. */
-export const PLAY_PRODUCTS = new Set(['tsudev_pro', 'ung_ho_20k', 'ung_ho_50k', 'ung_ho_100k', 'ung_ho_200k']);
-export const PLAY_PACKAGE = 'com.tsudev.qulythuchi';
+const PLAY_PRODUCTS = new Set(['tsudev_pro', 'ung_ho_20k', 'ung_ho_50k', 'ung_ho_100k', 'ung_ho_200k']);
+const PLAY_PACKAGE = 'com.tsudev.qulythuchi';
 const TOKEN_RE = /^[A-Za-z0-9._:-]{16,4096}$/;
 const TIMEOUT_MS = 15_000;
 
-export const playReceiptUrl = (env: Env) => `${env.ENTITLEMENTS_URL}/play`;
+const playReceiptUrl = (env: Env) => `${env.ENTITLEMENTS_URL}/play`;
 
-export const purchaseUnavailable = () =>
+const purchaseUnavailable = () =>
   new ApiError(503, 'purchase_unavailable', 'Chưa xác nhận được giao dịch lúc này. Giao dịch được giữ lại và thử lại sau.');
-export const purchaseInvalid = () => new ApiError(400, 'purchase_invalid', 'Giao dịch không hợp lệ.');
+const purchaseInvalid = () => new ApiError(400, 'purchase_invalid', 'Giao dịch không hợp lệ.');
 
 export function validPlayReceipt(productId: unknown, token: unknown): productId is string {
   return typeof productId === 'string' && PLAY_PRODUCTS.has(productId) && typeof token === 'string' && TOKEN_RE.test(token);

@@ -21,14 +21,14 @@ import { MAX_BATCH, MAX_RECORD_BYTES } from '../sync/routes';
 
 /** Id dành riêng cho khóa dữ liệu cấp tài khoản (ADR-0011 mục 3) - không bao giờ là ví chung. */
 const ACCOUNT_KEY_ID = '00000000-0000-4000-8000-000000000000';
-export const MAX_OWNED_SHARED = 20;
-export const MAX_MEMBERS = 20;
-export const MAX_OPEN_INVITES = 20;
-export const MAX_JOINED = 50;
-export const INVITE_TTL_MS = 7 * 24 * 3600 * 1000;
+const MAX_OWNED_SHARED = 20;
+const MAX_MEMBERS = 20;
+const MAX_OPEN_INVITES = 20;
+const MAX_JOINED = 50;
+const INVITE_TTL_MS = 7 * 24 * 3600 * 1000;
 /** Lời mời đã được nhận nhưng chủ ví chưa mở app để hoàn tất: giữ tối đa 30 ngày. */
 const ACCEPTED_TTL_MS = 30 * 24 * 3600 * 1000;
-export const WALLET_RECORD_QUOTA = 50 * 1024 * 1024;
+const WALLET_RECORD_QUOTA = 50 * 1024 * 1024;
 const RECORD_MIN_PADDED = 256;
 /** Khóa 32 B đệm khối 16 ⇒ phong bì ≥ 44 + 48. Khối 'QS' = 3 + bản mã X-Wing 1120 + phong bì 92. */
 const OWN_WRAP_MIN = 92;

@@ -5,9 +5,9 @@ import { cachedEntitlement, enforcing, isPro } from '../pro/entitlements';
 import { sealFor } from './seal';
 
 /** Email thô tối đa nhận (chủ yếu là thông báo giao dịch, không cần tệp đính kèm lớn). */
-export const MAX_RAW_EMAIL = 512 * 1024;
+const MAX_RAW_EMAIL = 512 * 1024;
 /** Văn bản giữ lại sau khi bóc MIME (trước khi niêm phong). */
-export const MAX_TEXT = 16 * 1024;
+const MAX_TEXT = 16 * 1024;
 /** Số email chờ tối đa mỗi tài khoản (app chưa tải về). */
 export const MAX_PENDING = 200;
 

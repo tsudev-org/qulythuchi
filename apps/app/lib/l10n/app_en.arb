@@ -902,5 +902,14 @@
   "importPdfPasswordTitle": "Password-protected PDF statement",
   "importPdfPasswordBody": "Enter the password your bank set for this file (often a date of birth or ID number). It is only used to open the file on this device and is never stored.",
   "importPdfPasswordWrong": "Wrong PDF password",
-  "importPdfNoText": "This PDF has no text layer (scanned image). Download the electronic PDF, CSV or Excel statement from your bank, or capture pages under Auto import > Receipt."
+  "importPdfNoText": "This PDF has no text layer (scanned image). Download the electronic PDF, CSV or Excel statement from your bank, or capture pages under Auto import > Receipt.",
+  "xdScanTitle": "Scan to sign in",
+  "xdScanHint": "On a computer signed in to tsudev.com, open Account ⇒ Security ⇒ QR code, then point the camera at the code.",
+  "xdNotTsudev": "This QR code is not from tsudev.",
+  "xdApproveElsewhere": "This code is for signing in the other device. Scan it with your phone camera (opens in a browser signed in to tsudev.com), or use the QR code under Account ⇒ Security on a signed-in device.",
+  "xdBrowserFailed": "Could not open the browser. Please try again.",
+  "xdContinueTitle": "Confirmed in the browser?",
+  "xdContinueBody": "When the browser says you're signed in, tap Continue to finish signing in to Quly Thu Chi. The QR code only signs in your account - your data still unlocks with your password or 24 recovery words.",
+  "xdContinue": "Continue",
+  "xdScanAccount": "Scan to sign in"
 }

@@ -3,11 +3,11 @@
 // phản. Một hình học dùng chung cho hero website (CotTangTruong.astro) và og-image (scripts/brand-assets.mjs); app
 // Flutter chép đúng công thức ở apps/app/lib/ui/widgets/cot_tang_truong.dart.
 
-export const SO_COT = 9;
+const SO_COT = 9;
 export const DO_PHU = 0.12;
 
 /** Các cột trong khung rong x cao: chiều cao tăng dần từ 22% tới 100%, cột chiếm 62% bước, đỉnh bo góc. */
-export function cotTangTruong(rong, cao, soCot = SO_COT) {
+function cotTangTruong(rong, cao, soCot = SO_COT) {
   const buoc = rong / soCot;
   const be = buoc * 0.62;
   const cot = [];

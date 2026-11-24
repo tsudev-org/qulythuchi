@@ -13,7 +13,7 @@ import { ApiError } from '../lib/errors';
  * Đệm trong D1 ≤ 24 giờ (và không quá `exp` của JWS); tsudev.com lỗi mà đệm đã cũ ⇒ 503 (app vẫn chạy cục bộ).
  */
 
-export const ENT_CACHE_MS = 24 * 3600 * 1000;
+const ENT_CACHE_MS = 24 * 3600 * 1000;
 /** Mỗi mã cài đặt báo lại tsudev.com tối đa 1 lần / 24 giờ - đủ để `devices_30d` đếm đúng. */
 const INSTALLATION_REPORT_MS = 24 * 3600 * 1000;
 /** Pro hết hạn: còn kéo + xuất 90 ngày rồi xoá bản mã trên máy chủ (PRODUCT_POLICY 7.2). */
@@ -23,7 +23,7 @@ const INSTALLATION_RE = /^[A-Za-z0-9_-]{22}$/;
 const PLATFORMS = new Set(['android', 'ios', 'windows', 'macos', 'linux', 'web']);
 const BADGES = new Set(['pro', 'donor', 'both', 'none']);
 
-export type Badge = 'pro' | 'donor' | 'both' | 'none';
+type Badge = 'pro' | 'donor' | 'both' | 'none';
 
 export interface Entitlement {
   status: 'ok' | 'unknown_subject';
@@ -209,7 +209,7 @@ async function fetchEntitlement(env: Env, sub: string, caller: Caller, prev: Ent
   };
 }
 
-export function proRequired(reason: 'no_pro' | 'reauth' | 'owner_no_pro' = 'no_pro') {
+function proRequired(reason: 'no_pro' | 'reauth' | 'owner_no_pro' = 'no_pro') {
   const message =
     reason === 'reauth'
       ? 'Hãy đăng nhập lại để kiểm gói TsuDEV Pro.'

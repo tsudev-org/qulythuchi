@@ -5383,6 +5383,60 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'PDF không có lớp chữ (ảnh quét). Hãy tải bản PDF điện tử, CSV hoặc Excel từ ngân hàng, hoặc chụp từng trang ở Tự nhập > Hóa đơn.'**
   String get importPdfNoText;
+
+  /// No description provided for @xdScanTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét để đăng nhập'**
+  String get xdScanTitle;
+
+  /// No description provided for @xdScanHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trên máy tính đã đăng nhập tsudev.com, mở Tài khoản ⇒ Bảo mật ⇒ Mã QR, rồi hướng camera vào mã.'**
+  String get xdScanHint;
+
+  /// No description provided for @xdNotTsudev.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã QR này không phải của tsudev.'**
+  String get xdNotTsudev;
+
+  /// No description provided for @xdApproveElsewhere.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đây là mã để máy kia đăng nhập. Hãy quét bằng camera của điện thoại (mở bằng trình duyệt đã đăng nhập tsudev.com), hoặc dùng mã QR ở Tài khoản ⇒ Bảo mật trên máy đã đăng nhập.'**
+  String get xdApproveElsewhere;
+
+  /// No description provided for @xdBrowserFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được trình duyệt. Hãy thử lại.'**
+  String get xdBrowserFailed;
+
+  /// No description provided for @xdContinueTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xác nhận trên trình duyệt?'**
+  String get xdContinueTitle;
+
+  /// No description provided for @xdContinueBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khi trình duyệt báo đăng nhập xong, bấm Tiếp tục để hoàn tất đăng nhập vào Quly Thu Chi. Mã QR chỉ đăng nhập tài khoản - dữ liệu vẫn mở bằng mật khẩu hoặc 24 từ khôi phục của bạn.'**
+  String get xdContinueBody;
+
+  /// No description provided for @xdContinue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục'**
+  String get xdContinue;
+
+  /// No description provided for @xdScanAccount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét để đăng nhập'**
+  String get xdScanAccount;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

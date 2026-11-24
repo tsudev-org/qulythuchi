@@ -5,7 +5,7 @@ import { PRO_GRACE_MS, STATUS_MAX_SUBS, enforcing, fetchSubjectStatus, type Subj
 
 const DAY = 24 * 3600 * 1000;
 /** Kênh trạng thái chưa xác nhận được (hoặc vừa xác nhận gia hạn) ⇒ không hỏi lại tsudev.com trong 24 giờ. */
-export const PURGE_RECHECK_MS = DAY;
+const PURGE_RECHECK_MS = DAY;
 
 /**
  * Dọn dữ liệu hết hạn. KHÔNG dùng cron (tài khoản Cloudflare đã hết 5 cron gói Free - đo ở sound-db 17/11/2026):

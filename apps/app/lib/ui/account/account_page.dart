@@ -18,6 +18,7 @@ import '../data/data_page.dart' show saveBytes;
 import '../pro/pro_page.dart' show proStatusText;
 import '../widgets/common.dart';
 import '../widgets/sign_in_buttons.dart';
+import 'xd_scan.dart';
 
 /// Thông điệp cho mã lỗi đồng bộ/đăng nhập. KHÔNG in chi tiết lỗi (có thể chứa dữ liệu).
 String syncErrorText(AppLocalizations l, String? code) => switch (code) {
@@ -179,6 +180,17 @@ class _AccountPageState extends ConsumerState<AccountPage> {
         padding: const EdgeInsets.all(QtSpace.s4),
         child: SignInButtons(busy: _busy, onSignIn: _signIn),
       ),
+      // Đ1 (CROSS_DEVICE_LOGIN v1.1.0, ADR-0023): chỉ điện thoại; máy tính dùng mã QR ở trang đăng nhập tsudev.com.
+      if (xdScanSupported)
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: QtSpace.s4),
+          child: TextButton.icon(
+            key: const Key('account.xdScan'),
+            onPressed: _busy ? null : () => scanToSignIn(context, () => _signIn(null)),
+            icon: const Icon(Icons.qr_code_scanner),
+            label: Text(l.xdScanAccount),
+          ),
+        ),
       ListTile(leading: const Icon(Icons.person_outline), title: Text(l.guestModeNote)),
       _proTile(context),
       ListTile(leading: const Icon(Icons.shield_outlined), title: Text(l.syncE2eeNote)),

@@ -53,7 +53,7 @@ interface RecordRow {
   rev: number;
 }
 
-export type PushResult =
+type PushResult =
   | { id: string; status: 'applied' | 'unchanged'; rev: number }
   | { id: string; status: 'rejected'; reason: 'invalid_envelope' | 'too_large' | 'identity_mismatch' | 'duplicate' | 'quota' | 'shared_wallet' };
 

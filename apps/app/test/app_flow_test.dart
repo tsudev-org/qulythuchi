@@ -7,7 +7,8 @@ import 'helpers.dart';
 
 Future<void> _onboard(WidgetTester tester, AppServices services) async {
   expect(find.text('Chào mừng tới Quly Thu Chi'), findsOneWidget);
-  await tester.tap(find.byKey(const Key('welcome.guest')));
+  await scrollTo(tester, find.byKey(const ValueKey('tsu-sign-in-guest')));
+  await tester.tap(find.byKey(const ValueKey('tsu-sign-in-guest')));
   await settle(tester);
 
   // Mật khẩu ngắn bị chặn.
@@ -132,7 +133,7 @@ void main() {
     await setSurface(tester, const Size(360, 800));
     await pumpApp(tester, makeServices(sodium!), prefs: {'locale': 'en', 'theme': 'light'});
     expect(find.text('Welcome to Quly Thu Chi'), findsOneWidget);
-    expect(Theme.of(tester.element(find.byKey(const Key('welcome.guest')))).brightness, Brightness.light);
+    expect(Theme.of(tester.element(find.byKey(const ValueKey('tsu-sign-in-tsudev')))).brightness, Brightness.light);
     expect(Currency.vnd.code, 'VND');
   });
 }
