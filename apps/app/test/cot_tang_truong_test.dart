@@ -1,5 +1,6 @@
 import 'dart:io';
 
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qulythuchi/ui/widgets/cot_tang_truong.dart';

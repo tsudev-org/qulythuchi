@@ -1,3 +1,4 @@
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:tsudev_ui/tsudev_ui.dart' show TsuNavColors, tsuNavigationBarTheme, tsuNavigationRailTheme;
 

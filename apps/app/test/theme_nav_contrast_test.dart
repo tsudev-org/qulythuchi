@@ -1,6 +1,7 @@
 // Chặn tái phát UI1: biểu tượng đang chọn trên thanh điều hướng từng bị vẽ trắng (onSecondaryContainer) trên viên
 // chỉ báo nhạt. Đo màu IconTheme THẬT mà NavigationBar/NavigationRail truyền xuống, so với nền thật (viên chỉ báo
 // hoặc nền thanh), yêu cầu tương phản ≥ 3:1 (WCAG 1.4.11) ở cả Sáng và Tối.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qulythuchi/theme/app_theme.dart';

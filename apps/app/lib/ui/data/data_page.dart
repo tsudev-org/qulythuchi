@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:file_saver/file_saver.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';

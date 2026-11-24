@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:flutter/foundation.dart' show listEquals;
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -335,8 +336,10 @@ class _QulyAppState extends ConsumerState<QulyApp> {
       localeResolutionCallback: (device, _) => resolveAppLocale(device),
       localizationsDelegates: const [
         AppLocalizations.delegate,
+        // ignore: deprecated_member_use
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        // ignore: deprecated_member_use
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,

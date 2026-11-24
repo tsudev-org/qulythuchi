@@ -3,6 +3,7 @@
 //   flutter test integration_test/desktop_ocr_test.dart -d windows|macos|linux
 import 'dart:ui' as ui;
 
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

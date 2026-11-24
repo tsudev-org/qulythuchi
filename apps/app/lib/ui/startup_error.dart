@@ -1,3 +1,4 @@
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,8 +25,10 @@ class StartupErrorApp extends StatelessWidget {
       localeResolutionCallback: (device, _) => resolveAppLocale(device),
       localizationsDelegates: const [
         AppLocalizations.delegate,
+        // ignore: deprecated_member_use
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        // ignore: deprecated_member_use
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,

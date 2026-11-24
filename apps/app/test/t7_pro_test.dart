@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -106,8 +107,10 @@ Future<Host> pumpHost(
         locale: locale ?? const Locale('vi'),
         localizationsDelegates: const [
           AppLocalizations.delegate,
+          // ignore: deprecated_member_use
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          // ignore: deprecated_member_use
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: AppLocalizations.supportedLocales,

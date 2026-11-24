@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qulythuchi_core/qulythuchi_core.dart';
