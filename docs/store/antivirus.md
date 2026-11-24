@@ -6,6 +6,7 @@ Chuẩn: `.standards/docs/DISTRIBUTION_TRUST.md` mục 3, 3.1. Job VirusTotal ch
 
 | Ngày | Bản | Tệp | Kết quả | Việc đã làm |
 | --- | --- | --- | --- | --- |
+| 24/11/2026 (22:30, phiên `qulythuchi-08`) | v26.11.2401-beta.1 + v26.11.2402-beta.1 (+ 2403) | zip 2401, zip 2402, zip 2403, `pdfrx_pdfium_gate.dll` | **AhnLab-V3 ĐÃ GỠ CỜ**: cả 3 zip 0/7x; DLL còn 1 (Cynet `Malicious (score: 100)`, học máy - không làm zip bị cờ) | BỎ NHÁP 2401 + 2402 (Pre-release). 2403 tự công bố. Không cần đánh giá bỏ DLL nữa |
 | 24/11/2026 (tối, phiên `qulythuchi-39`) | v26.11.2401-beta.1 + v26.11.2402-beta.1 | zip 2401, `pdfrx_pdfium_gate.dll`, zip 2402 | zip 2402 quét MỚI: 1/73 AhnLab-V3 (cùng mã); zip 2401 + DLL: VirusTotal báo đang quét (`AlreadySubmittedError`), kết quả cũ vẫn cờ | Giữ NHÁP cả hai. Chưa tới mốc 01/12/2026 đánh giá bỏ DLL |
 | 24/11/2026 | v26.11.2402-beta.1 | `qulythuchi_26.11.2402-beta.1_windows-x64-portable.zip` (SHA-256 `45ea61e1…6fcab4`) | **1/73: AhnLab-V3 `Trojan/Win.Generic.C5980531`** (cùng mã với 2401 - cùng `pdfrx_pdfium_gate.dll`) | Job VirusTotal tự giữ NHÁP. Không gửi thư mới (thư 24/11 đã nêu DLL; gửi thêm chỉ khi 👤 uỷ quyền). Bỏ nháp cùng lúc với 2401 khi AhnLab gỡ cờ |
 | 24/11/2026 (chiều, quét lại) | v26.11.2401-beta.1 | zip + `pdfrx_pdfium_gate.dll` | zip 1/73 (AhnLab-V3, cùng mã); DLL 2/73 (AhnLab-V3, Cynet) | `POST /analyse` cả hai (phiên `qulythuchi-07`) - AhnLab chưa gỡ cờ, mới vài giờ sau thư. Giữ NHÁP. Mốc đánh giá bỏ DLL khỏi gói Windows: 01/12/2026 |
