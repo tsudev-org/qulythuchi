@@ -9,38 +9,31 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-- [ ] Chờ AhnLab gỡ cờ (thư ĐÃ GỬI 24/11 qua Resend từ `security@tsudev.com`, trả lời về hộp thư đó; Cynet mục 2 chưa
-  gửi - tuỳ chọn). Release `v26.11.2401-beta.1` (có nhập sao kê PDF) đang NHÁP vì Windows zip 1/73 AhnLab-V3
-  (cờ ở `pdfrx_pdfium_gate.dll`). Hãng gỡ cờ ⇒ quét lại ⇒ `gh release edit v26.11.2401-beta.1 --draft=false`.
+> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261124-01_viec-phien-sau.md` (thứ tự việc, việc chờ 👤 và cách xử lý
+> khi 👤 báo kết quả, bẫy đã gặp).
 
-- [ ] 👤 Nghiệm thu P9 trên production bằng HAI tài khoản tsudev thật (phiếu `logs/handover/20261119-03_p9-xong.md` mục 2b);
-  thử đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
-- [ ] 👤 Nghiệm thu P7b trên production: gắn ảnh hóa đơn trên điện thoại, mở ở máy thứ hai/`/app/`, xem trong ví chung
-  (phiếu `logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
-- [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev làm).
-- [ ] 👤 GP1 (Play, `docs/store/google-play.md` mục "Việc 👤"): hồ sơ thanh toán; tài khoản tsudev cho người duyệt
-  (có Pro) + điền tên/mật khẩu; khoá ký ⇒ AAB vào Thử nghiệm nội bộ ⇒ phiên sau tạo `tsudev_pro`/`nam` + `ung_ho_*`.
-  Trang `/bao-mat` mới ĐÃ lên production (`deploy-2026.11.21.1`, có `#xoa-tai-khoan`, `#xoa-du-lieu`).
-- [ ] Chờ tsudev B2 (`POST /api/rp/entitlements/play`, phiếu tsudev `20261120-QT5`): xác nhận thân yêu cầu ⇒ thử mua
-  Play đầu-cuối (cần sản phẩm Play thật).
-  Tin tsudev-8d 20/11/2026: B2 làm xong đúng hình dạng (mục 4 phiếu QT5: thêm 409 `purchase_pending`, 403
-  `forbidden_package`, 404 `unknown_subject`, 503 `play_unavailable` + Retry-After; gửi lại trả 200 `already_recorded`),
-  ĐÃ lên production 20/11/2026 (tin tsudev-a7: PR tsudev #344, Render 13:56 UTC; không token ⇒ 401 `invalid_client`).
-  `aud` client assertion = `https://tsudev.com/api/rp/entitlements/play`; package trong `PLAY_PACKAGES`;
-  `obfuscatedExternalAccountId` = đúng `sub` tsudev. 503 `play_unavailable` = 👤 chưa đặt `PLAY_SERVICE_ACCOUNT_JSON`
-  ở Render. Đã đối chiếu `play.ts` 21/11 (aud đúng; 409 `purchase_pending` sửa thành thử lại). Còn:
-  thử mua Play đầu-cuối trên máy thật; ghi kết quả vào phiếu tsudev QT5 mục 4 qua phiên tsudev (không sửa hộ).
-- [ ] 👤 Bật `PRO_ENFORCE=on` (sau khi app có màn Pro + tsudev.com/pro chạy): đồng ý xoá dữ liệu thử nghiệm D1/R2.
-- [ ] Apple (chuẩn v4.3.0 mục 3.2): RP đã sẵn (nút theo IdP, `idp_hint=apple`). 👤 Trước khi phát hành iOS: tsudev.com
-  phải bật Apple (Apple Developer Program) - nút tự hiện, không cần phát hành lại app.
-- [ ] P10 còn lại (phiếu `logs/handover/20261123-02_android-play-noi-bo.md`): Play nội bộ ĐÃ xuất bản 23/11 (link
-  trong `docs/store/google-play.md` bước 4a) ⇒ 👤 cài thử trên máy thật; sản phẩm `tsudev_pro`/`nam` + `ung_ho_*` ĐÃ TẠO
-  (bản nháp, bước 4b) ⇒ tài khoản dịch vụ B2 ĐÃ đặt + mời, `thu-b2-play.mjs` ĐẠT 24/11 00:44 (Google
-  trả lời, 422 với token giả) ⇒ kiểm thử giấy phép + kích hoạt sản phẩm ĐÃ XONG 23/11 ⇒ 👤 thử mua
-  trên điện thoại (`docs/store/google-play.md` bước 4b "Thử mua đầu-cuối");
-  bản chính thức (bỏ `-beta`) sau khi 👤 nghiệm thu P9/P7b ⇒ bật kênh gói theo `docs/RELEASE.md` mục 6
-  (`packaging/package.json` đã có, kênh đang `planned`).
-- [ ] Dời từ P7: OCR desktop (Tesseract), widget/lối tắt iOS. (Sao kê PDF XONG 24/11, ADR-0020.)
+Agent tự làm:
+- [ ] Kiểm AhnLab đã gỡ cờ `v26.11.2401-beta.1` chưa (thư ĐÃ GỬI 24/11) ⇒ bỏ nháp Release; quá 7 ngày ⇒ đánh giá bỏ
+  `pdfrx_pdfium_gate.dll` khỏi gói Windows (phiếu 20261124-01 mục 1.1).
+- [ ] P7 còn lại: OCR desktop (ADR-0021 trước khi code) rồi widget/lối tắt iOS (phiếu 20261124-01 mục 1.3-1.4).
+- [ ] Sau mỗi tính năng: cắt thẻ beta mới, theo dõi job VirusTotal.
+
+Chờ 👤 (agent xử lý khi 👤 báo kết quả - phiếu 20261124-01 mục 2):
+- [ ] 👤 Mua thử Pro + Ủng hộ trên điện thoại (`docs/store/google-play.md` bước 4b); kết quả ⇒ phiên tsudev ghi QT5 mục 4.
+- [ ] 👤 Nghiệm thu P9 ví chung bằng HAI tài khoản tsudev thật (`logs/handover/20261119-03_p9-xong.md` mục 2b); thử
+  đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật.
+- [ ] 👤 Nghiệm thu P7b ảnh hoá đơn (`logs/handover/20261120-03_p7b-tep-dinh-kem-xong.md` mục 2b).
+- [ ] (Tuỳ chọn) 👤 uỷ quyền gửi thư Cynet (`docs/store/antivirus.md` mục 2).
+- [ ] 👤 Bật `PRO_ENFORCE=on` + đồng ý xoá dữ liệu thử nghiệm D1/R2.
+- [ ] 👤 Play: tài khoản tsudev cho người duyệt Google (có Pro) + điền ở "Quyền truy cập ứng dụng"; Thử nghiệm kín
+  12 người × 14 ngày khi có bản chính thức.
+- [ ] Apple: 👤 Apple Developer Program (đầu 2027) ⇒ tsudev.com bật Apple; workflow đã sẵn bước notarize (bí mật APPLE_*).
+
+Sau khi 👤 nghiệm thu P9 + P7b + mua Pro (phiếu 20261124-01 mục 3):
+- [ ] Bản chính thức `vYY.M.DDNN` ⇒ bật kênh gói (`docs/RELEASE.md` mục 6) ⇒ AAB Thử nghiệm kín ⇒ trang Tải về.
+
+Phiên khác làm:
+- [ ] Thẻ tsudev.com/apps: phiếu `~/projects/tsudev/logs/handover/20261118-QT3_*` (phiên tsudev).
 
 ## Đang thực hiện
 
