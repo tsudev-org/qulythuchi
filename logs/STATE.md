@@ -9,6 +9,10 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
+- [ ] 👤 Gửi thư báo nhầm AhnLab (bắt buộc) + Cynet (tuỳ chọn) - soạn sẵn ở `docs/store/antivirus.md` mục 1-2 (từ
+  `security@tsudev.com`). Release `v26.11.2401-beta.1` (có nhập sao kê PDF) đang NHÁP vì Windows zip 1/73 AhnLab-V3
+  (cờ ở `pdfrx_pdfium_gate.dll`). Hãng gỡ cờ ⇒ quét lại ⇒ `gh release edit v26.11.2401-beta.1 --draft=false`.
+
 - [ ] 👤 Nghiệm thu P9 trên production bằng HAI tài khoản tsudev thật (phiếu `logs/handover/20261119-03_p9-xong.md` mục 2b);
   thử đăng nhập `/app/`; gửi thử một thư tới địa chỉ chuyển tiếp thật (bật trong app).
 - [ ] 👤 Nghiệm thu P7b trên production: gắn ảnh hóa đơn trên điện thoại, mở ở máy thứ hai/`/app/`, xem trong ví chung
