@@ -62,7 +62,7 @@ chữ số + chữ Latinh theo dòng; mất dấu tiếng Việt không làm h�
 | Máy | Engine / ngôn ngữ có sẵn | Kết quả trên hóa đơn vẽ sẵn (3 dòng, font Inter 64 px) |
 | --- | --- | --- |
 | `windows-2025` | Windows.Media.Ocr, chỉ `en-US` | Đúng nguyên văn 3 dòng, `parseReceiptText` = 125000 |
-| `macos-15` (15.8.2) | Vision `.accurate` | Đúng nguyên văn 3 dòng, = 125000 |
+| `macos-15` (15.8.2) | Vision `.accurate`; ngôn ngữ có sẵn gồm `vi-VT` (tiếng Việt - app chọn qua `hasPrefix("vi-")`) + `en-US` (đo 24/11, PR #81) | Đúng nguyên văn 3 dòng, = 125000 |
 | `ubuntu-24.04` | Tesseract 5, `eng`, `osd`, `vie` ⇒ `vie+eng` | Đúng nguyên văn 3 dòng, = 125000 |
 
 Chưa đo: chữ có dấu tiếng Việt và ảnh chụp hóa đơn thật (nghiệm thu của 👤 trên máy thật).

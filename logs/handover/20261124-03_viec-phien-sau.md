@@ -6,7 +6,8 @@
 
 ## 0. Hiện trạng (24/11/2026, khuya)
 
-- Production `deploy-2026.11.24.3` (Worker `db6c9687`): màn chào web app là `TsuSignInScreen` (QR3, PR #78).
+- Production `deploy-2026.11.24.4` (Worker `5ff4dc02`, #83 npm); trước đó `.3` đưa màn chào `TsuSignInScreen`
+  (QR3, PR #78) lên web app.
   `/`, `/app/`, `/tai-ve/`, health, providers 200; `/auth/web/start` 302; Playwright `/app/` Sáng + Tối 0 lỗi console.
 - Releases: `v26.11.2401-beta.1`, `v26.11.2402-beta.1` ĐÃ BỎ NHÁP (AhnLab-V3 gỡ cờ, zip 0/7x);
   `v26.11.2403-beta.1` (có QR3) tự công bố. Không cần bỏ `pdfrx_pdfium_gate.dll` khỏi gói Windows nữa.

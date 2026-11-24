@@ -47,12 +47,14 @@ Phiên khác làm:
 
 - 24/11/2026 - Phiên `qulythuchi-08` (agent-qulythuchi, nối phiên bị tắt đột ngột 22:32): khôi phục sau sự cố (5
   object git + `refs/stash` + `.github/dependabot.yml` + 4251 tệp `apps/site/node_modules` bị cắt về 0 byte ⇒ chuyển
-  object rỗng ra ngoài, `git fetch`, fsck sạch; `npm ci` lại). PR #80: dependabot bỏ qua typescript major (PR #79 đỏ:
-  TS 7 vs peer typescript-eslint `<6.1.0`) ⇒ #83 (npm sync-api) + #82 (actions) gộp; #84/#85 đóng (cần Dart 3.14). **AhnLab-V3 đã gỡ cờ** ⇒ bỏ nháp `v26.11.2401-beta.1` + `v26.11.2402-beta.1`
-  (zip 0/7x; DLL còn Cynet). Đo ngân sách tốc độ: website LCP trung vị 1,9 s, CLS ≤ 0,053, JS 2,2 KB (đạt); APK arm64
-  ~57 MB cài/~27,5 MB tải (vượt, ghi B.4). CI in ngôn ngữ Vision macOS (ADR-0021 mục 5). LÊN PRODUCTION
-  `deploy-2026.11.24.3` (Worker `db6c9687`): `/`, `/app/`, `/tai-ve/`, health, providers 200, `/auth/web/start` 302;
-  Playwright `/app/` Sáng + Tối 0 lỗi console, màn chào TsuSignInScreen.
+  object rỗng ra ngoài, `git fetch`, fsck sạch; `npm ci` lại; AKB `ISS-20261124-2309-41e4`). PR #80: dependabot bỏ qua
+  typescript major (#79 đỏ: TS 7 vs peer typescript-eslint `<6.1.0`) ⇒ #83 (npm sync-api) + #82 (actions) gộp; #84/#85
+  đóng (cần Dart 3.14). **AhnLab-V3 đã gỡ cờ** ⇒ bỏ nháp `v26.11.2401-beta.1` + `v26.11.2402-beta.1` (zip 0/7x; DLL
+  còn Cynet). Ngân sách tốc độ: website LCP trung vị 1,9 s, CLS ≤ 0,053, JS 2,2 KB (đạt); APK arm64 ~57 MB cài /
+  ~27,5 MB tải (vượt, ghi B.4). Vision macOS có tiếng Việt `vi-VT` (ADR-0021 mục 5, PR #81). LÊN PRODUCTION
+  `deploy-2026.11.24.3` (Worker `db6c9687`, màn chào TsuSignInScreen; Playwright `/app/` Sáng + Tối 0 lỗi console) và
+  `deploy-2026.11.24.4` (Worker `5ff4dc02`, #83; máy chủ 87 test): `/`, `/app/`, `/tai-ve/`, health, providers 200,
+  `/auth/web/start` 302.
 - 24/11/2026 - QR3 + chuẩn v5.3.0 (agent-qulythuchi, phiên `qulythuchi-07`, PR #78, ADR-0023, phiếu rà soát
   `20261124-qr3`, THREAT_MODEL T34): màn chào `TsuSignInScreen` (`tsudev_ui` v0.4.0, ô đồng ý 13.4), "Quét để đăng nhập"
   Android/iOS (`TsuXdLink.parse` ⇒ `/x/<id>` trong trình duyệt hệ thống ⇒ OIDC; QR không mang khoá E2EE); theme điều
