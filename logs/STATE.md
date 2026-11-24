@@ -36,7 +36,7 @@
   trên điện thoại (`docs/store/google-play.md` bước 4b "Thử mua đầu-cuối");
   bản chính thức (bỏ `-beta`) sau khi 👤 nghiệm thu P9/P7b ⇒ bật kênh gói theo `docs/RELEASE.md` mục 6
   (`packaging/package.json` đã có, kênh đang `planned`).
-- [ ] Dời từ P7: sao kê PDF (pdfrx/PDFium), OCR desktop (Tesseract), widget/lối tắt iOS.
+- [ ] Dời từ P7: OCR desktop (Tesseract), widget/lối tắt iOS. (Sao kê PDF XONG 24/11, ADR-0020.)
 
 ## Đang thực hiện
 
@@ -44,6 +44,14 @@
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 24/11/2026 - Nhập sao kê PDF, kể cả có mật khẩu (agent-qulythuchi, phiên `qulythuchi-1f`, ADR-0020, phiếu rà soát
+  `20261124-sao-ke-pdf`, THREAT_MODEL T32): `pdfrx` 3.0.0 (PDFium, ghim) chỉ lấy chữ; lõi `pdfGlyphsToRows` dựng bảng
+  (cột theo hồ sơ chiếu dòng giao dịch + tiêu đề; gộp diễn giải xuống dòng chỉ ở cột chữ + cùng trang; bỏ tiêu đề lặp);
+  đi tiếp luồng ghép cột CSV/XLSX. CSP `/app/` thêm `blob:` vào `connect-src` (đo bằng Playwright). Lõi 7 test, test app
+  khứ hồi PDF do app xuất (60 dòng, 3 trang, PDFium thật trên CI). PR #68 CI xanh (cả iOS/macOS/Android). LÊN PRODUCTION
+  `deploy-2026.11.24.1` (Worker `499f067b`): `/`, `/app/`, health, `/tai-ve/`, `pdfium.wasm` 200; Playwright trên
+  production nhập PDF thử ra 3 giao dịch, 0 lỗi console. Linux dev cần clang cho `flutter test` (AGENTS.md B.2).
 
 - 24/11/2026 - Play mở bán thử (agent-qulythuchi, phiên `qulythuchi-1f`, 👤 uỷ quyền): tài khoản dịch vụ
   `play-billing-b2@tsudev-com` mời vào Play Console (chỉ Quly Thu Chi: xem tài chính + quản lý đơn); lợi ích gói Pro;
