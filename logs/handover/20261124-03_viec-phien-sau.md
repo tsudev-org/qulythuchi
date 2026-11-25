@@ -1,7 +1,7 @@
 # PHIẾU BÀN GIAO 20261124-03 - Việc cho phiên sau (sau phiên `qulythuchi-08`)
 
 - **Người gửi**: agent-qulythuchi (phiên `qulythuchi-08`), 24/11/2026
-- **Trạng thái**: MỞ. Thay phiếu `20261124-02` (đã ĐÓNG; bảng mục 2 của nó chép lại dưới đây, có bổ sung).
+- **Trạng thái**: ĐÓNG 25/11/2026 (phiên `qulythuchi-09`: mục 5 xong qua #87/#89/#90, thay bằng phiếu `20261125-01`). Thay phiếu `20261124-02` (đã ĐÓNG; bảng mục 2 của nó chép lại dưới đây, có bổ sung).
 - **Đọc kèm**: `logs/STATE.md`, AGENTS.md B.4, `docs/store/antivirus.md`, ADR-0021, ADR-0023.
 
 ## 0. Hiện trạng (24/11/2026, khuya)

@@ -9,15 +9,20 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261124-03_viec-phien-sau.md` (thứ tự việc, việc chờ 👤 và cách xử lý
-> khi 👤 báo kết quả, bẫy đã gặp - có bẫy tắt máy đột ngột làm rỗng tệp).
+> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261125-02_viec-phien-sau.md` (thứ tự gộp PR, việc, bẫy mới). Bảng việc
+> chờ 👤 vẫn ở phiếu `20261124-03` mục 2.
 
 Agent tự làm:
-- [ ] **ƯU TIÊN ĐẦU**: nâng Flutter 3.47.8 ⇒ 3.50.1 (Dart 3.14.0) + `sodium` 4.1.5+1 + `pdfrx` 3.1.0, MỘT PR, có phiếu
-  rà soát (đụng mật mã) - kế hoạch từng bước: phiếu 20261124-03 mục 5.
-- [ ] Ngân sách APK mỗi ABI (AGENTS.md B.4): thử ML Kit OCR + quét mã vạch bản "unbundled" (phiếu 20261124-03 mục 1.2).
-- [ ] Đo khởi động desktop (Windows/macOS/Linux) - mục cuối LANGUAGE_SELECTION 5.1 còn thiếu.
-- [ ] QR vai XÁC NHẬN (app quét QR ở `/login` của PC): CHỜ QR2b phía tsudev.
+- [ ] **ƯU TIÊN ĐẦU**: 👤 gộp #89 (vá tạm hook sodium macOS/iOS - `main` dựng Apple HỎNG; mọi PR khác đỏ macOS/iOS +
+  gitleaks cho tới khi gộp) ⇒ kiểm CI #90 (đổi đích) + chạy lại CI #92-#95. Theo dõi upstream libsodium_dart_bindings#245
+  (vẫn mở 25/11) để gỡ `third_party/sodium`.
+- [ ] Cắt beta đầu tiên trên Flutter 3.50 sau khi #89 gộp; theo dõi VirusTotal (`pdfrx_pdfium_gate.dll` băm mới).
+- [ ] Deploy website + `/app/` sau khi gộp #92/#93/#94 (UI2), quay khung hình production lại.
+- [ ] UI2 đợt 2 (phiếu `20261125-UI2_*` mục Kết quả "Chưa làm"): hoạ tiết header/footer + nền thẻ theo thể loại, kiểm
+  font dự phòng trên máy có Arial, Lighthouse.
+- [ ] Ngân sách APK: chờ 👤 chọn phương án (a)/(b)/(c) (phiếu 20261125-01 mục 1.4).
+- [ ] Chuyển `material_ui` khi `tsudev_ui` chuyển (phiếu tsudev-ui-flutter 20261125-MUI1; v0.5.0 chưa).
+- [ ] QR vai XÁC NHẬN: `tsudev_ui` v0.5.0 đã có `TsuXdApprover` - kiểm QR2b phía tsudev.com.
 - [ ] Sau mỗi tính năng: cắt thẻ beta mới, theo dõi job VirusTotal.
 
 Chờ 👤 (agent xử lý khi 👤 báo kết quả - phiếu 20261124-03 mục 2):
@@ -45,6 +50,22 @@ Phiên khác làm:
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 25/11/2026 - Phiên `qulythuchi-10` (agent-qulythuchi, AKB `SES-20261125-0937-994b`): **UI2 đợt 1** (Playwright
+  headless, quay khung hình tải lạnh, 6 trang × 3 khổ × Sáng/Tối + `/app/`): PR #92 site - preload Be Vietnam Pro
+  400/600 + `@font-face` dự phòng đo thật (hết đổi bề rộng chữ khi Ctrl+F5), tràn ngang 45 px trang chủ 360 px
+  (`minmax(0, 1fr)`); PR #93 `/app/` - màn chờ theo Sáng/Tối (trước: nền đen trống 13-15 s), chữ "TsuDEV"; PR #94 sync
+  tsudev-standards **v6.0.0** (nền Sáng giấy `#EEF1F5`, sinh lại `tokens.g.dart`). Phiếu 01 mục 1.5: bản phát hành Linux
+  KHÔNG sập khi thiếu Secret Service (sập chỉ ở bản dựng clang cục bộ) ⇒ PR #95 hướng dẫn GNOME Keyring/KeePassXC trên
+  màn lỗi. gitleaks đỏ ở PR mới là do quét `--all` gặp nhánh #89. #89 chưa gộp ⇒ chưa cắt beta. Phiếu mới `20261125-02`.
+- 25/11/2026 - Phiên `qulythuchi-09` (agent-qulythuchi, AKB `SES-20261125-0104-52cc`): **Flutter 3.50.1 / Dart 3.14.0**
+  + sodium 4.1.5+1 + pdfrx 3.1.0 + sqlite3 3.9.2 (sqlite3mc 2.7.0) - PR #87 (đã gộp): vector conformance khớp, minisign
+  libsodium hợp lệ, test CSDL mẫu từ sqlite3 3.9.1, 167 test app, phiếu rà soát `20261125-nang-flutter-sodium`; Flutter
+  3.50 đánh dấu lỗi thời `flutter/material` ⇒ chặn từng dòng (76) chờ `tsudev_ui` (phiếu MUI1); AGP 9.1.1. Hook sodium
+  hỏng macOS/iOS (posix_spawn, upstream #245) ⇒ vá tạm `third_party/sodium` PR #89 (17/17 xanh). **SEC2** PR #88 (đã
+  gộp): `/security/` + `docs/security/trust.json` (SSL Labs A+, Observatory A+ 150, Scorecard 7.1, BP passing, Sigstore
+  + VirusTotal 0/73), `security.txt` mailto security@. LÊN PRODUCTION `deploy-2026.11.25.1` (Playwright `/app/` Sáng +
+  Tối 0 lỗi console). Đo khởi động desktop PR #90 (chạy lại: Windows 429, macOS 323, Linux 415 ms). APK thin đo 38,5 MB.
 
 - 24/11/2026 - Phiên `qulythuchi-08` (agent-qulythuchi, nối phiên bị tắt đột ngột 22:32): khôi phục sau sự cố (5
   object git + `refs/stash` + `.github/dependabot.yml` + 4251 tệp `apps/site/node_modules` bị cắt về 0 byte ⇒ chuyển
