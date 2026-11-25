@@ -64,3 +64,16 @@
 ## 7. Kết luận
 
 - [x] Đạt - được merge khi CI xanh đủ job.
+
+## 8. Bổ sung (25/11/2026, PR #89) - vá tạm build hook `sodium` cho macOS/iOS
+
+- Sau #87, job macOS/iOS đỏ: Dart 3.14.0 dùng `posix_spawn` trên macOS ⇒ `./configure` tương đối không tìm thấy
+  (upstream Skycoder42/libsodium_dart_bindings#245, đã gửi chẩn đoán).
+- `third_party/sodium` = bản chép nguyên `sodium` 4.1.5+1 (BSD-3) + MỘT thay đổi ở `AutomakeBuilder._configure`
+  (đường dẫn tuyệt đối). `diff -r` với gói pub.dev: chỉ khác hàm đó. Mã gọi libsodium (`lib/src/api|ffi|js`), tarball
+  libsodium và chữ ký minisign không đổi ⇒ mục 2-4 giữ nguyên hiệu lực.
+- Rủi ro mới: bản chép không tự nhận bản vá bảo mật của gói ⇒ dependabot không còn theo dõi `sodium` ở app. Gỡ ngay khi
+  upstream phát hành bản sửa (`third_party/sodium/BAN_VA.md`); theo dõi #245.
+- gitleaks: miễn trừ hẹp (đường dẫn VÀ nguyên dòng `int get keyBytes => sodium.crypto_*_KEYBYTES;`).
+- CI #89: đủ 17 job xanh, gồm macOS (ad-hoc + chạy thử), iOS, OCR desktop ×3, Android.
+

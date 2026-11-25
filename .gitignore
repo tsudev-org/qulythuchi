@@ -321,3 +321,7 @@ android/app/upload-keystore.jks
 # Tài nguyên web tải lúc build, kiểm checksum ghim (apps/app/tool/fetch_web_assets.sh) - không commit nhị phân.
 apps/app/web/sodium.js
 apps/app/web/sqlite3.wasm
+
+# Bản vá tạm gói sodium (third_party/sodium/BAN_VA.md): mã nguồn thư viện có tên secret_box/secret_stream (API
+# libsodium, không chứa bí mật) và thư mục bin/ (lệnh update_web của gói). Gỡ cùng thư mục khi upstream sửa #245.
+!third_party/sodium/**
