@@ -1850,7 +1850,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signInApple => 'Tiếp tục với Apple';
 
   @override
-  String get signInTsudev => 'Tài khoản tsudev (email)';
+  String get signInTsudev => 'Tài khoản TsuDEV (email)';
 
   @override
   String get signInLastUsed => 'Lần trước bạn dùng cách này';
@@ -2955,7 +2955,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Trên máy tính đã đăng nhập tsudev.com, mở Tài khoản ⇒ Bảo mật ⇒ Mã QR, rồi hướng camera vào mã.';
 
   @override
-  String get xdNotTsudev => 'Mã QR này không phải của tsudev.';
+  String get xdNotTsudev => 'Mã QR này không phải của TsuDEV.';
 
   @override
   String get xdApproveElsewhere =>
