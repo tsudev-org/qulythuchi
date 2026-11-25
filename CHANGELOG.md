@@ -6,6 +6,9 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/), phiên bản theo
 
 Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-org/qulythuchi/tags>.
 
+- deploy-2026.11.25.2 - 25/11/2026 - website hết "nhúng" chữ khi Ctrl+F5 (preload font + mặt chữ dự phòng), không
+  tràn ngang ở 360 px, hoạ tiết đầu/chân trang + nền thẻ theo thể loại (UI2); web app có màn chờ theo Sáng/Tối, bảng màu
+  tsudev-standards v6.0.0 (nền Sáng giấy).
 - deploy-2026.11.25.1 - 25/11/2026 - web app dựng bằng Flutter 3.50.1 (sodium 4.1.5+1, pdfrx 3.1.0); trang
   `/security/` bằng chứng tin cậy tự kiểm chứng được, `security.txt` có `security@tsudev.com` (SEC2).
 - deploy-2026.11.24.4 - 24/11/2026 - máy chủ: cập nhật jose 6.2.18, postal-mime 4.2.1, wrangler 4.166 (không đổi hành vi).
@@ -37,6 +40,9 @@ Ghi chú đầy đủ trong nội dung từng thẻ: <https://github.com/tsudev-
   bằng mật khẩu hoặc 24 từ khôi phục (ADR-0023).
 
 ### Đổi
+- Giao diện Sáng dùng nền "giấy" xám-xanh dịu mắt theo tsudev-standards v6.0.0 (website, web app, app). Web app `/app/`
+  hiện màn chờ (logo + vòng xoay) theo chế độ Sáng/Tối thay cho nền đen trống trong lúc tải.
+- Trên Linux thiếu dịch vụ lưu khoá (Secret Service), màn lỗi khởi động hướng dẫn cài GNOME Keyring hoặc bật KeePassXC.
 - Nâng nền tảng dựng: Flutter 3.50.1 (Dart 3.14.0), thư viện mật mã `sodium` 4.1.5+1 (libsodium 1.0.22, cùng định
   dạng phong bì - vector đối chiếu không đổi), đọc PDF `pdfrx` 3.1.0 (PDFium chromium/8125 như trước), `sqlite3`
   3.9.2 (SQLite3 Multiple Ciphers 2.7.0 - CSDL đã mã hóa trên máy mở được như cũ, có test CSDL mẫu từ bản trước).

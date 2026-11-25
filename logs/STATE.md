@@ -9,17 +9,13 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261125-02_viec-phien-sau.md` (thứ tự gộp PR, việc, bẫy mới). Bảng việc
+> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261125-03_viec-phien-sau.md` (hiện trạng, việc, bẫy mới). Bảng việc
 > chờ 👤 vẫn ở phiếu `20261124-03` mục 2.
 
 Agent tự làm:
-- [ ] **ƯU TIÊN ĐẦU**: 👤 gộp #89 (vá tạm hook sodium macOS/iOS - `main` dựng Apple HỎNG; mọi PR khác đỏ macOS/iOS +
-  gitleaks cho tới khi gộp) ⇒ kiểm CI #90 (đổi đích) + chạy lại CI #92-#95. Theo dõi upstream libsodium_dart_bindings#245
-  (vẫn mở 25/11) để gỡ `third_party/sodium`.
-- [ ] Cắt beta đầu tiên trên Flutter 3.50 sau khi #89 gộp; theo dõi VirusTotal (`pdfrx_pdfium_gate.dll` băm mới).
-- [ ] Deploy website + `/app/` sau khi gộp #92/#93/#94 (UI2), quay khung hình production lại.
-- [ ] UI2 đợt 2 (phiếu `20261125-UI2_*` mục Kết quả "Chưa làm"): hoạ tiết header/footer + nền thẻ theo thể loại, kiểm
-  font dự phòng trên máy có Arial, Lighthouse.
+- [ ] Theo dõi VirusTotal/AV của `v26.11.2501-beta.1` (bản đầu trên Flutter 3.50); theo dõi upstream
+  libsodium_dart_bindings#245 để gỡ `third_party/sodium`.
+- [ ] UI2 còn: kiểm font dự phòng trên máy có Arial; `tsudev_ui` theo bảng Sáng v6.0.0 khi gói nâng.
 - [ ] Ngân sách APK: chờ 👤 chọn phương án (a)/(b)/(c) (phiếu 20261125-01 mục 1.4).
 - [ ] Chuyển `material_ui` khi `tsudev_ui` chuyển (phiếu tsudev-ui-flutter 20261125-MUI1; v0.5.0 chưa).
 - [ ] QR vai XÁC NHẬN: `tsudev_ui` v0.5.0 đã có `TsuXdApprover` - kiểm QR2b phía tsudev.com.
@@ -51,6 +47,13 @@ Phiên khác làm:
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 25/11/2026 - Phiên `qulythuchi-11` (agent-qulythuchi, AKB `SES-20261125-1124-2cfb`): gộp toàn bộ PR tồn (#89 do 👤,
+  #96, #92, #93 + #94, #95, #91, #97). #90 bị gộp nhầm vào nhánh của #89 (GitHub chưa đổi đích) ⇒ cherry-pick thành #96
+  (AKB `LES-20261125-1143-8975`). **UI2 đợt 2** PR #97: hoạ tiết đầu/chân trang, nền thẻ theo thể loại bằng hoạ tiết CSS
+  thuần, icon chuyển động khi rê (tắt dưới reduced-motion). **Beta `v26.11.2501-beta.1`** - bản đầu trên Flutter 3.50.1:
+  đủ 3 desktop + APK, Sigstore + SLSA, VirusTotal đạt, đã công bố. LÊN PRODUCTION `deploy-2026.11.25.2`: 200 mọi đường
+  chính; Playwright 30 tổ hợp 0 lỗi; trang chủ 4G chậm + CPU ×4 LCP 1,18 s, CLS 0; `/app/` nền giấy v6.0.0. Phiếu mới
+  `20261125-03`.
 - 25/11/2026 - Phiên `qulythuchi-10` (agent-qulythuchi, AKB `SES-20261125-0937-994b`): **UI2 đợt 1** (Playwright
   headless, quay khung hình tải lạnh, 6 trang × 3 khổ × Sáng/Tối + `/app/`): PR #92 site - preload Be Vietnam Pro
   400/600 + `@font-face` dự phòng đo thật (hết đổi bề rộng chữ khi Ctrl+F5), tràn ngang 45 px trang chủ 360 px
