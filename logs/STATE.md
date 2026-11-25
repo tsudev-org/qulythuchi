@@ -9,18 +9,19 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261125-01_viec-phien-sau.md` (thứ tự việc, số đo, bẫy mới). Bảng việc
+> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261125-02_viec-phien-sau.md` (thứ tự gộp PR, việc, bẫy mới). Bảng việc
 > chờ 👤 vẫn ở phiếu `20261124-03` mục 2.
 
 Agent tự làm:
-- [ ] **ƯU TIÊN ĐẦU**: gộp #89 (vá tạm hook sodium macOS/iOS - `main` đang dựng Apple HỎNG) rồi #90 (đo khởi động
-  desktop); theo dõi upstream libsodium_dart_bindings#245 để gỡ `third_party/sodium`.
-- [ ] Phiếu UI2 (`logs/handover/20261125-UI2_ra-soat-giao-dien-web.md`): rà sâu giao diện web bằng trình duyệt + hiện đại hoá.
+- [ ] **ƯU TIÊN ĐẦU**: 👤 gộp #89 (vá tạm hook sodium macOS/iOS - `main` dựng Apple HỎNG; mọi PR khác đỏ macOS/iOS +
+  gitleaks cho tới khi gộp) ⇒ kiểm CI #90 (đổi đích) + chạy lại CI #92-#95. Theo dõi upstream libsodium_dart_bindings#245
+  (vẫn mở 25/11) để gỡ `third_party/sodium`.
 - [ ] Cắt beta đầu tiên trên Flutter 3.50 sau khi #89 gộp; theo dõi VirusTotal (`pdfrx_pdfium_gate.dll` băm mới).
-- [ ] Ngân sách APK: đã đo bản thin (38,5 MB cài / 19,0 MB tải, nhánh `thu/apk-unbundled`) - chờ 👤 chọn phương án
-  (phiếu 20261125-01 mục 1.4).
-- [ ] Linux không có Secret Service ⇒ app sập (`LibsecretError`) - phiếu 20261125-01 mục 1.5.
-- [ ] Chuyển `material_ui` khi `tsudev_ui` chuyển (phiếu tsudev-ui-flutter 20261125-MUI1).
+- [ ] Deploy website + `/app/` sau khi gộp #92/#93/#94 (UI2), quay khung hình production lại.
+- [ ] UI2 đợt 2 (phiếu `20261125-UI2_*` mục Kết quả "Chưa làm"): hoạ tiết header/footer + nền thẻ theo thể loại, kiểm
+  font dự phòng trên máy có Arial, Lighthouse.
+- [ ] Ngân sách APK: chờ 👤 chọn phương án (a)/(b)/(c) (phiếu 20261125-01 mục 1.4).
+- [ ] Chuyển `material_ui` khi `tsudev_ui` chuyển (phiếu tsudev-ui-flutter 20261125-MUI1; v0.5.0 chưa).
 - [ ] QR vai XÁC NHẬN: `tsudev_ui` v0.5.0 đã có `TsuXdApprover` - kiểm QR2b phía tsudev.com.
 - [ ] Sau mỗi tính năng: cắt thẻ beta mới, theo dõi job VirusTotal.
 
@@ -50,6 +51,13 @@ Phiên khác làm:
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 25/11/2026 - Phiên `qulythuchi-10` (agent-qulythuchi, AKB `SES-20261125-0937-994b`): **UI2 đợt 1** (Playwright
+  headless, quay khung hình tải lạnh, 6 trang × 3 khổ × Sáng/Tối + `/app/`): PR #92 site - preload Be Vietnam Pro
+  400/600 + `@font-face` dự phòng đo thật (hết đổi bề rộng chữ khi Ctrl+F5), tràn ngang 45 px trang chủ 360 px
+  (`minmax(0, 1fr)`); PR #93 `/app/` - màn chờ theo Sáng/Tối (trước: nền đen trống 13-15 s), chữ "TsuDEV"; PR #94 sync
+  tsudev-standards **v6.0.0** (nền Sáng giấy `#EEF1F5`, sinh lại `tokens.g.dart`). Phiếu 01 mục 1.5: bản phát hành Linux
+  KHÔNG sập khi thiếu Secret Service (sập chỉ ở bản dựng clang cục bộ) ⇒ PR #95 hướng dẫn GNOME Keyring/KeePassXC trên
+  màn lỗi. gitleaks đỏ ở PR mới là do quét `--all` gặp nhánh #89. #89 chưa gộp ⇒ chưa cắt beta. Phiếu mới `20261125-02`.
 - 25/11/2026 - Phiên `qulythuchi-09` (agent-qulythuchi, AKB `SES-20261125-0104-52cc`): **Flutter 3.50.1 / Dart 3.14.0**
   + sodium 4.1.5+1 + pdfrx 3.1.0 + sqlite3 3.9.2 (sqlite3mc 2.7.0) - PR #87 (đã gộp): vector conformance khớp, minisign
   libsodium hợp lệ, test CSDL mẫu từ sqlite3 3.9.1, 167 test app, phiếu rà soát `20261125-nang-flutter-sodium`; Flutter
