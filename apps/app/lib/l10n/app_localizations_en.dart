@@ -564,6 +564,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errStorage => 'Could not open the device\'s secure storage.';
 
   @override
+  String get errStorageLinuxHint =>
+      'On Linux, Quly Thu Chi keeps its encryption key in a Secret Service provider. Install and unlock GNOME Keyring (the gnome-keyring package) or enable Secret Service in KeePassXC, then reopen the app.';
+
+  @override
   String get walletArchivedBadge => 'Archived';
 
   @override
