@@ -22,7 +22,7 @@ const NHAN = { san: 'Dùng được ngay', thu: 'Bản thử nghiệm', sap: 'S�
   <section class="khung">
     <div class="luoi">
       {nenTang.map((n) => (
-        <div class="the">
+        <div class="the the--hoa-tiet" data-hoa-tiet="giay-ke">
           <span class={n.trangThai === 'sap' ? 'the__nhan' : 'the__nhan the__nhan--san'}>{NHAN[n.trangThai]}</span>
           <h3>{n.ten}</h3>
           <p>{n.moTa}</p>

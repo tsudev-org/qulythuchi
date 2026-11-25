@@ -5,6 +5,7 @@ import '../styles/fonts.css';
 import '../../../../.standards/tokens/tokens.css';
 import '../../../../.standards/tokens/products.css';
 import '../styles/site.css';
+import CotTangTruong from '../components/CotTangTruong.astro';
 import { REPO_URL, SAN_PHAM, SITE } from '../lib/site';
 
 interface Props {
@@ -86,6 +87,7 @@ const FONT_MAN_DAU = [
       <slot />
     </main>
     <footer class="chan-trang">
+      <CotTangTruong lop="hoa-tiet hoa-tiet--chan" />
       <div class="khung">
         <div class="chan-trang__trong">
           <div>
