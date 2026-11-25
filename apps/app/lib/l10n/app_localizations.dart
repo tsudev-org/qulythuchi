@@ -3474,7 +3474,7 @@ abstract class AppLocalizations {
   /// No description provided for @signInTsudev.
   ///
   /// In vi, this message translates to:
-  /// **'Tài khoản tsudev (email)'**
+  /// **'Tài khoản TsuDEV (email)'**
   String get signInTsudev;
 
   /// No description provided for @signInLastUsed.
@@ -5400,7 +5400,7 @@ abstract class AppLocalizations {
   /// No description provided for @xdNotTsudev.
   ///
   /// In vi, this message translates to:
-  /// **'Mã QR này không phải của tsudev.'**
+  /// **'Mã QR này không phải của TsuDEV.'**
   String get xdNotTsudev;
 
   /// No description provided for @xdApproveElsewhere.

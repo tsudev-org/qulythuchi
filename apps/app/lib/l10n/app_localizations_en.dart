@@ -1853,7 +1853,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signInApple => 'Continue with Apple';
 
   @override
-  String get signInTsudev => 'tsudev account (email)';
+  String get signInTsudev => 'TsuDEV account (email)';
 
   @override
   String get signInLastUsed => 'You used this last time';
@@ -2959,7 +2959,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'On a computer signed in to tsudev.com, open Account ⇒ Security ⇒ QR code, then point the camera at the code.';
 
   @override
-  String get xdNotTsudev => 'This QR code is not from tsudev.';
+  String get xdNotTsudev => 'This QR code is not from TsuDEV.';
 
   @override
   String get xdApproveElsewhere =>

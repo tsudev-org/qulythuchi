@@ -19,11 +19,30 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <title>Quly Thu Chi</title>
   <link rel="manifest" href="manifest.json">
-  <style>html, body { margin: 0; background: #0A0A0A; }</style>
+  <!-- Màn chờ (phiếu UI2): nền + chữ theo chế độ của app (splash.js đặt data-theme trước khung đầu), logo vẽ ngay khung
+       đầu - không fade-in; vòng xoay tắt dưới prefers-reduced-motion. Màu = bgBase/textMuted của tokens.g.dart. -->
+  <script src="splash.js"></script>
+  <style>
+    html, body { margin: 0; background: #0A0A0A; color: #8F8F8F; }
+    html[data-theme="light"], html[data-theme="light"] body { background: #EEF1F5; color: #475569; }
+    #man-cho { position: fixed; inset: 0; display: grid; place-content: center; justify-items: center; gap: 16px;
+      font: 14px/1.5 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    #man-cho img { width: 72px; height: 72px; border-radius: 16px; }
+    #man-cho p { margin: 0; }
+    #man-cho .vong { width: 22px; height: 22px; border: 2.5px solid currentColor; border-right-color: transparent;
+      border-radius: 50%; animation: vong-xoay 0.9s linear infinite; }
+    @keyframes vong-xoay { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { #man-cho .vong { animation: none; } }
+  </style>
   <!-- libsodium.js sumo tự phục vụ (tool/fetch_web_assets.sh, checksum ghim). -->
   <script src="sodium.js" async></script>
 </head>
 <body>
+  <div id="man-cho" role="status">
+    <img src="icons/Icon-192.png" alt="" width="72" height="72" fetchpriority="high">
+    <div class="vong" aria-hidden="true"></div>
+    <p>Đang tải Quly Thu Chi</p>
+  </div>
   <noscript>Quly Thu Chi cần JavaScript để chạy.</noscript>
   <script src="flutter_bootstrap.js" async></script>
 </body>
