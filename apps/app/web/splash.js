@@ -5,7 +5,7 @@
 // (ThemeChoice.parse trong lib/theme/app_theme.dart). Màn chờ được gỡ khi engine báo khung hình đầu.
 (function () {
   'use strict';
-  var NEN = { light: '#FAFAFA', dark: '#0A0A0A' };   // bgBase của tokens.g.dart (.standards/tokens)
+  var NEN = { light: '#EEF1F5', dark: '#0A0A0A' };   // bgBase của tokens.g.dart (.standards/tokens)
   var goc = document.documentElement;
   var chon = null;
   try { chon = JSON.parse(window.localStorage.getItem('flutter.theme')); } catch (e) { chon = null; }

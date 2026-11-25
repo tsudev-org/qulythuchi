@@ -1,5 +1,5 @@
 // TỆP SINH TỰ ĐỘNG bởi tool/gen_tokens.dart - KHÔNG SỬA TAY.
-// Nguồn: .standards/tokens/design-tokens.json v3.0.0 + products/qulythuchi.json
+// Nguồn: .standards/tokens/design-tokens.json v4.0.0 + products/qulythuchi.json
 
 import 'dart:ui' show Color;
 
@@ -60,23 +60,23 @@ final class QtPalette {
   final Color onStatus;
   final Color overlay;
   static const light = QtPalette(
-    bgBase: Color(0xFFFAFAFA),
-    bgSurface: Color(0xFFFFFFFF),
-    bgSubtle: Color(0xFFF4F4F5),
-    bgHover: Color(0xFFEBEBED),
-    border: Color(0xFFE4E4E7),
-    borderStrong: Color(0xFFD4D4D8),
-    borderControl: Color(0xFF71717A),
+    bgBase: Color(0xFFEEF1F5),
+    bgSurface: Color(0xFFF8FAFC),
+    bgSubtle: Color(0xFFE9EDF2),
+    bgHover: Color(0xFFE6EAF0),
+    border: Color(0xFFD5DBE3),
+    borderStrong: Color(0xFFC3CBD6),
+    borderControl: Color(0xFF64748B),
     textPrimary: Color(0xFF0A0A0A),
-    textSecondary: Color(0xFF3F3F46),
-    textMuted: Color(0xFF52525B),
+    textSecondary: Color(0xFF334155),
+    textMuted: Color(0xFF475569),
     textLink: Color(0xFF056641),
     primary: Color(0xFF05794F),
     primaryHover: Color(0xFF056641),
     primaryActive: Color(0xFF005334),
     onPrimary: Color(0xFFFFFFFF),
     focusRing: Color(0xFF05794F),
-    accent: Color(0xFF025939),
+    accent: Color(0xFF045738),
     glow: Color(0x1A05794F),
     iconInfo: Color(0xFF05794F),
     iconNav: Color(0xFF056641),
