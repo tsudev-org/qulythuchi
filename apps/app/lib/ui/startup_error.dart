@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 // ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -43,6 +44,15 @@ class StartupErrorApp extends StatelessWidget {
                   const Icon(Icons.error_outline, size: 48),
                   const SizedBox(height: 16),
                   Text(AppLocalizations.of(context).errStorage, textAlign: TextAlign.center),
+                  // Linux tối giản/WSL không có Secret Service (org.freedesktop.secrets) ⇒ plugin trả PlatformException:
+                  // chỉ ra cách khắc phục thay vì câu lỗi chung (phiếu 20261125-01 mục 1.5).
+                  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.linux) ...[
+                    const SizedBox(height: 12),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 480),
+                      child: Text(AppLocalizations.of(context).errStorageLinuxHint, textAlign: TextAlign.center),
+                    ),
+                  ],
                 ],
               ),
             ),

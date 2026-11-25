@@ -258,6 +258,7 @@
   "errReceivedRequired": "Hai ví khác tiền tệ: nhập số tiền nhận",
   "errGeneric": "Đã có lỗi xảy ra. Vui lòng thử lại.",
   "errStorage": "Không mở được kho dữ liệu an toàn của thiết bị.",
+  "errStorageLinuxHint": "Trên Linux, Quly Thu Chi cất khóa mã hóa trong dịch vụ Secret Service. Hãy cài và mở khóa GNOME Keyring (gói gnome-keyring) hoặc bật Secret Service trong KeePassXC, rồi mở lại app.",
   "walletArchivedBadge": "Đã lưu trữ",
   "settingsNewRecovery": "Cấp 24 từ khôi phục mới",
   "settingsNewRecoveryConfirm": "Bộ 24 từ cũ sẽ hết hiệu lực. Tiếp tục?",

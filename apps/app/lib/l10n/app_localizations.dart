@@ -1137,6 +1137,12 @@ abstract class AppLocalizations {
   /// **'Không mở được kho dữ liệu an toàn của thiết bị.'**
   String get errStorage;
 
+  /// No description provided for @errStorageLinuxHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trên Linux, Quly Thu Chi cất khóa mã hóa trong dịch vụ Secret Service. Hãy cài và mở khóa GNOME Keyring (gói gnome-keyring) hoặc bật Secret Service trong KeePassXC, rồi mở lại app.'**
+  String get errStorageLinuxHint;
+
   /// No description provided for @walletArchivedBadge.
   ///
   /// In vi, this message translates to:

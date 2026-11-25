@@ -564,6 +564,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get errStorage => 'Không mở được kho dữ liệu an toàn của thiết bị.';
 
   @override
+  String get errStorageLinuxHint =>
+      'Trên Linux, Quly Thu Chi cất khóa mã hóa trong dịch vụ Secret Service. Hãy cài và mở khóa GNOME Keyring (gói gnome-keyring) hoặc bật Secret Service trong KeePassXC, rồi mở lại app.';
+
+  @override
   String get walletArchivedBadge => 'Đã lưu trữ';
 
   @override
