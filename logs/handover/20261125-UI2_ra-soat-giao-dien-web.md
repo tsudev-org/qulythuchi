@@ -2,7 +2,7 @@
 
 - **Mã phiếu**: 20261125-UI2 (phiếu con của `~/projects/logs/handover/20261125-UI2_ra-soat-giao-dien-web-toan-he.md`)
 - **Từ**: chủ dự án (25/11/2026), phát bởi phiên `tsudev-3e` - **Đến**: agent của repo `qulythuchi`
-- **Trạng thái**: MỞ - đợt 1 (phần A + B.1) xong 25/11, còn đợt 2 (xem Kết quả)
+- **Trạng thái**: GẦN XONG - đợt 1 + đợt 2 xong 25/11; còn kiểm font dự phòng trên máy có Arial (phiếu 20261125-03 mục 1.2)
 - **Phạm vi**: A + B (thuộc hệ sinh thái TsuDEV)
 - **Ủy quyền**: chủ dự án cho agent TỰ MỞ TRÌNH DUYỆT (Playwright/Chromium headless) để rà website của repo này.
 
@@ -39,3 +39,10 @@
   quay lại production sau deploy; (b) B.2 hoạ tiết header/footer, B.3 hoạ tiết nền thẻ theo thể loại + chuyển động icon
   khi rê (DESIGN_SYSTEM.md mục 5 v6.0.0) - làm đợt 2 sau khi #94 gộp; (c) Lighthouse đo lại sau deploy (24/11: LCP trung
   vị 1,9 s, CLS ≤ 0,053); (d) `tsudev_ui` (màn chào `TsuSignInScreen`) có bảng màu riêng - theo v6.0.0 khi gói nâng.
+- 25/11/2026 - agent-qulythuchi (phiên `qulythuchi-11`): đợt 2. PR #97: B.2 đầu trang lưới chấm `accent` 14% mờ dần từ
+  phải, chân trang giấy kẻ + `cot-tang-truong` tĩnh; B.3 thẻ nền pha 4% `accent` + hoạ tiết CSS thuần theo thể loại
+  (tính năng = lưới chấm, riêng tư = sọc, tải về = giấy kẻ) mờ dần về phía chữ, ô biểu tượng nét 1.5px, viền sắc sản phẩm
+  khi rê, chuyển động icon đúng nghĩa (khoá nhấc, mũi tên vào khay, cột mọc...; chỉ `transform`, tắt dưới
+  `prefers-reduced-motion`). Lên production `deploy-2026.11.25.2` cùng #92/#93/#94. Đo lại production: 5 trang × 3 khổ ×
+  Sáng/Tối 0 lỗi console/0 tràn ngang/0 tài nguyên lỗi; trang chủ tải lạnh 4G chậm + CPU ×4: LCP 1,18 s, CLS 0.
+  Còn: (a) hệ số font dự phòng trên máy có Arial; (d) `tsudev_ui` theo v6.0.0.

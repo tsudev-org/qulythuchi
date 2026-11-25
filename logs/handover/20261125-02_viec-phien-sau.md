@@ -1,7 +1,7 @@
 # PHIẾU BÀN GIAO 20261125-02 - Việc cho phiên sau (sau phiên `qulythuchi-10`)
 
 - **Người gửi**: agent-qulythuchi (phiên `qulythuchi-10`, AKB `SES-20261125-0937-994b`), 25/11/2026
-- **Trạng thái**: MỞ. Thay phiếu `20261125-01` (ĐÓNG). Bảng việc chờ 👤 vẫn ở phiếu `20261124-03` mục 2.
+- **Trạng thái**: ĐÓNG 25/11 (phiên `qulythuchi-11`) - thay bằng phiếu `20261125-03`. Bảng việc chờ 👤 vẫn ở phiếu `20261124-03` mục 2.
 - **Đọc kèm**: `logs/STATE.md`, phiếu `20261125-UI2_*` (mục Kết quả), `third_party/sodium/BAN_VA.md` (trong #89).
 
 ## 0. Hiện trạng (25/11/2026, trưa)
