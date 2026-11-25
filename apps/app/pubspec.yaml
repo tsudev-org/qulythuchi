@@ -152,3 +152,9 @@ hooks:
   user_defines:
     sqlite3:
       source: sqlite3mc
+
+# Bản vá tạm build hook của sodium cho macOS/iOS trên Dart 3.14 (posix_spawn) - chi tiết và điều kiện gỡ:
+# third_party/sodium/BAN_VA.md (upstream Skycoder42/libsodium_dart_bindings#245).
+dependency_overrides:
+  sodium:
+    path: ../../third_party/sodium
