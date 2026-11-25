@@ -9,15 +9,19 @@
 
 ## Hàng đợi task (làm từ trên xuống)
 
-> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261124-03_viec-phien-sau.md` (thứ tự việc, việc chờ 👤 và cách xử lý
-> khi 👤 báo kết quả, bẫy đã gặp - có bẫy tắt máy đột ngột làm rỗng tệp).
+> **Phiên kế tiếp:** đọc phiếu `logs/handover/20261125-01_viec-phien-sau.md` (thứ tự việc, số đo, bẫy mới). Bảng việc
+> chờ 👤 vẫn ở phiếu `20261124-03` mục 2.
 
 Agent tự làm:
-- [ ] **ƯU TIÊN ĐẦU**: nâng Flutter 3.47.8 ⇒ 3.50.1 (Dart 3.14.0) + `sodium` 4.1.5+1 + `pdfrx` 3.1.0, MỘT PR, có phiếu
-  rà soát (đụng mật mã) - kế hoạch từng bước: phiếu 20261124-03 mục 5.
-- [ ] Ngân sách APK mỗi ABI (AGENTS.md B.4): thử ML Kit OCR + quét mã vạch bản "unbundled" (phiếu 20261124-03 mục 1.2).
-- [ ] Đo khởi động desktop (Windows/macOS/Linux) - mục cuối LANGUAGE_SELECTION 5.1 còn thiếu.
-- [ ] QR vai XÁC NHẬN (app quét QR ở `/login` của PC): CHỜ QR2b phía tsudev.
+- [ ] **ƯU TIÊN ĐẦU**: gộp #89 (vá tạm hook sodium macOS/iOS - `main` đang dựng Apple HỎNG) rồi #90 (đo khởi động
+  desktop); theo dõi upstream libsodium_dart_bindings#245 để gỡ `third_party/sodium`.
+- [ ] Phiếu UI2 (`logs/handover/20261125-UI2_ra-soat-giao-dien-web.md`): rà sâu giao diện web bằng trình duyệt + hiện đại hoá.
+- [ ] Cắt beta đầu tiên trên Flutter 3.50 sau khi #89 gộp; theo dõi VirusTotal (`pdfrx_pdfium_gate.dll` băm mới).
+- [ ] Ngân sách APK: đã đo bản thin (38,5 MB cài / 19,0 MB tải, nhánh `thu/apk-unbundled`) - chờ 👤 chọn phương án
+  (phiếu 20261125-01 mục 1.4).
+- [ ] Linux không có Secret Service ⇒ app sập (`LibsecretError`) - phiếu 20261125-01 mục 1.5.
+- [ ] Chuyển `material_ui` khi `tsudev_ui` chuyển (phiếu tsudev-ui-flutter 20261125-MUI1).
+- [ ] QR vai XÁC NHẬN: `tsudev_ui` v0.5.0 đã có `TsuXdApprover` - kiểm QR2b phía tsudev.com.
 - [ ] Sau mỗi tính năng: cắt thẻ beta mới, theo dõi job VirusTotal.
 
 Chờ 👤 (agent xử lý khi 👤 báo kết quả - phiếu 20261124-03 mục 2):
@@ -45,6 +49,15 @@ Phiên khác làm:
 | --- | --- | --- |
 
 ## Đã hoàn thành (mới nhất trên cùng)
+
+- 25/11/2026 - Phiên `qulythuchi-09` (agent-qulythuchi, AKB `SES-20261125-0104-52cc`): **Flutter 3.50.1 / Dart 3.14.0**
+  + sodium 4.1.5+1 + pdfrx 3.1.0 + sqlite3 3.9.2 (sqlite3mc 2.7.0) - PR #87 (đã gộp): vector conformance khớp, minisign
+  libsodium hợp lệ, test CSDL mẫu từ sqlite3 3.9.1, 167 test app, phiếu rà soát `20261125-nang-flutter-sodium`; Flutter
+  3.50 đánh dấu lỗi thời `flutter/material` ⇒ chặn từng dòng (76) chờ `tsudev_ui` (phiếu MUI1); AGP 9.1.1. Hook sodium
+  hỏng macOS/iOS (posix_spawn, upstream #245) ⇒ vá tạm `third_party/sodium` PR #89 (17/17 xanh). **SEC2** PR #88 (đã
+  gộp): `/security/` + `docs/security/trust.json` (SSL Labs A+, Observatory A+ 150, Scorecard 7.1, BP passing, Sigstore
+  + VirusTotal 0/73), `security.txt` mailto security@. LÊN PRODUCTION `deploy-2026.11.25.1` (Playwright `/app/` Sáng +
+  Tối 0 lỗi console). Đo khởi động desktop PR #90 (chạy lại: Windows 429, macOS 323, Linux 415 ms). APK thin đo 38,5 MB.
 
 - 24/11/2026 - Phiên `qulythuchi-08` (agent-qulythuchi, nối phiên bị tắt đột ngột 22:32): khôi phục sau sự cố (5
   object git + `refs/stash` + `.github/dependabot.yml` + 4251 tệp `apps/site/node_modules` bị cắt về 0 byte ⇒ chuyển
