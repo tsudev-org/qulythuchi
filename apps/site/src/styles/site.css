@@ -152,3 +152,55 @@ pre:focus-visible { outline: 2px solid var(--focus-ring); }
   .bang-dieu-khien__ben ul { position: static; display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--border); scrollbar-width: none; }
   .bang-dieu-khien__ben a { white-space: nowrap; }
 }
+
+/* UI2 đợt 2 (DESIGN_SYSTEM.md mục 5 v6.0.0, phiếu UI2 B.2/B.3). Hoạ tiết TĨNH, sắc `accent` ≤ 15%, mờ dần về phía chữ. */
+:root { --hoa-tiet-mau: color-mix(in srgb, var(--accent) 14%, transparent); }
+
+/* B.2 Đầu trang: lưới chấm mờ dần từ phải sang (dưới lớp kính mờ, không dải nền khác màu). */
+.dau-trang::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(var(--hoa-tiet-mau) 1px, transparent 1.3px) right 4px top 3px / 14px 14px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 35%, #000); mask-image: linear-gradient(90deg, transparent 35%, #000);
+}
+.dau-trang { isolation: isolate; }
+
+/* B.2 Chân trang: hoạ tiết cot-tang-truong (góc phải dưới) + giấy kẻ mờ dần lên trên. */
+.chan-trang { position: relative; overflow: hidden; isolation: isolate; }
+.chan-trang::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(var(--hoa-tiet-mau) 1px, transparent 1px), linear-gradient(90deg, var(--hoa-tiet-mau) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: linear-gradient(0deg, rgb(0 0 0 / 0.55), transparent 70%); mask-image: linear-gradient(0deg, rgb(0 0 0 / 0.55), transparent 70%);
+}
+.hoa-tiet--chan { position: absolute; right: 0; bottom: 0; z-index: -1; width: min(20rem, 45%); opacity: 0.75; height: auto; color: var(--accent); pointer-events: none; }
+
+/* B.3 Thẻ theo thể loại: nền phẳng pha 4% sắc nhấn + hoạ tiết hình học mờ dần từ góc phải trên về phía chữ. */
+.the--hoa-tiet { position: relative; isolation: isolate; overflow: hidden; background: color-mix(in srgb, var(--accent) 4%, var(--bg-surface)); transition: border-color 120ms ease; }
+.the--hoa-tiet::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  -webkit-mask-image: radial-gradient(120% 90% at 100% 0%, #000, transparent 65%); mask-image: radial-gradient(120% 90% at 100% 0%, #000, transparent 65%);
+}
+.the[data-hoa-tiet='luoi-cham']::before { background: radial-gradient(var(--hoa-tiet-mau) 1.2px, transparent 1.5px) 0 0 / 12px 12px; }
+.the[data-hoa-tiet='giay-ke']::before { background: linear-gradient(var(--hoa-tiet-mau) 1px, transparent 1px) 0 0 / 100% 14px; }
+.the[data-hoa-tiet='soc']::before { background: repeating-linear-gradient(135deg, var(--hoa-tiet-mau) 0 1px, transparent 1px 9px); }
+.the[data-hoa-tiet='ban-co']::before { background: conic-gradient(var(--hoa-tiet-mau) 25%, transparent 0 50%, var(--hoa-tiet-mau) 0 75%, transparent 0) 0 0 / 16px 16px; }
+.the--hoa-tiet:hover, .the--hoa-tiet:focus-within { border-color: color-mix(in srgb, var(--primary) 55%, var(--border)); }
+.the__bieu-tuong {
+  display: inline-grid; place-items: center; width: 2.5rem; height: 2.5rem; margin-bottom: 0.75rem;
+  border-radius: var(--radius-md); color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, var(--bg-surface)); border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--border));
+}
+.the__bieu-tuong svg { overflow: visible; }
+.the__bieu-tuong .bt-dong { transform-box: fill-box; transform-origin: 50% 100%; transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+[data-chuyen-dong='nang']:is(:hover, :focus-within) .bt-dong { transform: translateY(-2px); }
+[data-chuyen-dong='vao']:is(:hover, :focus-within) .bt-dong { transform: translateY(2px); }
+[data-chuyen-dong='moc'] .bt-dong { transform-origin: 50% 100%; }
+[data-chuyen-dong='moc']:is(:hover, :focus-within) .bt-dong { transform: scaleY(1.18); }
+[data-chuyen-dong='nghieng'] .bt-dong { transform-origin: 20% 80%; }
+[data-chuyen-dong='nghieng']:is(:hover, :focus-within) .bt-dong { transform: rotate(-9deg); }
+[data-chuyen-dong='nhip'] .bt-dong { transform-origin: 50% 50%; }
+[data-chuyen-dong='nhip']:is(:hover, :focus-within) .bt-dong { transform: scale(1.1); }
+@media (prefers-reduced-motion: reduce) {
+  .the__bieu-tuong .bt-dong { transition: none; transform: none !important; }
+  .the--hoa-tiet { transition: none; }
+}

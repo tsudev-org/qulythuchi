@@ -1,15 +1,17 @@
 ---
 import CotTangTruong from '../components/CotTangTruong.astro';
+import The from '../components/The.astro';
 import Trang from '../layouts/Trang.astro';
+import { BIEU_TUONG as B } from '../lib/bieu-tuong';
 
-const diemManh = [
-  ['Mã hóa đầu-cuối', 'Dữ liệu được mã hóa trên thiết bị bằng libsodium trước khi đồng bộ. Máy chủ chỉ giữ bản mã, không đọc được số tiền hay ghi chú của bạn.'],
-  ['Ghi một câu là xong', 'Gõ hoặc nói "ăn trưa 50 nghìn", "hôm qua đổ xăng 80k": app tự tách số tiền, ngày, thu hay chi và gợi ý danh mục.'],
-  ['Tự nhập từ ngân hàng', 'Đọc thông báo biến động số dư (Android), sao kê CSV/XLSX, hóa đơn bằng OCR trên máy. Mọi khoản vào hàng chờ để bạn xác nhận.'],
-  ['Ngân sách và mục tiêu', 'Ngân sách theo kỳ và danh mục, 6 hũ, mục tiêu tiết kiệm, khoản định kỳ, hóa đơn có nhắc, sổ nợ, nhiều tiền tệ.'],
-  ['Báo cáo dễ đọc', 'Thu chi theo kỳ so với kỳ trước, cơ cấu danh mục, tài sản ròng, lịch chi tiêu, "an toàn để tiêu". Biểu đồ nào cũng có bảng số.'],
-  ['Dùng không cần tài khoản', 'Cài là dùng, dữ liệu nằm trên máy. Đăng nhập tài khoản TsuDEV chỉ khi muốn đồng bộ nhiều thiết bị.'],
-];
+const diemManh = ([
+  [B.khoa, 'Mã hóa đầu-cuối', 'Dữ liệu được mã hóa trên thiết bị bằng libsodium trước khi đồng bộ. Máy chủ chỉ giữ bản mã, không đọc được số tiền hay ghi chú của bạn.'],
+  [B.but, 'Ghi một câu là xong', 'Gõ hoặc nói "ăn trưa 50 nghìn", "hôm qua đổ xăng 80k": app tự tách số tiền, ngày, thu hay chi và gợi ý danh mục.'],
+  [B.nhap, 'Tự nhập từ ngân hàng', 'Đọc thông báo biến động số dư (Android), sao kê CSV/XLSX, hóa đơn bằng OCR trên máy. Mọi khoản vào hàng chờ để bạn xác nhận.'],
+  [B.dich, 'Ngân sách và mục tiêu', 'Ngân sách theo kỳ và danh mục, 6 hũ, mục tiêu tiết kiệm, khoản định kỳ, hóa đơn có nhắc, sổ nợ, nhiều tiền tệ.'],
+  [B.cot, 'Báo cáo dễ đọc', 'Thu chi theo kỳ so với kỳ trước, cơ cấu danh mục, tài sản ròng, lịch chi tiêu, "an toàn để tiêu". Biểu đồ nào cũng có bảng số.'],
+  [B.dienThoai, 'Dùng không cần tài khoản', 'Cài là dùng, dữ liệu nằm trên máy. Đăng nhập tài khoản TsuDEV chỉ khi muốn đồng bộ nhiều thiết bị.'],
+] as const);
 // Bố cục chữ ký bang-dieu-khien (DESIGN_SYSTEM.md mục 1.2.2): thanh bên trái cố định + vùng làm việc + thẻ số liệu trên cùng.
 const soLieu = [
   ['0', 'quảng cáo và trình theo dõi'],
@@ -57,7 +59,7 @@ const muc = [
         <h2>Đủ cho tài chính cá nhân, không thừa</h2>
         <p class="dan">Chọn lọc từ những app quản lý chi tiêu phổ biến, bỏ quảng cáo và theo dõi, thêm mã hóa đầu-cuối.</p>
         <div class="luoi">
-          {diemManh.map(([ten, moTa]) => <div class="the"><h3>{ten}</h3><p>{moTa}</p></div>)}
+          {diemManh.map(([bt, ten, moTa]) => <The tieuDe={ten} bieuTuong={bt} hoaTiet="luoi-cham"><p>{moTa}</p></The>)}
         </div>
         <p><a href="/tinh-nang/">Xem đầy đủ tính năng</a></p>
       </section>
@@ -67,9 +69,9 @@ const muc = [
         <p class="dan">Ứng dụng tài chính biết nhiều về bạn hơn hầu hết mọi app khác. Vì vậy Quly Thu Chi được thiết kế để
           dữ liệu không rời tay bạn ở dạng đọc được.</p>
         <div class="luoi">
-          <div class="the"><h3>Không quảng cáo, không theo dõi</h3><p>Không SDK quảng cáo, không phân tích hành vi, không bán dữ liệu.</p></div>
-          <div class="the"><h3>Mã nguồn mở AGPL-3.0</h3><p>Ai cũng kiểm được cách mã hóa. Mọi bản phái sinh cũng phải công khai mã.</p></div>
-          <div class="the"><h3>Khóa ứng dụng</h3><p>Mật khẩu, mã PIN hoặc sinh trắc; tự khóa khi rời app; che nội dung trong trình chuyển app.</p></div>
+          <The tieuDe="Không quảng cáo, không theo dõi" bieuTuong={B.khongTheoDoi} hoaTiet="soc"><p>Không SDK quảng cáo, không phân tích hành vi, không bán dữ liệu.</p></The>
+          <The tieuDe="Mã nguồn mở AGPL-3.0" bieuTuong={B.ma} hoaTiet="soc"><p>Ai cũng kiểm được cách mã hóa. Mọi bản phái sinh cũng phải công khai mã.</p></The>
+          <The tieuDe="Khóa ứng dụng" bieuTuong={B.khien} hoaTiet="soc"><p>Mật khẩu, mã PIN hoặc sinh trắc; tự khóa khi rời app; che nội dung trong trình chuyển app.</p></The>
         </div>
         <p><a href="/bao-mat/">Bảo mật và quyền riêng tư</a></p>
       </section>
